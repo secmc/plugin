@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package df.plugin;
 
-option go_package = "github.com/df-mc/dragonfly/plugin/proto/generated";
+option go_package = "github.com/secmc/plugin/plugin/proto/generated";
 
 service Plugin {
   rpc EventStream(stream HostToPlugin) returns (stream PluginToHost);

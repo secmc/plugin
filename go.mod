@@ -5,7 +5,7 @@ go 1.24.0
 toolchain go1.24.4
 
 require (
-	github.com/df-mc/dragonfly v0.10.9
+	github.com/df-mc/dragonfly v0.10.10-0.20251030151444-930c985297ef
 	github.com/go-gl/mathgl v1.2.0
 	github.com/google/uuid v1.6.0
 	github.com/pelletier/go-toml v1.9.5

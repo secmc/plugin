@@ -42,8 +42,8 @@ rustc plugin.rs --release   # Compile to binary
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/df-mc/dragonfly-plugins.git
-cd dragonfly-plugins
+git clone https://github.com/secmc/plugin.git
+cd plugin
 ```
 
 ### 2. Install Dependencies
