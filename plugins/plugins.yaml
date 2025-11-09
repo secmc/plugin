@@ -1,0 +1,13 @@
+plugins:
+  - id: example-node
+    name: Example Node Plugin
+    command: "node"
+    args: ["examples/plugins/node/hello.js"]
+    address: "127.0.0.1:50051"
+    env:
+      NODE_ENV: development
+  - id: example-php
+    name: Example PHP Plugin
+    command: "php"
+    args: ["examples/plugins/php/HelloPlugin.php"]
+    address: "127.0.0.1:50052"

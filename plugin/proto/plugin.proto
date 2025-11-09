@@ -1,0 +1,135 @@
+syntax = "proto3";
+
+package df.plugin;
+
+option go_package = "github.com/df-mc/dragonfly/plugin/proto";
+
+service Plugin {
+  rpc EventStream(stream HostToPlugin) returns (stream PluginToHost);
+}
+
+message HostToPlugin {
+  string plugin_id = 1;
+  oneof payload {
+    HostHello hello = 10;
+    HostShutdown shutdown = 11;
+    EventEnvelope event = 20;
+  }
+}
+
+message HostHello {
+  string api_version = 1;
+}
+
+message HostShutdown {
+  string reason = 1;
+}
+
+message EventEnvelope {
+  string event_id = 1;
+  string type = 2;
+  oneof payload {
+    PlayerJoinEvent player_join = 10;
+    PlayerQuitEvent player_quit = 11;
+    ChatEvent chat = 12;
+    CommandEvent command = 13;
+    BlockBreakEvent block_break = 14;
+    WorldCloseEvent world_close = 15;
+  }
+}
+
+message PlayerJoinEvent {
+  string player_uuid = 1;
+  string name = 2;
+}
+
+message PlayerQuitEvent {
+  string player_uuid = 1;
+  string name = 2;
+}
+
+message ChatEvent {
+  string player_uuid = 1;
+  string name = 2;
+  string message = 3;
+}
+
+message CommandEvent {
+  string player_uuid = 1;
+  string name = 2;
+  string raw = 3;
+}
+
+message BlockBreakEvent {
+  string player_uuid = 1;
+  string name = 2;
+  string world = 3;
+  int32 x = 4;
+  int32 y = 5;
+  int32 z = 6;
+}
+
+message WorldCloseEvent {}
+
+message PluginToHost {
+  string plugin_id = 1;
+  oneof payload {
+    PluginHello hello = 10;
+    EventSubscribe subscribe = 11;
+    ActionBatch actions = 20;
+    LogMessage log = 30;
+  }
+}
+
+message PluginHello {
+  string name = 1;
+  string version = 2;
+  string api_version = 3;
+  repeated CommandSpec commands = 4;
+}
+
+message CommandSpec {
+  string name = 1;
+  string description = 2;
+}
+
+message EventSubscribe {
+  repeated string events = 1;
+}
+
+message ActionBatch {
+  repeated Action actions = 1;
+}
+
+message Action {
+  string correlation_id = 1;
+  oneof kind {
+    SendChatAction send_chat = 10;
+    TeleportAction teleport = 11;
+    KickAction kick = 12;
+  }
+}
+
+message SendChatAction {
+  string target_uuid = 1;
+  string message = 2;
+}
+
+message TeleportAction {
+  string player_uuid = 1;
+  double x = 2;
+  double y = 3;
+  double z = 4;
+  float yaw = 5;
+  float pitch = 6;
+}
+
+message KickAction {
+  string player_uuid = 1;
+  string reason = 2;
+}
+
+message LogMessage {
+  string level = 1;
+  string message = 2;
+}
