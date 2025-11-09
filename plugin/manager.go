@@ -113,7 +113,7 @@ func (m *Manager) AttachPlayer(p *player.Player) {
 	if p == nil {
 		return
 	}
-	handler := &PlayerHandler{mgr: m, Player: p}
+	handler := &PlayerHandler{mgr: m}
 	p.Handle(handler)
 	m.mu.Lock()
 	m.players[p.UUID()] = p

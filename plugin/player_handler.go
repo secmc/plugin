@@ -11,30 +11,30 @@ import (
 
 type PlayerHandler struct {
 	player.NopHandler
-	mgr    *Manager
-	Player *player.Player
+	mgr *Manager
 }
 
 func (h *PlayerHandler) HandleChat(ctx *player.Context, message *string) {
-	if h.mgr == nil || h.Player == nil {
+	if h.mgr == nil {
 		return
 	}
-	h.mgr.emitChat(ctx, h.Player, message)
+	h.mgr.emitChat(ctx, ctx.Val(), message)
 }
 
 func (h *PlayerHandler) HandleCommandExecution(ctx *player.Context, command cmd.Command, args []string) {
-	if h.mgr == nil || h.Player == nil {
+	if h.mgr == nil {
 		return
 	}
-	h.mgr.emitCommandWithArgs(ctx, h.Player, command.Name(), args)
+	h.mgr.emitCommandWithArgs(ctx, ctx.Val(), command.Name(), args)
 }
 
 func (h *PlayerHandler) HandleBlockBreak(ctx *player.Context, pos cube.Pos, drops *[]item.Stack, xp *int) {
-	if h.mgr == nil || h.Player == nil {
+	if h.mgr == nil {
 		return
 	}
-	worldDim := fmt.Sprint(ctx.Val().Tx().World().Dimension())
-	h.mgr.emitBlockBreak(ctx, h.Player, pos, drops, xp, worldDim)
+	p := ctx.Val()
+	worldDim := fmt.Sprint(p.Tx().World().Dimension())
+	h.mgr.emitBlockBreak(ctx, p, pos, drops, xp, worldDim)
 }
 
 func (h *PlayerHandler) HandleQuit(p *player.Player) {
