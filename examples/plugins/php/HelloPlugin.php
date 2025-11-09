@@ -2,9 +2,7 @@
 // Example Dragonfly plugin implemented in PHP.
 // Requires: pecl install grpc protobuf
 
-use Grpc\Server;
-use Grpc\ServerCredentials;
-use Grpc\UnaryCall;
+use Grpc\ChannelCredentials;
 
 define('PROTO_PATH', __DIR__ . '/../../../plugin/proto/types/plugin.proto');
 require_once __DIR__ . '/vendor/autoload.php';
@@ -17,11 +15,14 @@ $address = getenv('DF_PLUGIN_GRPC_ADDRESS') ?: '127.0.0.1:50052';
  * Even if your plugin doesn't modify or cancel an event, send an acknowledgment with cancel: false.
  */
 
-$server = new Server();
-$server->addHttp2Port($address, ServerCredentials::createInsecure());
-$service = new \DF\Plugin\PluginService();
-$service->setEventStreamHandler(function ($stream) use ($pluginId) {
-    foreach ($stream->readAll() as $message) {
+$client = new \Df\Plugin\PluginClient($address, [
+    'credentials' => ChannelCredentials::createInsecure(),
+]);
+
+$stream = $client->EventStream();
+
+try {
+    foreach ($stream->responses() as $message) {
         if ($message->hasHello()) {
             $hello = new \DF\Plugin\PluginToHost();
             $hello->setPluginId($pluginId);
@@ -131,10 +132,10 @@ $service->setEventStreamHandler(function ($stream) use ($pluginId) {
             break;
         }
     }
-    $stream->finish();
-});
+} catch (Exception $e) {
+    echo "[php] Error: " . $e->getMessage() . "\n";
+} finally {
+    $stream->writesDone();
+}
 
-$server->handle($service);
-$server->start();
-print "[php] plugin listening on {$address}\n";
-$server->wait();
+print "[php] plugin connected to {$address}\n";

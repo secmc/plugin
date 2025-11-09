@@ -92,14 +92,19 @@ See [examples/plugins/README.md](examples/plugins/README.md) for detailed docume
 // Example plugin showing command handling and block break event modification
 require_once __DIR__ . '/vendor/autoload.php';
 
+use Grpc\ChannelCredentials;
+
 $pluginId = 'my-plugin';
 $address = '127.0.0.1:50051';
 
-$server = new \Grpc\Server();
-$server->addHttp2Port($address, \Grpc\ServerCredentials::createInsecure());
-$service = new \DF\Plugin\PluginService();
-$service->setEventStreamHandler(function ($stream) use ($pluginId) {
-    foreach ($stream->readAll() as $message) {
+$client = new \Df\Plugin\PluginClient($address, [
+    'credentials' => ChannelCredentials::createInsecure(),
+]);
+
+$stream = $client->EventStream();
+
+try {
+    foreach ($stream->responses() as $message) {
         // Handle handshake
         if ($message->hasHello()) {
             $hello = new \DF\Plugin\PluginToHost();
@@ -195,12 +200,13 @@ $service->setEventStreamHandler(function ($stream) use ($pluginId) {
             }
         }
     }
-});
+} catch (Exception $e) {
+    echo "[php] Error: " . $e->getMessage() . "\n";
+} finally {
+    $stream->writesDone();
+}
 
-$server->handle($service);
-$server->start();
-echo "[php] plugin listening on {$address}\n";
-$server->wait();
+echo "[php] plugin connected to {$address}\n";
 ```
 
 ## Project Structure
