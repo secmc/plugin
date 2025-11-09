@@ -5,11 +5,6 @@ import * as grpc from '@grpc/grpc-js';
 import {
     HostToPlugin,
     PluginToHost,
-    PluginHello,
-    ActionBatch,
-    Action,
-    EventResult,
-    EventSubscribe,
 } from './generated/plugin/proto/types/plugin.js';
 
 const pluginId = process.env.DF_PLUGIN_ID || 'typescript-plugin';
