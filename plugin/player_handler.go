@@ -33,7 +33,7 @@ func (h *PlayerHandler) HandleBlockBreak(ctx *player.Context, pos cube.Pos, drop
 	if h.mgr == nil || h.Player == nil {
 		return
 	}
-	worldDim := fmt.Sprint(h.Player.Tx().World().Dimension())
+	worldDim := fmt.Sprint(ctx.Val().Tx().World().Dimension())
 	h.mgr.emitBlockBreak(ctx, h.Player, pos, drops, xp, worldDim)
 }
 
