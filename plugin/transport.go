@@ -2,112 +2,117 @@ package plugin
 
 import (
 	"context"
-	"crypto/tls"
 	"errors"
 	"fmt"
-	"io"
-	"net"
-	"net/http"
 	"sync"
 	"time"
 
-	"golang.org/x/net/http2"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/connectivity"
+	"google.golang.org/grpc/credentials/insecure"
 )
 
-// grpcStream implements a minimal HTTP/2-based bidirectional gRPC stream client
-// specialised for the EventStream method used by plugins.
+// grpcStream wraps a gRPC client stream for bidirectional communication
 type grpcStream struct {
-	cancel   context.CancelFunc
-	reqBody  *io.PipeWriter
-	respBody io.ReadCloser
-	resp     *http.Response
-	mu       sync.Mutex
+	conn   *grpc.ClientConn
+	stream grpc.ClientStream
+	cancel context.CancelFunc
+	mu     sync.Mutex
 }
 
-func dialEventStream(parent context.Context, address string, timeout time.Duration) (*grpcStream, error) {
-	baseCtx := parent
-	var cancelTimeout context.CancelFunc
-	if timeout > 0 {
-		baseCtx, cancelTimeout = context.WithTimeout(parent, timeout)
-	}
+// rawProtoCodec is a pass-through codec that treats payloads as already
+// protobuf-marshalled bytes. We name it "proto" so the Content-Type
+// remains application/grpc+proto to interoperate with grpc-js.
+type rawProtoCodec struct{}
 
-	dialer := &net.Dialer{}
-	ctx, cancel := context.WithCancel(baseCtx)
-	tr := &http2.Transport{
-		AllowHTTP: true,
-		DialTLS: func(network, addr string, _ *tls.Config) (net.Conn, error) {
-			return dialer.DialContext(ctx, network, addr)
-		},
+func (rawProtoCodec) Name() string { return "proto" }
+
+func (rawProtoCodec) Marshal(v any) ([]byte, error) {
+	switch t := v.(type) {
+	case []byte:
+		return t, nil
+	case *[]byte:
+		return *t, nil
+	default:
+		return nil, fmt.Errorf("rawProtoCodec: unsupported marshal type %T", v)
 	}
-	pr, pw := io.Pipe()
-	req, err := http.NewRequestWithContext(ctx, http.MethodPost, fmt.Sprintf("http://%s/df.plugin.Plugin/EventStream", address), pr)
+}
+
+func (rawProtoCodec) Unmarshal(data []byte, v any) error {
+	switch t := v.(type) {
+	case *[]byte:
+		*t = append((*t)[:0], data...)
+		return nil
+	default:
+		return fmt.Errorf("rawProtoCodec: unsupported unmarshal target %T (need *[]byte)", v)
+	}
+}
+
+func dialEventStream(parent context.Context, address string, connectTimeout time.Duration) (*grpcStream, error) {
+	conn, err := grpc.NewClient(address,
+		grpc.WithTransportCredentials(insecure.NewCredentials()),
+	)
 	if err != nil {
-		cancel()
-		return nil, err
-	}
-	req.Header.Set("Content-Type", "application/grpc+proto")
-	req.Header.Set("TE", "trailers")
-
-	resp, err := tr.RoundTrip(req)
-	if err != nil {
-		cancel()
-		pw.CloseWithError(err)
-		return nil, err
+		return nil, fmt.Errorf("dial failed: %w", err)
 	}
 
-	if resp.StatusCode != http.StatusOK {
-		cancel()
-		pw.Close()
-		resp.Body.Close()
-		return nil, fmt.Errorf("unexpected status: %s", resp.Status)
-	}
-
-	streamCancel := func() {
-		cancel()
-		if cancelTimeout != nil {
-			cancelTimeout()
+	conn.Connect()
+	if connectTimeout > 0 {
+		waitCtx, cancel := context.WithTimeout(parent, connectTimeout)
+		defer cancel()
+		for {
+			state := conn.GetState()
+			if state == connectivity.Ready {
+				break
+			}
+			if !conn.WaitForStateChange(waitCtx, state) {
+				_ = conn.Close()
+				return nil, fmt.Errorf("connect timeout: %w", waitCtx.Err())
+			}
 		}
 	}
 
-	return &grpcStream{cancel: streamCancel, reqBody: pw, respBody: resp.Body, resp: resp}, nil
+	// Create stream context
+	ctx, cancel := context.WithCancel(parent)
+
+	// Create the bidirectional stream using the generic streaming API
+	streamDesc := &grpc.StreamDesc{
+		StreamName:    "EventStream",
+		ServerStreams: true,
+		ClientStreams: true,
+	}
+
+	stream, err := conn.NewStream(ctx, streamDesc, "/df.plugin.Plugin/EventStream", grpc.ForceCodec(rawProtoCodec{}))
+	if err != nil {
+		cancel()
+		conn.Close()
+		return nil, fmt.Errorf("create stream failed: %w", err)
+	}
+
+	return &grpcStream{
+		conn:   conn,
+		stream: stream,
+		cancel: cancel,
+	}, nil
 }
 
 func (s *grpcStream) Send(data []byte) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	if s.reqBody == nil {
+	if s.stream == nil {
 		return errors.New("stream closed")
 	}
-	var header [5]byte
-	copy(header[:], []byte{0, 0, 0, 0, 0})
-	length := len(data)
-	header[1] = byte(length >> 24)
-	header[2] = byte(length >> 16)
-	header[3] = byte(length >> 8)
-	header[4] = byte(length)
-	if _, err := s.reqBody.Write(header[:]); err != nil {
-		return err
-	}
-	if _, err := s.reqBody.Write(data); err != nil {
+
+	// Send the raw protobuf message bytes
+	if err := s.stream.SendMsg(&data); err != nil {
 		return err
 	}
 	return nil
 }
 
 func (s *grpcStream) Recv() ([]byte, error) {
-	header := make([]byte, 5)
-	if _, err := io.ReadFull(s.respBody, header); err != nil {
-		return nil, err
-	}
-	if header[0] != 0 {
-		return nil, fmt.Errorf("unsupported compression: %d", header[0])
-	}
-	length := int(header[1])<<24 | int(header[2])<<16 | int(header[3])<<8 | int(header[4])
-	if length < 0 {
-		return nil, errors.New("negative message length")
-	}
-	data := make([]byte, length)
-	if _, err := io.ReadFull(s.respBody, data); err != nil {
+	var data []byte
+	if err := s.stream.RecvMsg(&data); err != nil {
 		return nil, err
 	}
 	return data, nil
@@ -116,19 +121,17 @@ func (s *grpcStream) Recv() ([]byte, error) {
 func (s *grpcStream) CloseSend() error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	if s.reqBody == nil {
+	if s.stream == nil {
 		return nil
 	}
-	err := s.reqBody.Close()
-	s.reqBody = nil
-	return err
+	return s.stream.CloseSend()
 }
 
 func (s *grpcStream) Close() error {
 	s.cancel()
 	s.CloseSend()
-	if s.respBody != nil {
-		return s.respBody.Close()
+	if s.conn != nil {
+		return s.conn.Close()
 	}
 	return nil
 }

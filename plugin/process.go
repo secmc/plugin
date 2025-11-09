@@ -32,6 +32,7 @@ type pluginProcess struct {
 	stream *grpcStream
 
 	sendCh chan *proto.HostToPlugin
+	done   chan struct{}
 
 	subscriptions sync.Map
 	ready         atomic.Bool
@@ -56,6 +57,7 @@ func newPluginProcess(m *Manager, cfg PluginConfig) *pluginProcess {
 		mgr:    m,
 		log:    logger,
 		sendCh: make(chan *proto.HostToPlugin, 64),
+		done:   make(chan struct{}),
 	}
 }
 
@@ -181,19 +183,27 @@ func (p *pluginProcess) sendHello() error {
 }
 
 func (p *pluginProcess) sendLoop() {
-	for msg := range p.sendCh {
-		if p.stream == nil {
+	for {
+		select {
+		case <-p.done:
 			return
-		}
-		data, err := msg.Marshal()
-		if err != nil {
-			p.log.Error("marshal message", "error", err)
-			continue
-		}
-		if err := p.stream.Send(data); err != nil {
-			p.log.Error("send message", "error", err)
-			p.Stop()
-			return
+		case msg := <-p.sendCh:
+			if msg == nil {
+				continue
+			}
+			if p.stream == nil {
+				return
+			}
+			data, err := msg.Marshal()
+			if err != nil {
+				p.log.Error("marshal message", "error", err)
+				continue
+			}
+			if err := p.stream.Send(data); err != nil {
+				p.log.Error("send message", "error", err)
+				p.Stop()
+				return
+			}
 		}
 	}
 }
@@ -244,6 +254,9 @@ func (p *pluginProcess) updateSubscriptions(events []string) {
 }
 
 func (p *pluginProcess) queue(msg *proto.HostToPlugin) {
+	if p.closed.Load() {
+		return
+	}
 	select {
 	case p.sendCh <- msg:
 	default:
@@ -256,7 +269,7 @@ func (p *pluginProcess) Stop() {
 		if p.stream != nil {
 			_ = p.stream.Close()
 		}
-		close(p.sendCh)
+		close(p.done)
 		p.pendingMu.Lock()
 		for id, ch := range p.pending {
 			delete(p.pending, id)

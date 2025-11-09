@@ -33,28 +33,28 @@ server.bindAsync(address, grpc.ServerCredentials.createInsecure(), (err) => {
     process.exit(1);
   }
   console.log(`[node] plugin listening on ${address}`);
-  server.start();
 });
 
 function streamHandler(call) {
   console.log('[node] host connected');
 
   call.on('data', (message) => {
+    console.log('[node] received message:', JSON.stringify(message, null, 2));
     if (message.hello) {
       console.log('[node] host hello', message.hello);
       call.write({
-        plugin_id: pluginId,
+        pluginId: pluginId,
         hello: {
           name: 'example-node',
           version: '0.1.0',
-          api_version: message.hello.api_version,
+          apiVersion: message.hello.apiVersion,
           commands: [
             { name: '/hello', description: 'Send a greeting from the Node plugin' },
           ],
         },
       });
       call.write({
-        plugin_id: pluginId,
+        pluginId: pluginId,
         subscribe: { events: ['PLAYER_JOIN', 'COMMAND', 'CHAT'] },
       });
       return;
@@ -73,20 +73,24 @@ function streamHandler(call) {
     console.log('[node] stream ended');
     call.end();
   });
+
+  call.on('error', (err) => {
+    console.error('[node] stream error:', err);
+  });
 }
 
 function handleEvent(call, event) {
   switch (event.type) {
     case 'PLAYER_JOIN': {
-      const player = event.player_join;
+      const player = event.playerJoin;
       console.log(`[node] player joined ${player.name}`);
       call.write({
-        plugin_id: pluginId,
+        pluginId: pluginId,
         actions: {
           actions: [
             {
-              send_chat: {
-                target_uuid: player.player_uuid,
+              sendChat: {
+                targetUuid: player.playerUuid,
                 message: `Welcome to the server, ${player.name}! (from Node)`,
               },
             },
@@ -99,12 +103,12 @@ function handleEvent(call, event) {
       const command = event.command;
       if (command.raw.startsWith('/hello')) {
         call.write({
-          plugin_id: pluginId,
+          pluginId: pluginId,
           actions: {
             actions: [
               {
-                send_chat: {
-                  target_uuid: command.player_uuid,
+                sendChat: {
+                  targetUuid: command.playerUuid,
                   message: `Hello ${command.name}!`,
                 },
               },
@@ -121,19 +125,19 @@ function handleEvent(call, event) {
       }
       if (chat.message.toLowerCase().includes('badword')) {
         call.write({
-          plugin_id: pluginId,
-          event_result: {
-            event_id: event.event_id,
+          pluginId: pluginId,
+          eventResult: {
+            eventId: event.eventId,
             cancel: true,
           },
         });
         call.write({
-          plugin_id: pluginId,
+          pluginId: pluginId,
           actions: {
             actions: [
               {
-                send_chat: {
-                  target_uuid: chat.player_uuid,
+                sendChat: {
+                  targetUuid: chat.playerUuid,
                   message: "Please keep the chat friendly!",
                 },
               },
@@ -145,9 +149,9 @@ function handleEvent(call, event) {
       if (chat.message.startsWith('!shout ')) {
         const updated = chat.message.substring(7).toUpperCase();
         call.write({
-          plugin_id: pluginId,
-          event_result: {
-            event_id: event.event_id,
+          pluginId: pluginId,
+          eventResult: {
+            eventId: event.eventId,
             chat: { message: updated },
           },
         });
