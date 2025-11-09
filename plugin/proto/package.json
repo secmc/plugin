@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "generate": "buf generate && cd ../.. && go mod tidy",
+    "generate:php": "buf generate --template buf.gen.php.yaml",
     "lint": "buf lint",
     "breaking": "buf breaking --against '.git#branch=main'"
   },
