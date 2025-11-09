@@ -5,10 +5,35 @@ import * as grpc from '@grpc/grpc-js';
 import {
     HostToPlugin,
     PluginToHost,
+    GameMode,
 } from './generated/plugin/proto/types/plugin.js';
 
 const pluginId = process.env.DF_PLUGIN_ID || 'typescript-plugin';
 const address = process.env.DF_PLUGIN_GRPC_ADDRESS || '127.0.0.1:50052';
+
+// Helper function to send a message to a player
+function sendMessage(
+    call: grpc.ServerDuplexStream<HostToPlugin, PluginToHost>,
+    targetUuid: string,
+    message: string,
+    correlationId?: string
+) {
+    const response: PluginToHost = {
+        pluginId,
+        actions: {
+            actions: [
+                {
+                    correlationId: correlationId || `msg-${Date.now()}`,
+                    sendChat: {
+                        targetUuid,
+                        message,
+                    },
+                },
+            ],
+        },
+    };
+    call.write(response);
+}
 
 // Type-safe bidirectional stream handler
 function streamHandler(call: grpc.ServerDuplexStream<HostToPlugin, PluginToHost>) {
@@ -29,8 +54,9 @@ function streamHandler(call: grpc.ServerDuplexStream<HostToPlugin, PluginToHost>
                     version: '0.1.0',
                     apiVersion: message.hello.apiVersion,
                     commands: [
-                        { name: '/greet', description: 'Send a greeting from the TypeScript plugin' },
-                        { name: '/tp', description: 'Teleport to spawn' },
+                        { name: '/greet', description: 'Send a greeting from the TypeScript plugin', aliases: [] },
+                        { name: '/tp', description: 'Teleport to spawn', aliases: [] },
+                        { name: '/gamemode', description: 'Change game mode (survival, creative, adventure, spectator)', aliases: ['gm'] },
                     ],
                 },
             };
@@ -80,22 +106,13 @@ function handleEvent(
 
             console.log(`[ts] player joined ${player.name} (${player.playerUuid})`);
 
-            // Type-safe action batch
-            const response: PluginToHost = {
-                pluginId,
-                actions: {
-                    actions: [
-                        {
-                            correlationId: `join-${player.playerUuid}`,
-                            sendChat: {
-                                targetUuid: player.playerUuid,
-                                message: `§aWelcome to the server, §e${player.name}§a! (from TypeScript)`,
-                            },
-                        },
-                    ],
-                },
-            };
-            call.write(response);
+            // Use helper to send welcome message
+            sendMessage(
+                call,
+                player.playerUuid,
+                `§aWelcome to the server, §e${player.name}§a! (from TypeScript)`,
+                `join-${player.playerUuid}`
+            );
             break;
         }
 
@@ -115,21 +132,11 @@ function handleEvent(
 
             // Handle /greet command
             if (cmd.command === 'greet') {
-                const response: PluginToHost = {
-                    pluginId,
-                    actions: {
-                        actions: [
-                            {
-                                correlationId: `greet-${Date.now()}`,
-                                sendChat: {
-                                    targetUuid: cmd.playerUuid,
-                                    message: `§6Hello §b${cmd.name}§6! This is a TypeScript plugin with full type safety! 🚀`,
-                                },
-                            },
-                        ],
-                    },
-                };
-                call.write(response);
+                sendMessage(
+                    call,
+                    cmd.playerUuid,
+                    `§6Hello §b${cmd.name}§6! This is a TypeScript plugin with full type safety! 🚀`
+                );
                 return;
             }
 
@@ -172,6 +179,73 @@ function handleEvent(
                 call.write(response);
                 return;
             }
+
+            // Handle /gm command to change game mode
+            if (cmd.command === 'gm') {
+                if (!cmd.args || cmd.args.length === 0) {
+                    sendMessage(call, cmd.playerUuid, '§cUsage: /gm <survival|creative|adventure|spectator>');
+                    return;
+                }
+
+                const mode = cmd.args[0].toLowerCase();
+                let gameMode: GameMode;
+                let modeName: string;
+
+                switch (mode) {
+                    case 'survival':
+                    case 's':
+                    case '0':
+                        gameMode = GameMode.SURVIVAL;
+                        modeName = 'Survival';
+                        break;
+                    case 'creative':
+                    case 'c':
+                    case '1':
+                        gameMode = GameMode.CREATIVE;
+                        modeName = 'Creative';
+                        break;
+                    case 'adventure':
+                    case 'a':
+                    case '2':
+                        gameMode = GameMode.ADVENTURE;
+                        modeName = 'Adventure';
+                        break;
+                    case 'spectator':
+                    case 'sp':
+                    case '3':
+                        gameMode = GameMode.SPECTATOR;
+                        modeName = 'Spectator';
+                        break;
+                    default:
+                        sendMessage(
+                            call,
+                            cmd.playerUuid,
+                            '§cInvalid game mode. Use: survival, creative, adventure, or spectator'
+                        );
+                        return;
+                }
+
+                // Use action batch for multiple actions
+                const response: PluginToHost = {
+                    pluginId,
+                    actions: {
+                        actions: [
+                            {
+                                correlationId: `gm-${Date.now()}`,
+                                setGameMode: {
+                                    playerUuid: cmd.playerUuid,
+                                    gameMode: gameMode,
+                                },
+                            },
+                        ],
+                    },
+                };
+                call.write(response);
+
+                // Send success message
+                sendMessage(call, cmd.playerUuid, `§aGame mode changed to §e${modeName}§a!`);
+                return;
+            }
             break;
         }
 
@@ -191,20 +265,7 @@ function handleEvent(
                 };
                 call.write(cancelResponse);
 
-                const warningResponse: PluginToHost = {
-                    pluginId,
-                    actions: {
-                        actions: [
-                            {
-                                sendChat: {
-                                    targetUuid: chat.playerUuid,
-                                    message: '§cPlease keep the chat friendly',
-                                },
-                            },
-                        ],
-                    },
-                };
-                call.write(warningResponse);
+                sendMessage(call, chat.playerUuid, '§cPlease keep the chat friendly');
                 break;
             }
 

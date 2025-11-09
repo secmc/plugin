@@ -94,6 +94,7 @@ message PluginHello {
 message CommandSpec {
   string name = 1;
   string description = 2;
+  repeated string aliases = 3;
 }
 
 message EventSubscribe {
@@ -110,6 +111,7 @@ message Action {
     SendChatAction send_chat = 10;
     TeleportAction teleport = 11;
     KickAction kick = 12;
+    SetGameModeAction set_game_mode = 13;
   }
 }
 
@@ -130,6 +132,18 @@ message TeleportAction {
 message KickAction {
   string player_uuid = 1;
   string reason = 2;
+}
+
+enum GameMode {
+  SURVIVAL = 0;
+  CREATIVE = 1;
+  ADVENTURE = 2;
+  SPECTATOR = 3;
+}
+
+message SetGameModeAction {
+  string player_uuid = 1;
+  GameMode game_mode = 2;
 }
 
 message LogMessage {

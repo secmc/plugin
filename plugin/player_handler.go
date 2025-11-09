@@ -1,6 +1,8 @@
 package plugin
 
 import (
+	"fmt"
+
 	"github.com/df-mc/dragonfly/server/block/cube"
 	"github.com/df-mc/dragonfly/server/cmd"
 	"github.com/df-mc/dragonfly/server/item"
@@ -31,7 +33,8 @@ func (h *PlayerHandler) HandleBlockBreak(ctx *player.Context, pos cube.Pos, drop
 	if h.mgr == nil || h.Player == nil {
 		return
 	}
-	h.mgr.emitBlockBreak(ctx, h.Player, pos, drops, xp)
+	worldDim := fmt.Sprint(h.Player.Tx().World().Dimension())
+	h.mgr.emitBlockBreak(ctx, h.Player, pos, drops, xp, worldDim)
 }
 
 func (h *PlayerHandler) HandleQuit(p *player.Player) {

@@ -216,7 +216,7 @@ func (m *Manager) emitCommandWithArgs(ctx *player.Context, p *player.Player, cmd
 	}
 }
 
-func (m *Manager) emitBlockBreak(ctx *player.Context, p *player.Player, pos cube.Pos, drops *[]item.Stack, xp *int) {
+func (m *Manager) emitBlockBreak(ctx *player.Context, p *player.Player, pos cube.Pos, drops *[]item.Stack, xp *int, worldDim string) {
 	evt := &pb.EventEnvelope{
 		EventId: generateEventID(),
 		Type:    "BLOCK_BREAK",
@@ -224,7 +224,7 @@ func (m *Manager) emitBlockBreak(ctx *player.Context, p *player.Player, pos cube
 			BlockBreak: &pb.BlockBreakEvent{
 				PlayerUuid: p.UUID().String(),
 				Name:       p.Name(),
-				World:      fmt.Sprint(p.Tx().World().Dimension()),
+				World:      worldDim,
 				X:          int32(pos.X()),
 				Y:          int32(pos.Y()),
 				Z:          int32(pos.Z()),
@@ -370,11 +370,25 @@ func (m *Manager) registerCommands(p *pluginProcess, specs []*pb.CommandSpec) {
 			continue
 		}
 		name := strings.TrimPrefix(spec.Name, "/")
+
+		aliases := make([]string, 0, len(spec.Aliases))
+		for _, alias := range spec.Aliases {
+			alias = strings.TrimPrefix(alias, "/")
+			if alias == "" || alias == name {
+				continue
+			}
+			aliases = append(aliases, alias)
+		}
+
 		binding := commandBinding{pluginID: p.id, command: name, descriptor: spec}
 		m.mu.Lock()
 		m.commands[name] = binding
+		for _, alias := range aliases {
+			m.commands[alias] = binding
+		}
 		m.mu.Unlock()
-		cmd.Register(cmd.New(name, spec.Description, nil, pluginCommand{mgr: m, pluginID: p.id, name: name}))
+
+		cmd.Register(cmd.New(name, spec.Description, aliases, pluginCommand{mgr: m, pluginID: p.id, name: name}))
 	}
 }
 
@@ -408,6 +422,8 @@ func (m *Manager) applyActions(p *pluginProcess, batch *pb.ActionBatch) {
 			m.handleTeleport(kind.Teleport)
 		case *pb.Action_Kick:
 			m.handleKick(kind.Kick)
+		case *pb.Action_SetGameMode:
+			m.handleSetGameMode(kind.SetGameMode)
 		}
 	}
 }
@@ -462,6 +478,24 @@ func (m *Manager) handleKick(act *pb.KickAction) {
 		handle.ExecWorld(func(tx *world.Tx, e world.Entity) {
 			if pl, ok := e.(*player.Player); ok {
 				pl.Disconnect(act.Reason)
+			}
+		})
+	}
+}
+
+func (m *Manager) handleSetGameMode(act *pb.SetGameModeAction) {
+	id, err := uuid.Parse(act.PlayerUuid)
+	if err != nil {
+		return
+	}
+	gameMode, ok := world.GameModeByID(int(act.GameMode))
+	if !ok {
+		return
+	}
+	if handle, ok := m.srv.Player(id); ok {
+		handle.ExecWorld(func(tx *world.Tx, e world.Entity) {
+			if pl, ok := e.(*player.Player); ok {
+				pl.SetGameMode(gameMode)
 			}
 		})
 	}
