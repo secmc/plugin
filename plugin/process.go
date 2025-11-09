@@ -16,8 +16,9 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"google.golang.org/protobuf/proto"
 
-	"github.com/df-mc/dragonfly/plugin/proto"
+	pb "github.com/df-mc/dragonfly/plugin/proto/generated"
 )
 
 const apiVersion = "v1"
@@ -31,19 +32,19 @@ type pluginProcess struct {
 	cmd    *exec.Cmd
 	stream *grpcStream
 
-	sendCh chan *proto.HostToPlugin
+	sendCh chan *pb.HostToPlugin
 	done   chan struct{}
 
 	subscriptions sync.Map
 	ready         atomic.Bool
 
 	helloMu sync.RWMutex
-	hello   *proto.PluginHello
+	hello   *pb.PluginHello
 
 	closed atomic.Bool
 
 	pendingMu sync.Mutex
-	pending   map[string]chan *proto.EventResult
+	pending   map[string]chan *pb.EventResult
 }
 
 func newPluginProcess(m *Manager, cfg PluginConfig) *pluginProcess {
@@ -56,7 +57,7 @@ func newPluginProcess(m *Manager, cfg PluginConfig) *pluginProcess {
 		cfg:    cfg,
 		mgr:    m,
 		log:    logger,
-		sendCh: make(chan *proto.HostToPlugin, 64),
+		sendCh: make(chan *pb.HostToPlugin, 64),
 		done:   make(chan struct{}),
 	}
 }
@@ -171,11 +172,13 @@ func (p *pluginProcess) connectLoop(ctx context.Context, address string) (*grpcS
 }
 
 func (p *pluginProcess) sendHello() error {
-	msg := &proto.HostToPlugin{
-		PluginID: p.id,
-		Hello:    &proto.HostHello{APIVersion: apiVersion},
+	msg := &pb.HostToPlugin{
+		PluginId: p.id,
+		Payload: &pb.HostToPlugin_Hello{
+			Hello: &pb.HostHello{ApiVersion: apiVersion},
+		},
 	}
-	payload, err := msg.Marshal()
+	payload, err := proto.Marshal(msg)
 	if err != nil {
 		return err
 	}
@@ -194,7 +197,7 @@ func (p *pluginProcess) sendLoop() {
 			if p.stream == nil {
 				return
 			}
-			data, err := msg.Marshal()
+			data, err := proto.Marshal(msg)
 			if err != nil {
 				p.log.Error("marshal message", "error", err)
 				continue
@@ -218,8 +221,8 @@ func (p *pluginProcess) recvLoop() {
 			p.Stop()
 			return
 		}
-		msg, err := proto.UnmarshalPluginToHost(data)
-		if err != nil {
+		msg := &pb.PluginToHost{}
+		if err := proto.Unmarshal(data, msg); err != nil {
 			p.log.Error("decode message", "error", err)
 			continue
 		}
@@ -253,7 +256,7 @@ func (p *pluginProcess) updateSubscriptions(events []string) {
 	p.ready.Store(true)
 }
 
-func (p *pluginProcess) queue(msg *proto.HostToPlugin) {
+func (p *pluginProcess) queue(msg *pb.HostToPlugin) {
 	if p.closed.Load() {
 		return
 	}
@@ -286,30 +289,30 @@ func (p *pluginProcess) stopProcess() {
 	}
 }
 
-func (p *pluginProcess) setHello(h *proto.PluginHello) {
+func (p *pluginProcess) setHello(h *pb.PluginHello) {
 	p.helloMu.Lock()
 	defer p.helloMu.Unlock()
 	p.hello = h
 }
 
-func (p *pluginProcess) helloInfo() *proto.PluginHello {
+func (p *pluginProcess) helloInfo() *pb.PluginHello {
 	p.helloMu.RLock()
 	defer p.helloMu.RUnlock()
 	return p.hello
 }
 
-func (p *pluginProcess) expectEventResult(eventID string) chan *proto.EventResult {
-	ch := make(chan *proto.EventResult, 1)
+func (p *pluginProcess) expectEventResult(eventID string) chan *pb.EventResult {
+	ch := make(chan *pb.EventResult, 1)
 	p.pendingMu.Lock()
 	if p.pending == nil {
-		p.pending = make(map[string]chan *proto.EventResult)
+		p.pending = make(map[string]chan *pb.EventResult)
 	}
 	p.pending[eventID] = ch
 	p.pendingMu.Unlock()
 	return ch
 }
 
-func (p *pluginProcess) waitEventResult(ch chan *proto.EventResult, timeout time.Duration) (*proto.EventResult, error) {
+func (p *pluginProcess) waitEventResult(ch chan *pb.EventResult, timeout time.Duration) (*pb.EventResult, error) {
 	select {
 	case res, ok := <-ch:
 		if !ok {
@@ -330,18 +333,18 @@ func (p *pluginProcess) discardEventResult(eventID string) {
 	p.pendingMu.Unlock()
 }
 
-func (p *pluginProcess) deliverEventResult(res *proto.EventResult) {
+func (p *pluginProcess) deliverEventResult(res *pb.EventResult) {
 	if res == nil {
 		return
 	}
 	p.pendingMu.Lock()
-	ch, ok := p.pending[res.EventID]
+	ch, ok := p.pending[res.EventId]
 	if ok {
-		delete(p.pending, res.EventID)
+		delete(p.pending, res.EventId)
 	}
 	p.pendingMu.Unlock()
 	if !ok {
-		p.log.Warn("unexpected event result", "event_id", res.EventID)
+		p.log.Warn("unexpected event result", "event_id", res.EventId)
 		return
 	}
 	select {

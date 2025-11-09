@@ -1,7 +1,7 @@
 package plugin
 
 import (
-	"github.com/df-mc/dragonfly/plugin/proto"
+	pb "github.com/df-mc/dragonfly/plugin/proto/generated"
 	"github.com/df-mc/dragonfly/server/world"
 )
 
@@ -14,10 +14,12 @@ func (h *WorldHandler) HandleClose(tx *world.Tx) {
 	if h.mgr == nil || tx == nil {
 		return
 	}
-	evt := &proto.EventEnvelope{
-		EventID:    generateEventID(),
-		Type:       "WORLD_CLOSE",
-		WorldClose: &proto.WorldCloseEvent{},
+	evt := &pb.EventEnvelope{
+		EventId: generateEventID(),
+		Type:    "WORLD_CLOSE",
+		Payload: &pb.EventEnvelope_WorldClose{
+			WorldClose: &pb.WorldCloseEvent{},
+		},
 	}
 	h.mgr.broadcastEvent(evt)
 }

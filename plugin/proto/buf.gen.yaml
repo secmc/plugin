@@ -1,0 +1,12 @@
+version: v2
+managed:
+  enabled: true
+  override:
+    - file_option: go_package_prefix
+      value: github.com/df-mc/dragonfly/plugin/proto/generated
+plugins:
+  - local: protoc-gen-go
+    out: generated
+    opt:
+      - paths=source_relative
+

@@ -10,7 +10,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/df-mc/dragonfly/plugin/proto"
+	pb "github.com/df-mc/dragonfly/plugin/proto/generated"
 	"github.com/df-mc/dragonfly/server"
 	"github.com/df-mc/dragonfly/server/block/cube"
 	"github.com/df-mc/dragonfly/server/cmd"
@@ -38,7 +38,7 @@ type Manager struct {
 type commandBinding struct {
 	pluginID   string
 	command    string
-	descriptor *proto.CommandSpec
+	descriptor *pb.CommandSpec
 }
 
 const eventResponseTimeout = 250 * time.Millisecond
@@ -89,7 +89,12 @@ func (m *Manager) Close() {
 	m.mu.Lock()
 	defer m.mu.Unlock()
 	for id, proc := range m.plugins {
-		shutdown := &proto.HostToPlugin{PluginID: id, Shutdown: &proto.HostShutdown{Reason: "server shutting down"}}
+		shutdown := &pb.HostToPlugin{
+			PluginId: id,
+			Payload: &pb.HostToPlugin_Shutdown{
+				Shutdown: &pb.HostShutdown{Reason: "server shutting down"},
+			},
+		}
 		proc.queue(shutdown)
 		proc.Stop()
 	}
@@ -123,24 +128,28 @@ func (m *Manager) detachPlayer(p *player.Player) {
 }
 
 func (m *Manager) emitPlayerJoin(p *player.Player) {
-	evt := &proto.EventEnvelope{
-		EventID: generateEventID(),
+	evt := &pb.EventEnvelope{
+		EventId: generateEventID(),
 		Type:    "PLAYER_JOIN",
-		PlayerJoin: &proto.PlayerJoinEvent{
-			PlayerUUID: p.UUID().String(),
-			Name:       p.Name(),
+		Payload: &pb.EventEnvelope_PlayerJoin{
+			PlayerJoin: &pb.PlayerJoinEvent{
+				PlayerUuid: p.UUID().String(),
+				Name:       p.Name(),
+			},
 		},
 	}
 	m.broadcastEvent(evt)
 }
 
 func (m *Manager) emitPlayerQuit(p *player.Player) {
-	evt := &proto.EventEnvelope{
-		EventID: generateEventID(),
+	evt := &pb.EventEnvelope{
+		EventId: generateEventID(),
 		Type:    "PLAYER_QUIT",
-		PlayerQuit: &proto.PlayerQuitEvent{
-			PlayerUUID: p.UUID().String(),
-			Name:       p.Name(),
+		Payload: &pb.EventEnvelope_PlayerQuit{
+			PlayerQuit: &pb.PlayerQuitEvent{
+				PlayerUuid: p.UUID().String(),
+				Name:       p.Name(),
+			},
 		},
 	}
 	m.broadcastEvent(evt)
@@ -150,13 +159,15 @@ func (m *Manager) emitChat(ctx *player.Context, p *player.Player, msg *string) {
 	if msg == nil {
 		return
 	}
-	evt := &proto.EventEnvelope{
-		EventID: generateEventID(),
+	evt := &pb.EventEnvelope{
+		EventId: generateEventID(),
 		Type:    "CHAT",
-		Chat: &proto.ChatEvent{
-			PlayerUUID: p.UUID().String(),
-			Name:       p.Name(),
-			Message:    *msg,
+		Payload: &pb.EventEnvelope_Chat{
+			Chat: &pb.ChatEvent{
+				PlayerUuid: p.UUID().String(),
+				Name:       p.Name(),
+				Message:    *msg,
+			},
 		},
 	}
 	results := m.dispatchEvent(evt, true)
@@ -165,11 +176,11 @@ func (m *Manager) emitChat(ctx *player.Context, p *player.Player, msg *string) {
 		if res == nil {
 			continue
 		}
-		if res.Cancel {
+		if res.Cancel != nil && *res.Cancel {
 			cancelled = true
 		}
-		if res.Chat != nil {
-			*msg = res.Chat.Message
+		if chatMut := res.GetChat(); chatMut != nil {
+			*msg = chatMut.Message
 		}
 	}
 	if cancelled && ctx != nil {
@@ -178,18 +189,20 @@ func (m *Manager) emitChat(ctx *player.Context, p *player.Player, msg *string) {
 }
 
 func (m *Manager) emitCommand(ctx *player.Context, p *player.Player, raw string) {
-	evt := &proto.EventEnvelope{
-		EventID: generateEventID(),
+	evt := &pb.EventEnvelope{
+		EventId: generateEventID(),
 		Type:    "COMMAND",
-		Command: &proto.CommandEvent{
-			PlayerUUID: p.UUID().String(),
-			Name:       p.Name(),
-			Raw:        raw,
+		Payload: &pb.EventEnvelope_Command{
+			Command: &pb.CommandEvent{
+				PlayerUuid: p.UUID().String(),
+				Name:       p.Name(),
+				Raw:        raw,
+			},
 		},
 	}
 	results := m.dispatchEvent(evt, true)
 	for _, res := range results {
-		if res != nil && res.Cancel && ctx != nil {
+		if res != nil && res.Cancel != nil && *res.Cancel && ctx != nil {
 			ctx.Cancel()
 			break
 		}
@@ -197,16 +210,18 @@ func (m *Manager) emitCommand(ctx *player.Context, p *player.Player, raw string)
 }
 
 func (m *Manager) emitBlockBreak(ctx *player.Context, p *player.Player, pos cube.Pos, drops *[]item.Stack, xp *int) {
-	evt := &proto.EventEnvelope{
-		EventID: generateEventID(),
+	evt := &pb.EventEnvelope{
+		EventId: generateEventID(),
 		Type:    "BLOCK_BREAK",
-		BlockBreak: &proto.BlockBreakEvent{
-			PlayerUUID: p.UUID().String(),
-			Name:       p.Name(),
-			World:      fmt.Sprint(p.Tx().World().Dimension()),
-			X:          int32(pos.X()),
-			Y:          int32(pos.Y()),
-			Z:          int32(pos.Z()),
+		Payload: &pb.EventEnvelope_BlockBreak{
+			BlockBreak: &pb.BlockBreakEvent{
+				PlayerUuid: p.UUID().String(),
+				Name:       p.Name(),
+				World:      fmt.Sprint(p.Tx().World().Dimension()),
+				X:          int32(pos.X()),
+				Y:          int32(pos.Y()),
+				Z:          int32(pos.Z()),
+			},
 		},
 	}
 	results := m.dispatchEvent(evt, true)
@@ -215,15 +230,15 @@ func (m *Manager) emitBlockBreak(ctx *player.Context, p *player.Player, pos cube
 		if res == nil {
 			continue
 		}
-		if res.Cancel {
+		if res.Cancel != nil && *res.Cancel {
 			cancelled = true
 		}
-		if res.BlockBreak != nil {
+		if bbMut := res.GetBlockBreak(); bbMut != nil {
 			if drops != nil {
-				*drops = convertProtoDrops(res.BlockBreak.Drops)
+				*drops = convertProtoDrops(bbMut.Drops)
 			}
-			if res.BlockBreak.XP != nil && xp != nil {
-				*xp = int(*res.BlockBreak.XP)
+			if bbMut.Xp != nil && xp != nil {
+				*xp = int(*bbMut.Xp)
 			}
 		}
 	}
@@ -232,11 +247,11 @@ func (m *Manager) emitBlockBreak(ctx *player.Context, p *player.Player, pos cube
 	}
 }
 
-func (m *Manager) broadcastEvent(envelope *proto.EventEnvelope) {
+func (m *Manager) broadcastEvent(envelope *pb.EventEnvelope) {
 	_ = m.dispatchEvent(envelope, false)
 }
 
-func (m *Manager) dispatchEvent(envelope *proto.EventEnvelope, expectResult bool) []*proto.EventResult {
+func (m *Manager) dispatchEvent(envelope *pb.EventEnvelope, expectResult bool) []*pb.EventResult {
 	if envelope == nil {
 		return nil
 	}
@@ -255,13 +270,18 @@ func (m *Manager) dispatchEvent(envelope *proto.EventEnvelope, expectResult bool
 		return nil
 	}
 
-	results := make([]*proto.EventResult, 0, len(procs))
+	results := make([]*pb.EventResult, 0, len(procs))
 	for _, proc := range procs {
-		var waitCh chan *proto.EventResult
+		var waitCh chan *pb.EventResult
 		if expectResult {
-			waitCh = proc.expectEventResult(envelope.EventID)
+			waitCh = proc.expectEventResult(envelope.EventId)
 		}
-		msg := &proto.HostToPlugin{PluginID: proc.id, Event: envelope}
+		msg := &pb.HostToPlugin{
+			PluginId: proc.id,
+			Payload: &pb.HostToPlugin_Event{
+				Event: envelope,
+			},
+		}
 		proc.queue(msg)
 		if !expectResult {
 			continue
@@ -269,22 +289,26 @@ func (m *Manager) dispatchEvent(envelope *proto.EventEnvelope, expectResult bool
 		res, err := proc.waitEventResult(waitCh, eventResponseTimeout)
 		if err != nil {
 			if errors.Is(err, context.DeadlineExceeded) {
-				proc.log.Warn("plugin did not respond to event", "event_id", envelope.EventID, "type", envelope.Type)
+				proc.log.Warn("plugin did not respond to event", "event_id", envelope.EventId, "type", envelope.Type)
 			}
-			proc.discardEventResult(envelope.EventID)
+			proc.discardEventResult(envelope.EventId)
 			continue
 		}
 		if res != nil {
 			results = append(results, res)
-			if envelope.Type == "CHAT" && envelope.Chat != nil && res.Chat != nil {
-				envelope.Chat.Message = res.Chat.Message
+			if envelope.Type == "CHAT" {
+				if chatEvt := envelope.GetChat(); chatEvt != nil {
+					if chatMut := res.GetChat(); chatMut != nil {
+						chatEvt.Message = chatMut.Message
+					}
+				}
 			}
 		}
 	}
 	return results
 }
 
-func convertProtoDrops(drops []*proto.ItemStack) []item.Stack {
+func convertProtoDrops(drops []*pb.ItemStack) []item.Stack {
 	if len(drops) == 0 {
 		return nil
 	}
@@ -306,34 +330,34 @@ func convertProtoDrops(drops []*proto.ItemStack) []item.Stack {
 	return converted
 }
 
-func (m *Manager) handlePluginMessage(p *pluginProcess, msg *proto.PluginToHost) {
-	if msg.Result != nil {
-		p.deliverEventResult(msg.Result)
+func (m *Manager) handlePluginMessage(p *pluginProcess, msg *pb.PluginToHost) {
+	if result := msg.GetEventResult(); result != nil {
+		p.deliverEventResult(result)
 	}
-	if msg.Hello != nil {
-		p.setHello(msg.Hello)
-		m.registerCommands(p, msg.Hello.Commands)
+	if hello := msg.GetHello(); hello != nil {
+		p.setHello(hello)
+		m.registerCommands(p, hello.Commands)
 	}
-	if msg.Subscribe != nil {
-		p.updateSubscriptions(msg.Subscribe.Events)
+	if subscribe := msg.GetSubscribe(); subscribe != nil {
+		p.updateSubscriptions(subscribe.Events)
 	}
-	if msg.Actions != nil {
-		m.applyActions(p, msg.Actions)
+	if actions := msg.GetActions(); actions != nil {
+		m.applyActions(p, actions)
 	}
-	if msg.Log != nil {
-		level := strings.ToLower(msg.Log.Level)
+	if logMsg := msg.GetLog(); logMsg != nil {
+		level := strings.ToLower(logMsg.Level)
 		switch level {
 		case "warn", "warning":
-			p.log.Warn(msg.Log.Message)
+			p.log.Warn(logMsg.Message)
 		case "error":
-			p.log.Error(msg.Log.Message)
+			p.log.Error(logMsg.Message)
 		default:
-			p.log.Info(msg.Log.Message)
+			p.log.Info(logMsg.Message)
 		}
 	}
 }
 
-func (m *Manager) registerCommands(p *pluginProcess, specs []*proto.CommandSpec) {
+func (m *Manager) registerCommands(p *pluginProcess, specs []*pb.CommandSpec) {
 	for _, spec := range specs {
 		if spec == nil || spec.Name == "" {
 			continue
@@ -364,7 +388,7 @@ func (c pluginCommand) Run(src cmd.Source, output *cmd.Output, tx *world.Tx) {
 	output.Printf("command forwarded to plugin")
 }
 
-func (m *Manager) applyActions(p *pluginProcess, batch *proto.ActionBatch) {
+func (m *Manager) applyActions(p *pluginProcess, batch *pb.ActionBatch) {
 	if batch == nil {
 		return
 	}
@@ -372,26 +396,26 @@ func (m *Manager) applyActions(p *pluginProcess, batch *proto.ActionBatch) {
 		if action == nil {
 			continue
 		}
-		switch {
-		case action.SendChat != nil:
-			m.handleSendChat(action.SendChat)
-		case action.Teleport != nil:
-			m.handleTeleport(action.Teleport)
-		case action.Kick != nil:
-			m.handleKick(action.Kick)
+		switch kind := action.Kind.(type) {
+		case *pb.Action_SendChat:
+			m.handleSendChat(kind.SendChat)
+		case *pb.Action_Teleport:
+			m.handleTeleport(kind.Teleport)
+		case *pb.Action_Kick:
+			m.handleKick(kind.Kick)
 		}
 	}
 }
 
-func (m *Manager) handleSendChat(act *proto.SendChatAction) {
-	if act.TargetUUID == "" {
+func (m *Manager) handleSendChat(act *pb.SendChatAction) {
+	if act.TargetUuid == "" {
 		for p := range m.srv.Players(nil) {
 			p.Message(act.Message)
 		}
 		chat.Global.WriteString(act.Message)
 		return
 	}
-	id, err := uuid.Parse(act.TargetUUID)
+	id, err := uuid.Parse(act.TargetUuid)
 	if err != nil {
 		return
 	}
@@ -404,8 +428,8 @@ func (m *Manager) handleSendChat(act *proto.SendChatAction) {
 	}
 }
 
-func (m *Manager) handleTeleport(act *proto.TeleportAction) {
-	id, err := uuid.Parse(act.PlayerUUID)
+func (m *Manager) handleTeleport(act *pb.TeleportAction) {
+	id, err := uuid.Parse(act.PlayerUuid)
 	if err != nil {
 		return
 	}
@@ -424,8 +448,8 @@ func (m *Manager) handleTeleport(act *proto.TeleportAction) {
 	}
 }
 
-func (m *Manager) handleKick(act *proto.KickAction) {
-	id, err := uuid.Parse(act.PlayerUUID)
+func (m *Manager) handleKick(act *pb.KickAction) {
+	id, err := uuid.Parse(act.PlayerUuid)
 	if err != nil {
 		return
 	}

@@ -1,0 +1,13 @@
+version: v2
+modules:
+  - path: types
+lint:
+  use:
+    - STANDARD
+  except:
+    - PACKAGE_VERSION_SUFFIX
+    - SERVICE_SUFFIX
+breaking:
+  use:
+    - FILE
+
