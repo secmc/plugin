@@ -17,7 +17,9 @@ import (
 
 	"google.golang.org/protobuf/proto"
 
-	pb "github.com/secmc/plugin/plugin/proto/generated"
+	"github.com/secmc/plugin/plugin/adapters/grpc"
+	"github.com/secmc/plugin/plugin/config"
+	pb "github.com/secmc/plugin/proto/generated"
 )
 
 const (
@@ -31,13 +33,13 @@ const (
 )
 
 type pluginProcess struct {
-	id  string
-	cfg PluginConfig
-	mgr *Manager
-	log *slog.Logger
+	id      string
+	cfg     config.PluginConfig
+	emitter *Emitter
+	log     *slog.Logger
 
 	cmd    *exec.Cmd
-	stream *grpcStream
+	stream *grpc.GrpcStream
 
 	sendCh chan *pb.HostToPlugin
 	done   chan struct{}
@@ -55,15 +57,15 @@ type pluginProcess struct {
 	pending   map[string]chan *pb.EventResult
 }
 
-func newPluginProcess(m *Manager, cfg PluginConfig) *pluginProcess {
-	logger := m.log.With("plugin", cfg.ID)
+func newPluginProcess(e *Emitter, cfg config.PluginConfig) *pluginProcess {
+	logger := e.log.With("plugin", cfg.ID)
 	if cfg.Name != "" {
 		logger = logger.With("name", cfg.Name)
 	}
 	return &pluginProcess{
 		id:      cfg.ID,
 		cfg:     cfg,
-		mgr:     m,
+		emitter: e,
 		log:     logger,
 		sendCh:  make(chan *pb.HostToPlugin, sendChannelBuffer),
 		done:    make(chan struct{}),
@@ -183,9 +185,9 @@ func (p *pluginProcess) consumeOutput(r io.Reader) {
 	}
 }
 
-func (p *pluginProcess) connectLoop(ctx context.Context, address string) (*grpcStream, error) {
+func (p *pluginProcess) connectLoop(ctx context.Context, address string) (*grpc.GrpcStream, error) {
 	for {
-		stream, err := dialEventStream(ctx, address, connectTimeout)
+		stream, err := grpc.DialEventStream(ctx, address, connectTimeout)
 		if err == nil {
 			return stream, nil
 		}
@@ -257,7 +259,7 @@ func (p *pluginProcess) recvLoop() {
 			p.log.Error("decode message", "error", err)
 			continue
 		}
-		p.mgr.handlePluginMessage(p, msg)
+		p.emitter.handlePluginMessage(p, msg)
 	}
 }
 

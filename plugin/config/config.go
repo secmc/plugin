@@ -1,4 +1,4 @@
-package plugin
+package config
 
 import (
 	"errors"
@@ -12,12 +12,10 @@ import (
 // ConfigFile is the default configuration file used for plugin definitions.
 const ConfigFile = "plugins/plugins.yaml"
 
-// Config holds the global plugin configuration file structure.
 type Config struct {
 	Plugins []PluginConfig `yaml:"plugins"`
 }
 
-// PluginConfig holds process configuration for a single plugin instance.
 type PluginConfig struct {
 	ID      string            `yaml:"id"`
 	Name    string            `yaml:"name"`
@@ -28,8 +26,6 @@ type PluginConfig struct {
 	Address string            `yaml:"address"`
 }
 
-// LoadConfig reads and decodes the plugin configuration file. If the file does not
-// exist, os.ErrNotExist is returned.
 func LoadConfig(path string) (Config, error) {
 	if path == "" {
 		path = ConfigFile

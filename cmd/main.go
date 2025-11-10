@@ -6,9 +6,13 @@ import (
 	"os"
 
 	"github.com/df-mc/dragonfly/server"
+	"github.com/df-mc/dragonfly/server/player"
 	"github.com/df-mc/dragonfly/server/player/chat"
+	"github.com/df-mc/dragonfly/server/world"
 	"github.com/pelletier/go-toml"
-	"github.com/secmc/plugin/plugin"
+	"github.com/secmc/plugin/plugin/adapters/handlers"
+	"github.com/secmc/plugin/plugin/adapters/plugin"
+	"github.com/secmc/plugin/plugin/ports"
 )
 
 func main() {
@@ -22,18 +26,27 @@ func main() {
 	srv := conf.New()
 	srv.CloseOnProgramEnd()
 
-	mgr := plugin.NewManager(srv, slog.Default())
-	if err := mgr.Start(""); err != nil {
+	emitter := plugin.NewEmitter(
+		srv,
+		slog.Default(),
+		func(e ports.EventEmitter) player.Handler {
+			return handlers.NewPlayerHandler(e)
+		},
+		func(e ports.EventEmitter) world.Handler {
+			return handlers.NewWorldHandler(e)
+		},
+	)
+	if err := emitter.Start(""); err != nil {
 		slog.Default().Error("start plugins", "error", err)
 	}
-	mgr.AttachWorld(srv.World())
-	mgr.AttachWorld(srv.Nether())
-	mgr.AttachWorld(srv.End())
-	defer mgr.Close()
+	emitter.AttachWorld(srv.World())
+	emitter.AttachWorld(srv.Nether())
+	emitter.AttachWorld(srv.End())
+	defer emitter.Close()
 
 	srv.Listen()
 	for p := range srv.Accept() {
-		mgr.AttachPlayer(p)
+		emitter.AttachPlayer(p)
 	}
 }
 
