@@ -3,7 +3,10 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
+    "postinstall": "cd ../../../proto/generated/ts && npm install",
+    "prebuild": "cd ../../../proto/generated/ts && npm install",
     "build": "tsc",
+    "predev": "cd ../../../proto/generated/ts && npm install",
     "dev": "tsx src/index.ts",
     "start": "node dist/index.js"
   },
