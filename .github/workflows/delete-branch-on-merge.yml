@@ -1,0 +1,32 @@
+name: Delete branch after PR merge
+
+on:
+  pull_request:
+    types: [closed]
+
+permissions:
+  contents: write # allows deleting refs (branches)
+
+jobs:
+  delete-branch:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Delete branch
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: ${{ github.event.pull_request.head.ref }}
+          REPO: ${{ github.repository }}
+          PR_REPO: ${{ github.event.pull_request.head.repo.full_name }}
+        run: |
+          if [ "$PR_REPO" != "$REPO" ]; then
+            echo "Branch is from a fork ($PR_REPO) — skipping deletion."
+            exit 0
+          fi
+
+          echo "Deleting branch '$BRANCH' from '$REPO'..."
+          curl -s -X DELETE \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github.v3+json" \
+            "https://api.github.com/repos/$REPO/git/refs/heads/$BRANCH"
