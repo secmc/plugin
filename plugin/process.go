@@ -15,7 +15,6 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/google/uuid"
 	"google.golang.org/protobuf/proto"
 
 	pb "github.com/secmc/plugin/plugin/proto/generated"
@@ -352,8 +351,4 @@ func (p *pluginProcess) deliverEventResult(res *pb.EventResult) {
 	default:
 	}
 	close(ch)
-}
-
-func generateEventID() string {
-	return uuid.New().String()
 }

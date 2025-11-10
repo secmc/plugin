@@ -15,7 +15,7 @@ func (h *WorldHandler) HandleClose(tx *world.Tx) {
 		return
 	}
 	evt := &pb.EventEnvelope{
-		EventId: generateEventID(),
+		EventId: h.mgr.generateEventID(),
 		Type:    "WORLD_CLOSE",
 		Payload: &pb.EventEnvelope_WorldClose{
 			WorldClose: &pb.WorldCloseEvent{},

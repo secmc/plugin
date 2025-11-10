@@ -6,8 +6,10 @@ import (
 	"fmt"
 	"log/slog"
 	"os"
+	"strconv"
 	"strings"
 	"sync"
+	"sync/atomic"
 	"time"
 
 	"github.com/df-mc/dragonfly/server"
@@ -33,6 +35,8 @@ type Manager struct {
 	plugins  map[string]*pluginProcess
 	players  map[uuid.UUID]*player.Player
 	commands map[string]commandBinding
+
+	eventCounter atomic.Uint64
 }
 
 type commandBinding struct {
@@ -129,7 +133,7 @@ func (m *Manager) detachPlayer(p *player.Player) {
 
 func (m *Manager) emitPlayerJoin(p *player.Player) {
 	evt := &pb.EventEnvelope{
-		EventId: generateEventID(),
+		EventId: m.generateEventID(),
 		Type:    "PLAYER_JOIN",
 		Payload: &pb.EventEnvelope_PlayerJoin{
 			PlayerJoin: &pb.PlayerJoinEvent{
@@ -143,7 +147,7 @@ func (m *Manager) emitPlayerJoin(p *player.Player) {
 
 func (m *Manager) emitPlayerQuit(p *player.Player) {
 	evt := &pb.EventEnvelope{
-		EventId: generateEventID(),
+		EventId: m.generateEventID(),
 		Type:    "PLAYER_QUIT",
 		Payload: &pb.EventEnvelope_PlayerQuit{
 			PlayerQuit: &pb.PlayerQuitEvent{
@@ -160,7 +164,7 @@ func (m *Manager) emitChat(ctx *player.Context, p *player.Player, msg *string) {
 		return
 	}
 	evt := &pb.EventEnvelope{
-		EventId: generateEventID(),
+		EventId: m.generateEventID(),
 		Type:    "CHAT",
 		Payload: &pb.EventEnvelope_Chat{
 			Chat: &pb.ChatEvent{
@@ -195,7 +199,7 @@ func (m *Manager) emitCommandWithArgs(ctx *player.Context, p *player.Player, cmd
 		raw += " " + strings.Join(args, " ")
 	}
 	evt := &pb.EventEnvelope{
-		EventId: generateEventID(),
+		EventId: m.generateEventID(),
 		Type:    "COMMAND",
 		Payload: &pb.EventEnvelope_Command{
 			Command: &pb.CommandEvent{
@@ -218,7 +222,7 @@ func (m *Manager) emitCommandWithArgs(ctx *player.Context, p *player.Player, cmd
 
 func (m *Manager) emitBlockBreak(ctx *player.Context, p *player.Player, pos cube.Pos, drops *[]item.Stack, xp *int, worldDim string) {
 	evt := &pb.EventEnvelope{
-		EventId: generateEventID(),
+		EventId: m.generateEventID(),
 		Type:    "BLOCK_BREAK",
 		Payload: &pb.EventEnvelope_BlockBreak{
 			BlockBreak: &pb.BlockBreakEvent{
@@ -499,4 +503,10 @@ func (m *Manager) handleSetGameMode(act *pb.SetGameModeAction) {
 			}
 		})
 	}
+}
+
+// TODO: consider using int
+func (m *Manager) generateEventID() string {
+	id := m.eventCounter.Add(1)
+	return strconv.FormatUint(id, 10)
 }
