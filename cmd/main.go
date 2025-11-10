@@ -8,7 +8,7 @@ import (
 	"github.com/df-mc/dragonfly/server"
 	"github.com/df-mc/dragonfly/server/player/chat"
 	"github.com/pelletier/go-toml"
-	"github.com/secmc/plugin/plugin"
+	"github.com/secmc/plugin/plugin/adapters/plugin"
 )
 
 func main() {

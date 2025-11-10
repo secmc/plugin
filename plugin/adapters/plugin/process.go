@@ -17,7 +17,9 @@ import (
 
 	"google.golang.org/protobuf/proto"
 
-	pb "github.com/secmc/plugin/plugin/proto/generated"
+	"github.com/secmc/plugin/plugin/adapters/grpc"
+	"github.com/secmc/plugin/plugin/config"
+	pb "github.com/secmc/plugin/proto/generated"
 )
 
 const (
@@ -32,12 +34,12 @@ const (
 
 type pluginProcess struct {
 	id  string
-	cfg PluginConfig
+	cfg config.PluginConfig
 	mgr *Manager
 	log *slog.Logger
 
 	cmd    *exec.Cmd
-	stream *grpcStream
+	stream *grpc.GrpcStream
 
 	sendCh chan *pb.HostToPlugin
 	done   chan struct{}
@@ -55,7 +57,7 @@ type pluginProcess struct {
 	pending   map[string]chan *pb.EventResult
 }
 
-func newPluginProcess(m *Manager, cfg PluginConfig) *pluginProcess {
+func newPluginProcess(m *Manager, cfg config.PluginConfig) *pluginProcess {
 	logger := m.log.With("plugin", cfg.ID)
 	if cfg.Name != "" {
 		logger = logger.With("name", cfg.Name)
@@ -183,9 +185,9 @@ func (p *pluginProcess) consumeOutput(r io.Reader) {
 	}
 }
 
-func (p *pluginProcess) connectLoop(ctx context.Context, address string) (*grpcStream, error) {
+func (p *pluginProcess) connectLoop(ctx context.Context, address string) (*grpc.GrpcStream, error) {
 	for {
-		stream, err := dialEventStream(ctx, address, connectTimeout)
+		stream, err := grpc.DialEventStream(ctx, address, connectTimeout)
 		if err == nil {
 			return stream, nil
 		}

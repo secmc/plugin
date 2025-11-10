@@ -1,4 +1,4 @@
-package plugin
+package grpc
 
 import (
 	"context"
@@ -12,17 +12,13 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 )
 
-// grpcStream wraps a gRPC client stream for bidirectional communication
-type grpcStream struct {
+type GrpcStream struct {
 	conn   *grpc.ClientConn
 	stream grpc.ClientStream
 	cancel context.CancelFunc
 	mu     sync.Mutex
 }
 
-// rawProtoCodec is a pass-through codec that treats payloads as already
-// protobuf-marshalled bytes. We name it "proto" so the Content-Type
-// remains application/grpc+proto to interoperate with grpc-js.
 type rawProtoCodec struct{}
 
 func (rawProtoCodec) Name() string { return "proto" }
@@ -48,7 +44,7 @@ func (rawProtoCodec) Unmarshal(data []byte, v any) error {
 	}
 }
 
-func dialEventStream(parent context.Context, address string, connectTimeout time.Duration) (*grpcStream, error) {
+func DialEventStream(parent context.Context, address string, connectTimeout time.Duration) (*GrpcStream, error) {
 	conn, err := grpc.NewClient(address,
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 	)
@@ -72,10 +68,8 @@ func dialEventStream(parent context.Context, address string, connectTimeout time
 		}
 	}
 
-	// Create stream context
 	ctx, cancel := context.WithCancel(parent)
 
-	// Create the bidirectional stream using the generic streaming API
 	streamDesc := &grpc.StreamDesc{
 		StreamName:    "EventStream",
 		ServerStreams: true,
@@ -89,28 +83,27 @@ func dialEventStream(parent context.Context, address string, connectTimeout time
 		return nil, fmt.Errorf("create stream failed: %w", err)
 	}
 
-	return &grpcStream{
+	return &GrpcStream{
 		conn:   conn,
 		stream: stream,
 		cancel: cancel,
 	}, nil
 }
 
-func (s *grpcStream) Send(data []byte) error {
+func (s *GrpcStream) Send(data []byte) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	if s.stream == nil {
 		return errors.New("stream closed")
 	}
 
-	// Send the raw protobuf message bytes
 	if err := s.stream.SendMsg(&data); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (s *grpcStream) Recv() ([]byte, error) {
+func (s *GrpcStream) Recv() ([]byte, error) {
 	var data []byte
 	if err := s.stream.RecvMsg(&data); err != nil {
 		return nil, err
@@ -118,7 +111,7 @@ func (s *grpcStream) Recv() ([]byte, error) {
 	return data, nil
 }
 
-func (s *grpcStream) CloseSend() error {
+func (s *GrpcStream) CloseSend() error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	if s.stream == nil {
@@ -127,7 +120,7 @@ func (s *grpcStream) CloseSend() error {
 	return s.stream.CloseSend()
 }
 
-func (s *grpcStream) Close() error {
+func (s *GrpcStream) Close() error {
 	s.cancel()
 	s.CloseSend()
 	if s.conn != nil {

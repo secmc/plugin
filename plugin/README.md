@@ -1,28 +1,53 @@
 # Plugin System
 
-Protobuf-based plugin system for Dragonfly server.
+Protobuf-based plugin system for Dragonfly server using ports/adapter architecture.
 
-## Quick Start
+## Usage
+
+```go
+mgr := plugin.NewManager(srv, logger)
+if err := mgr.Start(""); err != nil {
+    log.Fatal(err)
+}
+defer mgr.Close()
+
+mgr.AttachWorld(srv.World())
+mgr.AttachPlayer(player)
+```
+
+## Configuration
+
+Create `plugins/plugins.yaml`:
+
+```yaml
+plugins:
+  - id: my-plugin
+    name: My Plugin
+    command: node
+    args: [dist/index.js]
+    work_dir: ./plugins/my-plugin
+    address: 127.0.0.1:0
+```
+
+## Protobuf
 
 ```bash
-# After editing proto/types/plugin.proto
 cd proto/
-go install google.golang.org/protobuf/cmd/protoc-gen-go@latest # First time only
-npm install    # First time only
-npm run generate  # Generate Go code
+npm install
+npm run generate
 ```
 
-## Structure
+## Events
 
-```
-proto/
-├── types/         # .proto definitions
-├── generated/     # Generated .pb.go (gitignored)
-├── buf.yaml       # Buf config
-└── package.json   # Build scripts
-```
+- PLAYER_JOIN / PLAYER_QUIT
+- CHAT
+- COMMAND
+- BLOCK_BREAK
+- WORLD_CLOSE
 
-## Adding Events
+## Actions
 
-Edit `proto/types/plugin.proto`, then run `npm run generate`.
-
+- SendChat
+- Teleport
+- Kick
+- SetGameMode

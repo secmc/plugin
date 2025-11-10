@@ -2,6 +2,12 @@
 
 ## Current Architecture (Nov 2025)
 
+**✅ Ports/Adapter Architecture Complete**
+- Interfaces defined in `ports/` package
+- Implementations in `adapters/` package
+- Clean separation between domain and infrastructure
+- Manager implements PluginManager and EventEmitter interfaces
+
 **✅ Switched to Generated Protobuf Code**
 - Using `protoc-gen-go` generated code instead of hand-written codec
 - Reduces maintenance burden (~950 lines removed)
@@ -147,11 +153,13 @@
 ## Notes
 
 **Current Status (Nov 2025):**
+- ✅ Ports/adapter architecture implemented
 - ✅ Generated protobuf code (`protoc-gen-go`)
 - ✅ Raw proto transport (minimal overhead)
 - ✅ Schema defined in `.proto` file
 - ✅ Event subscription/filtering implemented
 - ✅ Event response timeout handling (250ms)
+- ✅ Clean package structure (ports, adapters, config)
 - ❌ Missing buffer pooling
 - ❌ Missing event batching
 - ❌ No movement events yet

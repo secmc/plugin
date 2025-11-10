@@ -21,7 +21,9 @@ import (
 	"github.com/df-mc/dragonfly/server/world"
 	"github.com/go-gl/mathgl/mgl64"
 	"github.com/google/uuid"
-	pb "github.com/secmc/plugin/plugin/proto/generated"
+	"github.com/secmc/plugin/plugin/adapters/handlers"
+	"github.com/secmc/plugin/plugin/config"
+	pb "github.com/secmc/plugin/proto/generated"
 )
 
 type Manager struct {
@@ -64,7 +66,7 @@ func NewManager(srv *server.Server, log *slog.Logger) *Manager {
 }
 
 func (m *Manager) Start(configPath string) error {
-	cfg, err := LoadConfig(configPath)
+	cfg, err := config.LoadConfig(configPath)
 	if err != nil {
 		if errors.Is(err, os.ErrNotExist) {
 			m.log.Info("no plugin configuration found", "path", configPath)
@@ -109,7 +111,7 @@ func (m *Manager) AttachWorld(w *world.World) {
 	if w == nil {
 		return
 	}
-	handler := &WorldHandler{mgr: m}
+	handler := handlers.NewWorldHandler(m)
 	w.Handle(handler)
 }
 
@@ -117,12 +119,12 @@ func (m *Manager) AttachPlayer(p *player.Player) {
 	if p == nil {
 		return
 	}
-	handler := &PlayerHandler{mgr: m}
+	handler := handlers.NewPlayerHandler(m)
 	p.Handle(handler)
 	m.mu.Lock()
 	m.players[p.UUID()] = p
 	m.mu.Unlock()
-	m.emitPlayerJoin(p)
+	m.EmitPlayerJoin(p)
 }
 
 func (m *Manager) detachPlayer(p *player.Player) {
@@ -131,7 +133,7 @@ func (m *Manager) detachPlayer(p *player.Player) {
 	m.mu.Unlock()
 }
 
-func (m *Manager) emitPlayerJoin(p *player.Player) {
+func (m *Manager) EmitPlayerJoin(p *player.Player) {
 	evt := &pb.EventEnvelope{
 		EventId: m.generateEventID(),
 		Type:    "PLAYER_JOIN",
@@ -145,7 +147,7 @@ func (m *Manager) emitPlayerJoin(p *player.Player) {
 	m.broadcastEvent(evt)
 }
 
-func (m *Manager) emitPlayerQuit(p *player.Player) {
+func (m *Manager) EmitPlayerQuit(p *player.Player) {
 	evt := &pb.EventEnvelope{
 		EventId: m.generateEventID(),
 		Type:    "PLAYER_QUIT",
@@ -159,7 +161,7 @@ func (m *Manager) emitPlayerQuit(p *player.Player) {
 	m.broadcastEvent(evt)
 }
 
-func (m *Manager) emitChat(ctx *player.Context, p *player.Player, msg *string) {
+func (m *Manager) EmitChat(ctx *player.Context, p *player.Player, msg *string) {
 	if msg == nil {
 		return
 	}
@@ -193,7 +195,7 @@ func (m *Manager) emitChat(ctx *player.Context, p *player.Player, msg *string) {
 }
 
 // emitCommandWithArgs emits a COMMAND event with structured command name and arguments.
-func (m *Manager) emitCommandWithArgs(ctx *player.Context, p *player.Player, cmdName string, args []string) {
+func (m *Manager) EmitCommand(ctx *player.Context, p *player.Player, cmdName string, args []string) {
 	raw := "/" + cmdName
 	if len(args) > 0 {
 		raw += " " + strings.Join(args, " ")
@@ -220,7 +222,7 @@ func (m *Manager) emitCommandWithArgs(ctx *player.Context, p *player.Player, cmd
 	}
 }
 
-func (m *Manager) emitBlockBreak(ctx *player.Context, p *player.Player, pos cube.Pos, drops *[]item.Stack, xp *int, worldDim string) {
+func (m *Manager) EmitBlockBreak(ctx *player.Context, p *player.Player, pos cube.Pos, drops *[]item.Stack, xp *int, worldDim string) {
 	evt := &pb.EventEnvelope{
 		EventId: m.generateEventID(),
 		Type:    "BLOCK_BREAK",
@@ -317,6 +319,14 @@ func (m *Manager) dispatchEvent(envelope *pb.EventEnvelope, expectResult bool) [
 		}
 	}
 	return results
+}
+
+func (m *Manager) BroadcastEvent(evt *pb.EventEnvelope) {
+	m.broadcastEvent(evt)
+}
+
+func (m *Manager) GenerateEventID() string {
+	return m.generateEventID()
 }
 
 func convertProtoDrops(drops []*pb.ItemStack) []item.Stack {
