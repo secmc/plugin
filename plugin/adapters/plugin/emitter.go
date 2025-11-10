@@ -462,13 +462,10 @@ func (m *Emitter) handleSendChat(act *pb.SendChatAction) {
 	if err != nil {
 		return
 	}
-	if handle, ok := m.srv.Player(id); ok {
-		handle.ExecWorld(func(tx *world.Tx, e world.Entity) {
-			if pl, ok := e.(*player.Player); ok {
-				pl.Message(act.Message)
-			}
-		})
-	}
+
+	m.execMethod(id, func(pl *player.Player) {
+		pl.Message(act.Message)
+	})
 }
 
 func (m *Emitter) handleTeleport(act *pb.TeleportAction) {
@@ -476,19 +473,14 @@ func (m *Emitter) handleTeleport(act *pb.TeleportAction) {
 	if err != nil {
 		return
 	}
-	if handle, ok := m.srv.Player(id); ok {
-		handle.ExecWorld(func(tx *world.Tx, e world.Entity) {
-			pl, ok := e.(*player.Player)
-			if !ok {
-				return
-			}
-			pl.Teleport(mgl64.Vec3{act.X, act.Y, act.Z})
-			rot := pl.Rotation()
-			deltaYaw := float64(act.Yaw) - rot.Yaw()
-			deltaPitch := float64(act.Pitch) - rot.Pitch()
-			pl.Move(mgl64.Vec3{}, deltaYaw, deltaPitch)
-		})
-	}
+
+	m.execMethod(id, func(pl *player.Player) {
+		pl.Teleport(mgl64.Vec3{act.X, act.Y, act.Z})
+		rot := pl.Rotation()
+		deltaYaw := float64(act.Yaw) - rot.Yaw()
+		deltaPitch := float64(act.Pitch) - rot.Pitch()
+		pl.Move(mgl64.Vec3{}, deltaYaw, deltaPitch)
+	})
 }
 
 func (m *Emitter) handleKick(act *pb.KickAction) {
@@ -496,13 +488,9 @@ func (m *Emitter) handleKick(act *pb.KickAction) {
 	if err != nil {
 		return
 	}
-	if handle, ok := m.srv.Player(id); ok {
-		handle.ExecWorld(func(tx *world.Tx, e world.Entity) {
-			if pl, ok := e.(*player.Player); ok {
-				pl.Disconnect(act.Reason)
-			}
-		})
-	}
+	m.execMethod(id, func(pl *player.Player) {
+		pl.Disconnect(act.Reason)
+	})
 }
 
 func (m *Emitter) handleSetGameMode(act *pb.SetGameModeAction) {
@@ -514,10 +502,16 @@ func (m *Emitter) handleSetGameMode(act *pb.SetGameModeAction) {
 	if !ok {
 		return
 	}
+	m.execMethod(id, func(pl *player.Player) {
+		pl.SetGameMode(gameMode)
+	})
+}
+
+func (m *Emitter) execMethod(id uuid.UUID, method func(pl *player.Player)) {
 	if handle, ok := m.srv.Player(id); ok {
 		handle.ExecWorld(func(tx *world.Tx, e world.Entity) {
 			if pl, ok := e.(*player.Player); ok {
-				pl.SetGameMode(gameMode)
+				method(pl)
 			}
 		})
 	}
