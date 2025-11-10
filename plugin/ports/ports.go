@@ -13,8 +13,6 @@ import (
 type PluginManager interface {
 	Start(configPath string) error
 	Close()
-	AttachWorld(w *world.World)
-	AttachPlayer(p *player.Player)
 }
 
 type PluginProcess interface {
@@ -37,4 +35,17 @@ type EventEmitter interface {
 	EmitChat(ctx *player.Context, p *player.Player, msg *string)
 	EmitCommand(ctx *player.Context, p *player.Player, cmdName string, args []string)
 	EmitBlockBreak(ctx *player.Context, p *player.Player, pos cube.Pos, drops *[]item.Stack, xp *int, worldDim string)
+	BroadcastEvent(evt *pb.EventEnvelope)
+	GenerateEventID() string
+}
+
+type PlayerHandlerFactory func(emitter EventEmitter) player.Handler
+
+type WorldHandlerFactory func(emitter EventEmitter) world.Handler
+
+type PluginService interface {
+	PluginManager
+	EventEmitter
+	AttachWorld(w *world.World)
+	AttachPlayer(p *player.Player)
 }

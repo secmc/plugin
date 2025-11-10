@@ -15,7 +15,7 @@ type PlayerHandler struct {
 	emitter ports.EventEmitter
 }
 
-func NewPlayerHandler(emitter ports.EventEmitter) *PlayerHandler {
+func NewPlayerHandler(emitter ports.EventEmitter) player.Handler {
 	return &PlayerHandler{emitter: emitter}
 }
 

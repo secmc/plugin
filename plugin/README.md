@@ -5,14 +5,19 @@ Protobuf-based plugin system for Dragonfly server using ports/adapter architectu
 ## Usage
 
 ```go
-mgr := plugin.NewManager(srv, logger)
-if err := mgr.Start(""); err != nil {
+emitter := plugin.NewEmitter(
+    srv,
+    logger,
+    handlers.NewPlayerHandler,
+    handlers.NewWorldHandler,
+)
+if err := emitter.Start(""); err != nil {
     log.Fatal(err)
 }
-defer mgr.Close()
+defer emitter.Close()
 
-mgr.AttachWorld(srv.World())
-mgr.AttachPlayer(player)
+emitter.AttachWorld(srv.World())
+emitter.AttachPlayer(player)
 ```
 
 ## Configuration

@@ -17,7 +17,7 @@ type WorldHandler struct {
 	broadcaster EventBroadcaster
 }
 
-func NewWorldHandler(broadcaster EventBroadcaster) *WorldHandler {
+func NewWorldHandler(broadcaster EventBroadcaster) world.Handler {
 	return &WorldHandler{broadcaster: broadcaster}
 }
 

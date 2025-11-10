@@ -21,12 +21,12 @@ import (
 	"github.com/df-mc/dragonfly/server/world"
 	"github.com/go-gl/mathgl/mgl64"
 	"github.com/google/uuid"
-	"github.com/secmc/plugin/plugin/adapters/handlers"
 	"github.com/secmc/plugin/plugin/config"
+	"github.com/secmc/plugin/plugin/ports"
 	pb "github.com/secmc/plugin/proto/generated"
 )
 
-type Manager struct {
+type Emitter struct {
 	srv *server.Server
 	log *slog.Logger
 
@@ -39,6 +39,9 @@ type Manager struct {
 	commands map[string]commandBinding
 
 	eventCounter atomic.Uint64
+
+	playerHandlerFactory ports.PlayerHandlerFactory
+	worldHandlerFactory  ports.WorldHandlerFactory
 }
 
 type commandBinding struct {
@@ -49,23 +52,25 @@ type commandBinding struct {
 
 const eventResponseTimeout = 250 * time.Millisecond
 
-func NewManager(srv *server.Server, log *slog.Logger) *Manager {
+func NewEmitter(srv *server.Server, log *slog.Logger, playerHandlerFactory ports.PlayerHandlerFactory, worldHandlerFactory ports.WorldHandlerFactory) *Emitter {
 	if log == nil {
 		log = slog.Default()
 	}
 	ctx, cancel := context.WithCancel(context.Background())
-	return &Manager{
-		srv:      srv,
-		log:      log.With("component", "plugin-manager"),
-		ctx:      ctx,
-		cancel:   cancel,
-		plugins:  make(map[string]*pluginProcess),
-		players:  make(map[uuid.UUID]*player.Player),
-		commands: make(map[string]commandBinding),
+	return &Emitter{
+		srv:                  srv,
+		log:                  log.With("component", "plugin-manager"),
+		ctx:                  ctx,
+		cancel:               cancel,
+		plugins:              make(map[string]*pluginProcess),
+		players:              make(map[uuid.UUID]*player.Player),
+		commands:             make(map[string]commandBinding),
+		playerHandlerFactory: playerHandlerFactory,
+		worldHandlerFactory:  worldHandlerFactory,
 	}
 }
 
-func (m *Manager) Start(configPath string) error {
+func (m *Emitter) Start(configPath string) error {
 	cfg, err := config.LoadConfig(configPath)
 	if err != nil {
 		if errors.Is(err, os.ErrNotExist) {
@@ -90,7 +95,7 @@ func (m *Manager) Start(configPath string) error {
 	return nil
 }
 
-func (m *Manager) Close() {
+func (m *Emitter) Close() {
 	m.cancel()
 	m.mu.Lock()
 	defer m.mu.Unlock()
@@ -107,33 +112,37 @@ func (m *Manager) Close() {
 	m.plugins = make(map[string]*pluginProcess)
 }
 
-func (m *Manager) AttachWorld(w *world.World) {
+func (m *Emitter) AttachWorld(w *world.World) {
 	if w == nil {
 		return
 	}
-	handler := handlers.NewWorldHandler(m)
-	w.Handle(handler)
+	if m.worldHandlerFactory != nil {
+		handler := m.worldHandlerFactory(m)
+		w.Handle(handler)
+	}
 }
 
-func (m *Manager) AttachPlayer(p *player.Player) {
+func (m *Emitter) AttachPlayer(p *player.Player) {
 	if p == nil {
 		return
 	}
-	handler := handlers.NewPlayerHandler(m)
-	p.Handle(handler)
+	if m.playerHandlerFactory != nil {
+		handler := m.playerHandlerFactory(m)
+		p.Handle(handler)
+	}
 	m.mu.Lock()
 	m.players[p.UUID()] = p
 	m.mu.Unlock()
 	m.EmitPlayerJoin(p)
 }
 
-func (m *Manager) detachPlayer(p *player.Player) {
+func (m *Emitter) detachPlayer(p *player.Player) {
 	m.mu.Lock()
 	delete(m.players, p.UUID())
 	m.mu.Unlock()
 }
 
-func (m *Manager) EmitPlayerJoin(p *player.Player) {
+func (m *Emitter) EmitPlayerJoin(p *player.Player) {
 	evt := &pb.EventEnvelope{
 		EventId: m.generateEventID(),
 		Type:    "PLAYER_JOIN",
@@ -147,7 +156,7 @@ func (m *Manager) EmitPlayerJoin(p *player.Player) {
 	m.broadcastEvent(evt)
 }
 
-func (m *Manager) EmitPlayerQuit(p *player.Player) {
+func (m *Emitter) EmitPlayerQuit(p *player.Player) {
 	evt := &pb.EventEnvelope{
 		EventId: m.generateEventID(),
 		Type:    "PLAYER_QUIT",
@@ -161,7 +170,7 @@ func (m *Manager) EmitPlayerQuit(p *player.Player) {
 	m.broadcastEvent(evt)
 }
 
-func (m *Manager) EmitChat(ctx *player.Context, p *player.Player, msg *string) {
+func (m *Emitter) EmitChat(ctx *player.Context, p *player.Player, msg *string) {
 	if msg == nil {
 		return
 	}
@@ -194,8 +203,7 @@ func (m *Manager) EmitChat(ctx *player.Context, p *player.Player, msg *string) {
 	}
 }
 
-// emitCommandWithArgs emits a COMMAND event with structured command name and arguments.
-func (m *Manager) EmitCommand(ctx *player.Context, p *player.Player, cmdName string, args []string) {
+func (m *Emitter) EmitCommand(ctx *player.Context, p *player.Player, cmdName string, args []string) {
 	raw := "/" + cmdName
 	if len(args) > 0 {
 		raw += " " + strings.Join(args, " ")
@@ -222,7 +230,7 @@ func (m *Manager) EmitCommand(ctx *player.Context, p *player.Player, cmdName str
 	}
 }
 
-func (m *Manager) EmitBlockBreak(ctx *player.Context, p *player.Player, pos cube.Pos, drops *[]item.Stack, xp *int, worldDim string) {
+func (m *Emitter) EmitBlockBreak(ctx *player.Context, p *player.Player, pos cube.Pos, drops *[]item.Stack, xp *int, worldDim string) {
 	evt := &pb.EventEnvelope{
 		EventId: m.generateEventID(),
 		Type:    "BLOCK_BREAK",
@@ -260,11 +268,11 @@ func (m *Manager) EmitBlockBreak(ctx *player.Context, p *player.Player, pos cube
 	}
 }
 
-func (m *Manager) broadcastEvent(envelope *pb.EventEnvelope) {
+func (m *Emitter) broadcastEvent(envelope *pb.EventEnvelope) {
 	_ = m.dispatchEvent(envelope, false)
 }
 
-func (m *Manager) dispatchEvent(envelope *pb.EventEnvelope, expectResult bool) []*pb.EventResult {
+func (m *Emitter) dispatchEvent(envelope *pb.EventEnvelope, expectResult bool) []*pb.EventResult {
 	if envelope == nil {
 		return nil
 	}
@@ -321,11 +329,11 @@ func (m *Manager) dispatchEvent(envelope *pb.EventEnvelope, expectResult bool) [
 	return results
 }
 
-func (m *Manager) BroadcastEvent(evt *pb.EventEnvelope) {
+func (m *Emitter) BroadcastEvent(evt *pb.EventEnvelope) {
 	m.broadcastEvent(evt)
 }
 
-func (m *Manager) GenerateEventID() string {
+func (m *Emitter) GenerateEventID() string {
 	return m.generateEventID()
 }
 
@@ -351,7 +359,7 @@ func convertProtoDrops(drops []*pb.ItemStack) []item.Stack {
 	return converted
 }
 
-func (m *Manager) handlePluginMessage(p *pluginProcess, msg *pb.PluginToHost) {
+func (m *Emitter) handlePluginMessage(p *pluginProcess, msg *pb.PluginToHost) {
 	if result := msg.GetEventResult(); result != nil {
 		p.deliverEventResult(result)
 	}
@@ -378,7 +386,7 @@ func (m *Manager) handlePluginMessage(p *pluginProcess, msg *pb.PluginToHost) {
 	}
 }
 
-func (m *Manager) registerCommands(p *pluginProcess, specs []*pb.CommandSpec) {
+func (m *Emitter) registerCommands(p *pluginProcess, specs []*pb.CommandSpec) {
 	for _, spec := range specs {
 		if spec == nil || spec.Name == "" {
 			continue
@@ -407,7 +415,7 @@ func (m *Manager) registerCommands(p *pluginProcess, specs []*pb.CommandSpec) {
 }
 
 type pluginCommand struct {
-	mgr      *Manager
+	mgr      *Emitter
 	pluginID string
 	name     string
 }
@@ -421,7 +429,7 @@ func (c pluginCommand) Run(src cmd.Source, output *cmd.Output, tx *world.Tx) {
 	// No-op: PlayerHandler.HandleCommandExecution emits command events
 }
 
-func (m *Manager) applyActions(p *pluginProcess, batch *pb.ActionBatch) {
+func (m *Emitter) applyActions(p *pluginProcess, batch *pb.ActionBatch) {
 	if batch == nil {
 		return
 	}
@@ -442,7 +450,7 @@ func (m *Manager) applyActions(p *pluginProcess, batch *pb.ActionBatch) {
 	}
 }
 
-func (m *Manager) handleSendChat(act *pb.SendChatAction) {
+func (m *Emitter) handleSendChat(act *pb.SendChatAction) {
 	if act.TargetUuid == "" {
 		for p := range m.srv.Players(nil) {
 			p.Message(act.Message)
@@ -463,7 +471,7 @@ func (m *Manager) handleSendChat(act *pb.SendChatAction) {
 	}
 }
 
-func (m *Manager) handleTeleport(act *pb.TeleportAction) {
+func (m *Emitter) handleTeleport(act *pb.TeleportAction) {
 	id, err := uuid.Parse(act.PlayerUuid)
 	if err != nil {
 		return
@@ -483,7 +491,7 @@ func (m *Manager) handleTeleport(act *pb.TeleportAction) {
 	}
 }
 
-func (m *Manager) handleKick(act *pb.KickAction) {
+func (m *Emitter) handleKick(act *pb.KickAction) {
 	id, err := uuid.Parse(act.PlayerUuid)
 	if err != nil {
 		return
@@ -497,7 +505,7 @@ func (m *Manager) handleKick(act *pb.KickAction) {
 	}
 }
 
-func (m *Manager) handleSetGameMode(act *pb.SetGameModeAction) {
+func (m *Emitter) handleSetGameMode(act *pb.SetGameModeAction) {
 	id, err := uuid.Parse(act.PlayerUuid)
 	if err != nil {
 		return
@@ -515,8 +523,7 @@ func (m *Manager) handleSetGameMode(act *pb.SetGameModeAction) {
 	}
 }
 
-// TODO: consider using int
-func (m *Manager) generateEventID() string {
+func (m *Emitter) generateEventID() string {
 	id := m.eventCounter.Add(1)
 	return strconv.FormatUint(id, 10)
 }
