@@ -1,12 +1,12 @@
 // Example Dragonfly plugin implemented in TypeScript with generated protobuf types.
-// Run: npm install && npm run generate && npm run dev
+// Run: npm install && npm run dev
 
 import * as grpc from '@grpc/grpc-js';
 import {
     HostToPlugin,
     PluginToHost,
     GameMode,
-} from './generated/plugin/proto/types/plugin.js';
+} from '@dragonfly/proto';
 
 const pluginId = process.env.DF_PLUGIN_ID || 'typescript-plugin';
 const address = process.env.DF_PLUGIN_GRPC_ADDRESS || '127.0.0.1:50052';

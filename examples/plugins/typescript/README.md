@@ -10,25 +10,23 @@ This example demonstrates a Dragonfly plugin written in **TypeScript** with full
 
 ## Quick Start
 
-**Option 1: Automated setup (easiest)**
 ```bash
-./setup.sh
-```
-
-**Option 2: Manual setup**
-```bash
-# Install protoc (one-time setup)
-brew install protobuf  # macOS
-# or: sudo apt install protobuf-compiler  # Linux
-
+# Install dependencies (includes @bufbuild/protobuf for proto runtime)
 npm install
-npm run generate
-npm run build
 ```
 
-## Generated Types
+## TypeScript Types
 
-The `npm run generate` command uses `ts-proto` to generate TypeScript types from `plugin/proto/plugin.proto`. Generated files are in `src/generated/`.
+This plugin imports types from `@dragonfly/proto`:
+
+```typescript
+import { HostToPlugin, PluginToHost, GameMode } from '@dragonfly/proto';
+```
+
+**Current:** Path alias pointing to `../../../proto/generated/ts` (local development)  
+**Future:** Published npm package - no changes needed, just `npm install @dragonfly/proto`
+
+Types are generated using [buf](https://buf.build) with `ts-proto`. See `proto/buf.gen.ts.yaml` for configuration.
 
 ## Plugin Capabilities
 
