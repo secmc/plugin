@@ -21,13 +21,10 @@ plugins:
     # args: ["../examples/plugins/php/src/HelloPlugin.php"]
     command: "docker"
     args:
-      - "run"
-      - "--rm"
-      - "--platform=linux/amd64"
-      - "-e"
-      - "DF_PLUGIN_ID=example-php"
-      - "-e"
-      - "DF_PLUGIN_SERVER_ADDRESS=host.docker.internal:50050"
-      - "php-plugin-test"
+      - "compose"
+      - "-f"
+      - "../examples/plugins/php/docker-compose.yml"
+      - "up"
+      - "--abort-on-container-exit"
     env:
       PHP_ENV: production

@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   php-plugin:
     build:
@@ -8,9 +6,14 @@ services:
       platforms:
         - linux/amd64
     environment:
-      - DF_PLUGIN_ID=php-plugin
+      - DF_PLUGIN_ID=example-php
       - DF_PLUGIN_SERVER_ADDRESS=host.docker.internal:50050
     volumes:
       - ./src:/app/src
+      - ./bin/php7:/usr/local/php7
+      - ./vendor:/app/vendor
     network_mode: host
     platform: linux/amd64
+    command: >
+      sh -c "/usr/local/php7/bin/php /usr/bin/composer install --no-interaction --prefer-dist &&
+             /usr/local/php7/bin/php src/HelloPlugin.php"
