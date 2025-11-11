@@ -19,85 +19,49 @@ func NewWorldHandler(manager ports.EventManager) world.Handler {
 }
 
 func (h *WorldHandler) HandleClose(tx *world.Tx) {
-	if h.manager == nil {
-		return
-	}
 	h.manager.EmitWorldClose(tx)
 }
 
 func (h *WorldHandler) HandleLiquidFlow(ctx *world.Context, from, into cube.Pos, liquid world.Liquid, replaced world.Block) {
-	if h.manager == nil {
-		return
-	}
 	h.manager.EmitWorldLiquidFlow(ctx, from, into, liquid, replaced)
 }
 
 func (h *WorldHandler) HandleLiquidDecay(ctx *world.Context, pos cube.Pos, before, after world.Liquid) {
-	if h.manager == nil {
-		return
-	}
 	h.manager.EmitWorldLiquidDecay(ctx, pos, before, after)
 }
 
 func (h *WorldHandler) HandleLiquidHarden(ctx *world.Context, pos cube.Pos, liquidHardened, otherLiquid, newBlock world.Block) {
-	if h.manager == nil {
-		return
-	}
 	h.manager.EmitWorldLiquidHarden(ctx, pos, liquidHardened, otherLiquid, newBlock)
 }
 
 func (h *WorldHandler) HandleSound(ctx *world.Context, s world.Sound, pos mgl64.Vec3) {
-	if h.manager == nil {
-		return
-	}
 	h.manager.EmitWorldSound(ctx, s, pos)
 }
 
 func (h *WorldHandler) HandleFireSpread(ctx *world.Context, from, to cube.Pos) {
-	if h.manager == nil {
-		return
-	}
 	h.manager.EmitWorldFireSpread(ctx, from, to)
 }
 
 func (h *WorldHandler) HandleBlockBurn(ctx *world.Context, pos cube.Pos) {
-	if h.manager == nil {
-		return
-	}
 	h.manager.EmitWorldBlockBurn(ctx, pos)
 }
 
 func (h *WorldHandler) HandleCropTrample(ctx *world.Context, pos cube.Pos) {
-	if h.manager == nil {
-		return
-	}
 	h.manager.EmitWorldCropTrample(ctx, pos)
 }
 
 func (h *WorldHandler) HandleLeavesDecay(ctx *world.Context, pos cube.Pos) {
-	if h.manager == nil {
-		return
-	}
 	h.manager.EmitWorldLeavesDecay(ctx, pos)
 }
 
 func (h *WorldHandler) HandleEntitySpawn(tx *world.Tx, e world.Entity) {
-	if h.manager == nil {
-		return
-	}
 	h.manager.EmitWorldEntitySpawn(tx, e)
 }
 
 func (h *WorldHandler) HandleEntityDespawn(tx *world.Tx, e world.Entity) {
-	if h.manager == nil {
-		return
-	}
 	h.manager.EmitWorldEntityDespawn(tx, e)
 }
 
 func (h *WorldHandler) HandleExplosion(ctx *world.Context, position mgl64.Vec3, entities *[]world.Entity, blocks *[]cube.Pos, itemDropChance *float64, spawnFire *bool) {
-	if h.manager == nil {
-		return
-	}
 	h.manager.EmitWorldExplosion(ctx, position, entities, blocks, itemDropChance, spawnFire)
 }

@@ -12,6 +12,17 @@ message EventResult {
     oneof update {
         ChatMutation chat = 10;
         BlockBreakMutation block_break = 11;
+        PlayerFoodLossMutation player_food_loss = 12;
+        PlayerHealMutation player_heal = 13;
+        PlayerHurtMutation player_hurt = 14;
+        PlayerDeathMutation player_death = 15;
+        PlayerRespawnMutation player_respawn = 16;
+        PlayerAttackEntityMutation player_attack_entity = 17;
+        PlayerExperienceGainMutation player_experience_gain = 18;
+        PlayerLecternPageTurnMutation player_lectern_page_turn = 19;
+        PlayerItemPickupMutation player_item_pickup = 20;
+        PlayerTransferMutation player_transfer = 21;
+        WorldExplosionMutation world_explosion = 30;
     }
 }
 
@@ -22,4 +33,55 @@ message ChatMutation {
 message BlockBreakMutation {
     repeated ItemStack drops = 1;
     optional int32 xp = 2;
+}
+
+message PlayerFoodLossMutation {
+    int32 to = 1;
+}
+
+message PlayerHealMutation {
+    double amount = 1;
+}
+
+message PlayerHurtMutation {
+    double damage = 1;
+    optional int64 attack_immunity_ms = 2;
+}
+
+message PlayerDeathMutation {
+    bool keep_inventory = 1;
+}
+
+message PlayerRespawnMutation {
+    optional Vec3 position = 1;
+    optional WorldRef world = 2;
+}
+
+message PlayerAttackEntityMutation {
+    double force = 1;
+    double height = 2;
+    bool critical = 3;
+}
+
+message PlayerExperienceGainMutation {
+    int32 amount = 1;
+}
+
+message PlayerLecternPageTurnMutation {
+    int32 new_page = 1;
+}
+
+message PlayerItemPickupMutation {
+    optional ItemStack item = 1;
+}
+
+message PlayerTransferMutation {
+    optional Address address = 1;
+}
+
+message WorldExplosionMutation {
+    repeated string entity_uuids = 1;
+    repeated BlockPos blocks = 2;
+    optional double item_drop_chance = 3;
+    optional bool spawn_fire = 4;
 }

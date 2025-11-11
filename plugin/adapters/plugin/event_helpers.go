@@ -114,6 +114,53 @@ func protoItemStackPtr(it *item.Stack) *pb.ItemStack {
 	return protoItemStack(*it)
 }
 
+func convertProtoItemStackValue(stack *pb.ItemStack) (item.Stack, bool) {
+	if stack == nil || stack.Name == "" {
+		return item.Stack{}, false
+	}
+	material, ok := world.ItemByName(stack.Name, int16(stack.Meta))
+	if !ok {
+		return item.Stack{}, false
+	}
+	count := int(stack.Count)
+	if count <= 0 {
+		return item.Stack{}, false
+	}
+	return item.NewStack(material, count), true
+}
+
+func convertProtoBlockPositionsToCube(blocks []*pb.BlockPos) []cube.Pos {
+	if len(blocks) == 0 {
+		return nil
+	}
+	converted := make([]cube.Pos, 0, len(blocks))
+	for _, blk := range blocks {
+		if blk == nil {
+			continue
+		}
+		converted = append(converted, cube.Pos{int(blk.X), int(blk.Y), int(blk.Z)})
+	}
+	if len(converted) == 0 {
+		return nil
+	}
+	return converted
+}
+
+func vec3FromProto(vec *pb.Vec3) (mgl64.Vec3, bool) {
+	if vec == nil {
+		return mgl64.Vec3{}, false
+	}
+	return mgl64.Vec3{float64(vec.X), float64(vec.Y), float64(vec.Z)}, true
+}
+
+func parseProtoAddress(addr *pb.Address) *net.UDPAddr {
+	if addr == nil {
+		return nil
+	}
+	parsed := net.ParseIP(addr.Host)
+	return &net.UDPAddr{IP: parsed, Port: int(addr.Port)}
+}
+
 func protoWorldRef(w *world.World) *pb.WorldRef {
 	if w == nil {
 		return nil

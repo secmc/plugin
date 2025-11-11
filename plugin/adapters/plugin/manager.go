@@ -39,6 +39,9 @@ type Manager struct {
 	players  map[uuid.UUID]*player.Player
 	commands map[string]commandBinding
 
+	worldMu sync.RWMutex
+	worlds  map[string]*world.World
+
 	eventCounter atomic.Uint64
 
 	playerHandlerFactory ports.PlayerHandlerFactory
@@ -66,6 +69,7 @@ func NewManager(srv *server.Server, log *slog.Logger, playerHandlerFactory ports
 		plugins:              make(map[string]*pluginProcess),
 		players:              make(map[uuid.UUID]*player.Player),
 		commands:             make(map[string]commandBinding),
+		worlds:               make(map[string]*world.World),
 		playerHandlerFactory: playerHandlerFactory,
 		worldHandlerFactory:  worldHandlerFactory,
 	}
@@ -191,6 +195,7 @@ func (m *Manager) AttachWorld(w *world.World) {
 		handler := m.worldHandlerFactory(m)
 		w.Handle(handler)
 	}
+	m.registerWorld(w)
 }
 
 func (m *Manager) AttachPlayer(p *player.Player) {
@@ -316,6 +321,59 @@ func convertProtoDrops(drops []*pb.ItemStack) []item.Stack {
 		converted = append(converted, item.NewStack(material, count))
 	}
 	return converted
+}
+
+func (m *Manager) registerWorld(w *world.World) {
+	if w == nil {
+		return
+	}
+	name := strings.ToLower(w.Name())
+	m.worldMu.Lock()
+	m.worlds[name] = w
+	m.worldMu.Unlock()
+}
+
+func (m *Manager) unregisterWorld(w *world.World) {
+	if w == nil {
+		return
+	}
+	name := strings.ToLower(w.Name())
+	m.worldMu.Lock()
+	if existing, ok := m.worlds[name]; ok && existing == w {
+		delete(m.worlds, name)
+	}
+	m.worldMu.Unlock()
+}
+
+func (m *Manager) worldFromRef(ref *pb.WorldRef) *world.World {
+	if ref == nil {
+		return nil
+	}
+	name := strings.ToLower(ref.Name)
+	m.worldMu.RLock()
+	if name != "" {
+		if w := m.worlds[name]; w != nil {
+			m.worldMu.RUnlock()
+			return w
+		}
+		for _, candidate := range m.worlds {
+			if strings.EqualFold(candidate.Name(), ref.Name) {
+				m.worldMu.RUnlock()
+				return candidate
+			}
+		}
+	}
+	if ref.Dimension != "" {
+		dim := strings.ToLower(ref.Dimension)
+		for _, candidate := range m.worlds {
+			if worldDimension(candidate) == dim {
+				m.worldMu.RUnlock()
+				return candidate
+			}
+		}
+	}
+	m.worldMu.RUnlock()
+	return nil
 }
 
 func (m *Manager) handlePluginMessage(p *pluginProcess, msg *pb.PluginToHost) {

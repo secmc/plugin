@@ -2,6 +2,7 @@ package plugin
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/df-mc/dragonfly/server/block/cube"
 	"github.com/df-mc/dragonfly/server/world"
@@ -166,7 +167,7 @@ func (m *Manager) EmitWorldExplosion(ctx *world.Context, position mgl64.Vec3, en
 	if spawnFire != nil {
 		spawnFireVal = *spawnFire
 	}
-	m.emitCancellable(ctx, &pb.EventEnvelope{
+	results := m.emitCancellable(ctx, &pb.EventEnvelope{
 		EventId: m.generateEventID(),
 		Type:    pb.EventType_WORLD_EXPLOSION,
 		Payload: &pb.EventEnvelope_WorldExplosion{
@@ -180,18 +181,46 @@ func (m *Manager) EmitWorldExplosion(ctx *world.Context, position mgl64.Vec3, en
 			},
 		},
 	})
+	for _, res := range results {
+		if res == nil {
+			continue
+		}
+		mut := res.GetWorldExplosion()
+		if mut == nil {
+			continue
+		}
+		if entities != nil && mut.EntityUuids != nil {
+			*entities = filterEntitiesByUUIDs(*entities, mut.EntityUuids)
+		}
+		if blocks != nil && mut.Blocks != nil {
+			converted := convertProtoBlockPositionsToCube(mut.Blocks)
+			if converted == nil {
+				*blocks = nil
+			} else {
+				*blocks = converted
+			}
+		}
+		if itemDropChance != nil && mut.ItemDropChance != nil {
+			*itemDropChance = *mut.ItemDropChance
+		}
+		if spawnFire != nil && mut.SpawnFire != nil {
+			*spawnFire = *mut.SpawnFire
+		}
+	}
 }
 
 func (m *Manager) EmitWorldClose(tx *world.Tx) {
+	w := worldFromTx(tx)
 	m.broadcastEvent(&pb.EventEnvelope{
 		EventId: m.generateEventID(),
 		Type:    pb.EventType_WORLD_CLOSE,
 		Payload: &pb.EventEnvelope_WorldClose{
 			WorldClose: &pb.WorldCloseEvent{
-				World: protoWorldRef(worldFromTx(tx)),
+				World: protoWorldRef(w),
 			},
 		},
 	})
+	m.unregisterWorld(w)
 }
 
 func worldFromTx(tx *world.Tx) *world.World {
@@ -199,4 +228,31 @@ func worldFromTx(tx *world.Tx) *world.World {
 		return nil
 	}
 	return tx.World()
+}
+
+func filterEntitiesByUUIDs(entities []world.Entity, uuids []string) []world.Entity {
+	if len(uuids) == 0 {
+		return entities
+	}
+	allowed := make(map[string]struct{}, len(uuids))
+	for _, id := range uuids {
+		if id == "" {
+			continue
+		}
+		allowed[strings.ToLower(id)] = struct{}{}
+	}
+	if len(allowed) == 0 {
+		return entities
+	}
+	filtered := make([]world.Entity, 0, len(entities))
+	for _, e := range entities {
+		handle := e.H()
+		if handle == nil {
+			continue
+		}
+		if _, ok := allowed[strings.ToLower(handle.UUID().String())]; ok {
+			filtered = append(filtered, e)
+		}
+	}
+	return filtered
 }

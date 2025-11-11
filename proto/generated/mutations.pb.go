@@ -29,6 +29,17 @@ type EventResult struct {
 	//
 	//	*EventResult_Chat
 	//	*EventResult_BlockBreak
+	//	*EventResult_PlayerFoodLoss
+	//	*EventResult_PlayerHeal
+	//	*EventResult_PlayerHurt
+	//	*EventResult_PlayerDeath
+	//	*EventResult_PlayerRespawn
+	//	*EventResult_PlayerAttackEntity
+	//	*EventResult_PlayerExperienceGain
+	//	*EventResult_PlayerLecternPageTurn
+	//	*EventResult_PlayerItemPickup
+	//	*EventResult_PlayerTransfer
+	//	*EventResult_WorldExplosion
 	Update        isEventResult_Update `protobuf_oneof:"update"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -103,6 +114,105 @@ func (x *EventResult) GetBlockBreak() *BlockBreakMutation {
 	return nil
 }
 
+func (x *EventResult) GetPlayerFoodLoss() *PlayerFoodLossMutation {
+	if x != nil {
+		if x, ok := x.Update.(*EventResult_PlayerFoodLoss); ok {
+			return x.PlayerFoodLoss
+		}
+	}
+	return nil
+}
+
+func (x *EventResult) GetPlayerHeal() *PlayerHealMutation {
+	if x != nil {
+		if x, ok := x.Update.(*EventResult_PlayerHeal); ok {
+			return x.PlayerHeal
+		}
+	}
+	return nil
+}
+
+func (x *EventResult) GetPlayerHurt() *PlayerHurtMutation {
+	if x != nil {
+		if x, ok := x.Update.(*EventResult_PlayerHurt); ok {
+			return x.PlayerHurt
+		}
+	}
+	return nil
+}
+
+func (x *EventResult) GetPlayerDeath() *PlayerDeathMutation {
+	if x != nil {
+		if x, ok := x.Update.(*EventResult_PlayerDeath); ok {
+			return x.PlayerDeath
+		}
+	}
+	return nil
+}
+
+func (x *EventResult) GetPlayerRespawn() *PlayerRespawnMutation {
+	if x != nil {
+		if x, ok := x.Update.(*EventResult_PlayerRespawn); ok {
+			return x.PlayerRespawn
+		}
+	}
+	return nil
+}
+
+func (x *EventResult) GetPlayerAttackEntity() *PlayerAttackEntityMutation {
+	if x != nil {
+		if x, ok := x.Update.(*EventResult_PlayerAttackEntity); ok {
+			return x.PlayerAttackEntity
+		}
+	}
+	return nil
+}
+
+func (x *EventResult) GetPlayerExperienceGain() *PlayerExperienceGainMutation {
+	if x != nil {
+		if x, ok := x.Update.(*EventResult_PlayerExperienceGain); ok {
+			return x.PlayerExperienceGain
+		}
+	}
+	return nil
+}
+
+func (x *EventResult) GetPlayerLecternPageTurn() *PlayerLecternPageTurnMutation {
+	if x != nil {
+		if x, ok := x.Update.(*EventResult_PlayerLecternPageTurn); ok {
+			return x.PlayerLecternPageTurn
+		}
+	}
+	return nil
+}
+
+func (x *EventResult) GetPlayerItemPickup() *PlayerItemPickupMutation {
+	if x != nil {
+		if x, ok := x.Update.(*EventResult_PlayerItemPickup); ok {
+			return x.PlayerItemPickup
+		}
+	}
+	return nil
+}
+
+func (x *EventResult) GetPlayerTransfer() *PlayerTransferMutation {
+	if x != nil {
+		if x, ok := x.Update.(*EventResult_PlayerTransfer); ok {
+			return x.PlayerTransfer
+		}
+	}
+	return nil
+}
+
+func (x *EventResult) GetWorldExplosion() *WorldExplosionMutation {
+	if x != nil {
+		if x, ok := x.Update.(*EventResult_WorldExplosion); ok {
+			return x.WorldExplosion
+		}
+	}
+	return nil
+}
+
 type isEventResult_Update interface {
 	isEventResult_Update()
 }
@@ -118,6 +228,72 @@ type EventResult_BlockBreak struct {
 func (*EventResult_Chat) isEventResult_Update() {}
 
 func (*EventResult_BlockBreak) isEventResult_Update() {}
+
+type EventResult_PlayerFoodLoss struct {
+	PlayerFoodLoss *PlayerFoodLossMutation `protobuf:"bytes,12,opt,name=player_food_loss,json=playerFoodLoss,proto3,oneof"`
+}
+
+type EventResult_PlayerHeal struct {
+	PlayerHeal *PlayerHealMutation `protobuf:"bytes,13,opt,name=player_heal,json=playerHeal,proto3,oneof"`
+}
+
+type EventResult_PlayerHurt struct {
+	PlayerHurt *PlayerHurtMutation `protobuf:"bytes,14,opt,name=player_hurt,json=playerHurt,proto3,oneof"`
+}
+
+type EventResult_PlayerDeath struct {
+	PlayerDeath *PlayerDeathMutation `protobuf:"bytes,15,opt,name=player_death,json=playerDeath,proto3,oneof"`
+}
+
+type EventResult_PlayerRespawn struct {
+	PlayerRespawn *PlayerRespawnMutation `protobuf:"bytes,16,opt,name=player_respawn,json=playerRespawn,proto3,oneof"`
+}
+
+type EventResult_PlayerAttackEntity struct {
+	PlayerAttackEntity *PlayerAttackEntityMutation `protobuf:"bytes,17,opt,name=player_attack_entity,json=playerAttackEntity,proto3,oneof"`
+}
+
+type EventResult_PlayerExperienceGain struct {
+	PlayerExperienceGain *PlayerExperienceGainMutation `protobuf:"bytes,18,opt,name=player_experience_gain,json=playerExperienceGain,proto3,oneof"`
+}
+
+type EventResult_PlayerLecternPageTurn struct {
+	PlayerLecternPageTurn *PlayerLecternPageTurnMutation `protobuf:"bytes,19,opt,name=player_lectern_page_turn,json=playerLecternPageTurn,proto3,oneof"`
+}
+
+type EventResult_PlayerItemPickup struct {
+	PlayerItemPickup *PlayerItemPickupMutation `protobuf:"bytes,20,opt,name=player_item_pickup,json=playerItemPickup,proto3,oneof"`
+}
+
+type EventResult_PlayerTransfer struct {
+	PlayerTransfer *PlayerTransferMutation `protobuf:"bytes,21,opt,name=player_transfer,json=playerTransfer,proto3,oneof"`
+}
+
+type EventResult_WorldExplosion struct {
+	WorldExplosion *WorldExplosionMutation `protobuf:"bytes,30,opt,name=world_explosion,json=worldExplosion,proto3,oneof"`
+}
+
+func (*EventResult_PlayerFoodLoss) isEventResult_Update() {}
+
+func (*EventResult_PlayerHeal) isEventResult_Update() {}
+
+func (*EventResult_PlayerHurt) isEventResult_Update() {}
+
+func (*EventResult_PlayerDeath) isEventResult_Update() {}
+
+func (*EventResult_PlayerRespawn) isEventResult_Update() {}
+
+func (*EventResult_PlayerAttackEntity) isEventResult_Update() {}
+
+func (*EventResult_PlayerExperienceGain) isEventResult_Update() {}
+
+func (*EventResult_PlayerLecternPageTurn) isEventResult_Update() {}
+
+func (*EventResult_PlayerItemPickup) isEventResult_Update() {}
+
+func (*EventResult_PlayerTransfer) isEventResult_Update() {}
+
+func (*EventResult_WorldExplosion) isEventResult_Update() {}
 
 type ChatMutation struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -215,6 +391,546 @@ func (x *BlockBreakMutation) GetXp() int32 {
 	return 0
 }
 
+type PlayerFoodLossMutation struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	To            int32                  `protobuf:"varint,1,opt,name=to,proto3" json:"to,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PlayerFoodLossMutation) Reset() {
+	*x = PlayerFoodLossMutation{}
+	mi := &file_mutations_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PlayerFoodLossMutation) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PlayerFoodLossMutation) ProtoMessage() {}
+
+func (x *PlayerFoodLossMutation) ProtoReflect() protoreflect.Message {
+	mi := &file_mutations_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PlayerFoodLossMutation.ProtoReflect.Descriptor instead.
+func (*PlayerFoodLossMutation) Descriptor() ([]byte, []int) {
+	return file_mutations_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *PlayerFoodLossMutation) GetTo() int32 {
+	if x != nil {
+		return x.To
+	}
+	return 0
+}
+
+type PlayerHealMutation struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Amount        float64                `protobuf:"fixed64,1,opt,name=amount,proto3" json:"amount,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PlayerHealMutation) Reset() {
+	*x = PlayerHealMutation{}
+	mi := &file_mutations_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PlayerHealMutation) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PlayerHealMutation) ProtoMessage() {}
+
+func (x *PlayerHealMutation) ProtoReflect() protoreflect.Message {
+	mi := &file_mutations_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PlayerHealMutation.ProtoReflect.Descriptor instead.
+func (*PlayerHealMutation) Descriptor() ([]byte, []int) {
+	return file_mutations_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *PlayerHealMutation) GetAmount() float64 {
+	if x != nil {
+		return x.Amount
+	}
+	return 0
+}
+
+type PlayerHurtMutation struct {
+	state            protoimpl.MessageState `protogen:"open.v1"`
+	Damage           float64                `protobuf:"fixed64,1,opt,name=damage,proto3" json:"damage,omitempty"`
+	AttackImmunityMs *int64                 `protobuf:"varint,2,opt,name=attack_immunity_ms,json=attackImmunityMs,proto3,oneof" json:"attack_immunity_ms,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
+}
+
+func (x *PlayerHurtMutation) Reset() {
+	*x = PlayerHurtMutation{}
+	mi := &file_mutations_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PlayerHurtMutation) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PlayerHurtMutation) ProtoMessage() {}
+
+func (x *PlayerHurtMutation) ProtoReflect() protoreflect.Message {
+	mi := &file_mutations_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PlayerHurtMutation.ProtoReflect.Descriptor instead.
+func (*PlayerHurtMutation) Descriptor() ([]byte, []int) {
+	return file_mutations_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *PlayerHurtMutation) GetDamage() float64 {
+	if x != nil {
+		return x.Damage
+	}
+	return 0
+}
+
+func (x *PlayerHurtMutation) GetAttackImmunityMs() int64 {
+	if x != nil && x.AttackImmunityMs != nil {
+		return *x.AttackImmunityMs
+	}
+	return 0
+}
+
+type PlayerDeathMutation struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	KeepInventory bool                   `protobuf:"varint,1,opt,name=keep_inventory,json=keepInventory,proto3" json:"keep_inventory,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PlayerDeathMutation) Reset() {
+	*x = PlayerDeathMutation{}
+	mi := &file_mutations_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PlayerDeathMutation) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PlayerDeathMutation) ProtoMessage() {}
+
+func (x *PlayerDeathMutation) ProtoReflect() protoreflect.Message {
+	mi := &file_mutations_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PlayerDeathMutation.ProtoReflect.Descriptor instead.
+func (*PlayerDeathMutation) Descriptor() ([]byte, []int) {
+	return file_mutations_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *PlayerDeathMutation) GetKeepInventory() bool {
+	if x != nil {
+		return x.KeepInventory
+	}
+	return false
+}
+
+type PlayerRespawnMutation struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Position      *Vec3                  `protobuf:"bytes,1,opt,name=position,proto3,oneof" json:"position,omitempty"`
+	World         *WorldRef              `protobuf:"bytes,2,opt,name=world,proto3,oneof" json:"world,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PlayerRespawnMutation) Reset() {
+	*x = PlayerRespawnMutation{}
+	mi := &file_mutations_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PlayerRespawnMutation) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PlayerRespawnMutation) ProtoMessage() {}
+
+func (x *PlayerRespawnMutation) ProtoReflect() protoreflect.Message {
+	mi := &file_mutations_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PlayerRespawnMutation.ProtoReflect.Descriptor instead.
+func (*PlayerRespawnMutation) Descriptor() ([]byte, []int) {
+	return file_mutations_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *PlayerRespawnMutation) GetPosition() *Vec3 {
+	if x != nil {
+		return x.Position
+	}
+	return nil
+}
+
+func (x *PlayerRespawnMutation) GetWorld() *WorldRef {
+	if x != nil {
+		return x.World
+	}
+	return nil
+}
+
+type PlayerAttackEntityMutation struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Force         float64                `protobuf:"fixed64,1,opt,name=force,proto3" json:"force,omitempty"`
+	Height        float64                `protobuf:"fixed64,2,opt,name=height,proto3" json:"height,omitempty"`
+	Critical      bool                   `protobuf:"varint,3,opt,name=critical,proto3" json:"critical,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PlayerAttackEntityMutation) Reset() {
+	*x = PlayerAttackEntityMutation{}
+	mi := &file_mutations_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PlayerAttackEntityMutation) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PlayerAttackEntityMutation) ProtoMessage() {}
+
+func (x *PlayerAttackEntityMutation) ProtoReflect() protoreflect.Message {
+	mi := &file_mutations_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PlayerAttackEntityMutation.ProtoReflect.Descriptor instead.
+func (*PlayerAttackEntityMutation) Descriptor() ([]byte, []int) {
+	return file_mutations_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *PlayerAttackEntityMutation) GetForce() float64 {
+	if x != nil {
+		return x.Force
+	}
+	return 0
+}
+
+func (x *PlayerAttackEntityMutation) GetHeight() float64 {
+	if x != nil {
+		return x.Height
+	}
+	return 0
+}
+
+func (x *PlayerAttackEntityMutation) GetCritical() bool {
+	if x != nil {
+		return x.Critical
+	}
+	return false
+}
+
+type PlayerExperienceGainMutation struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Amount        int32                  `protobuf:"varint,1,opt,name=amount,proto3" json:"amount,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PlayerExperienceGainMutation) Reset() {
+	*x = PlayerExperienceGainMutation{}
+	mi := &file_mutations_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PlayerExperienceGainMutation) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PlayerExperienceGainMutation) ProtoMessage() {}
+
+func (x *PlayerExperienceGainMutation) ProtoReflect() protoreflect.Message {
+	mi := &file_mutations_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PlayerExperienceGainMutation.ProtoReflect.Descriptor instead.
+func (*PlayerExperienceGainMutation) Descriptor() ([]byte, []int) {
+	return file_mutations_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *PlayerExperienceGainMutation) GetAmount() int32 {
+	if x != nil {
+		return x.Amount
+	}
+	return 0
+}
+
+type PlayerLecternPageTurnMutation struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	NewPage       int32                  `protobuf:"varint,1,opt,name=new_page,json=newPage,proto3" json:"new_page,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PlayerLecternPageTurnMutation) Reset() {
+	*x = PlayerLecternPageTurnMutation{}
+	mi := &file_mutations_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PlayerLecternPageTurnMutation) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PlayerLecternPageTurnMutation) ProtoMessage() {}
+
+func (x *PlayerLecternPageTurnMutation) ProtoReflect() protoreflect.Message {
+	mi := &file_mutations_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PlayerLecternPageTurnMutation.ProtoReflect.Descriptor instead.
+func (*PlayerLecternPageTurnMutation) Descriptor() ([]byte, []int) {
+	return file_mutations_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *PlayerLecternPageTurnMutation) GetNewPage() int32 {
+	if x != nil {
+		return x.NewPage
+	}
+	return 0
+}
+
+type PlayerItemPickupMutation struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Item          *ItemStack             `protobuf:"bytes,1,opt,name=item,proto3,oneof" json:"item,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PlayerItemPickupMutation) Reset() {
+	*x = PlayerItemPickupMutation{}
+	mi := &file_mutations_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PlayerItemPickupMutation) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PlayerItemPickupMutation) ProtoMessage() {}
+
+func (x *PlayerItemPickupMutation) ProtoReflect() protoreflect.Message {
+	mi := &file_mutations_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PlayerItemPickupMutation.ProtoReflect.Descriptor instead.
+func (*PlayerItemPickupMutation) Descriptor() ([]byte, []int) {
+	return file_mutations_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *PlayerItemPickupMutation) GetItem() *ItemStack {
+	if x != nil {
+		return x.Item
+	}
+	return nil
+}
+
+type PlayerTransferMutation struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Address       *Address               `protobuf:"bytes,1,opt,name=address,proto3,oneof" json:"address,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PlayerTransferMutation) Reset() {
+	*x = PlayerTransferMutation{}
+	mi := &file_mutations_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PlayerTransferMutation) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PlayerTransferMutation) ProtoMessage() {}
+
+func (x *PlayerTransferMutation) ProtoReflect() protoreflect.Message {
+	mi := &file_mutations_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PlayerTransferMutation.ProtoReflect.Descriptor instead.
+func (*PlayerTransferMutation) Descriptor() ([]byte, []int) {
+	return file_mutations_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *PlayerTransferMutation) GetAddress() *Address {
+	if x != nil {
+		return x.Address
+	}
+	return nil
+}
+
+type WorldExplosionMutation struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	EntityUuids    []string               `protobuf:"bytes,1,rep,name=entity_uuids,json=entityUuids,proto3" json:"entity_uuids,omitempty"`
+	Blocks         []*BlockPos            `protobuf:"bytes,2,rep,name=blocks,proto3" json:"blocks,omitempty"`
+	ItemDropChance *float64               `protobuf:"fixed64,3,opt,name=item_drop_chance,json=itemDropChance,proto3,oneof" json:"item_drop_chance,omitempty"`
+	SpawnFire      *bool                  `protobuf:"varint,4,opt,name=spawn_fire,json=spawnFire,proto3,oneof" json:"spawn_fire,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *WorldExplosionMutation) Reset() {
+	*x = WorldExplosionMutation{}
+	mi := &file_mutations_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *WorldExplosionMutation) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*WorldExplosionMutation) ProtoMessage() {}
+
+func (x *WorldExplosionMutation) ProtoReflect() protoreflect.Message {
+	mi := &file_mutations_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use WorldExplosionMutation.ProtoReflect.Descriptor instead.
+func (*WorldExplosionMutation) Descriptor() ([]byte, []int) {
+	return file_mutations_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *WorldExplosionMutation) GetEntityUuids() []string {
+	if x != nil {
+		return x.EntityUuids
+	}
+	return nil
+}
+
+func (x *WorldExplosionMutation) GetBlocks() []*BlockPos {
+	if x != nil {
+		return x.Blocks
+	}
+	return nil
+}
+
+func (x *WorldExplosionMutation) GetItemDropChance() float64 {
+	if x != nil && x.ItemDropChance != nil {
+		return *x.ItemDropChance
+	}
+	return 0
+}
+
+func (x *WorldExplosionMutation) GetSpawnFire() bool {
+	if x != nil && x.SpawnFire != nil {
+		return *x.SpawnFire
+	}
+	return false
+}
+
 var File_mutations_proto protoreflect.FileDescriptor
 
 const file_mutations_proto_rawDesc = "" +
@@ -248,22 +964,53 @@ func file_mutations_proto_rawDescGZIP() []byte {
 	return file_mutations_proto_rawDescData
 }
 
-var file_mutations_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_mutations_proto_msgTypes = make([]protoimpl.MessageInfo, 14)
 var file_mutations_proto_goTypes = []any{
-	(*EventResult)(nil),        // 0: df.plugin.EventResult
-	(*ChatMutation)(nil),       // 1: df.plugin.ChatMutation
-	(*BlockBreakMutation)(nil), // 2: df.plugin.BlockBreakMutation
-	(*ItemStack)(nil),          // 3: df.plugin.ItemStack
+	(*EventResult)(nil),                   // 0: df.plugin.EventResult
+	(*ChatMutation)(nil),                  // 1: df.plugin.ChatMutation
+	(*BlockBreakMutation)(nil),            // 2: df.plugin.BlockBreakMutation
+	(*PlayerFoodLossMutation)(nil),        // 3: df.plugin.PlayerFoodLossMutation
+	(*PlayerHealMutation)(nil),            // 4: df.plugin.PlayerHealMutation
+	(*PlayerHurtMutation)(nil),            // 5: df.plugin.PlayerHurtMutation
+	(*PlayerDeathMutation)(nil),           // 6: df.plugin.PlayerDeathMutation
+	(*PlayerRespawnMutation)(nil),         // 7: df.plugin.PlayerRespawnMutation
+	(*PlayerAttackEntityMutation)(nil),    // 8: df.plugin.PlayerAttackEntityMutation
+	(*PlayerExperienceGainMutation)(nil),  // 9: df.plugin.PlayerExperienceGainMutation
+	(*PlayerLecternPageTurnMutation)(nil), // 10: df.plugin.PlayerLecternPageTurnMutation
+	(*PlayerItemPickupMutation)(nil),      // 11: df.plugin.PlayerItemPickupMutation
+	(*PlayerTransferMutation)(nil),        // 12: df.plugin.PlayerTransferMutation
+	(*WorldExplosionMutation)(nil),        // 13: df.plugin.WorldExplosionMutation
+	(*ItemStack)(nil),                     // 14: df.plugin.ItemStack
+	(*Vec3)(nil),                          // 15: df.plugin.Vec3
+	(*WorldRef)(nil),                      // 16: df.plugin.WorldRef
+	(*BlockPos)(nil),                      // 17: df.plugin.BlockPos
+	(*Address)(nil),                       // 18: df.plugin.Address
 }
 var file_mutations_proto_depIdxs = []int32{
-	1, // 0: df.plugin.EventResult.chat:type_name -> df.plugin.ChatMutation
-	2, // 1: df.plugin.EventResult.block_break:type_name -> df.plugin.BlockBreakMutation
-	3, // 2: df.plugin.BlockBreakMutation.drops:type_name -> df.plugin.ItemStack
-	3, // [3:3] is the sub-list for method output_type
-	3, // [3:3] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	1,  // 0: df.plugin.EventResult.chat:type_name -> df.plugin.ChatMutation
+	2,  // 1: df.plugin.EventResult.block_break:type_name -> df.plugin.BlockBreakMutation
+	3,  // 2: df.plugin.EventResult.player_food_loss:type_name -> df.plugin.PlayerFoodLossMutation
+	4,  // 3: df.plugin.EventResult.player_heal:type_name -> df.plugin.PlayerHealMutation
+	5,  // 4: df.plugin.EventResult.player_hurt:type_name -> df.plugin.PlayerHurtMutation
+	6,  // 5: df.plugin.EventResult.player_death:type_name -> df.plugin.PlayerDeathMutation
+	7,  // 6: df.plugin.EventResult.player_respawn:type_name -> df.plugin.PlayerRespawnMutation
+	8,  // 7: df.plugin.EventResult.player_attack_entity:type_name -> df.plugin.PlayerAttackEntityMutation
+	9,  // 8: df.plugin.EventResult.player_experience_gain:type_name -> df.plugin.PlayerExperienceGainMutation
+	10, // 9: df.plugin.EventResult.player_lectern_page_turn:type_name -> df.plugin.PlayerLecternPageTurnMutation
+	11, // 10: df.plugin.EventResult.player_item_pickup:type_name -> df.plugin.PlayerItemPickupMutation
+	12, // 11: df.plugin.EventResult.player_transfer:type_name -> df.plugin.PlayerTransferMutation
+	13, // 12: df.plugin.EventResult.world_explosion:type_name -> df.plugin.WorldExplosionMutation
+	14, // 13: df.plugin.BlockBreakMutation.drops:type_name -> df.plugin.ItemStack
+	15, // 14: df.plugin.PlayerRespawnMutation.position:type_name -> df.plugin.Vec3
+	16, // 15: df.plugin.PlayerRespawnMutation.world:type_name -> df.plugin.WorldRef
+	14, // 16: df.plugin.PlayerItemPickupMutation.item:type_name -> df.plugin.ItemStack
+	18, // 17: df.plugin.PlayerTransferMutation.address:type_name -> df.plugin.Address
+	17, // 18: df.plugin.WorldExplosionMutation.blocks:type_name -> df.plugin.BlockPos
+	0,  // [0:0] is the sub-list for method output_type
+	0,  // [0:0] is the sub-list for method input_type
+	0,  // [0:0] is the sub-list for extension type_name
+	0,  // [0:0] is the sub-list for extension extendee
+	0,  // [0:13] is the sub-list for field type_name
 }
 
 func init() { file_mutations_proto_init() }
@@ -276,15 +1023,31 @@ func file_mutations_proto_init() {
 	file_mutations_proto_msgTypes[0].OneofWrappers = []any{
 		(*EventResult_Chat)(nil),
 		(*EventResult_BlockBreak)(nil),
+		(*EventResult_PlayerFoodLoss)(nil),
+		(*EventResult_PlayerHeal)(nil),
+		(*EventResult_PlayerHurt)(nil),
+		(*EventResult_PlayerDeath)(nil),
+		(*EventResult_PlayerRespawn)(nil),
+		(*EventResult_PlayerAttackEntity)(nil),
+		(*EventResult_PlayerExperienceGain)(nil),
+		(*EventResult_PlayerLecternPageTurn)(nil),
+		(*EventResult_PlayerItemPickup)(nil),
+		(*EventResult_PlayerTransfer)(nil),
+		(*EventResult_WorldExplosion)(nil),
 	}
 	file_mutations_proto_msgTypes[2].OneofWrappers = []any{}
+	file_mutations_proto_msgTypes[5].OneofWrappers = []any{}
+	file_mutations_proto_msgTypes[7].OneofWrappers = []any{}
+	file_mutations_proto_msgTypes[11].OneofWrappers = []any{}
+	file_mutations_proto_msgTypes[12].OneofWrappers = []any{}
+	file_mutations_proto_msgTypes[13].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_mutations_proto_rawDesc), len(file_mutations_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   3,
+			NumMessages:   14,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
