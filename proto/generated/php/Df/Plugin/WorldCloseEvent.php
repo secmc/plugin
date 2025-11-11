@@ -14,6 +14,10 @@ use Google\Protobuf\RepeatedField;
  */
 class WorldCloseEvent extends \Google\Protobuf\Internal\Message
 {
+    /**
+     * Generated from protobuf field <code>.df.plugin.WorldRef world = 1 [json_name = "world"];</code>
+     */
+    protected $world = null;
 
     /**
      * Constructor.
@@ -21,11 +25,44 @@ class WorldCloseEvent extends \Google\Protobuf\Internal\Message
      * @param array $data {
      *     Optional. Data for populating the Message object.
      *
+     *     @type \Df\Plugin\WorldRef $world
      * }
      */
     public function __construct($data = NULL) {
         \Df\Plugin\GPBMetadata\WorldEvents::initOnce();
         parent::__construct($data);
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.WorldRef world = 1 [json_name = "world"];</code>
+     * @return \Df\Plugin\WorldRef|null
+     */
+    public function getWorld()
+    {
+        return $this->world;
+    }
+
+    public function hasWorld()
+    {
+        return isset($this->world);
+    }
+
+    public function clearWorld()
+    {
+        unset($this->world);
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.WorldRef world = 1 [json_name = "world"];</code>
+     * @param \Df\Plugin\WorldRef $var
+     * @return $this
+     */
+    public function setWorld($var)
+    {
+        GPBUtil::checkMessage($var, \Df\Plugin\WorldRef::class);
+        $this->world = $var;
+
+        return $this;
     }
 
 }

@@ -6,18 +6,1223 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { BlockPos, BlockState, EntityRef, LiquidState, Vec3, WorldRef } from "./common";
 
 export const protobufPackage = "df.plugin";
 
-export interface WorldCloseEvent {
+export interface WorldLiquidFlowEvent {
+  world: WorldRef | undefined;
+  from: BlockPos | undefined;
+  to: BlockPos | undefined;
+  liquid: LiquidState | undefined;
+  replaced: BlockState | undefined;
 }
 
+export interface WorldLiquidDecayEvent {
+  world: WorldRef | undefined;
+  position: BlockPos | undefined;
+  before?: LiquidState | undefined;
+  after?: LiquidState | undefined;
+}
+
+export interface WorldLiquidHardenEvent {
+  world: WorldRef | undefined;
+  position: BlockPos | undefined;
+  liquidHardened?: LiquidState | undefined;
+  otherLiquid?: LiquidState | undefined;
+  newBlock?: BlockState | undefined;
+}
+
+export interface WorldSoundEvent {
+  world: WorldRef | undefined;
+  sound: string;
+  position: Vec3 | undefined;
+}
+
+export interface WorldFireSpreadEvent {
+  world: WorldRef | undefined;
+  from: BlockPos | undefined;
+  to: BlockPos | undefined;
+}
+
+export interface WorldBlockBurnEvent {
+  world: WorldRef | undefined;
+  position: BlockPos | undefined;
+}
+
+export interface WorldCropTrampleEvent {
+  world: WorldRef | undefined;
+  position: BlockPos | undefined;
+}
+
+export interface WorldLeavesDecayEvent {
+  world: WorldRef | undefined;
+  position: BlockPos | undefined;
+}
+
+export interface WorldEntitySpawnEvent {
+  world: WorldRef | undefined;
+  entity: EntityRef | undefined;
+}
+
+export interface WorldEntityDespawnEvent {
+  world: WorldRef | undefined;
+  entity: EntityRef | undefined;
+}
+
+export interface WorldExplosionEvent {
+  world: WorldRef | undefined;
+  position: Vec3 | undefined;
+  affectedEntities: EntityRef[];
+  affectedBlocks: BlockPos[];
+  itemDropChance: number;
+  spawnFire: boolean;
+}
+
+export interface WorldCloseEvent {
+  world: WorldRef | undefined;
+}
+
+function createBaseWorldLiquidFlowEvent(): WorldLiquidFlowEvent {
+  return { world: undefined, from: undefined, to: undefined, liquid: undefined, replaced: undefined };
+}
+
+export const WorldLiquidFlowEvent: MessageFns<WorldLiquidFlowEvent> = {
+  encode(message: WorldLiquidFlowEvent, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.world !== undefined) {
+      WorldRef.encode(message.world, writer.uint32(10).fork()).join();
+    }
+    if (message.from !== undefined) {
+      BlockPos.encode(message.from, writer.uint32(18).fork()).join();
+    }
+    if (message.to !== undefined) {
+      BlockPos.encode(message.to, writer.uint32(26).fork()).join();
+    }
+    if (message.liquid !== undefined) {
+      LiquidState.encode(message.liquid, writer.uint32(34).fork()).join();
+    }
+    if (message.replaced !== undefined) {
+      BlockState.encode(message.replaced, writer.uint32(42).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): WorldLiquidFlowEvent {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseWorldLiquidFlowEvent();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.world = WorldRef.decode(reader, reader.uint32());
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.from = BlockPos.decode(reader, reader.uint32());
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.to = BlockPos.decode(reader, reader.uint32());
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.liquid = LiquidState.decode(reader, reader.uint32());
+          continue;
+        }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
+          message.replaced = BlockState.decode(reader, reader.uint32());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): WorldLiquidFlowEvent {
+    return {
+      world: isSet(object.world) ? WorldRef.fromJSON(object.world) : undefined,
+      from: isSet(object.from) ? BlockPos.fromJSON(object.from) : undefined,
+      to: isSet(object.to) ? BlockPos.fromJSON(object.to) : undefined,
+      liquid: isSet(object.liquid) ? LiquidState.fromJSON(object.liquid) : undefined,
+      replaced: isSet(object.replaced) ? BlockState.fromJSON(object.replaced) : undefined,
+    };
+  },
+
+  toJSON(message: WorldLiquidFlowEvent): unknown {
+    const obj: any = {};
+    if (message.world !== undefined) {
+      obj.world = WorldRef.toJSON(message.world);
+    }
+    if (message.from !== undefined) {
+      obj.from = BlockPos.toJSON(message.from);
+    }
+    if (message.to !== undefined) {
+      obj.to = BlockPos.toJSON(message.to);
+    }
+    if (message.liquid !== undefined) {
+      obj.liquid = LiquidState.toJSON(message.liquid);
+    }
+    if (message.replaced !== undefined) {
+      obj.replaced = BlockState.toJSON(message.replaced);
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<WorldLiquidFlowEvent>): WorldLiquidFlowEvent {
+    return WorldLiquidFlowEvent.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<WorldLiquidFlowEvent>): WorldLiquidFlowEvent {
+    const message = createBaseWorldLiquidFlowEvent();
+    message.world = (object.world !== undefined && object.world !== null)
+      ? WorldRef.fromPartial(object.world)
+      : undefined;
+    message.from = (object.from !== undefined && object.from !== null) ? BlockPos.fromPartial(object.from) : undefined;
+    message.to = (object.to !== undefined && object.to !== null) ? BlockPos.fromPartial(object.to) : undefined;
+    message.liquid = (object.liquid !== undefined && object.liquid !== null)
+      ? LiquidState.fromPartial(object.liquid)
+      : undefined;
+    message.replaced = (object.replaced !== undefined && object.replaced !== null)
+      ? BlockState.fromPartial(object.replaced)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseWorldLiquidDecayEvent(): WorldLiquidDecayEvent {
+  return { world: undefined, position: undefined, before: undefined, after: undefined };
+}
+
+export const WorldLiquidDecayEvent: MessageFns<WorldLiquidDecayEvent> = {
+  encode(message: WorldLiquidDecayEvent, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.world !== undefined) {
+      WorldRef.encode(message.world, writer.uint32(10).fork()).join();
+    }
+    if (message.position !== undefined) {
+      BlockPos.encode(message.position, writer.uint32(18).fork()).join();
+    }
+    if (message.before !== undefined) {
+      LiquidState.encode(message.before, writer.uint32(26).fork()).join();
+    }
+    if (message.after !== undefined) {
+      LiquidState.encode(message.after, writer.uint32(34).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): WorldLiquidDecayEvent {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseWorldLiquidDecayEvent();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.world = WorldRef.decode(reader, reader.uint32());
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.position = BlockPos.decode(reader, reader.uint32());
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.before = LiquidState.decode(reader, reader.uint32());
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.after = LiquidState.decode(reader, reader.uint32());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): WorldLiquidDecayEvent {
+    return {
+      world: isSet(object.world) ? WorldRef.fromJSON(object.world) : undefined,
+      position: isSet(object.position) ? BlockPos.fromJSON(object.position) : undefined,
+      before: isSet(object.before) ? LiquidState.fromJSON(object.before) : undefined,
+      after: isSet(object.after) ? LiquidState.fromJSON(object.after) : undefined,
+    };
+  },
+
+  toJSON(message: WorldLiquidDecayEvent): unknown {
+    const obj: any = {};
+    if (message.world !== undefined) {
+      obj.world = WorldRef.toJSON(message.world);
+    }
+    if (message.position !== undefined) {
+      obj.position = BlockPos.toJSON(message.position);
+    }
+    if (message.before !== undefined) {
+      obj.before = LiquidState.toJSON(message.before);
+    }
+    if (message.after !== undefined) {
+      obj.after = LiquidState.toJSON(message.after);
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<WorldLiquidDecayEvent>): WorldLiquidDecayEvent {
+    return WorldLiquidDecayEvent.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<WorldLiquidDecayEvent>): WorldLiquidDecayEvent {
+    const message = createBaseWorldLiquidDecayEvent();
+    message.world = (object.world !== undefined && object.world !== null)
+      ? WorldRef.fromPartial(object.world)
+      : undefined;
+    message.position = (object.position !== undefined && object.position !== null)
+      ? BlockPos.fromPartial(object.position)
+      : undefined;
+    message.before = (object.before !== undefined && object.before !== null)
+      ? LiquidState.fromPartial(object.before)
+      : undefined;
+    message.after = (object.after !== undefined && object.after !== null)
+      ? LiquidState.fromPartial(object.after)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseWorldLiquidHardenEvent(): WorldLiquidHardenEvent {
+  return {
+    world: undefined,
+    position: undefined,
+    liquidHardened: undefined,
+    otherLiquid: undefined,
+    newBlock: undefined,
+  };
+}
+
+export const WorldLiquidHardenEvent: MessageFns<WorldLiquidHardenEvent> = {
+  encode(message: WorldLiquidHardenEvent, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.world !== undefined) {
+      WorldRef.encode(message.world, writer.uint32(10).fork()).join();
+    }
+    if (message.position !== undefined) {
+      BlockPos.encode(message.position, writer.uint32(18).fork()).join();
+    }
+    if (message.liquidHardened !== undefined) {
+      LiquidState.encode(message.liquidHardened, writer.uint32(26).fork()).join();
+    }
+    if (message.otherLiquid !== undefined) {
+      LiquidState.encode(message.otherLiquid, writer.uint32(34).fork()).join();
+    }
+    if (message.newBlock !== undefined) {
+      BlockState.encode(message.newBlock, writer.uint32(42).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): WorldLiquidHardenEvent {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseWorldLiquidHardenEvent();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.world = WorldRef.decode(reader, reader.uint32());
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.position = BlockPos.decode(reader, reader.uint32());
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.liquidHardened = LiquidState.decode(reader, reader.uint32());
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.otherLiquid = LiquidState.decode(reader, reader.uint32());
+          continue;
+        }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
+          message.newBlock = BlockState.decode(reader, reader.uint32());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): WorldLiquidHardenEvent {
+    return {
+      world: isSet(object.world) ? WorldRef.fromJSON(object.world) : undefined,
+      position: isSet(object.position) ? BlockPos.fromJSON(object.position) : undefined,
+      liquidHardened: isSet(object.liquidHardened) ? LiquidState.fromJSON(object.liquidHardened) : undefined,
+      otherLiquid: isSet(object.otherLiquid) ? LiquidState.fromJSON(object.otherLiquid) : undefined,
+      newBlock: isSet(object.newBlock) ? BlockState.fromJSON(object.newBlock) : undefined,
+    };
+  },
+
+  toJSON(message: WorldLiquidHardenEvent): unknown {
+    const obj: any = {};
+    if (message.world !== undefined) {
+      obj.world = WorldRef.toJSON(message.world);
+    }
+    if (message.position !== undefined) {
+      obj.position = BlockPos.toJSON(message.position);
+    }
+    if (message.liquidHardened !== undefined) {
+      obj.liquidHardened = LiquidState.toJSON(message.liquidHardened);
+    }
+    if (message.otherLiquid !== undefined) {
+      obj.otherLiquid = LiquidState.toJSON(message.otherLiquid);
+    }
+    if (message.newBlock !== undefined) {
+      obj.newBlock = BlockState.toJSON(message.newBlock);
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<WorldLiquidHardenEvent>): WorldLiquidHardenEvent {
+    return WorldLiquidHardenEvent.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<WorldLiquidHardenEvent>): WorldLiquidHardenEvent {
+    const message = createBaseWorldLiquidHardenEvent();
+    message.world = (object.world !== undefined && object.world !== null)
+      ? WorldRef.fromPartial(object.world)
+      : undefined;
+    message.position = (object.position !== undefined && object.position !== null)
+      ? BlockPos.fromPartial(object.position)
+      : undefined;
+    message.liquidHardened = (object.liquidHardened !== undefined && object.liquidHardened !== null)
+      ? LiquidState.fromPartial(object.liquidHardened)
+      : undefined;
+    message.otherLiquid = (object.otherLiquid !== undefined && object.otherLiquid !== null)
+      ? LiquidState.fromPartial(object.otherLiquid)
+      : undefined;
+    message.newBlock = (object.newBlock !== undefined && object.newBlock !== null)
+      ? BlockState.fromPartial(object.newBlock)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseWorldSoundEvent(): WorldSoundEvent {
+  return { world: undefined, sound: "", position: undefined };
+}
+
+export const WorldSoundEvent: MessageFns<WorldSoundEvent> = {
+  encode(message: WorldSoundEvent, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.world !== undefined) {
+      WorldRef.encode(message.world, writer.uint32(10).fork()).join();
+    }
+    if (message.sound !== "") {
+      writer.uint32(18).string(message.sound);
+    }
+    if (message.position !== undefined) {
+      Vec3.encode(message.position, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): WorldSoundEvent {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseWorldSoundEvent();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.world = WorldRef.decode(reader, reader.uint32());
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.sound = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.position = Vec3.decode(reader, reader.uint32());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): WorldSoundEvent {
+    return {
+      world: isSet(object.world) ? WorldRef.fromJSON(object.world) : undefined,
+      sound: isSet(object.sound) ? globalThis.String(object.sound) : "",
+      position: isSet(object.position) ? Vec3.fromJSON(object.position) : undefined,
+    };
+  },
+
+  toJSON(message: WorldSoundEvent): unknown {
+    const obj: any = {};
+    if (message.world !== undefined) {
+      obj.world = WorldRef.toJSON(message.world);
+    }
+    if (message.sound !== "") {
+      obj.sound = message.sound;
+    }
+    if (message.position !== undefined) {
+      obj.position = Vec3.toJSON(message.position);
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<WorldSoundEvent>): WorldSoundEvent {
+    return WorldSoundEvent.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<WorldSoundEvent>): WorldSoundEvent {
+    const message = createBaseWorldSoundEvent();
+    message.world = (object.world !== undefined && object.world !== null)
+      ? WorldRef.fromPartial(object.world)
+      : undefined;
+    message.sound = object.sound ?? "";
+    message.position = (object.position !== undefined && object.position !== null)
+      ? Vec3.fromPartial(object.position)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseWorldFireSpreadEvent(): WorldFireSpreadEvent {
+  return { world: undefined, from: undefined, to: undefined };
+}
+
+export const WorldFireSpreadEvent: MessageFns<WorldFireSpreadEvent> = {
+  encode(message: WorldFireSpreadEvent, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.world !== undefined) {
+      WorldRef.encode(message.world, writer.uint32(10).fork()).join();
+    }
+    if (message.from !== undefined) {
+      BlockPos.encode(message.from, writer.uint32(18).fork()).join();
+    }
+    if (message.to !== undefined) {
+      BlockPos.encode(message.to, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): WorldFireSpreadEvent {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseWorldFireSpreadEvent();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.world = WorldRef.decode(reader, reader.uint32());
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.from = BlockPos.decode(reader, reader.uint32());
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.to = BlockPos.decode(reader, reader.uint32());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): WorldFireSpreadEvent {
+    return {
+      world: isSet(object.world) ? WorldRef.fromJSON(object.world) : undefined,
+      from: isSet(object.from) ? BlockPos.fromJSON(object.from) : undefined,
+      to: isSet(object.to) ? BlockPos.fromJSON(object.to) : undefined,
+    };
+  },
+
+  toJSON(message: WorldFireSpreadEvent): unknown {
+    const obj: any = {};
+    if (message.world !== undefined) {
+      obj.world = WorldRef.toJSON(message.world);
+    }
+    if (message.from !== undefined) {
+      obj.from = BlockPos.toJSON(message.from);
+    }
+    if (message.to !== undefined) {
+      obj.to = BlockPos.toJSON(message.to);
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<WorldFireSpreadEvent>): WorldFireSpreadEvent {
+    return WorldFireSpreadEvent.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<WorldFireSpreadEvent>): WorldFireSpreadEvent {
+    const message = createBaseWorldFireSpreadEvent();
+    message.world = (object.world !== undefined && object.world !== null)
+      ? WorldRef.fromPartial(object.world)
+      : undefined;
+    message.from = (object.from !== undefined && object.from !== null) ? BlockPos.fromPartial(object.from) : undefined;
+    message.to = (object.to !== undefined && object.to !== null) ? BlockPos.fromPartial(object.to) : undefined;
+    return message;
+  },
+};
+
+function createBaseWorldBlockBurnEvent(): WorldBlockBurnEvent {
+  return { world: undefined, position: undefined };
+}
+
+export const WorldBlockBurnEvent: MessageFns<WorldBlockBurnEvent> = {
+  encode(message: WorldBlockBurnEvent, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.world !== undefined) {
+      WorldRef.encode(message.world, writer.uint32(10).fork()).join();
+    }
+    if (message.position !== undefined) {
+      BlockPos.encode(message.position, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): WorldBlockBurnEvent {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseWorldBlockBurnEvent();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.world = WorldRef.decode(reader, reader.uint32());
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.position = BlockPos.decode(reader, reader.uint32());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): WorldBlockBurnEvent {
+    return {
+      world: isSet(object.world) ? WorldRef.fromJSON(object.world) : undefined,
+      position: isSet(object.position) ? BlockPos.fromJSON(object.position) : undefined,
+    };
+  },
+
+  toJSON(message: WorldBlockBurnEvent): unknown {
+    const obj: any = {};
+    if (message.world !== undefined) {
+      obj.world = WorldRef.toJSON(message.world);
+    }
+    if (message.position !== undefined) {
+      obj.position = BlockPos.toJSON(message.position);
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<WorldBlockBurnEvent>): WorldBlockBurnEvent {
+    return WorldBlockBurnEvent.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<WorldBlockBurnEvent>): WorldBlockBurnEvent {
+    const message = createBaseWorldBlockBurnEvent();
+    message.world = (object.world !== undefined && object.world !== null)
+      ? WorldRef.fromPartial(object.world)
+      : undefined;
+    message.position = (object.position !== undefined && object.position !== null)
+      ? BlockPos.fromPartial(object.position)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseWorldCropTrampleEvent(): WorldCropTrampleEvent {
+  return { world: undefined, position: undefined };
+}
+
+export const WorldCropTrampleEvent: MessageFns<WorldCropTrampleEvent> = {
+  encode(message: WorldCropTrampleEvent, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.world !== undefined) {
+      WorldRef.encode(message.world, writer.uint32(10).fork()).join();
+    }
+    if (message.position !== undefined) {
+      BlockPos.encode(message.position, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): WorldCropTrampleEvent {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseWorldCropTrampleEvent();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.world = WorldRef.decode(reader, reader.uint32());
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.position = BlockPos.decode(reader, reader.uint32());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): WorldCropTrampleEvent {
+    return {
+      world: isSet(object.world) ? WorldRef.fromJSON(object.world) : undefined,
+      position: isSet(object.position) ? BlockPos.fromJSON(object.position) : undefined,
+    };
+  },
+
+  toJSON(message: WorldCropTrampleEvent): unknown {
+    const obj: any = {};
+    if (message.world !== undefined) {
+      obj.world = WorldRef.toJSON(message.world);
+    }
+    if (message.position !== undefined) {
+      obj.position = BlockPos.toJSON(message.position);
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<WorldCropTrampleEvent>): WorldCropTrampleEvent {
+    return WorldCropTrampleEvent.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<WorldCropTrampleEvent>): WorldCropTrampleEvent {
+    const message = createBaseWorldCropTrampleEvent();
+    message.world = (object.world !== undefined && object.world !== null)
+      ? WorldRef.fromPartial(object.world)
+      : undefined;
+    message.position = (object.position !== undefined && object.position !== null)
+      ? BlockPos.fromPartial(object.position)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseWorldLeavesDecayEvent(): WorldLeavesDecayEvent {
+  return { world: undefined, position: undefined };
+}
+
+export const WorldLeavesDecayEvent: MessageFns<WorldLeavesDecayEvent> = {
+  encode(message: WorldLeavesDecayEvent, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.world !== undefined) {
+      WorldRef.encode(message.world, writer.uint32(10).fork()).join();
+    }
+    if (message.position !== undefined) {
+      BlockPos.encode(message.position, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): WorldLeavesDecayEvent {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseWorldLeavesDecayEvent();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.world = WorldRef.decode(reader, reader.uint32());
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.position = BlockPos.decode(reader, reader.uint32());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): WorldLeavesDecayEvent {
+    return {
+      world: isSet(object.world) ? WorldRef.fromJSON(object.world) : undefined,
+      position: isSet(object.position) ? BlockPos.fromJSON(object.position) : undefined,
+    };
+  },
+
+  toJSON(message: WorldLeavesDecayEvent): unknown {
+    const obj: any = {};
+    if (message.world !== undefined) {
+      obj.world = WorldRef.toJSON(message.world);
+    }
+    if (message.position !== undefined) {
+      obj.position = BlockPos.toJSON(message.position);
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<WorldLeavesDecayEvent>): WorldLeavesDecayEvent {
+    return WorldLeavesDecayEvent.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<WorldLeavesDecayEvent>): WorldLeavesDecayEvent {
+    const message = createBaseWorldLeavesDecayEvent();
+    message.world = (object.world !== undefined && object.world !== null)
+      ? WorldRef.fromPartial(object.world)
+      : undefined;
+    message.position = (object.position !== undefined && object.position !== null)
+      ? BlockPos.fromPartial(object.position)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseWorldEntitySpawnEvent(): WorldEntitySpawnEvent {
+  return { world: undefined, entity: undefined };
+}
+
+export const WorldEntitySpawnEvent: MessageFns<WorldEntitySpawnEvent> = {
+  encode(message: WorldEntitySpawnEvent, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.world !== undefined) {
+      WorldRef.encode(message.world, writer.uint32(10).fork()).join();
+    }
+    if (message.entity !== undefined) {
+      EntityRef.encode(message.entity, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): WorldEntitySpawnEvent {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseWorldEntitySpawnEvent();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.world = WorldRef.decode(reader, reader.uint32());
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.entity = EntityRef.decode(reader, reader.uint32());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): WorldEntitySpawnEvent {
+    return {
+      world: isSet(object.world) ? WorldRef.fromJSON(object.world) : undefined,
+      entity: isSet(object.entity) ? EntityRef.fromJSON(object.entity) : undefined,
+    };
+  },
+
+  toJSON(message: WorldEntitySpawnEvent): unknown {
+    const obj: any = {};
+    if (message.world !== undefined) {
+      obj.world = WorldRef.toJSON(message.world);
+    }
+    if (message.entity !== undefined) {
+      obj.entity = EntityRef.toJSON(message.entity);
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<WorldEntitySpawnEvent>): WorldEntitySpawnEvent {
+    return WorldEntitySpawnEvent.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<WorldEntitySpawnEvent>): WorldEntitySpawnEvent {
+    const message = createBaseWorldEntitySpawnEvent();
+    message.world = (object.world !== undefined && object.world !== null)
+      ? WorldRef.fromPartial(object.world)
+      : undefined;
+    message.entity = (object.entity !== undefined && object.entity !== null)
+      ? EntityRef.fromPartial(object.entity)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseWorldEntityDespawnEvent(): WorldEntityDespawnEvent {
+  return { world: undefined, entity: undefined };
+}
+
+export const WorldEntityDespawnEvent: MessageFns<WorldEntityDespawnEvent> = {
+  encode(message: WorldEntityDespawnEvent, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.world !== undefined) {
+      WorldRef.encode(message.world, writer.uint32(10).fork()).join();
+    }
+    if (message.entity !== undefined) {
+      EntityRef.encode(message.entity, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): WorldEntityDespawnEvent {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseWorldEntityDespawnEvent();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.world = WorldRef.decode(reader, reader.uint32());
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.entity = EntityRef.decode(reader, reader.uint32());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): WorldEntityDespawnEvent {
+    return {
+      world: isSet(object.world) ? WorldRef.fromJSON(object.world) : undefined,
+      entity: isSet(object.entity) ? EntityRef.fromJSON(object.entity) : undefined,
+    };
+  },
+
+  toJSON(message: WorldEntityDespawnEvent): unknown {
+    const obj: any = {};
+    if (message.world !== undefined) {
+      obj.world = WorldRef.toJSON(message.world);
+    }
+    if (message.entity !== undefined) {
+      obj.entity = EntityRef.toJSON(message.entity);
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<WorldEntityDespawnEvent>): WorldEntityDespawnEvent {
+    return WorldEntityDespawnEvent.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<WorldEntityDespawnEvent>): WorldEntityDespawnEvent {
+    const message = createBaseWorldEntityDespawnEvent();
+    message.world = (object.world !== undefined && object.world !== null)
+      ? WorldRef.fromPartial(object.world)
+      : undefined;
+    message.entity = (object.entity !== undefined && object.entity !== null)
+      ? EntityRef.fromPartial(object.entity)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseWorldExplosionEvent(): WorldExplosionEvent {
+  return {
+    world: undefined,
+    position: undefined,
+    affectedEntities: [],
+    affectedBlocks: [],
+    itemDropChance: 0,
+    spawnFire: false,
+  };
+}
+
+export const WorldExplosionEvent: MessageFns<WorldExplosionEvent> = {
+  encode(message: WorldExplosionEvent, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.world !== undefined) {
+      WorldRef.encode(message.world, writer.uint32(10).fork()).join();
+    }
+    if (message.position !== undefined) {
+      Vec3.encode(message.position, writer.uint32(18).fork()).join();
+    }
+    for (const v of message.affectedEntities) {
+      EntityRef.encode(v!, writer.uint32(26).fork()).join();
+    }
+    for (const v of message.affectedBlocks) {
+      BlockPos.encode(v!, writer.uint32(34).fork()).join();
+    }
+    if (message.itemDropChance !== 0) {
+      writer.uint32(41).double(message.itemDropChance);
+    }
+    if (message.spawnFire !== false) {
+      writer.uint32(48).bool(message.spawnFire);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): WorldExplosionEvent {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseWorldExplosionEvent();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.world = WorldRef.decode(reader, reader.uint32());
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.position = Vec3.decode(reader, reader.uint32());
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.affectedEntities.push(EntityRef.decode(reader, reader.uint32()));
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.affectedBlocks.push(BlockPos.decode(reader, reader.uint32()));
+          continue;
+        }
+        case 5: {
+          if (tag !== 41) {
+            break;
+          }
+
+          message.itemDropChance = reader.double();
+          continue;
+        }
+        case 6: {
+          if (tag !== 48) {
+            break;
+          }
+
+          message.spawnFire = reader.bool();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): WorldExplosionEvent {
+    return {
+      world: isSet(object.world) ? WorldRef.fromJSON(object.world) : undefined,
+      position: isSet(object.position) ? Vec3.fromJSON(object.position) : undefined,
+      affectedEntities: globalThis.Array.isArray(object?.affectedEntities)
+        ? object.affectedEntities.map((e: any) => EntityRef.fromJSON(e))
+        : [],
+      affectedBlocks: globalThis.Array.isArray(object?.affectedBlocks)
+        ? object.affectedBlocks.map((e: any) => BlockPos.fromJSON(e))
+        : [],
+      itemDropChance: isSet(object.itemDropChance) ? globalThis.Number(object.itemDropChance) : 0,
+      spawnFire: isSet(object.spawnFire) ? globalThis.Boolean(object.spawnFire) : false,
+    };
+  },
+
+  toJSON(message: WorldExplosionEvent): unknown {
+    const obj: any = {};
+    if (message.world !== undefined) {
+      obj.world = WorldRef.toJSON(message.world);
+    }
+    if (message.position !== undefined) {
+      obj.position = Vec3.toJSON(message.position);
+    }
+    if (message.affectedEntities?.length) {
+      obj.affectedEntities = message.affectedEntities.map((e) => EntityRef.toJSON(e));
+    }
+    if (message.affectedBlocks?.length) {
+      obj.affectedBlocks = message.affectedBlocks.map((e) => BlockPos.toJSON(e));
+    }
+    if (message.itemDropChance !== 0) {
+      obj.itemDropChance = message.itemDropChance;
+    }
+    if (message.spawnFire !== false) {
+      obj.spawnFire = message.spawnFire;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<WorldExplosionEvent>): WorldExplosionEvent {
+    return WorldExplosionEvent.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<WorldExplosionEvent>): WorldExplosionEvent {
+    const message = createBaseWorldExplosionEvent();
+    message.world = (object.world !== undefined && object.world !== null)
+      ? WorldRef.fromPartial(object.world)
+      : undefined;
+    message.position = (object.position !== undefined && object.position !== null)
+      ? Vec3.fromPartial(object.position)
+      : undefined;
+    message.affectedEntities = object.affectedEntities?.map((e) => EntityRef.fromPartial(e)) || [];
+    message.affectedBlocks = object.affectedBlocks?.map((e) => BlockPos.fromPartial(e)) || [];
+    message.itemDropChance = object.itemDropChance ?? 0;
+    message.spawnFire = object.spawnFire ?? false;
+    return message;
+  },
+};
+
 function createBaseWorldCloseEvent(): WorldCloseEvent {
-  return {};
+  return { world: undefined };
 }
 
 export const WorldCloseEvent: MessageFns<WorldCloseEvent> = {
-  encode(_: WorldCloseEvent, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+  encode(message: WorldCloseEvent, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.world !== undefined) {
+      WorldRef.encode(message.world, writer.uint32(10).fork()).join();
+    }
     return writer;
   },
 
@@ -28,6 +1233,14 @@ export const WorldCloseEvent: MessageFns<WorldCloseEvent> = {
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.world = WorldRef.decode(reader, reader.uint32());
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -37,20 +1250,26 @@ export const WorldCloseEvent: MessageFns<WorldCloseEvent> = {
     return message;
   },
 
-  fromJSON(_: any): WorldCloseEvent {
-    return {};
+  fromJSON(object: any): WorldCloseEvent {
+    return { world: isSet(object.world) ? WorldRef.fromJSON(object.world) : undefined };
   },
 
-  toJSON(_: WorldCloseEvent): unknown {
+  toJSON(message: WorldCloseEvent): unknown {
     const obj: any = {};
+    if (message.world !== undefined) {
+      obj.world = WorldRef.toJSON(message.world);
+    }
     return obj;
   },
 
   create(base?: DeepPartial<WorldCloseEvent>): WorldCloseEvent {
     return WorldCloseEvent.fromPartial(base ?? {});
   },
-  fromPartial(_: DeepPartial<WorldCloseEvent>): WorldCloseEvent {
+  fromPartial(object: DeepPartial<WorldCloseEvent>): WorldCloseEvent {
     const message = createBaseWorldCloseEvent();
+    message.world = (object.world !== undefined && object.world !== null)
+      ? WorldRef.fromPartial(object.world)
+      : undefined;
     return message;
   },
 };
@@ -62,6 +1281,10 @@ export type DeepPartial<T> = T extends Builtin ? T
   : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
+
+function isSet(value: any): boolean {
+  return value !== null && value !== undefined;
+}
 
 export interface MessageFns<T> {
   encode(message: T, writer?: BinaryWriter): BinaryWriter;

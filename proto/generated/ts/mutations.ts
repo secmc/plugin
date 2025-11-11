@@ -6,7 +6,7 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
-import { ItemStack } from "./common";
+import { Address, BlockPos, ItemStack, Vec3, WorldRef } from "./common";
 
 export const protobufPackage = "df.plugin";
 
@@ -15,6 +15,17 @@ export interface EventResult {
   cancel?: boolean | undefined;
   chat?: ChatMutation | undefined;
   blockBreak?: BlockBreakMutation | undefined;
+  playerFoodLoss?: PlayerFoodLossMutation | undefined;
+  playerHeal?: PlayerHealMutation | undefined;
+  playerHurt?: PlayerHurtMutation | undefined;
+  playerDeath?: PlayerDeathMutation | undefined;
+  playerRespawn?: PlayerRespawnMutation | undefined;
+  playerAttackEntity?: PlayerAttackEntityMutation | undefined;
+  playerExperienceGain?: PlayerExperienceGainMutation | undefined;
+  playerLecternPageTurn?: PlayerLecternPageTurnMutation | undefined;
+  playerItemPickup?: PlayerItemPickupMutation | undefined;
+  playerTransfer?: PlayerTransferMutation | undefined;
+  worldExplosion?: WorldExplosionMutation | undefined;
 }
 
 export interface ChatMutation {
@@ -26,8 +37,75 @@ export interface BlockBreakMutation {
   xp?: number | undefined;
 }
 
+export interface PlayerFoodLossMutation {
+  to: number;
+}
+
+export interface PlayerHealMutation {
+  amount: number;
+}
+
+export interface PlayerHurtMutation {
+  damage: number;
+  attackImmunityMs?: number | undefined;
+}
+
+export interface PlayerDeathMutation {
+  keepInventory: boolean;
+}
+
+export interface PlayerRespawnMutation {
+  position?: Vec3 | undefined;
+  world?: WorldRef | undefined;
+}
+
+export interface PlayerAttackEntityMutation {
+  force: number;
+  height: number;
+  critical: boolean;
+}
+
+export interface PlayerExperienceGainMutation {
+  amount: number;
+}
+
+export interface PlayerLecternPageTurnMutation {
+  newPage: number;
+}
+
+export interface PlayerItemPickupMutation {
+  item?: ItemStack | undefined;
+}
+
+export interface PlayerTransferMutation {
+  address?: Address | undefined;
+}
+
+export interface WorldExplosionMutation {
+  entityUuids: string[];
+  blocks: BlockPos[];
+  itemDropChance?: number | undefined;
+  spawnFire?: boolean | undefined;
+}
+
 function createBaseEventResult(): EventResult {
-  return { eventId: "", cancel: undefined, chat: undefined, blockBreak: undefined };
+  return {
+    eventId: "",
+    cancel: undefined,
+    chat: undefined,
+    blockBreak: undefined,
+    playerFoodLoss: undefined,
+    playerHeal: undefined,
+    playerHurt: undefined,
+    playerDeath: undefined,
+    playerRespawn: undefined,
+    playerAttackEntity: undefined,
+    playerExperienceGain: undefined,
+    playerLecternPageTurn: undefined,
+    playerItemPickup: undefined,
+    playerTransfer: undefined,
+    worldExplosion: undefined,
+  };
 }
 
 export const EventResult: MessageFns<EventResult> = {
@@ -43,6 +121,39 @@ export const EventResult: MessageFns<EventResult> = {
     }
     if (message.blockBreak !== undefined) {
       BlockBreakMutation.encode(message.blockBreak, writer.uint32(90).fork()).join();
+    }
+    if (message.playerFoodLoss !== undefined) {
+      PlayerFoodLossMutation.encode(message.playerFoodLoss, writer.uint32(98).fork()).join();
+    }
+    if (message.playerHeal !== undefined) {
+      PlayerHealMutation.encode(message.playerHeal, writer.uint32(106).fork()).join();
+    }
+    if (message.playerHurt !== undefined) {
+      PlayerHurtMutation.encode(message.playerHurt, writer.uint32(114).fork()).join();
+    }
+    if (message.playerDeath !== undefined) {
+      PlayerDeathMutation.encode(message.playerDeath, writer.uint32(122).fork()).join();
+    }
+    if (message.playerRespawn !== undefined) {
+      PlayerRespawnMutation.encode(message.playerRespawn, writer.uint32(130).fork()).join();
+    }
+    if (message.playerAttackEntity !== undefined) {
+      PlayerAttackEntityMutation.encode(message.playerAttackEntity, writer.uint32(138).fork()).join();
+    }
+    if (message.playerExperienceGain !== undefined) {
+      PlayerExperienceGainMutation.encode(message.playerExperienceGain, writer.uint32(146).fork()).join();
+    }
+    if (message.playerLecternPageTurn !== undefined) {
+      PlayerLecternPageTurnMutation.encode(message.playerLecternPageTurn, writer.uint32(154).fork()).join();
+    }
+    if (message.playerItemPickup !== undefined) {
+      PlayerItemPickupMutation.encode(message.playerItemPickup, writer.uint32(162).fork()).join();
+    }
+    if (message.playerTransfer !== undefined) {
+      PlayerTransferMutation.encode(message.playerTransfer, writer.uint32(170).fork()).join();
+    }
+    if (message.worldExplosion !== undefined) {
+      WorldExplosionMutation.encode(message.worldExplosion, writer.uint32(242).fork()).join();
     }
     return writer;
   },
@@ -86,6 +197,94 @@ export const EventResult: MessageFns<EventResult> = {
           message.blockBreak = BlockBreakMutation.decode(reader, reader.uint32());
           continue;
         }
+        case 12: {
+          if (tag !== 98) {
+            break;
+          }
+
+          message.playerFoodLoss = PlayerFoodLossMutation.decode(reader, reader.uint32());
+          continue;
+        }
+        case 13: {
+          if (tag !== 106) {
+            break;
+          }
+
+          message.playerHeal = PlayerHealMutation.decode(reader, reader.uint32());
+          continue;
+        }
+        case 14: {
+          if (tag !== 114) {
+            break;
+          }
+
+          message.playerHurt = PlayerHurtMutation.decode(reader, reader.uint32());
+          continue;
+        }
+        case 15: {
+          if (tag !== 122) {
+            break;
+          }
+
+          message.playerDeath = PlayerDeathMutation.decode(reader, reader.uint32());
+          continue;
+        }
+        case 16: {
+          if (tag !== 130) {
+            break;
+          }
+
+          message.playerRespawn = PlayerRespawnMutation.decode(reader, reader.uint32());
+          continue;
+        }
+        case 17: {
+          if (tag !== 138) {
+            break;
+          }
+
+          message.playerAttackEntity = PlayerAttackEntityMutation.decode(reader, reader.uint32());
+          continue;
+        }
+        case 18: {
+          if (tag !== 146) {
+            break;
+          }
+
+          message.playerExperienceGain = PlayerExperienceGainMutation.decode(reader, reader.uint32());
+          continue;
+        }
+        case 19: {
+          if (tag !== 154) {
+            break;
+          }
+
+          message.playerLecternPageTurn = PlayerLecternPageTurnMutation.decode(reader, reader.uint32());
+          continue;
+        }
+        case 20: {
+          if (tag !== 162) {
+            break;
+          }
+
+          message.playerItemPickup = PlayerItemPickupMutation.decode(reader, reader.uint32());
+          continue;
+        }
+        case 21: {
+          if (tag !== 170) {
+            break;
+          }
+
+          message.playerTransfer = PlayerTransferMutation.decode(reader, reader.uint32());
+          continue;
+        }
+        case 30: {
+          if (tag !== 242) {
+            break;
+          }
+
+          message.worldExplosion = WorldExplosionMutation.decode(reader, reader.uint32());
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -101,6 +300,25 @@ export const EventResult: MessageFns<EventResult> = {
       cancel: isSet(object.cancel) ? globalThis.Boolean(object.cancel) : undefined,
       chat: isSet(object.chat) ? ChatMutation.fromJSON(object.chat) : undefined,
       blockBreak: isSet(object.blockBreak) ? BlockBreakMutation.fromJSON(object.blockBreak) : undefined,
+      playerFoodLoss: isSet(object.playerFoodLoss) ? PlayerFoodLossMutation.fromJSON(object.playerFoodLoss) : undefined,
+      playerHeal: isSet(object.playerHeal) ? PlayerHealMutation.fromJSON(object.playerHeal) : undefined,
+      playerHurt: isSet(object.playerHurt) ? PlayerHurtMutation.fromJSON(object.playerHurt) : undefined,
+      playerDeath: isSet(object.playerDeath) ? PlayerDeathMutation.fromJSON(object.playerDeath) : undefined,
+      playerRespawn: isSet(object.playerRespawn) ? PlayerRespawnMutation.fromJSON(object.playerRespawn) : undefined,
+      playerAttackEntity: isSet(object.playerAttackEntity)
+        ? PlayerAttackEntityMutation.fromJSON(object.playerAttackEntity)
+        : undefined,
+      playerExperienceGain: isSet(object.playerExperienceGain)
+        ? PlayerExperienceGainMutation.fromJSON(object.playerExperienceGain)
+        : undefined,
+      playerLecternPageTurn: isSet(object.playerLecternPageTurn)
+        ? PlayerLecternPageTurnMutation.fromJSON(object.playerLecternPageTurn)
+        : undefined,
+      playerItemPickup: isSet(object.playerItemPickup)
+        ? PlayerItemPickupMutation.fromJSON(object.playerItemPickup)
+        : undefined,
+      playerTransfer: isSet(object.playerTransfer) ? PlayerTransferMutation.fromJSON(object.playerTransfer) : undefined,
+      worldExplosion: isSet(object.worldExplosion) ? WorldExplosionMutation.fromJSON(object.worldExplosion) : undefined,
     };
   },
 
@@ -118,6 +336,39 @@ export const EventResult: MessageFns<EventResult> = {
     if (message.blockBreak !== undefined) {
       obj.blockBreak = BlockBreakMutation.toJSON(message.blockBreak);
     }
+    if (message.playerFoodLoss !== undefined) {
+      obj.playerFoodLoss = PlayerFoodLossMutation.toJSON(message.playerFoodLoss);
+    }
+    if (message.playerHeal !== undefined) {
+      obj.playerHeal = PlayerHealMutation.toJSON(message.playerHeal);
+    }
+    if (message.playerHurt !== undefined) {
+      obj.playerHurt = PlayerHurtMutation.toJSON(message.playerHurt);
+    }
+    if (message.playerDeath !== undefined) {
+      obj.playerDeath = PlayerDeathMutation.toJSON(message.playerDeath);
+    }
+    if (message.playerRespawn !== undefined) {
+      obj.playerRespawn = PlayerRespawnMutation.toJSON(message.playerRespawn);
+    }
+    if (message.playerAttackEntity !== undefined) {
+      obj.playerAttackEntity = PlayerAttackEntityMutation.toJSON(message.playerAttackEntity);
+    }
+    if (message.playerExperienceGain !== undefined) {
+      obj.playerExperienceGain = PlayerExperienceGainMutation.toJSON(message.playerExperienceGain);
+    }
+    if (message.playerLecternPageTurn !== undefined) {
+      obj.playerLecternPageTurn = PlayerLecternPageTurnMutation.toJSON(message.playerLecternPageTurn);
+    }
+    if (message.playerItemPickup !== undefined) {
+      obj.playerItemPickup = PlayerItemPickupMutation.toJSON(message.playerItemPickup);
+    }
+    if (message.playerTransfer !== undefined) {
+      obj.playerTransfer = PlayerTransferMutation.toJSON(message.playerTransfer);
+    }
+    if (message.worldExplosion !== undefined) {
+      obj.worldExplosion = WorldExplosionMutation.toJSON(message.worldExplosion);
+    }
     return obj;
   },
 
@@ -133,6 +384,40 @@ export const EventResult: MessageFns<EventResult> = {
       : undefined;
     message.blockBreak = (object.blockBreak !== undefined && object.blockBreak !== null)
       ? BlockBreakMutation.fromPartial(object.blockBreak)
+      : undefined;
+    message.playerFoodLoss = (object.playerFoodLoss !== undefined && object.playerFoodLoss !== null)
+      ? PlayerFoodLossMutation.fromPartial(object.playerFoodLoss)
+      : undefined;
+    message.playerHeal = (object.playerHeal !== undefined && object.playerHeal !== null)
+      ? PlayerHealMutation.fromPartial(object.playerHeal)
+      : undefined;
+    message.playerHurt = (object.playerHurt !== undefined && object.playerHurt !== null)
+      ? PlayerHurtMutation.fromPartial(object.playerHurt)
+      : undefined;
+    message.playerDeath = (object.playerDeath !== undefined && object.playerDeath !== null)
+      ? PlayerDeathMutation.fromPartial(object.playerDeath)
+      : undefined;
+    message.playerRespawn = (object.playerRespawn !== undefined && object.playerRespawn !== null)
+      ? PlayerRespawnMutation.fromPartial(object.playerRespawn)
+      : undefined;
+    message.playerAttackEntity = (object.playerAttackEntity !== undefined && object.playerAttackEntity !== null)
+      ? PlayerAttackEntityMutation.fromPartial(object.playerAttackEntity)
+      : undefined;
+    message.playerExperienceGain = (object.playerExperienceGain !== undefined && object.playerExperienceGain !== null)
+      ? PlayerExperienceGainMutation.fromPartial(object.playerExperienceGain)
+      : undefined;
+    message.playerLecternPageTurn =
+      (object.playerLecternPageTurn !== undefined && object.playerLecternPageTurn !== null)
+        ? PlayerLecternPageTurnMutation.fromPartial(object.playerLecternPageTurn)
+        : undefined;
+    message.playerItemPickup = (object.playerItemPickup !== undefined && object.playerItemPickup !== null)
+      ? PlayerItemPickupMutation.fromPartial(object.playerItemPickup)
+      : undefined;
+    message.playerTransfer = (object.playerTransfer !== undefined && object.playerTransfer !== null)
+      ? PlayerTransferMutation.fromPartial(object.playerTransfer)
+      : undefined;
+    message.worldExplosion = (object.worldExplosion !== undefined && object.worldExplosion !== null)
+      ? WorldExplosionMutation.fromPartial(object.worldExplosion)
       : undefined;
     return message;
   },
@@ -272,6 +557,772 @@ export const BlockBreakMutation: MessageFns<BlockBreakMutation> = {
   },
 };
 
+function createBasePlayerFoodLossMutation(): PlayerFoodLossMutation {
+  return { to: 0 };
+}
+
+export const PlayerFoodLossMutation: MessageFns<PlayerFoodLossMutation> = {
+  encode(message: PlayerFoodLossMutation, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.to !== 0) {
+      writer.uint32(8).int32(message.to);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): PlayerFoodLossMutation {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePlayerFoodLossMutation();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 8) {
+            break;
+          }
+
+          message.to = reader.int32();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PlayerFoodLossMutation {
+    return { to: isSet(object.to) ? globalThis.Number(object.to) : 0 };
+  },
+
+  toJSON(message: PlayerFoodLossMutation): unknown {
+    const obj: any = {};
+    if (message.to !== 0) {
+      obj.to = Math.round(message.to);
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<PlayerFoodLossMutation>): PlayerFoodLossMutation {
+    return PlayerFoodLossMutation.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<PlayerFoodLossMutation>): PlayerFoodLossMutation {
+    const message = createBasePlayerFoodLossMutation();
+    message.to = object.to ?? 0;
+    return message;
+  },
+};
+
+function createBasePlayerHealMutation(): PlayerHealMutation {
+  return { amount: 0 };
+}
+
+export const PlayerHealMutation: MessageFns<PlayerHealMutation> = {
+  encode(message: PlayerHealMutation, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.amount !== 0) {
+      writer.uint32(9).double(message.amount);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): PlayerHealMutation {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePlayerHealMutation();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 9) {
+            break;
+          }
+
+          message.amount = reader.double();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PlayerHealMutation {
+    return { amount: isSet(object.amount) ? globalThis.Number(object.amount) : 0 };
+  },
+
+  toJSON(message: PlayerHealMutation): unknown {
+    const obj: any = {};
+    if (message.amount !== 0) {
+      obj.amount = message.amount;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<PlayerHealMutation>): PlayerHealMutation {
+    return PlayerHealMutation.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<PlayerHealMutation>): PlayerHealMutation {
+    const message = createBasePlayerHealMutation();
+    message.amount = object.amount ?? 0;
+    return message;
+  },
+};
+
+function createBasePlayerHurtMutation(): PlayerHurtMutation {
+  return { damage: 0, attackImmunityMs: undefined };
+}
+
+export const PlayerHurtMutation: MessageFns<PlayerHurtMutation> = {
+  encode(message: PlayerHurtMutation, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.damage !== 0) {
+      writer.uint32(9).double(message.damage);
+    }
+    if (message.attackImmunityMs !== undefined) {
+      writer.uint32(16).int64(message.attackImmunityMs);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): PlayerHurtMutation {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePlayerHurtMutation();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 9) {
+            break;
+          }
+
+          message.damage = reader.double();
+          continue;
+        }
+        case 2: {
+          if (tag !== 16) {
+            break;
+          }
+
+          message.attackImmunityMs = longToNumber(reader.int64());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PlayerHurtMutation {
+    return {
+      damage: isSet(object.damage) ? globalThis.Number(object.damage) : 0,
+      attackImmunityMs: isSet(object.attackImmunityMs) ? globalThis.Number(object.attackImmunityMs) : undefined,
+    };
+  },
+
+  toJSON(message: PlayerHurtMutation): unknown {
+    const obj: any = {};
+    if (message.damage !== 0) {
+      obj.damage = message.damage;
+    }
+    if (message.attackImmunityMs !== undefined) {
+      obj.attackImmunityMs = Math.round(message.attackImmunityMs);
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<PlayerHurtMutation>): PlayerHurtMutation {
+    return PlayerHurtMutation.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<PlayerHurtMutation>): PlayerHurtMutation {
+    const message = createBasePlayerHurtMutation();
+    message.damage = object.damage ?? 0;
+    message.attackImmunityMs = object.attackImmunityMs ?? undefined;
+    return message;
+  },
+};
+
+function createBasePlayerDeathMutation(): PlayerDeathMutation {
+  return { keepInventory: false };
+}
+
+export const PlayerDeathMutation: MessageFns<PlayerDeathMutation> = {
+  encode(message: PlayerDeathMutation, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.keepInventory !== false) {
+      writer.uint32(8).bool(message.keepInventory);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): PlayerDeathMutation {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePlayerDeathMutation();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 8) {
+            break;
+          }
+
+          message.keepInventory = reader.bool();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PlayerDeathMutation {
+    return { keepInventory: isSet(object.keepInventory) ? globalThis.Boolean(object.keepInventory) : false };
+  },
+
+  toJSON(message: PlayerDeathMutation): unknown {
+    const obj: any = {};
+    if (message.keepInventory !== false) {
+      obj.keepInventory = message.keepInventory;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<PlayerDeathMutation>): PlayerDeathMutation {
+    return PlayerDeathMutation.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<PlayerDeathMutation>): PlayerDeathMutation {
+    const message = createBasePlayerDeathMutation();
+    message.keepInventory = object.keepInventory ?? false;
+    return message;
+  },
+};
+
+function createBasePlayerRespawnMutation(): PlayerRespawnMutation {
+  return { position: undefined, world: undefined };
+}
+
+export const PlayerRespawnMutation: MessageFns<PlayerRespawnMutation> = {
+  encode(message: PlayerRespawnMutation, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.position !== undefined) {
+      Vec3.encode(message.position, writer.uint32(10).fork()).join();
+    }
+    if (message.world !== undefined) {
+      WorldRef.encode(message.world, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): PlayerRespawnMutation {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePlayerRespawnMutation();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.position = Vec3.decode(reader, reader.uint32());
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.world = WorldRef.decode(reader, reader.uint32());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PlayerRespawnMutation {
+    return {
+      position: isSet(object.position) ? Vec3.fromJSON(object.position) : undefined,
+      world: isSet(object.world) ? WorldRef.fromJSON(object.world) : undefined,
+    };
+  },
+
+  toJSON(message: PlayerRespawnMutation): unknown {
+    const obj: any = {};
+    if (message.position !== undefined) {
+      obj.position = Vec3.toJSON(message.position);
+    }
+    if (message.world !== undefined) {
+      obj.world = WorldRef.toJSON(message.world);
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<PlayerRespawnMutation>): PlayerRespawnMutation {
+    return PlayerRespawnMutation.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<PlayerRespawnMutation>): PlayerRespawnMutation {
+    const message = createBasePlayerRespawnMutation();
+    message.position = (object.position !== undefined && object.position !== null)
+      ? Vec3.fromPartial(object.position)
+      : undefined;
+    message.world = (object.world !== undefined && object.world !== null)
+      ? WorldRef.fromPartial(object.world)
+      : undefined;
+    return message;
+  },
+};
+
+function createBasePlayerAttackEntityMutation(): PlayerAttackEntityMutation {
+  return { force: 0, height: 0, critical: false };
+}
+
+export const PlayerAttackEntityMutation: MessageFns<PlayerAttackEntityMutation> = {
+  encode(message: PlayerAttackEntityMutation, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.force !== 0) {
+      writer.uint32(9).double(message.force);
+    }
+    if (message.height !== 0) {
+      writer.uint32(17).double(message.height);
+    }
+    if (message.critical !== false) {
+      writer.uint32(24).bool(message.critical);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): PlayerAttackEntityMutation {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePlayerAttackEntityMutation();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 9) {
+            break;
+          }
+
+          message.force = reader.double();
+          continue;
+        }
+        case 2: {
+          if (tag !== 17) {
+            break;
+          }
+
+          message.height = reader.double();
+          continue;
+        }
+        case 3: {
+          if (tag !== 24) {
+            break;
+          }
+
+          message.critical = reader.bool();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PlayerAttackEntityMutation {
+    return {
+      force: isSet(object.force) ? globalThis.Number(object.force) : 0,
+      height: isSet(object.height) ? globalThis.Number(object.height) : 0,
+      critical: isSet(object.critical) ? globalThis.Boolean(object.critical) : false,
+    };
+  },
+
+  toJSON(message: PlayerAttackEntityMutation): unknown {
+    const obj: any = {};
+    if (message.force !== 0) {
+      obj.force = message.force;
+    }
+    if (message.height !== 0) {
+      obj.height = message.height;
+    }
+    if (message.critical !== false) {
+      obj.critical = message.critical;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<PlayerAttackEntityMutation>): PlayerAttackEntityMutation {
+    return PlayerAttackEntityMutation.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<PlayerAttackEntityMutation>): PlayerAttackEntityMutation {
+    const message = createBasePlayerAttackEntityMutation();
+    message.force = object.force ?? 0;
+    message.height = object.height ?? 0;
+    message.critical = object.critical ?? false;
+    return message;
+  },
+};
+
+function createBasePlayerExperienceGainMutation(): PlayerExperienceGainMutation {
+  return { amount: 0 };
+}
+
+export const PlayerExperienceGainMutation: MessageFns<PlayerExperienceGainMutation> = {
+  encode(message: PlayerExperienceGainMutation, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.amount !== 0) {
+      writer.uint32(8).int32(message.amount);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): PlayerExperienceGainMutation {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePlayerExperienceGainMutation();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 8) {
+            break;
+          }
+
+          message.amount = reader.int32();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PlayerExperienceGainMutation {
+    return { amount: isSet(object.amount) ? globalThis.Number(object.amount) : 0 };
+  },
+
+  toJSON(message: PlayerExperienceGainMutation): unknown {
+    const obj: any = {};
+    if (message.amount !== 0) {
+      obj.amount = Math.round(message.amount);
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<PlayerExperienceGainMutation>): PlayerExperienceGainMutation {
+    return PlayerExperienceGainMutation.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<PlayerExperienceGainMutation>): PlayerExperienceGainMutation {
+    const message = createBasePlayerExperienceGainMutation();
+    message.amount = object.amount ?? 0;
+    return message;
+  },
+};
+
+function createBasePlayerLecternPageTurnMutation(): PlayerLecternPageTurnMutation {
+  return { newPage: 0 };
+}
+
+export const PlayerLecternPageTurnMutation: MessageFns<PlayerLecternPageTurnMutation> = {
+  encode(message: PlayerLecternPageTurnMutation, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.newPage !== 0) {
+      writer.uint32(8).int32(message.newPage);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): PlayerLecternPageTurnMutation {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePlayerLecternPageTurnMutation();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 8) {
+            break;
+          }
+
+          message.newPage = reader.int32();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PlayerLecternPageTurnMutation {
+    return { newPage: isSet(object.newPage) ? globalThis.Number(object.newPage) : 0 };
+  },
+
+  toJSON(message: PlayerLecternPageTurnMutation): unknown {
+    const obj: any = {};
+    if (message.newPage !== 0) {
+      obj.newPage = Math.round(message.newPage);
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<PlayerLecternPageTurnMutation>): PlayerLecternPageTurnMutation {
+    return PlayerLecternPageTurnMutation.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<PlayerLecternPageTurnMutation>): PlayerLecternPageTurnMutation {
+    const message = createBasePlayerLecternPageTurnMutation();
+    message.newPage = object.newPage ?? 0;
+    return message;
+  },
+};
+
+function createBasePlayerItemPickupMutation(): PlayerItemPickupMutation {
+  return { item: undefined };
+}
+
+export const PlayerItemPickupMutation: MessageFns<PlayerItemPickupMutation> = {
+  encode(message: PlayerItemPickupMutation, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.item !== undefined) {
+      ItemStack.encode(message.item, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): PlayerItemPickupMutation {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePlayerItemPickupMutation();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.item = ItemStack.decode(reader, reader.uint32());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PlayerItemPickupMutation {
+    return { item: isSet(object.item) ? ItemStack.fromJSON(object.item) : undefined };
+  },
+
+  toJSON(message: PlayerItemPickupMutation): unknown {
+    const obj: any = {};
+    if (message.item !== undefined) {
+      obj.item = ItemStack.toJSON(message.item);
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<PlayerItemPickupMutation>): PlayerItemPickupMutation {
+    return PlayerItemPickupMutation.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<PlayerItemPickupMutation>): PlayerItemPickupMutation {
+    const message = createBasePlayerItemPickupMutation();
+    message.item = (object.item !== undefined && object.item !== null) ? ItemStack.fromPartial(object.item) : undefined;
+    return message;
+  },
+};
+
+function createBasePlayerTransferMutation(): PlayerTransferMutation {
+  return { address: undefined };
+}
+
+export const PlayerTransferMutation: MessageFns<PlayerTransferMutation> = {
+  encode(message: PlayerTransferMutation, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.address !== undefined) {
+      Address.encode(message.address, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): PlayerTransferMutation {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePlayerTransferMutation();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.address = Address.decode(reader, reader.uint32());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PlayerTransferMutation {
+    return { address: isSet(object.address) ? Address.fromJSON(object.address) : undefined };
+  },
+
+  toJSON(message: PlayerTransferMutation): unknown {
+    const obj: any = {};
+    if (message.address !== undefined) {
+      obj.address = Address.toJSON(message.address);
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<PlayerTransferMutation>): PlayerTransferMutation {
+    return PlayerTransferMutation.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<PlayerTransferMutation>): PlayerTransferMutation {
+    const message = createBasePlayerTransferMutation();
+    message.address = (object.address !== undefined && object.address !== null)
+      ? Address.fromPartial(object.address)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseWorldExplosionMutation(): WorldExplosionMutation {
+  return { entityUuids: [], blocks: [], itemDropChance: undefined, spawnFire: undefined };
+}
+
+export const WorldExplosionMutation: MessageFns<WorldExplosionMutation> = {
+  encode(message: WorldExplosionMutation, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.entityUuids) {
+      writer.uint32(10).string(v!);
+    }
+    for (const v of message.blocks) {
+      BlockPos.encode(v!, writer.uint32(18).fork()).join();
+    }
+    if (message.itemDropChance !== undefined) {
+      writer.uint32(25).double(message.itemDropChance);
+    }
+    if (message.spawnFire !== undefined) {
+      writer.uint32(32).bool(message.spawnFire);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): WorldExplosionMutation {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseWorldExplosionMutation();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.entityUuids.push(reader.string());
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.blocks.push(BlockPos.decode(reader, reader.uint32()));
+          continue;
+        }
+        case 3: {
+          if (tag !== 25) {
+            break;
+          }
+
+          message.itemDropChance = reader.double();
+          continue;
+        }
+        case 4: {
+          if (tag !== 32) {
+            break;
+          }
+
+          message.spawnFire = reader.bool();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): WorldExplosionMutation {
+    return {
+      entityUuids: globalThis.Array.isArray(object?.entityUuids)
+        ? object.entityUuids.map((e: any) => globalThis.String(e))
+        : [],
+      blocks: globalThis.Array.isArray(object?.blocks) ? object.blocks.map((e: any) => BlockPos.fromJSON(e)) : [],
+      itemDropChance: isSet(object.itemDropChance) ? globalThis.Number(object.itemDropChance) : undefined,
+      spawnFire: isSet(object.spawnFire) ? globalThis.Boolean(object.spawnFire) : undefined,
+    };
+  },
+
+  toJSON(message: WorldExplosionMutation): unknown {
+    const obj: any = {};
+    if (message.entityUuids?.length) {
+      obj.entityUuids = message.entityUuids;
+    }
+    if (message.blocks?.length) {
+      obj.blocks = message.blocks.map((e) => BlockPos.toJSON(e));
+    }
+    if (message.itemDropChance !== undefined) {
+      obj.itemDropChance = message.itemDropChance;
+    }
+    if (message.spawnFire !== undefined) {
+      obj.spawnFire = message.spawnFire;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<WorldExplosionMutation>): WorldExplosionMutation {
+    return WorldExplosionMutation.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<WorldExplosionMutation>): WorldExplosionMutation {
+    const message = createBaseWorldExplosionMutation();
+    message.entityUuids = object.entityUuids?.map((e) => e) || [];
+    message.blocks = object.blocks?.map((e) => BlockPos.fromPartial(e)) || [];
+    message.itemDropChance = object.itemDropChance ?? undefined;
+    message.spawnFire = object.spawnFire ?? undefined;
+    return message;
+  },
+};
+
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin ? T
@@ -279,6 +1330,17 @@ export type DeepPartial<T> = T extends Builtin ? T
   : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
+
+function longToNumber(int64: { toString(): string }): number {
+  const num = globalThis.Number(int64.toString());
+  if (num > globalThis.Number.MAX_SAFE_INTEGER) {
+    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+  }
+  if (num < globalThis.Number.MIN_SAFE_INTEGER) {
+    throw new globalThis.Error("Value is smaller than Number.MIN_SAFE_INTEGER");
+  }
+  return num;
+}
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;

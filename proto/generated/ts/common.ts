@@ -54,11 +54,333 @@ export function gameModeToJSON(object: GameMode): string {
   }
 }
 
+export interface Vec3 {
+  x: number;
+  y: number;
+  z: number;
+}
+
+export interface Rotation {
+  yaw: number;
+  pitch: number;
+}
+
+export interface BlockPos {
+  x: number;
+  y: number;
+  z: number;
+}
+
 export interface ItemStack {
   name: string;
   meta: number;
   count: number;
 }
+
+export interface BlockState {
+  name: string;
+  properties: { [key: string]: string };
+}
+
+export interface BlockState_PropertiesEntry {
+  key: string;
+  value: string;
+}
+
+export interface LiquidState {
+  block: BlockState | undefined;
+  depth: number;
+  falling: boolean;
+  liquidType: string;
+}
+
+export interface WorldRef {
+  name: string;
+  dimension: string;
+}
+
+export interface EntityRef {
+  uuid: string;
+  type: string;
+  name?: string | undefined;
+  position?: Vec3 | undefined;
+  rotation?: Rotation | undefined;
+}
+
+export interface DamageSource {
+  type: string;
+  description?: string | undefined;
+}
+
+export interface HealingSource {
+  type: string;
+  description?: string | undefined;
+}
+
+export interface Address {
+  host: string;
+  port: number;
+}
+
+function createBaseVec3(): Vec3 {
+  return { x: 0, y: 0, z: 0 };
+}
+
+export const Vec3: MessageFns<Vec3> = {
+  encode(message: Vec3, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.x !== 0) {
+      writer.uint32(9).double(message.x);
+    }
+    if (message.y !== 0) {
+      writer.uint32(17).double(message.y);
+    }
+    if (message.z !== 0) {
+      writer.uint32(25).double(message.z);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): Vec3 {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseVec3();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 9) {
+            break;
+          }
+
+          message.x = reader.double();
+          continue;
+        }
+        case 2: {
+          if (tag !== 17) {
+            break;
+          }
+
+          message.y = reader.double();
+          continue;
+        }
+        case 3: {
+          if (tag !== 25) {
+            break;
+          }
+
+          message.z = reader.double();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Vec3 {
+    return {
+      x: isSet(object.x) ? globalThis.Number(object.x) : 0,
+      y: isSet(object.y) ? globalThis.Number(object.y) : 0,
+      z: isSet(object.z) ? globalThis.Number(object.z) : 0,
+    };
+  },
+
+  toJSON(message: Vec3): unknown {
+    const obj: any = {};
+    if (message.x !== 0) {
+      obj.x = message.x;
+    }
+    if (message.y !== 0) {
+      obj.y = message.y;
+    }
+    if (message.z !== 0) {
+      obj.z = message.z;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<Vec3>): Vec3 {
+    return Vec3.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<Vec3>): Vec3 {
+    const message = createBaseVec3();
+    message.x = object.x ?? 0;
+    message.y = object.y ?? 0;
+    message.z = object.z ?? 0;
+    return message;
+  },
+};
+
+function createBaseRotation(): Rotation {
+  return { yaw: 0, pitch: 0 };
+}
+
+export const Rotation: MessageFns<Rotation> = {
+  encode(message: Rotation, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.yaw !== 0) {
+      writer.uint32(13).float(message.yaw);
+    }
+    if (message.pitch !== 0) {
+      writer.uint32(21).float(message.pitch);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): Rotation {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseRotation();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 13) {
+            break;
+          }
+
+          message.yaw = reader.float();
+          continue;
+        }
+        case 2: {
+          if (tag !== 21) {
+            break;
+          }
+
+          message.pitch = reader.float();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Rotation {
+    return {
+      yaw: isSet(object.yaw) ? globalThis.Number(object.yaw) : 0,
+      pitch: isSet(object.pitch) ? globalThis.Number(object.pitch) : 0,
+    };
+  },
+
+  toJSON(message: Rotation): unknown {
+    const obj: any = {};
+    if (message.yaw !== 0) {
+      obj.yaw = message.yaw;
+    }
+    if (message.pitch !== 0) {
+      obj.pitch = message.pitch;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<Rotation>): Rotation {
+    return Rotation.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<Rotation>): Rotation {
+    const message = createBaseRotation();
+    message.yaw = object.yaw ?? 0;
+    message.pitch = object.pitch ?? 0;
+    return message;
+  },
+};
+
+function createBaseBlockPos(): BlockPos {
+  return { x: 0, y: 0, z: 0 };
+}
+
+export const BlockPos: MessageFns<BlockPos> = {
+  encode(message: BlockPos, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.x !== 0) {
+      writer.uint32(8).int32(message.x);
+    }
+    if (message.y !== 0) {
+      writer.uint32(16).int32(message.y);
+    }
+    if (message.z !== 0) {
+      writer.uint32(24).int32(message.z);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): BlockPos {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseBlockPos();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 8) {
+            break;
+          }
+
+          message.x = reader.int32();
+          continue;
+        }
+        case 2: {
+          if (tag !== 16) {
+            break;
+          }
+
+          message.y = reader.int32();
+          continue;
+        }
+        case 3: {
+          if (tag !== 24) {
+            break;
+          }
+
+          message.z = reader.int32();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): BlockPos {
+    return {
+      x: isSet(object.x) ? globalThis.Number(object.x) : 0,
+      y: isSet(object.y) ? globalThis.Number(object.y) : 0,
+      z: isSet(object.z) ? globalThis.Number(object.z) : 0,
+    };
+  },
+
+  toJSON(message: BlockPos): unknown {
+    const obj: any = {};
+    if (message.x !== 0) {
+      obj.x = Math.round(message.x);
+    }
+    if (message.y !== 0) {
+      obj.y = Math.round(message.y);
+    }
+    if (message.z !== 0) {
+      obj.z = Math.round(message.z);
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<BlockPos>): BlockPos {
+    return BlockPos.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<BlockPos>): BlockPos {
+    const message = createBaseBlockPos();
+    message.x = object.x ?? 0;
+    message.y = object.y ?? 0;
+    message.z = object.z ?? 0;
+    return message;
+  },
+};
 
 function createBaseItemStack(): ItemStack {
   return { name: "", meta: 0, count: 0 };
@@ -152,6 +474,722 @@ export const ItemStack: MessageFns<ItemStack> = {
   },
 };
 
+function createBaseBlockState(): BlockState {
+  return { name: "", properties: {} };
+}
+
+export const BlockState: MessageFns<BlockState> = {
+  encode(message: BlockState, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.name !== "") {
+      writer.uint32(10).string(message.name);
+    }
+    Object.entries(message.properties).forEach(([key, value]) => {
+      BlockState_PropertiesEntry.encode({ key: key as any, value }, writer.uint32(18).fork()).join();
+    });
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): BlockState {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseBlockState();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          const entry2 = BlockState_PropertiesEntry.decode(reader, reader.uint32());
+          if (entry2.value !== undefined) {
+            message.properties[entry2.key] = entry2.value;
+          }
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): BlockState {
+    return {
+      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      properties: isObject(object.properties)
+        ? Object.entries(object.properties).reduce<{ [key: string]: string }>((acc, [key, value]) => {
+          acc[key] = String(value);
+          return acc;
+        }, {})
+        : {},
+    };
+  },
+
+  toJSON(message: BlockState): unknown {
+    const obj: any = {};
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    if (message.properties) {
+      const entries = Object.entries(message.properties);
+      if (entries.length > 0) {
+        obj.properties = {};
+        entries.forEach(([k, v]) => {
+          obj.properties[k] = v;
+        });
+      }
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<BlockState>): BlockState {
+    return BlockState.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<BlockState>): BlockState {
+    const message = createBaseBlockState();
+    message.name = object.name ?? "";
+    message.properties = Object.entries(object.properties ?? {}).reduce<{ [key: string]: string }>(
+      (acc, [key, value]) => {
+        if (value !== undefined) {
+          acc[key] = globalThis.String(value);
+        }
+        return acc;
+      },
+      {},
+    );
+    return message;
+  },
+};
+
+function createBaseBlockState_PropertiesEntry(): BlockState_PropertiesEntry {
+  return { key: "", value: "" };
+}
+
+export const BlockState_PropertiesEntry: MessageFns<BlockState_PropertiesEntry> = {
+  encode(message: BlockState_PropertiesEntry, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.key !== "") {
+      writer.uint32(10).string(message.key);
+    }
+    if (message.value !== "") {
+      writer.uint32(18).string(message.value);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): BlockState_PropertiesEntry {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseBlockState_PropertiesEntry();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.key = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.value = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): BlockState_PropertiesEntry {
+    return {
+      key: isSet(object.key) ? globalThis.String(object.key) : "",
+      value: isSet(object.value) ? globalThis.String(object.value) : "",
+    };
+  },
+
+  toJSON(message: BlockState_PropertiesEntry): unknown {
+    const obj: any = {};
+    if (message.key !== "") {
+      obj.key = message.key;
+    }
+    if (message.value !== "") {
+      obj.value = message.value;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<BlockState_PropertiesEntry>): BlockState_PropertiesEntry {
+    return BlockState_PropertiesEntry.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<BlockState_PropertiesEntry>): BlockState_PropertiesEntry {
+    const message = createBaseBlockState_PropertiesEntry();
+    message.key = object.key ?? "";
+    message.value = object.value ?? "";
+    return message;
+  },
+};
+
+function createBaseLiquidState(): LiquidState {
+  return { block: undefined, depth: 0, falling: false, liquidType: "" };
+}
+
+export const LiquidState: MessageFns<LiquidState> = {
+  encode(message: LiquidState, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.block !== undefined) {
+      BlockState.encode(message.block, writer.uint32(10).fork()).join();
+    }
+    if (message.depth !== 0) {
+      writer.uint32(16).int32(message.depth);
+    }
+    if (message.falling !== false) {
+      writer.uint32(24).bool(message.falling);
+    }
+    if (message.liquidType !== "") {
+      writer.uint32(34).string(message.liquidType);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): LiquidState {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseLiquidState();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.block = BlockState.decode(reader, reader.uint32());
+          continue;
+        }
+        case 2: {
+          if (tag !== 16) {
+            break;
+          }
+
+          message.depth = reader.int32();
+          continue;
+        }
+        case 3: {
+          if (tag !== 24) {
+            break;
+          }
+
+          message.falling = reader.bool();
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.liquidType = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): LiquidState {
+    return {
+      block: isSet(object.block) ? BlockState.fromJSON(object.block) : undefined,
+      depth: isSet(object.depth) ? globalThis.Number(object.depth) : 0,
+      falling: isSet(object.falling) ? globalThis.Boolean(object.falling) : false,
+      liquidType: isSet(object.liquidType) ? globalThis.String(object.liquidType) : "",
+    };
+  },
+
+  toJSON(message: LiquidState): unknown {
+    const obj: any = {};
+    if (message.block !== undefined) {
+      obj.block = BlockState.toJSON(message.block);
+    }
+    if (message.depth !== 0) {
+      obj.depth = Math.round(message.depth);
+    }
+    if (message.falling !== false) {
+      obj.falling = message.falling;
+    }
+    if (message.liquidType !== "") {
+      obj.liquidType = message.liquidType;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<LiquidState>): LiquidState {
+    return LiquidState.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<LiquidState>): LiquidState {
+    const message = createBaseLiquidState();
+    message.block = (object.block !== undefined && object.block !== null)
+      ? BlockState.fromPartial(object.block)
+      : undefined;
+    message.depth = object.depth ?? 0;
+    message.falling = object.falling ?? false;
+    message.liquidType = object.liquidType ?? "";
+    return message;
+  },
+};
+
+function createBaseWorldRef(): WorldRef {
+  return { name: "", dimension: "" };
+}
+
+export const WorldRef: MessageFns<WorldRef> = {
+  encode(message: WorldRef, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.name !== "") {
+      writer.uint32(10).string(message.name);
+    }
+    if (message.dimension !== "") {
+      writer.uint32(18).string(message.dimension);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): WorldRef {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseWorldRef();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.dimension = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): WorldRef {
+    return {
+      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      dimension: isSet(object.dimension) ? globalThis.String(object.dimension) : "",
+    };
+  },
+
+  toJSON(message: WorldRef): unknown {
+    const obj: any = {};
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    if (message.dimension !== "") {
+      obj.dimension = message.dimension;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<WorldRef>): WorldRef {
+    return WorldRef.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<WorldRef>): WorldRef {
+    const message = createBaseWorldRef();
+    message.name = object.name ?? "";
+    message.dimension = object.dimension ?? "";
+    return message;
+  },
+};
+
+function createBaseEntityRef(): EntityRef {
+  return { uuid: "", type: "", name: undefined, position: undefined, rotation: undefined };
+}
+
+export const EntityRef: MessageFns<EntityRef> = {
+  encode(message: EntityRef, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.uuid !== "") {
+      writer.uint32(10).string(message.uuid);
+    }
+    if (message.type !== "") {
+      writer.uint32(18).string(message.type);
+    }
+    if (message.name !== undefined) {
+      writer.uint32(26).string(message.name);
+    }
+    if (message.position !== undefined) {
+      Vec3.encode(message.position, writer.uint32(34).fork()).join();
+    }
+    if (message.rotation !== undefined) {
+      Rotation.encode(message.rotation, writer.uint32(42).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): EntityRef {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseEntityRef();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.uuid = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.type = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.position = Vec3.decode(reader, reader.uint32());
+          continue;
+        }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
+          message.rotation = Rotation.decode(reader, reader.uint32());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): EntityRef {
+    return {
+      uuid: isSet(object.uuid) ? globalThis.String(object.uuid) : "",
+      type: isSet(object.type) ? globalThis.String(object.type) : "",
+      name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+      position: isSet(object.position) ? Vec3.fromJSON(object.position) : undefined,
+      rotation: isSet(object.rotation) ? Rotation.fromJSON(object.rotation) : undefined,
+    };
+  },
+
+  toJSON(message: EntityRef): unknown {
+    const obj: any = {};
+    if (message.uuid !== "") {
+      obj.uuid = message.uuid;
+    }
+    if (message.type !== "") {
+      obj.type = message.type;
+    }
+    if (message.name !== undefined) {
+      obj.name = message.name;
+    }
+    if (message.position !== undefined) {
+      obj.position = Vec3.toJSON(message.position);
+    }
+    if (message.rotation !== undefined) {
+      obj.rotation = Rotation.toJSON(message.rotation);
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<EntityRef>): EntityRef {
+    return EntityRef.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<EntityRef>): EntityRef {
+    const message = createBaseEntityRef();
+    message.uuid = object.uuid ?? "";
+    message.type = object.type ?? "";
+    message.name = object.name ?? undefined;
+    message.position = (object.position !== undefined && object.position !== null)
+      ? Vec3.fromPartial(object.position)
+      : undefined;
+    message.rotation = (object.rotation !== undefined && object.rotation !== null)
+      ? Rotation.fromPartial(object.rotation)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseDamageSource(): DamageSource {
+  return { type: "", description: undefined };
+}
+
+export const DamageSource: MessageFns<DamageSource> = {
+  encode(message: DamageSource, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.type !== "") {
+      writer.uint32(10).string(message.type);
+    }
+    if (message.description !== undefined) {
+      writer.uint32(18).string(message.description);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): DamageSource {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDamageSource();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.type = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.description = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DamageSource {
+    return {
+      type: isSet(object.type) ? globalThis.String(object.type) : "",
+      description: isSet(object.description) ? globalThis.String(object.description) : undefined,
+    };
+  },
+
+  toJSON(message: DamageSource): unknown {
+    const obj: any = {};
+    if (message.type !== "") {
+      obj.type = message.type;
+    }
+    if (message.description !== undefined) {
+      obj.description = message.description;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<DamageSource>): DamageSource {
+    return DamageSource.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<DamageSource>): DamageSource {
+    const message = createBaseDamageSource();
+    message.type = object.type ?? "";
+    message.description = object.description ?? undefined;
+    return message;
+  },
+};
+
+function createBaseHealingSource(): HealingSource {
+  return { type: "", description: undefined };
+}
+
+export const HealingSource: MessageFns<HealingSource> = {
+  encode(message: HealingSource, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.type !== "") {
+      writer.uint32(10).string(message.type);
+    }
+    if (message.description !== undefined) {
+      writer.uint32(18).string(message.description);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): HealingSource {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseHealingSource();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.type = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.description = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): HealingSource {
+    return {
+      type: isSet(object.type) ? globalThis.String(object.type) : "",
+      description: isSet(object.description) ? globalThis.String(object.description) : undefined,
+    };
+  },
+
+  toJSON(message: HealingSource): unknown {
+    const obj: any = {};
+    if (message.type !== "") {
+      obj.type = message.type;
+    }
+    if (message.description !== undefined) {
+      obj.description = message.description;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<HealingSource>): HealingSource {
+    return HealingSource.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<HealingSource>): HealingSource {
+    const message = createBaseHealingSource();
+    message.type = object.type ?? "";
+    message.description = object.description ?? undefined;
+    return message;
+  },
+};
+
+function createBaseAddress(): Address {
+  return { host: "", port: 0 };
+}
+
+export const Address: MessageFns<Address> = {
+  encode(message: Address, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.host !== "") {
+      writer.uint32(10).string(message.host);
+    }
+    if (message.port !== 0) {
+      writer.uint32(16).int32(message.port);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): Address {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseAddress();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.host = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 16) {
+            break;
+          }
+
+          message.port = reader.int32();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Address {
+    return {
+      host: isSet(object.host) ? globalThis.String(object.host) : "",
+      port: isSet(object.port) ? globalThis.Number(object.port) : 0,
+    };
+  },
+
+  toJSON(message: Address): unknown {
+    const obj: any = {};
+    if (message.host !== "") {
+      obj.host = message.host;
+    }
+    if (message.port !== 0) {
+      obj.port = Math.round(message.port);
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<Address>): Address {
+    return Address.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<Address>): Address {
+    const message = createBaseAddress();
+    message.host = object.host ?? "";
+    message.port = object.port ?? 0;
+    return message;
+  },
+};
+
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin ? T
@@ -159,6 +1197,10 @@ export type DeepPartial<T> = T extends Builtin ? T
   : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
+
+function isObject(value: any): boolean {
+  return typeof value === "object" && value !== null;
+}
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;

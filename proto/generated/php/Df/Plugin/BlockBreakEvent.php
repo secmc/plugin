@@ -27,17 +27,9 @@ class BlockBreakEvent extends \Google\Protobuf\Internal\Message
      */
     protected $world = '';
     /**
-     * Generated from protobuf field <code>int32 x = 4 [json_name = "x"];</code>
+     * Generated from protobuf field <code>.df.plugin.BlockPos position = 4 [json_name = "position"];</code>
      */
-    protected $x = 0;
-    /**
-     * Generated from protobuf field <code>int32 y = 5 [json_name = "y"];</code>
-     */
-    protected $y = 0;
-    /**
-     * Generated from protobuf field <code>int32 z = 6 [json_name = "z"];</code>
-     */
-    protected $z = 0;
+    protected $position = null;
 
     /**
      * Constructor.
@@ -48,9 +40,7 @@ class BlockBreakEvent extends \Google\Protobuf\Internal\Message
      *     @type string $player_uuid
      *     @type string $name
      *     @type string $world
-     *     @type int $x
-     *     @type int $y
-     *     @type int $z
+     *     @type \Df\Plugin\BlockPos $position
      * }
      */
     public function __construct($data = NULL) {
@@ -125,67 +115,33 @@ class BlockBreakEvent extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>int32 x = 4 [json_name = "x"];</code>
-     * @return int
+     * Generated from protobuf field <code>.df.plugin.BlockPos position = 4 [json_name = "position"];</code>
+     * @return \Df\Plugin\BlockPos|null
      */
-    public function getX()
+    public function getPosition()
     {
-        return $this->x;
+        return $this->position;
+    }
+
+    public function hasPosition()
+    {
+        return isset($this->position);
+    }
+
+    public function clearPosition()
+    {
+        unset($this->position);
     }
 
     /**
-     * Generated from protobuf field <code>int32 x = 4 [json_name = "x"];</code>
-     * @param int $var
+     * Generated from protobuf field <code>.df.plugin.BlockPos position = 4 [json_name = "position"];</code>
+     * @param \Df\Plugin\BlockPos $var
      * @return $this
      */
-    public function setX($var)
+    public function setPosition($var)
     {
-        GPBUtil::checkInt32($var);
-        $this->x = $var;
-
-        return $this;
-    }
-
-    /**
-     * Generated from protobuf field <code>int32 y = 5 [json_name = "y"];</code>
-     * @return int
-     */
-    public function getY()
-    {
-        return $this->y;
-    }
-
-    /**
-     * Generated from protobuf field <code>int32 y = 5 [json_name = "y"];</code>
-     * @param int $var
-     * @return $this
-     */
-    public function setY($var)
-    {
-        GPBUtil::checkInt32($var);
-        $this->y = $var;
-
-        return $this;
-    }
-
-    /**
-     * Generated from protobuf field <code>int32 z = 6 [json_name = "z"];</code>
-     * @return int
-     */
-    public function getZ()
-    {
-        return $this->z;
-    }
-
-    /**
-     * Generated from protobuf field <code>int32 z = 6 [json_name = "z"];</code>
-     * @param int $var
-     * @return $this
-     */
-    public function setZ($var)
-    {
-        GPBUtil::checkInt32($var);
-        $this->z = $var;
+        GPBUtil::checkMessage($var, \Df\Plugin\BlockPos::class);
+        $this->position = $var;
 
         return $this;
     }

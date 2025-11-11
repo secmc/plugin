@@ -34,9 +34,52 @@ class EventEnvelope extends \Google\Protobuf\Internal\Message
      *     @type int $type
      *     @type \Df\Plugin\PlayerJoinEvent $player_join
      *     @type \Df\Plugin\PlayerQuitEvent $player_quit
+     *     @type \Df\Plugin\PlayerMoveEvent $player_move
+     *     @type \Df\Plugin\PlayerJumpEvent $player_jump
+     *     @type \Df\Plugin\PlayerTeleportEvent $player_teleport
+     *     @type \Df\Plugin\PlayerChangeWorldEvent $player_change_world
+     *     @type \Df\Plugin\PlayerToggleSprintEvent $player_toggle_sprint
+     *     @type \Df\Plugin\PlayerToggleSneakEvent $player_toggle_sneak
      *     @type \Df\Plugin\ChatEvent $chat
-     *     @type \Df\Plugin\CommandEvent $command
+     *     @type \Df\Plugin\PlayerFoodLossEvent $player_food_loss
+     *     @type \Df\Plugin\PlayerHealEvent $player_heal
+     *     @type \Df\Plugin\PlayerHurtEvent $player_hurt
+     *     @type \Df\Plugin\PlayerDeathEvent $player_death
+     *     @type \Df\Plugin\PlayerRespawnEvent $player_respawn
+     *     @type \Df\Plugin\PlayerSkinChangeEvent $player_skin_change
+     *     @type \Df\Plugin\PlayerFireExtinguishEvent $player_fire_extinguish
+     *     @type \Df\Plugin\PlayerStartBreakEvent $player_start_break
      *     @type \Df\Plugin\BlockBreakEvent $block_break
+     *     @type \Df\Plugin\PlayerBlockPlaceEvent $player_block_place
+     *     @type \Df\Plugin\PlayerBlockPickEvent $player_block_pick
+     *     @type \Df\Plugin\PlayerItemUseEvent $player_item_use
+     *     @type \Df\Plugin\PlayerItemUseOnBlockEvent $player_item_use_on_block
+     *     @type \Df\Plugin\PlayerItemUseOnEntityEvent $player_item_use_on_entity
+     *     @type \Df\Plugin\PlayerItemReleaseEvent $player_item_release
+     *     @type \Df\Plugin\PlayerItemConsumeEvent $player_item_consume
+     *     @type \Df\Plugin\PlayerAttackEntityEvent $player_attack_entity
+     *     @type \Df\Plugin\PlayerExperienceGainEvent $player_experience_gain
+     *     @type \Df\Plugin\PlayerPunchAirEvent $player_punch_air
+     *     @type \Df\Plugin\PlayerSignEditEvent $player_sign_edit
+     *     @type \Df\Plugin\PlayerLecternPageTurnEvent $player_lectern_page_turn
+     *     @type \Df\Plugin\PlayerItemDamageEvent $player_item_damage
+     *     @type \Df\Plugin\PlayerItemPickupEvent $player_item_pickup
+     *     @type \Df\Plugin\PlayerHeldSlotChangeEvent $player_held_slot_change
+     *     @type \Df\Plugin\PlayerItemDropEvent $player_item_drop
+     *     @type \Df\Plugin\PlayerTransferEvent $player_transfer
+     *     @type \Df\Plugin\CommandEvent $command
+     *     @type \Df\Plugin\PlayerDiagnosticsEvent $player_diagnostics
+     *     @type \Df\Plugin\WorldLiquidFlowEvent $world_liquid_flow
+     *     @type \Df\Plugin\WorldLiquidDecayEvent $world_liquid_decay
+     *     @type \Df\Plugin\WorldLiquidHardenEvent $world_liquid_harden
+     *     @type \Df\Plugin\WorldSoundEvent $world_sound
+     *     @type \Df\Plugin\WorldFireSpreadEvent $world_fire_spread
+     *     @type \Df\Plugin\WorldBlockBurnEvent $world_block_burn
+     *     @type \Df\Plugin\WorldCropTrampleEvent $world_crop_trample
+     *     @type \Df\Plugin\WorldLeavesDecayEvent $world_leaves_decay
+     *     @type \Df\Plugin\WorldEntitySpawnEvent $world_entity_spawn
+     *     @type \Df\Plugin\WorldEntityDespawnEvent $world_entity_despawn
+     *     @type \Df\Plugin\WorldExplosionEvent $world_explosion
      *     @type \Df\Plugin\WorldCloseEvent $world_close
      * }
      */
@@ -144,109 +187,1270 @@ class EventEnvelope extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>.df.plugin.ChatEvent chat = 12 [json_name = "chat"];</code>
-     * @return \Df\Plugin\ChatEvent|null
+     * Generated from protobuf field <code>.df.plugin.PlayerMoveEvent player_move = 12 [json_name = "playerMove"];</code>
+     * @return \Df\Plugin\PlayerMoveEvent|null
      */
-    public function getChat()
+    public function getPlayerMove()
     {
         return $this->readOneof(12);
     }
 
-    public function hasChat()
+    public function hasPlayerMove()
     {
         return $this->hasOneof(12);
     }
 
     /**
-     * Generated from protobuf field <code>.df.plugin.ChatEvent chat = 12 [json_name = "chat"];</code>
-     * @param \Df\Plugin\ChatEvent $var
+     * Generated from protobuf field <code>.df.plugin.PlayerMoveEvent player_move = 12 [json_name = "playerMove"];</code>
+     * @param \Df\Plugin\PlayerMoveEvent $var
      * @return $this
      */
-    public function setChat($var)
+    public function setPlayerMove($var)
     {
-        GPBUtil::checkMessage($var, \Df\Plugin\ChatEvent::class);
+        GPBUtil::checkMessage($var, \Df\Plugin\PlayerMoveEvent::class);
         $this->writeOneof(12, $var);
 
         return $this;
     }
 
     /**
-     * Generated from protobuf field <code>.df.plugin.CommandEvent command = 13 [json_name = "command"];</code>
-     * @return \Df\Plugin\CommandEvent|null
+     * Generated from protobuf field <code>.df.plugin.PlayerJumpEvent player_jump = 13 [json_name = "playerJump"];</code>
+     * @return \Df\Plugin\PlayerJumpEvent|null
      */
-    public function getCommand()
+    public function getPlayerJump()
     {
         return $this->readOneof(13);
     }
 
-    public function hasCommand()
+    public function hasPlayerJump()
     {
         return $this->hasOneof(13);
     }
 
     /**
-     * Generated from protobuf field <code>.df.plugin.CommandEvent command = 13 [json_name = "command"];</code>
-     * @param \Df\Plugin\CommandEvent $var
+     * Generated from protobuf field <code>.df.plugin.PlayerJumpEvent player_jump = 13 [json_name = "playerJump"];</code>
+     * @param \Df\Plugin\PlayerJumpEvent $var
      * @return $this
      */
-    public function setCommand($var)
+    public function setPlayerJump($var)
     {
-        GPBUtil::checkMessage($var, \Df\Plugin\CommandEvent::class);
+        GPBUtil::checkMessage($var, \Df\Plugin\PlayerJumpEvent::class);
         $this->writeOneof(13, $var);
 
         return $this;
     }
 
     /**
-     * Generated from protobuf field <code>.df.plugin.BlockBreakEvent block_break = 14 [json_name = "blockBreak"];</code>
-     * @return \Df\Plugin\BlockBreakEvent|null
+     * Generated from protobuf field <code>.df.plugin.PlayerTeleportEvent player_teleport = 14 [json_name = "playerTeleport"];</code>
+     * @return \Df\Plugin\PlayerTeleportEvent|null
      */
-    public function getBlockBreak()
+    public function getPlayerTeleport()
     {
         return $this->readOneof(14);
     }
 
-    public function hasBlockBreak()
+    public function hasPlayerTeleport()
     {
         return $this->hasOneof(14);
     }
 
     /**
-     * Generated from protobuf field <code>.df.plugin.BlockBreakEvent block_break = 14 [json_name = "blockBreak"];</code>
-     * @param \Df\Plugin\BlockBreakEvent $var
+     * Generated from protobuf field <code>.df.plugin.PlayerTeleportEvent player_teleport = 14 [json_name = "playerTeleport"];</code>
+     * @param \Df\Plugin\PlayerTeleportEvent $var
      * @return $this
      */
-    public function setBlockBreak($var)
+    public function setPlayerTeleport($var)
     {
-        GPBUtil::checkMessage($var, \Df\Plugin\BlockBreakEvent::class);
+        GPBUtil::checkMessage($var, \Df\Plugin\PlayerTeleportEvent::class);
         $this->writeOneof(14, $var);
 
         return $this;
     }
 
     /**
-     * Generated from protobuf field <code>.df.plugin.WorldCloseEvent world_close = 15 [json_name = "worldClose"];</code>
-     * @return \Df\Plugin\WorldCloseEvent|null
+     * Generated from protobuf field <code>.df.plugin.PlayerChangeWorldEvent player_change_world = 15 [json_name = "playerChangeWorld"];</code>
+     * @return \Df\Plugin\PlayerChangeWorldEvent|null
      */
-    public function getWorldClose()
+    public function getPlayerChangeWorld()
     {
         return $this->readOneof(15);
     }
 
-    public function hasWorldClose()
+    public function hasPlayerChangeWorld()
     {
         return $this->hasOneof(15);
     }
 
     /**
-     * Generated from protobuf field <code>.df.plugin.WorldCloseEvent world_close = 15 [json_name = "worldClose"];</code>
+     * Generated from protobuf field <code>.df.plugin.PlayerChangeWorldEvent player_change_world = 15 [json_name = "playerChangeWorld"];</code>
+     * @param \Df\Plugin\PlayerChangeWorldEvent $var
+     * @return $this
+     */
+    public function setPlayerChangeWorld($var)
+    {
+        GPBUtil::checkMessage($var, \Df\Plugin\PlayerChangeWorldEvent::class);
+        $this->writeOneof(15, $var);
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.PlayerToggleSprintEvent player_toggle_sprint = 16 [json_name = "playerToggleSprint"];</code>
+     * @return \Df\Plugin\PlayerToggleSprintEvent|null
+     */
+    public function getPlayerToggleSprint()
+    {
+        return $this->readOneof(16);
+    }
+
+    public function hasPlayerToggleSprint()
+    {
+        return $this->hasOneof(16);
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.PlayerToggleSprintEvent player_toggle_sprint = 16 [json_name = "playerToggleSprint"];</code>
+     * @param \Df\Plugin\PlayerToggleSprintEvent $var
+     * @return $this
+     */
+    public function setPlayerToggleSprint($var)
+    {
+        GPBUtil::checkMessage($var, \Df\Plugin\PlayerToggleSprintEvent::class);
+        $this->writeOneof(16, $var);
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.PlayerToggleSneakEvent player_toggle_sneak = 17 [json_name = "playerToggleSneak"];</code>
+     * @return \Df\Plugin\PlayerToggleSneakEvent|null
+     */
+    public function getPlayerToggleSneak()
+    {
+        return $this->readOneof(17);
+    }
+
+    public function hasPlayerToggleSneak()
+    {
+        return $this->hasOneof(17);
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.PlayerToggleSneakEvent player_toggle_sneak = 17 [json_name = "playerToggleSneak"];</code>
+     * @param \Df\Plugin\PlayerToggleSneakEvent $var
+     * @return $this
+     */
+    public function setPlayerToggleSneak($var)
+    {
+        GPBUtil::checkMessage($var, \Df\Plugin\PlayerToggleSneakEvent::class);
+        $this->writeOneof(17, $var);
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.ChatEvent chat = 18 [json_name = "chat"];</code>
+     * @return \Df\Plugin\ChatEvent|null
+     */
+    public function getChat()
+    {
+        return $this->readOneof(18);
+    }
+
+    public function hasChat()
+    {
+        return $this->hasOneof(18);
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.ChatEvent chat = 18 [json_name = "chat"];</code>
+     * @param \Df\Plugin\ChatEvent $var
+     * @return $this
+     */
+    public function setChat($var)
+    {
+        GPBUtil::checkMessage($var, \Df\Plugin\ChatEvent::class);
+        $this->writeOneof(18, $var);
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.PlayerFoodLossEvent player_food_loss = 19 [json_name = "playerFoodLoss"];</code>
+     * @return \Df\Plugin\PlayerFoodLossEvent|null
+     */
+    public function getPlayerFoodLoss()
+    {
+        return $this->readOneof(19);
+    }
+
+    public function hasPlayerFoodLoss()
+    {
+        return $this->hasOneof(19);
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.PlayerFoodLossEvent player_food_loss = 19 [json_name = "playerFoodLoss"];</code>
+     * @param \Df\Plugin\PlayerFoodLossEvent $var
+     * @return $this
+     */
+    public function setPlayerFoodLoss($var)
+    {
+        GPBUtil::checkMessage($var, \Df\Plugin\PlayerFoodLossEvent::class);
+        $this->writeOneof(19, $var);
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.PlayerHealEvent player_heal = 20 [json_name = "playerHeal"];</code>
+     * @return \Df\Plugin\PlayerHealEvent|null
+     */
+    public function getPlayerHeal()
+    {
+        return $this->readOneof(20);
+    }
+
+    public function hasPlayerHeal()
+    {
+        return $this->hasOneof(20);
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.PlayerHealEvent player_heal = 20 [json_name = "playerHeal"];</code>
+     * @param \Df\Plugin\PlayerHealEvent $var
+     * @return $this
+     */
+    public function setPlayerHeal($var)
+    {
+        GPBUtil::checkMessage($var, \Df\Plugin\PlayerHealEvent::class);
+        $this->writeOneof(20, $var);
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.PlayerHurtEvent player_hurt = 21 [json_name = "playerHurt"];</code>
+     * @return \Df\Plugin\PlayerHurtEvent|null
+     */
+    public function getPlayerHurt()
+    {
+        return $this->readOneof(21);
+    }
+
+    public function hasPlayerHurt()
+    {
+        return $this->hasOneof(21);
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.PlayerHurtEvent player_hurt = 21 [json_name = "playerHurt"];</code>
+     * @param \Df\Plugin\PlayerHurtEvent $var
+     * @return $this
+     */
+    public function setPlayerHurt($var)
+    {
+        GPBUtil::checkMessage($var, \Df\Plugin\PlayerHurtEvent::class);
+        $this->writeOneof(21, $var);
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.PlayerDeathEvent player_death = 22 [json_name = "playerDeath"];</code>
+     * @return \Df\Plugin\PlayerDeathEvent|null
+     */
+    public function getPlayerDeath()
+    {
+        return $this->readOneof(22);
+    }
+
+    public function hasPlayerDeath()
+    {
+        return $this->hasOneof(22);
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.PlayerDeathEvent player_death = 22 [json_name = "playerDeath"];</code>
+     * @param \Df\Plugin\PlayerDeathEvent $var
+     * @return $this
+     */
+    public function setPlayerDeath($var)
+    {
+        GPBUtil::checkMessage($var, \Df\Plugin\PlayerDeathEvent::class);
+        $this->writeOneof(22, $var);
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.PlayerRespawnEvent player_respawn = 23 [json_name = "playerRespawn"];</code>
+     * @return \Df\Plugin\PlayerRespawnEvent|null
+     */
+    public function getPlayerRespawn()
+    {
+        return $this->readOneof(23);
+    }
+
+    public function hasPlayerRespawn()
+    {
+        return $this->hasOneof(23);
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.PlayerRespawnEvent player_respawn = 23 [json_name = "playerRespawn"];</code>
+     * @param \Df\Plugin\PlayerRespawnEvent $var
+     * @return $this
+     */
+    public function setPlayerRespawn($var)
+    {
+        GPBUtil::checkMessage($var, \Df\Plugin\PlayerRespawnEvent::class);
+        $this->writeOneof(23, $var);
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.PlayerSkinChangeEvent player_skin_change = 24 [json_name = "playerSkinChange"];</code>
+     * @return \Df\Plugin\PlayerSkinChangeEvent|null
+     */
+    public function getPlayerSkinChange()
+    {
+        return $this->readOneof(24);
+    }
+
+    public function hasPlayerSkinChange()
+    {
+        return $this->hasOneof(24);
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.PlayerSkinChangeEvent player_skin_change = 24 [json_name = "playerSkinChange"];</code>
+     * @param \Df\Plugin\PlayerSkinChangeEvent $var
+     * @return $this
+     */
+    public function setPlayerSkinChange($var)
+    {
+        GPBUtil::checkMessage($var, \Df\Plugin\PlayerSkinChangeEvent::class);
+        $this->writeOneof(24, $var);
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.PlayerFireExtinguishEvent player_fire_extinguish = 25 [json_name = "playerFireExtinguish"];</code>
+     * @return \Df\Plugin\PlayerFireExtinguishEvent|null
+     */
+    public function getPlayerFireExtinguish()
+    {
+        return $this->readOneof(25);
+    }
+
+    public function hasPlayerFireExtinguish()
+    {
+        return $this->hasOneof(25);
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.PlayerFireExtinguishEvent player_fire_extinguish = 25 [json_name = "playerFireExtinguish"];</code>
+     * @param \Df\Plugin\PlayerFireExtinguishEvent $var
+     * @return $this
+     */
+    public function setPlayerFireExtinguish($var)
+    {
+        GPBUtil::checkMessage($var, \Df\Plugin\PlayerFireExtinguishEvent::class);
+        $this->writeOneof(25, $var);
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.PlayerStartBreakEvent player_start_break = 26 [json_name = "playerStartBreak"];</code>
+     * @return \Df\Plugin\PlayerStartBreakEvent|null
+     */
+    public function getPlayerStartBreak()
+    {
+        return $this->readOneof(26);
+    }
+
+    public function hasPlayerStartBreak()
+    {
+        return $this->hasOneof(26);
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.PlayerStartBreakEvent player_start_break = 26 [json_name = "playerStartBreak"];</code>
+     * @param \Df\Plugin\PlayerStartBreakEvent $var
+     * @return $this
+     */
+    public function setPlayerStartBreak($var)
+    {
+        GPBUtil::checkMessage($var, \Df\Plugin\PlayerStartBreakEvent::class);
+        $this->writeOneof(26, $var);
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.BlockBreakEvent block_break = 27 [json_name = "blockBreak"];</code>
+     * @return \Df\Plugin\BlockBreakEvent|null
+     */
+    public function getBlockBreak()
+    {
+        return $this->readOneof(27);
+    }
+
+    public function hasBlockBreak()
+    {
+        return $this->hasOneof(27);
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.BlockBreakEvent block_break = 27 [json_name = "blockBreak"];</code>
+     * @param \Df\Plugin\BlockBreakEvent $var
+     * @return $this
+     */
+    public function setBlockBreak($var)
+    {
+        GPBUtil::checkMessage($var, \Df\Plugin\BlockBreakEvent::class);
+        $this->writeOneof(27, $var);
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.PlayerBlockPlaceEvent player_block_place = 28 [json_name = "playerBlockPlace"];</code>
+     * @return \Df\Plugin\PlayerBlockPlaceEvent|null
+     */
+    public function getPlayerBlockPlace()
+    {
+        return $this->readOneof(28);
+    }
+
+    public function hasPlayerBlockPlace()
+    {
+        return $this->hasOneof(28);
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.PlayerBlockPlaceEvent player_block_place = 28 [json_name = "playerBlockPlace"];</code>
+     * @param \Df\Plugin\PlayerBlockPlaceEvent $var
+     * @return $this
+     */
+    public function setPlayerBlockPlace($var)
+    {
+        GPBUtil::checkMessage($var, \Df\Plugin\PlayerBlockPlaceEvent::class);
+        $this->writeOneof(28, $var);
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.PlayerBlockPickEvent player_block_pick = 29 [json_name = "playerBlockPick"];</code>
+     * @return \Df\Plugin\PlayerBlockPickEvent|null
+     */
+    public function getPlayerBlockPick()
+    {
+        return $this->readOneof(29);
+    }
+
+    public function hasPlayerBlockPick()
+    {
+        return $this->hasOneof(29);
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.PlayerBlockPickEvent player_block_pick = 29 [json_name = "playerBlockPick"];</code>
+     * @param \Df\Plugin\PlayerBlockPickEvent $var
+     * @return $this
+     */
+    public function setPlayerBlockPick($var)
+    {
+        GPBUtil::checkMessage($var, \Df\Plugin\PlayerBlockPickEvent::class);
+        $this->writeOneof(29, $var);
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.PlayerItemUseEvent player_item_use = 30 [json_name = "playerItemUse"];</code>
+     * @return \Df\Plugin\PlayerItemUseEvent|null
+     */
+    public function getPlayerItemUse()
+    {
+        return $this->readOneof(30);
+    }
+
+    public function hasPlayerItemUse()
+    {
+        return $this->hasOneof(30);
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.PlayerItemUseEvent player_item_use = 30 [json_name = "playerItemUse"];</code>
+     * @param \Df\Plugin\PlayerItemUseEvent $var
+     * @return $this
+     */
+    public function setPlayerItemUse($var)
+    {
+        GPBUtil::checkMessage($var, \Df\Plugin\PlayerItemUseEvent::class);
+        $this->writeOneof(30, $var);
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.PlayerItemUseOnBlockEvent player_item_use_on_block = 31 [json_name = "playerItemUseOnBlock"];</code>
+     * @return \Df\Plugin\PlayerItemUseOnBlockEvent|null
+     */
+    public function getPlayerItemUseOnBlock()
+    {
+        return $this->readOneof(31);
+    }
+
+    public function hasPlayerItemUseOnBlock()
+    {
+        return $this->hasOneof(31);
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.PlayerItemUseOnBlockEvent player_item_use_on_block = 31 [json_name = "playerItemUseOnBlock"];</code>
+     * @param \Df\Plugin\PlayerItemUseOnBlockEvent $var
+     * @return $this
+     */
+    public function setPlayerItemUseOnBlock($var)
+    {
+        GPBUtil::checkMessage($var, \Df\Plugin\PlayerItemUseOnBlockEvent::class);
+        $this->writeOneof(31, $var);
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.PlayerItemUseOnEntityEvent player_item_use_on_entity = 32 [json_name = "playerItemUseOnEntity"];</code>
+     * @return \Df\Plugin\PlayerItemUseOnEntityEvent|null
+     */
+    public function getPlayerItemUseOnEntity()
+    {
+        return $this->readOneof(32);
+    }
+
+    public function hasPlayerItemUseOnEntity()
+    {
+        return $this->hasOneof(32);
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.PlayerItemUseOnEntityEvent player_item_use_on_entity = 32 [json_name = "playerItemUseOnEntity"];</code>
+     * @param \Df\Plugin\PlayerItemUseOnEntityEvent $var
+     * @return $this
+     */
+    public function setPlayerItemUseOnEntity($var)
+    {
+        GPBUtil::checkMessage($var, \Df\Plugin\PlayerItemUseOnEntityEvent::class);
+        $this->writeOneof(32, $var);
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.PlayerItemReleaseEvent player_item_release = 33 [json_name = "playerItemRelease"];</code>
+     * @return \Df\Plugin\PlayerItemReleaseEvent|null
+     */
+    public function getPlayerItemRelease()
+    {
+        return $this->readOneof(33);
+    }
+
+    public function hasPlayerItemRelease()
+    {
+        return $this->hasOneof(33);
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.PlayerItemReleaseEvent player_item_release = 33 [json_name = "playerItemRelease"];</code>
+     * @param \Df\Plugin\PlayerItemReleaseEvent $var
+     * @return $this
+     */
+    public function setPlayerItemRelease($var)
+    {
+        GPBUtil::checkMessage($var, \Df\Plugin\PlayerItemReleaseEvent::class);
+        $this->writeOneof(33, $var);
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.PlayerItemConsumeEvent player_item_consume = 34 [json_name = "playerItemConsume"];</code>
+     * @return \Df\Plugin\PlayerItemConsumeEvent|null
+     */
+    public function getPlayerItemConsume()
+    {
+        return $this->readOneof(34);
+    }
+
+    public function hasPlayerItemConsume()
+    {
+        return $this->hasOneof(34);
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.PlayerItemConsumeEvent player_item_consume = 34 [json_name = "playerItemConsume"];</code>
+     * @param \Df\Plugin\PlayerItemConsumeEvent $var
+     * @return $this
+     */
+    public function setPlayerItemConsume($var)
+    {
+        GPBUtil::checkMessage($var, \Df\Plugin\PlayerItemConsumeEvent::class);
+        $this->writeOneof(34, $var);
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.PlayerAttackEntityEvent player_attack_entity = 35 [json_name = "playerAttackEntity"];</code>
+     * @return \Df\Plugin\PlayerAttackEntityEvent|null
+     */
+    public function getPlayerAttackEntity()
+    {
+        return $this->readOneof(35);
+    }
+
+    public function hasPlayerAttackEntity()
+    {
+        return $this->hasOneof(35);
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.PlayerAttackEntityEvent player_attack_entity = 35 [json_name = "playerAttackEntity"];</code>
+     * @param \Df\Plugin\PlayerAttackEntityEvent $var
+     * @return $this
+     */
+    public function setPlayerAttackEntity($var)
+    {
+        GPBUtil::checkMessage($var, \Df\Plugin\PlayerAttackEntityEvent::class);
+        $this->writeOneof(35, $var);
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.PlayerExperienceGainEvent player_experience_gain = 36 [json_name = "playerExperienceGain"];</code>
+     * @return \Df\Plugin\PlayerExperienceGainEvent|null
+     */
+    public function getPlayerExperienceGain()
+    {
+        return $this->readOneof(36);
+    }
+
+    public function hasPlayerExperienceGain()
+    {
+        return $this->hasOneof(36);
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.PlayerExperienceGainEvent player_experience_gain = 36 [json_name = "playerExperienceGain"];</code>
+     * @param \Df\Plugin\PlayerExperienceGainEvent $var
+     * @return $this
+     */
+    public function setPlayerExperienceGain($var)
+    {
+        GPBUtil::checkMessage($var, \Df\Plugin\PlayerExperienceGainEvent::class);
+        $this->writeOneof(36, $var);
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.PlayerPunchAirEvent player_punch_air = 37 [json_name = "playerPunchAir"];</code>
+     * @return \Df\Plugin\PlayerPunchAirEvent|null
+     */
+    public function getPlayerPunchAir()
+    {
+        return $this->readOneof(37);
+    }
+
+    public function hasPlayerPunchAir()
+    {
+        return $this->hasOneof(37);
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.PlayerPunchAirEvent player_punch_air = 37 [json_name = "playerPunchAir"];</code>
+     * @param \Df\Plugin\PlayerPunchAirEvent $var
+     * @return $this
+     */
+    public function setPlayerPunchAir($var)
+    {
+        GPBUtil::checkMessage($var, \Df\Plugin\PlayerPunchAirEvent::class);
+        $this->writeOneof(37, $var);
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.PlayerSignEditEvent player_sign_edit = 38 [json_name = "playerSignEdit"];</code>
+     * @return \Df\Plugin\PlayerSignEditEvent|null
+     */
+    public function getPlayerSignEdit()
+    {
+        return $this->readOneof(38);
+    }
+
+    public function hasPlayerSignEdit()
+    {
+        return $this->hasOneof(38);
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.PlayerSignEditEvent player_sign_edit = 38 [json_name = "playerSignEdit"];</code>
+     * @param \Df\Plugin\PlayerSignEditEvent $var
+     * @return $this
+     */
+    public function setPlayerSignEdit($var)
+    {
+        GPBUtil::checkMessage($var, \Df\Plugin\PlayerSignEditEvent::class);
+        $this->writeOneof(38, $var);
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.PlayerLecternPageTurnEvent player_lectern_page_turn = 39 [json_name = "playerLecternPageTurn"];</code>
+     * @return \Df\Plugin\PlayerLecternPageTurnEvent|null
+     */
+    public function getPlayerLecternPageTurn()
+    {
+        return $this->readOneof(39);
+    }
+
+    public function hasPlayerLecternPageTurn()
+    {
+        return $this->hasOneof(39);
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.PlayerLecternPageTurnEvent player_lectern_page_turn = 39 [json_name = "playerLecternPageTurn"];</code>
+     * @param \Df\Plugin\PlayerLecternPageTurnEvent $var
+     * @return $this
+     */
+    public function setPlayerLecternPageTurn($var)
+    {
+        GPBUtil::checkMessage($var, \Df\Plugin\PlayerLecternPageTurnEvent::class);
+        $this->writeOneof(39, $var);
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.PlayerItemDamageEvent player_item_damage = 40 [json_name = "playerItemDamage"];</code>
+     * @return \Df\Plugin\PlayerItemDamageEvent|null
+     */
+    public function getPlayerItemDamage()
+    {
+        return $this->readOneof(40);
+    }
+
+    public function hasPlayerItemDamage()
+    {
+        return $this->hasOneof(40);
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.PlayerItemDamageEvent player_item_damage = 40 [json_name = "playerItemDamage"];</code>
+     * @param \Df\Plugin\PlayerItemDamageEvent $var
+     * @return $this
+     */
+    public function setPlayerItemDamage($var)
+    {
+        GPBUtil::checkMessage($var, \Df\Plugin\PlayerItemDamageEvent::class);
+        $this->writeOneof(40, $var);
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.PlayerItemPickupEvent player_item_pickup = 41 [json_name = "playerItemPickup"];</code>
+     * @return \Df\Plugin\PlayerItemPickupEvent|null
+     */
+    public function getPlayerItemPickup()
+    {
+        return $this->readOneof(41);
+    }
+
+    public function hasPlayerItemPickup()
+    {
+        return $this->hasOneof(41);
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.PlayerItemPickupEvent player_item_pickup = 41 [json_name = "playerItemPickup"];</code>
+     * @param \Df\Plugin\PlayerItemPickupEvent $var
+     * @return $this
+     */
+    public function setPlayerItemPickup($var)
+    {
+        GPBUtil::checkMessage($var, \Df\Plugin\PlayerItemPickupEvent::class);
+        $this->writeOneof(41, $var);
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.PlayerHeldSlotChangeEvent player_held_slot_change = 42 [json_name = "playerHeldSlotChange"];</code>
+     * @return \Df\Plugin\PlayerHeldSlotChangeEvent|null
+     */
+    public function getPlayerHeldSlotChange()
+    {
+        return $this->readOneof(42);
+    }
+
+    public function hasPlayerHeldSlotChange()
+    {
+        return $this->hasOneof(42);
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.PlayerHeldSlotChangeEvent player_held_slot_change = 42 [json_name = "playerHeldSlotChange"];</code>
+     * @param \Df\Plugin\PlayerHeldSlotChangeEvent $var
+     * @return $this
+     */
+    public function setPlayerHeldSlotChange($var)
+    {
+        GPBUtil::checkMessage($var, \Df\Plugin\PlayerHeldSlotChangeEvent::class);
+        $this->writeOneof(42, $var);
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.PlayerItemDropEvent player_item_drop = 43 [json_name = "playerItemDrop"];</code>
+     * @return \Df\Plugin\PlayerItemDropEvent|null
+     */
+    public function getPlayerItemDrop()
+    {
+        return $this->readOneof(43);
+    }
+
+    public function hasPlayerItemDrop()
+    {
+        return $this->hasOneof(43);
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.PlayerItemDropEvent player_item_drop = 43 [json_name = "playerItemDrop"];</code>
+     * @param \Df\Plugin\PlayerItemDropEvent $var
+     * @return $this
+     */
+    public function setPlayerItemDrop($var)
+    {
+        GPBUtil::checkMessage($var, \Df\Plugin\PlayerItemDropEvent::class);
+        $this->writeOneof(43, $var);
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.PlayerTransferEvent player_transfer = 44 [json_name = "playerTransfer"];</code>
+     * @return \Df\Plugin\PlayerTransferEvent|null
+     */
+    public function getPlayerTransfer()
+    {
+        return $this->readOneof(44);
+    }
+
+    public function hasPlayerTransfer()
+    {
+        return $this->hasOneof(44);
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.PlayerTransferEvent player_transfer = 44 [json_name = "playerTransfer"];</code>
+     * @param \Df\Plugin\PlayerTransferEvent $var
+     * @return $this
+     */
+    public function setPlayerTransfer($var)
+    {
+        GPBUtil::checkMessage($var, \Df\Plugin\PlayerTransferEvent::class);
+        $this->writeOneof(44, $var);
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.CommandEvent command = 45 [json_name = "command"];</code>
+     * @return \Df\Plugin\CommandEvent|null
+     */
+    public function getCommand()
+    {
+        return $this->readOneof(45);
+    }
+
+    public function hasCommand()
+    {
+        return $this->hasOneof(45);
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.CommandEvent command = 45 [json_name = "command"];</code>
+     * @param \Df\Plugin\CommandEvent $var
+     * @return $this
+     */
+    public function setCommand($var)
+    {
+        GPBUtil::checkMessage($var, \Df\Plugin\CommandEvent::class);
+        $this->writeOneof(45, $var);
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.PlayerDiagnosticsEvent player_diagnostics = 46 [json_name = "playerDiagnostics"];</code>
+     * @return \Df\Plugin\PlayerDiagnosticsEvent|null
+     */
+    public function getPlayerDiagnostics()
+    {
+        return $this->readOneof(46);
+    }
+
+    public function hasPlayerDiagnostics()
+    {
+        return $this->hasOneof(46);
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.PlayerDiagnosticsEvent player_diagnostics = 46 [json_name = "playerDiagnostics"];</code>
+     * @param \Df\Plugin\PlayerDiagnosticsEvent $var
+     * @return $this
+     */
+    public function setPlayerDiagnostics($var)
+    {
+        GPBUtil::checkMessage($var, \Df\Plugin\PlayerDiagnosticsEvent::class);
+        $this->writeOneof(46, $var);
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.WorldLiquidFlowEvent world_liquid_flow = 70 [json_name = "worldLiquidFlow"];</code>
+     * @return \Df\Plugin\WorldLiquidFlowEvent|null
+     */
+    public function getWorldLiquidFlow()
+    {
+        return $this->readOneof(70);
+    }
+
+    public function hasWorldLiquidFlow()
+    {
+        return $this->hasOneof(70);
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.WorldLiquidFlowEvent world_liquid_flow = 70 [json_name = "worldLiquidFlow"];</code>
+     * @param \Df\Plugin\WorldLiquidFlowEvent $var
+     * @return $this
+     */
+    public function setWorldLiquidFlow($var)
+    {
+        GPBUtil::checkMessage($var, \Df\Plugin\WorldLiquidFlowEvent::class);
+        $this->writeOneof(70, $var);
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.WorldLiquidDecayEvent world_liquid_decay = 71 [json_name = "worldLiquidDecay"];</code>
+     * @return \Df\Plugin\WorldLiquidDecayEvent|null
+     */
+    public function getWorldLiquidDecay()
+    {
+        return $this->readOneof(71);
+    }
+
+    public function hasWorldLiquidDecay()
+    {
+        return $this->hasOneof(71);
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.WorldLiquidDecayEvent world_liquid_decay = 71 [json_name = "worldLiquidDecay"];</code>
+     * @param \Df\Plugin\WorldLiquidDecayEvent $var
+     * @return $this
+     */
+    public function setWorldLiquidDecay($var)
+    {
+        GPBUtil::checkMessage($var, \Df\Plugin\WorldLiquidDecayEvent::class);
+        $this->writeOneof(71, $var);
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.WorldLiquidHardenEvent world_liquid_harden = 72 [json_name = "worldLiquidHarden"];</code>
+     * @return \Df\Plugin\WorldLiquidHardenEvent|null
+     */
+    public function getWorldLiquidHarden()
+    {
+        return $this->readOneof(72);
+    }
+
+    public function hasWorldLiquidHarden()
+    {
+        return $this->hasOneof(72);
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.WorldLiquidHardenEvent world_liquid_harden = 72 [json_name = "worldLiquidHarden"];</code>
+     * @param \Df\Plugin\WorldLiquidHardenEvent $var
+     * @return $this
+     */
+    public function setWorldLiquidHarden($var)
+    {
+        GPBUtil::checkMessage($var, \Df\Plugin\WorldLiquidHardenEvent::class);
+        $this->writeOneof(72, $var);
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.WorldSoundEvent world_sound = 73 [json_name = "worldSound"];</code>
+     * @return \Df\Plugin\WorldSoundEvent|null
+     */
+    public function getWorldSound()
+    {
+        return $this->readOneof(73);
+    }
+
+    public function hasWorldSound()
+    {
+        return $this->hasOneof(73);
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.WorldSoundEvent world_sound = 73 [json_name = "worldSound"];</code>
+     * @param \Df\Plugin\WorldSoundEvent $var
+     * @return $this
+     */
+    public function setWorldSound($var)
+    {
+        GPBUtil::checkMessage($var, \Df\Plugin\WorldSoundEvent::class);
+        $this->writeOneof(73, $var);
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.WorldFireSpreadEvent world_fire_spread = 74 [json_name = "worldFireSpread"];</code>
+     * @return \Df\Plugin\WorldFireSpreadEvent|null
+     */
+    public function getWorldFireSpread()
+    {
+        return $this->readOneof(74);
+    }
+
+    public function hasWorldFireSpread()
+    {
+        return $this->hasOneof(74);
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.WorldFireSpreadEvent world_fire_spread = 74 [json_name = "worldFireSpread"];</code>
+     * @param \Df\Plugin\WorldFireSpreadEvent $var
+     * @return $this
+     */
+    public function setWorldFireSpread($var)
+    {
+        GPBUtil::checkMessage($var, \Df\Plugin\WorldFireSpreadEvent::class);
+        $this->writeOneof(74, $var);
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.WorldBlockBurnEvent world_block_burn = 75 [json_name = "worldBlockBurn"];</code>
+     * @return \Df\Plugin\WorldBlockBurnEvent|null
+     */
+    public function getWorldBlockBurn()
+    {
+        return $this->readOneof(75);
+    }
+
+    public function hasWorldBlockBurn()
+    {
+        return $this->hasOneof(75);
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.WorldBlockBurnEvent world_block_burn = 75 [json_name = "worldBlockBurn"];</code>
+     * @param \Df\Plugin\WorldBlockBurnEvent $var
+     * @return $this
+     */
+    public function setWorldBlockBurn($var)
+    {
+        GPBUtil::checkMessage($var, \Df\Plugin\WorldBlockBurnEvent::class);
+        $this->writeOneof(75, $var);
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.WorldCropTrampleEvent world_crop_trample = 76 [json_name = "worldCropTrample"];</code>
+     * @return \Df\Plugin\WorldCropTrampleEvent|null
+     */
+    public function getWorldCropTrample()
+    {
+        return $this->readOneof(76);
+    }
+
+    public function hasWorldCropTrample()
+    {
+        return $this->hasOneof(76);
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.WorldCropTrampleEvent world_crop_trample = 76 [json_name = "worldCropTrample"];</code>
+     * @param \Df\Plugin\WorldCropTrampleEvent $var
+     * @return $this
+     */
+    public function setWorldCropTrample($var)
+    {
+        GPBUtil::checkMessage($var, \Df\Plugin\WorldCropTrampleEvent::class);
+        $this->writeOneof(76, $var);
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.WorldLeavesDecayEvent world_leaves_decay = 77 [json_name = "worldLeavesDecay"];</code>
+     * @return \Df\Plugin\WorldLeavesDecayEvent|null
+     */
+    public function getWorldLeavesDecay()
+    {
+        return $this->readOneof(77);
+    }
+
+    public function hasWorldLeavesDecay()
+    {
+        return $this->hasOneof(77);
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.WorldLeavesDecayEvent world_leaves_decay = 77 [json_name = "worldLeavesDecay"];</code>
+     * @param \Df\Plugin\WorldLeavesDecayEvent $var
+     * @return $this
+     */
+    public function setWorldLeavesDecay($var)
+    {
+        GPBUtil::checkMessage($var, \Df\Plugin\WorldLeavesDecayEvent::class);
+        $this->writeOneof(77, $var);
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.WorldEntitySpawnEvent world_entity_spawn = 78 [json_name = "worldEntitySpawn"];</code>
+     * @return \Df\Plugin\WorldEntitySpawnEvent|null
+     */
+    public function getWorldEntitySpawn()
+    {
+        return $this->readOneof(78);
+    }
+
+    public function hasWorldEntitySpawn()
+    {
+        return $this->hasOneof(78);
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.WorldEntitySpawnEvent world_entity_spawn = 78 [json_name = "worldEntitySpawn"];</code>
+     * @param \Df\Plugin\WorldEntitySpawnEvent $var
+     * @return $this
+     */
+    public function setWorldEntitySpawn($var)
+    {
+        GPBUtil::checkMessage($var, \Df\Plugin\WorldEntitySpawnEvent::class);
+        $this->writeOneof(78, $var);
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.WorldEntityDespawnEvent world_entity_despawn = 79 [json_name = "worldEntityDespawn"];</code>
+     * @return \Df\Plugin\WorldEntityDespawnEvent|null
+     */
+    public function getWorldEntityDespawn()
+    {
+        return $this->readOneof(79);
+    }
+
+    public function hasWorldEntityDespawn()
+    {
+        return $this->hasOneof(79);
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.WorldEntityDespawnEvent world_entity_despawn = 79 [json_name = "worldEntityDespawn"];</code>
+     * @param \Df\Plugin\WorldEntityDespawnEvent $var
+     * @return $this
+     */
+    public function setWorldEntityDespawn($var)
+    {
+        GPBUtil::checkMessage($var, \Df\Plugin\WorldEntityDespawnEvent::class);
+        $this->writeOneof(79, $var);
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.WorldExplosionEvent world_explosion = 80 [json_name = "worldExplosion"];</code>
+     * @return \Df\Plugin\WorldExplosionEvent|null
+     */
+    public function getWorldExplosion()
+    {
+        return $this->readOneof(80);
+    }
+
+    public function hasWorldExplosion()
+    {
+        return $this->hasOneof(80);
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.WorldExplosionEvent world_explosion = 80 [json_name = "worldExplosion"];</code>
+     * @param \Df\Plugin\WorldExplosionEvent $var
+     * @return $this
+     */
+    public function setWorldExplosion($var)
+    {
+        GPBUtil::checkMessage($var, \Df\Plugin\WorldExplosionEvent::class);
+        $this->writeOneof(80, $var);
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.WorldCloseEvent world_close = 81 [json_name = "worldClose"];</code>
+     * @return \Df\Plugin\WorldCloseEvent|null
+     */
+    public function getWorldClose()
+    {
+        return $this->readOneof(81);
+    }
+
+    public function hasWorldClose()
+    {
+        return $this->hasOneof(81);
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.WorldCloseEvent world_close = 81 [json_name = "worldClose"];</code>
      * @param \Df\Plugin\WorldCloseEvent $var
      * @return $this
      */
     public function setWorldClose($var)
     {
         GPBUtil::checkMessage($var, \Df\Plugin\WorldCloseEvent::class);
-        $this->writeOneof(15, $var);
+        $this->writeOneof(81, $var);
 
         return $this;
     }
