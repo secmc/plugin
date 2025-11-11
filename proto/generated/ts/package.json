@@ -3,15 +3,17 @@
   "version": "0.1.0",
   "type": "module",
   "main": "index.js",
-  "types": "index.ts",
   "exports": {
+    "./*": {
+      "types": "./*.ts",
+      "import": "./*.js"
+    },
     ".": {
-      "types": "./index.ts",
-      "import": "./index.js"
+      "types": "./plugin.ts",
+      "import": "./plugin.js"
     }
   },
   "peerDependencies": {
     "@bufbuild/protobuf": "^2.2.2"
   }
 }
-

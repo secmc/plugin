@@ -5,9 +5,9 @@ import * as grpc from '@grpc/grpc-js';
 import {
     HostToPlugin,
     PluginToHost,
-    GameMode,
     EventType,
 } from '@dragonfly/proto';
+import { GameMode } from '@dragonfly/proto/common';
 
 const pluginId = process.env.DF_PLUGIN_ID || 'typescript-plugin';
 const serverAddress = process.env.DF_PLUGIN_SERVER_ADDRESS || '127.0.0.1:50050';
