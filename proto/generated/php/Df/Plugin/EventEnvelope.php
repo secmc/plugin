@@ -19,9 +19,9 @@ class EventEnvelope extends \Google\Protobuf\Internal\Message
      */
     protected $event_id = '';
     /**
-     * Generated from protobuf field <code>string type = 2 [json_name = "type"];</code>
+     * Generated from protobuf field <code>.df.plugin.EventType type = 2 [json_name = "type"];</code>
      */
-    protected $type = '';
+    protected $type = 0;
     protected $payload;
 
     /**
@@ -31,7 +31,7 @@ class EventEnvelope extends \Google\Protobuf\Internal\Message
      *     Optional. Data for populating the Message object.
      *
      *     @type string $event_id
-     *     @type string $type
+     *     @type int $type
      *     @type \Df\Plugin\PlayerJoinEvent $player_join
      *     @type \Df\Plugin\PlayerQuitEvent $player_quit
      *     @type \Df\Plugin\ChatEvent $chat
@@ -68,8 +68,8 @@ class EventEnvelope extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>string type = 2 [json_name = "type"];</code>
-     * @return string
+     * Generated from protobuf field <code>.df.plugin.EventType type = 2 [json_name = "type"];</code>
+     * @return int
      */
     public function getType()
     {
@@ -77,13 +77,13 @@ class EventEnvelope extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>string type = 2 [json_name = "type"];</code>
-     * @param string $var
+     * Generated from protobuf field <code>.df.plugin.EventType type = 2 [json_name = "type"];</code>
+     * @param int $var
      * @return $this
      */
     public function setType($var)
     {
-        GPBUtil::checkString($var, True);
+        GPBUtil::checkEnum($var, \Df\Plugin\EventType::class);
         $this->type = $var;
 
         return $this;

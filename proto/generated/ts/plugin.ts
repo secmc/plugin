@@ -6,8 +6,337 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { BlockBreakEvent, ChatEvent, CommandEvent, PlayerJoinEvent, PlayerQuitEvent } from "./player_events";
+import { WorldCloseEvent } from "./world_events";
 
 export const protobufPackage = "df.plugin";
+
+export enum EventType {
+  EVENT_TYPE_UNSPECIFIED = 0,
+  EVENT_TYPE_ALL = 1,
+  PLAYER_JOIN = 10,
+  PLAYER_QUIT = 11,
+  PLAYER_MOVE = 12,
+  PLAYER_JUMP = 13,
+  PLAYER_TELEPORT = 14,
+  PLAYER_CHANGE_WORLD = 15,
+  PLAYER_TOGGLE_SPRINT = 16,
+  PLAYER_TOGGLE_SNEAK = 17,
+  CHAT = 18,
+  PLAYER_FOOD_LOSS = 19,
+  PLAYER_HEAL = 20,
+  PLAYER_HURT = 21,
+  PLAYER_DEATH = 22,
+  PLAYER_RESPAWN = 23,
+  PLAYER_SKIN_CHANGE = 24,
+  PLAYER_FIRE_EXTINGUISH = 25,
+  PLAYER_START_BREAK = 26,
+  PLAYER_BLOCK_BREAK = 27,
+  PLAYER_BLOCK_PLACE = 28,
+  PLAYER_BLOCK_PICK = 29,
+  PLAYER_ITEM_USE = 30,
+  PLAYER_ITEM_USE_ON_BLOCK = 31,
+  PLAYER_ITEM_USE_ON_ENTITY = 32,
+  PLAYER_ITEM_RELEASE = 33,
+  PLAYER_ITEM_CONSUME = 34,
+  PLAYER_ATTACK_ENTITY = 35,
+  PLAYER_EXPERIENCE_GAIN = 36,
+  PLAYER_PUNCH_AIR = 37,
+  PLAYER_SIGN_EDIT = 38,
+  PLAYER_LECTERN_PAGE_TURN = 39,
+  PLAYER_ITEM_DAMAGE = 40,
+  PLAYER_ITEM_PICKUP = 41,
+  PLAYER_HELD_SLOT_CHANGE = 42,
+  PLAYER_ITEM_DROP = 43,
+  PLAYER_TRANSFER = 44,
+  COMMAND = 45,
+  PLAYER_DIAGNOSTICS = 46,
+  WORLD_LIQUID_FLOW = 70,
+  WORLD_LIQUID_DECAY = 71,
+  WORLD_LIQUID_HARDEN = 72,
+  WORLD_SOUND = 73,
+  WORLD_FIRE_SPREAD = 74,
+  WORLD_BLOCK_BURN = 75,
+  WORLD_CROP_TRAMPLE = 76,
+  WORLD_LEAVES_DECAY = 77,
+  WORLD_ENTITY_SPAWN = 78,
+  WORLD_ENTITY_DESPAWN = 79,
+  WORLD_EXPLOSION = 80,
+  WORLD_CLOSE = 81,
+  UNRECOGNIZED = -1,
+}
+
+export function eventTypeFromJSON(object: any): EventType {
+  switch (object) {
+    case 0:
+    case "EVENT_TYPE_UNSPECIFIED":
+      return EventType.EVENT_TYPE_UNSPECIFIED;
+    case 1:
+    case "EVENT_TYPE_ALL":
+      return EventType.EVENT_TYPE_ALL;
+    case 10:
+    case "PLAYER_JOIN":
+      return EventType.PLAYER_JOIN;
+    case 11:
+    case "PLAYER_QUIT":
+      return EventType.PLAYER_QUIT;
+    case 12:
+    case "PLAYER_MOVE":
+      return EventType.PLAYER_MOVE;
+    case 13:
+    case "PLAYER_JUMP":
+      return EventType.PLAYER_JUMP;
+    case 14:
+    case "PLAYER_TELEPORT":
+      return EventType.PLAYER_TELEPORT;
+    case 15:
+    case "PLAYER_CHANGE_WORLD":
+      return EventType.PLAYER_CHANGE_WORLD;
+    case 16:
+    case "PLAYER_TOGGLE_SPRINT":
+      return EventType.PLAYER_TOGGLE_SPRINT;
+    case 17:
+    case "PLAYER_TOGGLE_SNEAK":
+      return EventType.PLAYER_TOGGLE_SNEAK;
+    case 18:
+    case "CHAT":
+      return EventType.CHAT;
+    case 19:
+    case "PLAYER_FOOD_LOSS":
+      return EventType.PLAYER_FOOD_LOSS;
+    case 20:
+    case "PLAYER_HEAL":
+      return EventType.PLAYER_HEAL;
+    case 21:
+    case "PLAYER_HURT":
+      return EventType.PLAYER_HURT;
+    case 22:
+    case "PLAYER_DEATH":
+      return EventType.PLAYER_DEATH;
+    case 23:
+    case "PLAYER_RESPAWN":
+      return EventType.PLAYER_RESPAWN;
+    case 24:
+    case "PLAYER_SKIN_CHANGE":
+      return EventType.PLAYER_SKIN_CHANGE;
+    case 25:
+    case "PLAYER_FIRE_EXTINGUISH":
+      return EventType.PLAYER_FIRE_EXTINGUISH;
+    case 26:
+    case "PLAYER_START_BREAK":
+      return EventType.PLAYER_START_BREAK;
+    case 27:
+    case "PLAYER_BLOCK_BREAK":
+      return EventType.PLAYER_BLOCK_BREAK;
+    case 28:
+    case "PLAYER_BLOCK_PLACE":
+      return EventType.PLAYER_BLOCK_PLACE;
+    case 29:
+    case "PLAYER_BLOCK_PICK":
+      return EventType.PLAYER_BLOCK_PICK;
+    case 30:
+    case "PLAYER_ITEM_USE":
+      return EventType.PLAYER_ITEM_USE;
+    case 31:
+    case "PLAYER_ITEM_USE_ON_BLOCK":
+      return EventType.PLAYER_ITEM_USE_ON_BLOCK;
+    case 32:
+    case "PLAYER_ITEM_USE_ON_ENTITY":
+      return EventType.PLAYER_ITEM_USE_ON_ENTITY;
+    case 33:
+    case "PLAYER_ITEM_RELEASE":
+      return EventType.PLAYER_ITEM_RELEASE;
+    case 34:
+    case "PLAYER_ITEM_CONSUME":
+      return EventType.PLAYER_ITEM_CONSUME;
+    case 35:
+    case "PLAYER_ATTACK_ENTITY":
+      return EventType.PLAYER_ATTACK_ENTITY;
+    case 36:
+    case "PLAYER_EXPERIENCE_GAIN":
+      return EventType.PLAYER_EXPERIENCE_GAIN;
+    case 37:
+    case "PLAYER_PUNCH_AIR":
+      return EventType.PLAYER_PUNCH_AIR;
+    case 38:
+    case "PLAYER_SIGN_EDIT":
+      return EventType.PLAYER_SIGN_EDIT;
+    case 39:
+    case "PLAYER_LECTERN_PAGE_TURN":
+      return EventType.PLAYER_LECTERN_PAGE_TURN;
+    case 40:
+    case "PLAYER_ITEM_DAMAGE":
+      return EventType.PLAYER_ITEM_DAMAGE;
+    case 41:
+    case "PLAYER_ITEM_PICKUP":
+      return EventType.PLAYER_ITEM_PICKUP;
+    case 42:
+    case "PLAYER_HELD_SLOT_CHANGE":
+      return EventType.PLAYER_HELD_SLOT_CHANGE;
+    case 43:
+    case "PLAYER_ITEM_DROP":
+      return EventType.PLAYER_ITEM_DROP;
+    case 44:
+    case "PLAYER_TRANSFER":
+      return EventType.PLAYER_TRANSFER;
+    case 45:
+    case "COMMAND":
+      return EventType.COMMAND;
+    case 46:
+    case "PLAYER_DIAGNOSTICS":
+      return EventType.PLAYER_DIAGNOSTICS;
+    case 70:
+    case "WORLD_LIQUID_FLOW":
+      return EventType.WORLD_LIQUID_FLOW;
+    case 71:
+    case "WORLD_LIQUID_DECAY":
+      return EventType.WORLD_LIQUID_DECAY;
+    case 72:
+    case "WORLD_LIQUID_HARDEN":
+      return EventType.WORLD_LIQUID_HARDEN;
+    case 73:
+    case "WORLD_SOUND":
+      return EventType.WORLD_SOUND;
+    case 74:
+    case "WORLD_FIRE_SPREAD":
+      return EventType.WORLD_FIRE_SPREAD;
+    case 75:
+    case "WORLD_BLOCK_BURN":
+      return EventType.WORLD_BLOCK_BURN;
+    case 76:
+    case "WORLD_CROP_TRAMPLE":
+      return EventType.WORLD_CROP_TRAMPLE;
+    case 77:
+    case "WORLD_LEAVES_DECAY":
+      return EventType.WORLD_LEAVES_DECAY;
+    case 78:
+    case "WORLD_ENTITY_SPAWN":
+      return EventType.WORLD_ENTITY_SPAWN;
+    case 79:
+    case "WORLD_ENTITY_DESPAWN":
+      return EventType.WORLD_ENTITY_DESPAWN;
+    case 80:
+    case "WORLD_EXPLOSION":
+      return EventType.WORLD_EXPLOSION;
+    case 81:
+    case "WORLD_CLOSE":
+      return EventType.WORLD_CLOSE;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return EventType.UNRECOGNIZED;
+  }
+}
+
+export function eventTypeToJSON(object: EventType): string {
+  switch (object) {
+    case EventType.EVENT_TYPE_UNSPECIFIED:
+      return "EVENT_TYPE_UNSPECIFIED";
+    case EventType.EVENT_TYPE_ALL:
+      return "EVENT_TYPE_ALL";
+    case EventType.PLAYER_JOIN:
+      return "PLAYER_JOIN";
+    case EventType.PLAYER_QUIT:
+      return "PLAYER_QUIT";
+    case EventType.PLAYER_MOVE:
+      return "PLAYER_MOVE";
+    case EventType.PLAYER_JUMP:
+      return "PLAYER_JUMP";
+    case EventType.PLAYER_TELEPORT:
+      return "PLAYER_TELEPORT";
+    case EventType.PLAYER_CHANGE_WORLD:
+      return "PLAYER_CHANGE_WORLD";
+    case EventType.PLAYER_TOGGLE_SPRINT:
+      return "PLAYER_TOGGLE_SPRINT";
+    case EventType.PLAYER_TOGGLE_SNEAK:
+      return "PLAYER_TOGGLE_SNEAK";
+    case EventType.CHAT:
+      return "CHAT";
+    case EventType.PLAYER_FOOD_LOSS:
+      return "PLAYER_FOOD_LOSS";
+    case EventType.PLAYER_HEAL:
+      return "PLAYER_HEAL";
+    case EventType.PLAYER_HURT:
+      return "PLAYER_HURT";
+    case EventType.PLAYER_DEATH:
+      return "PLAYER_DEATH";
+    case EventType.PLAYER_RESPAWN:
+      return "PLAYER_RESPAWN";
+    case EventType.PLAYER_SKIN_CHANGE:
+      return "PLAYER_SKIN_CHANGE";
+    case EventType.PLAYER_FIRE_EXTINGUISH:
+      return "PLAYER_FIRE_EXTINGUISH";
+    case EventType.PLAYER_START_BREAK:
+      return "PLAYER_START_BREAK";
+    case EventType.PLAYER_BLOCK_BREAK:
+      return "PLAYER_BLOCK_BREAK";
+    case EventType.PLAYER_BLOCK_PLACE:
+      return "PLAYER_BLOCK_PLACE";
+    case EventType.PLAYER_BLOCK_PICK:
+      return "PLAYER_BLOCK_PICK";
+    case EventType.PLAYER_ITEM_USE:
+      return "PLAYER_ITEM_USE";
+    case EventType.PLAYER_ITEM_USE_ON_BLOCK:
+      return "PLAYER_ITEM_USE_ON_BLOCK";
+    case EventType.PLAYER_ITEM_USE_ON_ENTITY:
+      return "PLAYER_ITEM_USE_ON_ENTITY";
+    case EventType.PLAYER_ITEM_RELEASE:
+      return "PLAYER_ITEM_RELEASE";
+    case EventType.PLAYER_ITEM_CONSUME:
+      return "PLAYER_ITEM_CONSUME";
+    case EventType.PLAYER_ATTACK_ENTITY:
+      return "PLAYER_ATTACK_ENTITY";
+    case EventType.PLAYER_EXPERIENCE_GAIN:
+      return "PLAYER_EXPERIENCE_GAIN";
+    case EventType.PLAYER_PUNCH_AIR:
+      return "PLAYER_PUNCH_AIR";
+    case EventType.PLAYER_SIGN_EDIT:
+      return "PLAYER_SIGN_EDIT";
+    case EventType.PLAYER_LECTERN_PAGE_TURN:
+      return "PLAYER_LECTERN_PAGE_TURN";
+    case EventType.PLAYER_ITEM_DAMAGE:
+      return "PLAYER_ITEM_DAMAGE";
+    case EventType.PLAYER_ITEM_PICKUP:
+      return "PLAYER_ITEM_PICKUP";
+    case EventType.PLAYER_HELD_SLOT_CHANGE:
+      return "PLAYER_HELD_SLOT_CHANGE";
+    case EventType.PLAYER_ITEM_DROP:
+      return "PLAYER_ITEM_DROP";
+    case EventType.PLAYER_TRANSFER:
+      return "PLAYER_TRANSFER";
+    case EventType.COMMAND:
+      return "COMMAND";
+    case EventType.PLAYER_DIAGNOSTICS:
+      return "PLAYER_DIAGNOSTICS";
+    case EventType.WORLD_LIQUID_FLOW:
+      return "WORLD_LIQUID_FLOW";
+    case EventType.WORLD_LIQUID_DECAY:
+      return "WORLD_LIQUID_DECAY";
+    case EventType.WORLD_LIQUID_HARDEN:
+      return "WORLD_LIQUID_HARDEN";
+    case EventType.WORLD_SOUND:
+      return "WORLD_SOUND";
+    case EventType.WORLD_FIRE_SPREAD:
+      return "WORLD_FIRE_SPREAD";
+    case EventType.WORLD_BLOCK_BURN:
+      return "WORLD_BLOCK_BURN";
+    case EventType.WORLD_CROP_TRAMPLE:
+      return "WORLD_CROP_TRAMPLE";
+    case EventType.WORLD_LEAVES_DECAY:
+      return "WORLD_LEAVES_DECAY";
+    case EventType.WORLD_ENTITY_SPAWN:
+      return "WORLD_ENTITY_SPAWN";
+    case EventType.WORLD_ENTITY_DESPAWN:
+      return "WORLD_ENTITY_DESPAWN";
+    case EventType.WORLD_EXPLOSION:
+      return "WORLD_EXPLOSION";
+    case EventType.WORLD_CLOSE:
+      return "WORLD_CLOSE";
+    case EventType.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
 
 export enum GameMode {
   SURVIVAL = 0,
@@ -71,52 +400,13 @@ export interface HostShutdown {
 
 export interface EventEnvelope {
   eventId: string;
-  type: string;
+  type: EventType;
   playerJoin?: PlayerJoinEvent | undefined;
   playerQuit?: PlayerQuitEvent | undefined;
   chat?: ChatEvent | undefined;
   command?: CommandEvent | undefined;
   blockBreak?: BlockBreakEvent | undefined;
   worldClose?: WorldCloseEvent | undefined;
-}
-
-export interface PlayerJoinEvent {
-  playerUuid: string;
-  name: string;
-}
-
-export interface PlayerQuitEvent {
-  playerUuid: string;
-  name: string;
-}
-
-export interface ChatEvent {
-  playerUuid: string;
-  name: string;
-  message: string;
-}
-
-export interface CommandEvent {
-  playerUuid: string;
-  name: string;
-  /** Full command string like "/tp 100 64 200" */
-  raw: string;
-  /** Just the command name like "tp" */
-  command: string;
-  /** Parsed arguments like ["100", "64", "200"] */
-  args: string[];
-}
-
-export interface BlockBreakEvent {
-  playerUuid: string;
-  name: string;
-  world: string;
-  x: number;
-  y: number;
-  z: number;
-}
-
-export interface WorldCloseEvent {
 }
 
 export interface PluginToHost {
@@ -142,7 +432,7 @@ export interface CommandSpec {
 }
 
 export interface EventSubscribe {
-  events: string[];
+  events: EventType[];
 }
 
 export interface ActionBatch {
@@ -441,7 +731,7 @@ export const HostShutdown: MessageFns<HostShutdown> = {
 function createBaseEventEnvelope(): EventEnvelope {
   return {
     eventId: "",
-    type: "",
+    type: 0,
     playerJoin: undefined,
     playerQuit: undefined,
     chat: undefined,
@@ -456,8 +746,8 @@ export const EventEnvelope: MessageFns<EventEnvelope> = {
     if (message.eventId !== "") {
       writer.uint32(10).string(message.eventId);
     }
-    if (message.type !== "") {
-      writer.uint32(18).string(message.type);
+    if (message.type !== 0) {
+      writer.uint32(16).int32(message.type);
     }
     if (message.playerJoin !== undefined) {
       PlayerJoinEvent.encode(message.playerJoin, writer.uint32(82).fork()).join();
@@ -496,11 +786,11 @@ export const EventEnvelope: MessageFns<EventEnvelope> = {
           continue;
         }
         case 2: {
-          if (tag !== 18) {
+          if (tag !== 16) {
             break;
           }
 
-          message.type = reader.string();
+          message.type = reader.int32() as any;
           continue;
         }
         case 10: {
@@ -563,7 +853,7 @@ export const EventEnvelope: MessageFns<EventEnvelope> = {
   fromJSON(object: any): EventEnvelope {
     return {
       eventId: isSet(object.eventId) ? globalThis.String(object.eventId) : "",
-      type: isSet(object.type) ? globalThis.String(object.type) : "",
+      type: isSet(object.type) ? eventTypeFromJSON(object.type) : 0,
       playerJoin: isSet(object.playerJoin) ? PlayerJoinEvent.fromJSON(object.playerJoin) : undefined,
       playerQuit: isSet(object.playerQuit) ? PlayerQuitEvent.fromJSON(object.playerQuit) : undefined,
       chat: isSet(object.chat) ? ChatEvent.fromJSON(object.chat) : undefined,
@@ -578,8 +868,8 @@ export const EventEnvelope: MessageFns<EventEnvelope> = {
     if (message.eventId !== "") {
       obj.eventId = message.eventId;
     }
-    if (message.type !== "") {
-      obj.type = message.type;
+    if (message.type !== 0) {
+      obj.type = eventTypeToJSON(message.type);
     }
     if (message.playerJoin !== undefined) {
       obj.playerJoin = PlayerJoinEvent.toJSON(message.playerJoin);
@@ -608,7 +898,7 @@ export const EventEnvelope: MessageFns<EventEnvelope> = {
   fromPartial(object: DeepPartial<EventEnvelope>): EventEnvelope {
     const message = createBaseEventEnvelope();
     message.eventId = object.eventId ?? "";
-    message.type = object.type ?? "";
+    message.type = object.type ?? 0;
     message.playerJoin = (object.playerJoin !== undefined && object.playerJoin !== null)
       ? PlayerJoinEvent.fromPartial(object.playerJoin)
       : undefined;
@@ -625,557 +915,6 @@ export const EventEnvelope: MessageFns<EventEnvelope> = {
     message.worldClose = (object.worldClose !== undefined && object.worldClose !== null)
       ? WorldCloseEvent.fromPartial(object.worldClose)
       : undefined;
-    return message;
-  },
-};
-
-function createBasePlayerJoinEvent(): PlayerJoinEvent {
-  return { playerUuid: "", name: "" };
-}
-
-export const PlayerJoinEvent: MessageFns<PlayerJoinEvent> = {
-  encode(message: PlayerJoinEvent, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.playerUuid !== "") {
-      writer.uint32(10).string(message.playerUuid);
-    }
-    if (message.name !== "") {
-      writer.uint32(18).string(message.name);
-    }
-    return writer;
-  },
-
-  decode(input: BinaryReader | Uint8Array, length?: number): PlayerJoinEvent {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBasePlayerJoinEvent();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1: {
-          if (tag !== 10) {
-            break;
-          }
-
-          message.playerUuid = reader.string();
-          continue;
-        }
-        case 2: {
-          if (tag !== 18) {
-            break;
-          }
-
-          message.name = reader.string();
-          continue;
-        }
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skip(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): PlayerJoinEvent {
-    return {
-      playerUuid: isSet(object.playerUuid) ? globalThis.String(object.playerUuid) : "",
-      name: isSet(object.name) ? globalThis.String(object.name) : "",
-    };
-  },
-
-  toJSON(message: PlayerJoinEvent): unknown {
-    const obj: any = {};
-    if (message.playerUuid !== "") {
-      obj.playerUuid = message.playerUuid;
-    }
-    if (message.name !== "") {
-      obj.name = message.name;
-    }
-    return obj;
-  },
-
-  create(base?: DeepPartial<PlayerJoinEvent>): PlayerJoinEvent {
-    return PlayerJoinEvent.fromPartial(base ?? {});
-  },
-  fromPartial(object: DeepPartial<PlayerJoinEvent>): PlayerJoinEvent {
-    const message = createBasePlayerJoinEvent();
-    message.playerUuid = object.playerUuid ?? "";
-    message.name = object.name ?? "";
-    return message;
-  },
-};
-
-function createBasePlayerQuitEvent(): PlayerQuitEvent {
-  return { playerUuid: "", name: "" };
-}
-
-export const PlayerQuitEvent: MessageFns<PlayerQuitEvent> = {
-  encode(message: PlayerQuitEvent, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.playerUuid !== "") {
-      writer.uint32(10).string(message.playerUuid);
-    }
-    if (message.name !== "") {
-      writer.uint32(18).string(message.name);
-    }
-    return writer;
-  },
-
-  decode(input: BinaryReader | Uint8Array, length?: number): PlayerQuitEvent {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBasePlayerQuitEvent();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1: {
-          if (tag !== 10) {
-            break;
-          }
-
-          message.playerUuid = reader.string();
-          continue;
-        }
-        case 2: {
-          if (tag !== 18) {
-            break;
-          }
-
-          message.name = reader.string();
-          continue;
-        }
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skip(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): PlayerQuitEvent {
-    return {
-      playerUuid: isSet(object.playerUuid) ? globalThis.String(object.playerUuid) : "",
-      name: isSet(object.name) ? globalThis.String(object.name) : "",
-    };
-  },
-
-  toJSON(message: PlayerQuitEvent): unknown {
-    const obj: any = {};
-    if (message.playerUuid !== "") {
-      obj.playerUuid = message.playerUuid;
-    }
-    if (message.name !== "") {
-      obj.name = message.name;
-    }
-    return obj;
-  },
-
-  create(base?: DeepPartial<PlayerQuitEvent>): PlayerQuitEvent {
-    return PlayerQuitEvent.fromPartial(base ?? {});
-  },
-  fromPartial(object: DeepPartial<PlayerQuitEvent>): PlayerQuitEvent {
-    const message = createBasePlayerQuitEvent();
-    message.playerUuid = object.playerUuid ?? "";
-    message.name = object.name ?? "";
-    return message;
-  },
-};
-
-function createBaseChatEvent(): ChatEvent {
-  return { playerUuid: "", name: "", message: "" };
-}
-
-export const ChatEvent: MessageFns<ChatEvent> = {
-  encode(message: ChatEvent, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.playerUuid !== "") {
-      writer.uint32(10).string(message.playerUuid);
-    }
-    if (message.name !== "") {
-      writer.uint32(18).string(message.name);
-    }
-    if (message.message !== "") {
-      writer.uint32(26).string(message.message);
-    }
-    return writer;
-  },
-
-  decode(input: BinaryReader | Uint8Array, length?: number): ChatEvent {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseChatEvent();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1: {
-          if (tag !== 10) {
-            break;
-          }
-
-          message.playerUuid = reader.string();
-          continue;
-        }
-        case 2: {
-          if (tag !== 18) {
-            break;
-          }
-
-          message.name = reader.string();
-          continue;
-        }
-        case 3: {
-          if (tag !== 26) {
-            break;
-          }
-
-          message.message = reader.string();
-          continue;
-        }
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skip(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): ChatEvent {
-    return {
-      playerUuid: isSet(object.playerUuid) ? globalThis.String(object.playerUuid) : "",
-      name: isSet(object.name) ? globalThis.String(object.name) : "",
-      message: isSet(object.message) ? globalThis.String(object.message) : "",
-    };
-  },
-
-  toJSON(message: ChatEvent): unknown {
-    const obj: any = {};
-    if (message.playerUuid !== "") {
-      obj.playerUuid = message.playerUuid;
-    }
-    if (message.name !== "") {
-      obj.name = message.name;
-    }
-    if (message.message !== "") {
-      obj.message = message.message;
-    }
-    return obj;
-  },
-
-  create(base?: DeepPartial<ChatEvent>): ChatEvent {
-    return ChatEvent.fromPartial(base ?? {});
-  },
-  fromPartial(object: DeepPartial<ChatEvent>): ChatEvent {
-    const message = createBaseChatEvent();
-    message.playerUuid = object.playerUuid ?? "";
-    message.name = object.name ?? "";
-    message.message = object.message ?? "";
-    return message;
-  },
-};
-
-function createBaseCommandEvent(): CommandEvent {
-  return { playerUuid: "", name: "", raw: "", command: "", args: [] };
-}
-
-export const CommandEvent: MessageFns<CommandEvent> = {
-  encode(message: CommandEvent, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.playerUuid !== "") {
-      writer.uint32(10).string(message.playerUuid);
-    }
-    if (message.name !== "") {
-      writer.uint32(18).string(message.name);
-    }
-    if (message.raw !== "") {
-      writer.uint32(26).string(message.raw);
-    }
-    if (message.command !== "") {
-      writer.uint32(34).string(message.command);
-    }
-    for (const v of message.args) {
-      writer.uint32(42).string(v!);
-    }
-    return writer;
-  },
-
-  decode(input: BinaryReader | Uint8Array, length?: number): CommandEvent {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseCommandEvent();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1: {
-          if (tag !== 10) {
-            break;
-          }
-
-          message.playerUuid = reader.string();
-          continue;
-        }
-        case 2: {
-          if (tag !== 18) {
-            break;
-          }
-
-          message.name = reader.string();
-          continue;
-        }
-        case 3: {
-          if (tag !== 26) {
-            break;
-          }
-
-          message.raw = reader.string();
-          continue;
-        }
-        case 4: {
-          if (tag !== 34) {
-            break;
-          }
-
-          message.command = reader.string();
-          continue;
-        }
-        case 5: {
-          if (tag !== 42) {
-            break;
-          }
-
-          message.args.push(reader.string());
-          continue;
-        }
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skip(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): CommandEvent {
-    return {
-      playerUuid: isSet(object.playerUuid) ? globalThis.String(object.playerUuid) : "",
-      name: isSet(object.name) ? globalThis.String(object.name) : "",
-      raw: isSet(object.raw) ? globalThis.String(object.raw) : "",
-      command: isSet(object.command) ? globalThis.String(object.command) : "",
-      args: globalThis.Array.isArray(object?.args) ? object.args.map((e: any) => globalThis.String(e)) : [],
-    };
-  },
-
-  toJSON(message: CommandEvent): unknown {
-    const obj: any = {};
-    if (message.playerUuid !== "") {
-      obj.playerUuid = message.playerUuid;
-    }
-    if (message.name !== "") {
-      obj.name = message.name;
-    }
-    if (message.raw !== "") {
-      obj.raw = message.raw;
-    }
-    if (message.command !== "") {
-      obj.command = message.command;
-    }
-    if (message.args?.length) {
-      obj.args = message.args;
-    }
-    return obj;
-  },
-
-  create(base?: DeepPartial<CommandEvent>): CommandEvent {
-    return CommandEvent.fromPartial(base ?? {});
-  },
-  fromPartial(object: DeepPartial<CommandEvent>): CommandEvent {
-    const message = createBaseCommandEvent();
-    message.playerUuid = object.playerUuid ?? "";
-    message.name = object.name ?? "";
-    message.raw = object.raw ?? "";
-    message.command = object.command ?? "";
-    message.args = object.args?.map((e) => e) || [];
-    return message;
-  },
-};
-
-function createBaseBlockBreakEvent(): BlockBreakEvent {
-  return { playerUuid: "", name: "", world: "", x: 0, y: 0, z: 0 };
-}
-
-export const BlockBreakEvent: MessageFns<BlockBreakEvent> = {
-  encode(message: BlockBreakEvent, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.playerUuid !== "") {
-      writer.uint32(10).string(message.playerUuid);
-    }
-    if (message.name !== "") {
-      writer.uint32(18).string(message.name);
-    }
-    if (message.world !== "") {
-      writer.uint32(26).string(message.world);
-    }
-    if (message.x !== 0) {
-      writer.uint32(32).int32(message.x);
-    }
-    if (message.y !== 0) {
-      writer.uint32(40).int32(message.y);
-    }
-    if (message.z !== 0) {
-      writer.uint32(48).int32(message.z);
-    }
-    return writer;
-  },
-
-  decode(input: BinaryReader | Uint8Array, length?: number): BlockBreakEvent {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseBlockBreakEvent();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1: {
-          if (tag !== 10) {
-            break;
-          }
-
-          message.playerUuid = reader.string();
-          continue;
-        }
-        case 2: {
-          if (tag !== 18) {
-            break;
-          }
-
-          message.name = reader.string();
-          continue;
-        }
-        case 3: {
-          if (tag !== 26) {
-            break;
-          }
-
-          message.world = reader.string();
-          continue;
-        }
-        case 4: {
-          if (tag !== 32) {
-            break;
-          }
-
-          message.x = reader.int32();
-          continue;
-        }
-        case 5: {
-          if (tag !== 40) {
-            break;
-          }
-
-          message.y = reader.int32();
-          continue;
-        }
-        case 6: {
-          if (tag !== 48) {
-            break;
-          }
-
-          message.z = reader.int32();
-          continue;
-        }
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skip(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): BlockBreakEvent {
-    return {
-      playerUuid: isSet(object.playerUuid) ? globalThis.String(object.playerUuid) : "",
-      name: isSet(object.name) ? globalThis.String(object.name) : "",
-      world: isSet(object.world) ? globalThis.String(object.world) : "",
-      x: isSet(object.x) ? globalThis.Number(object.x) : 0,
-      y: isSet(object.y) ? globalThis.Number(object.y) : 0,
-      z: isSet(object.z) ? globalThis.Number(object.z) : 0,
-    };
-  },
-
-  toJSON(message: BlockBreakEvent): unknown {
-    const obj: any = {};
-    if (message.playerUuid !== "") {
-      obj.playerUuid = message.playerUuid;
-    }
-    if (message.name !== "") {
-      obj.name = message.name;
-    }
-    if (message.world !== "") {
-      obj.world = message.world;
-    }
-    if (message.x !== 0) {
-      obj.x = Math.round(message.x);
-    }
-    if (message.y !== 0) {
-      obj.y = Math.round(message.y);
-    }
-    if (message.z !== 0) {
-      obj.z = Math.round(message.z);
-    }
-    return obj;
-  },
-
-  create(base?: DeepPartial<BlockBreakEvent>): BlockBreakEvent {
-    return BlockBreakEvent.fromPartial(base ?? {});
-  },
-  fromPartial(object: DeepPartial<BlockBreakEvent>): BlockBreakEvent {
-    const message = createBaseBlockBreakEvent();
-    message.playerUuid = object.playerUuid ?? "";
-    message.name = object.name ?? "";
-    message.world = object.world ?? "";
-    message.x = object.x ?? 0;
-    message.y = object.y ?? 0;
-    message.z = object.z ?? 0;
-    return message;
-  },
-};
-
-function createBaseWorldCloseEvent(): WorldCloseEvent {
-  return {};
-}
-
-export const WorldCloseEvent: MessageFns<WorldCloseEvent> = {
-  encode(_: WorldCloseEvent, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    return writer;
-  },
-
-  decode(input: BinaryReader | Uint8Array, length?: number): WorldCloseEvent {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseWorldCloseEvent();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skip(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(_: any): WorldCloseEvent {
-    return {};
-  },
-
-  toJSON(_: WorldCloseEvent): unknown {
-    const obj: any = {};
-    return obj;
-  },
-
-  create(base?: DeepPartial<WorldCloseEvent>): WorldCloseEvent {
-    return WorldCloseEvent.fromPartial(base ?? {});
-  },
-  fromPartial(_: DeepPartial<WorldCloseEvent>): WorldCloseEvent {
-    const message = createBaseWorldCloseEvent();
     return message;
   },
 };
@@ -1543,9 +1282,11 @@ function createBaseEventSubscribe(): EventSubscribe {
 
 export const EventSubscribe: MessageFns<EventSubscribe> = {
   encode(message: EventSubscribe, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    writer.uint32(10).fork();
     for (const v of message.events) {
-      writer.uint32(10).string(v!);
+      writer.int32(v);
     }
+    writer.join();
     return writer;
   },
 
@@ -1557,12 +1298,22 @@ export const EventSubscribe: MessageFns<EventSubscribe> = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1: {
-          if (tag !== 10) {
-            break;
+          if (tag === 8) {
+            message.events.push(reader.int32() as any);
+
+            continue;
           }
 
-          message.events.push(reader.string());
-          continue;
+          if (tag === 10) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.events.push(reader.int32() as any);
+            }
+
+            continue;
+          }
+
+          break;
         }
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1575,14 +1326,14 @@ export const EventSubscribe: MessageFns<EventSubscribe> = {
 
   fromJSON(object: any): EventSubscribe {
     return {
-      events: globalThis.Array.isArray(object?.events) ? object.events.map((e: any) => globalThis.String(e)) : [],
+      events: globalThis.Array.isArray(object?.events) ? object.events.map((e: any) => eventTypeFromJSON(e)) : [],
     };
   },
 
   toJSON(message: EventSubscribe): unknown {
     const obj: any = {};
     if (message.events?.length) {
-      obj.events = message.events;
+      obj.events = message.events.map((e) => eventTypeToJSON(e));
     }
     return obj;
   },
