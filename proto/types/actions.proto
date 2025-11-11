@@ -1,0 +1,42 @@
+syntax = "proto3";
+package df.plugin;
+
+import "common.proto";
+
+message ActionBatch {
+    repeated Action actions = 1;
+}
+
+message Action {
+    optional string correlation_id = 1;
+    oneof kind {
+        SendChatAction send_chat = 10;
+        TeleportAction teleport = 11;
+        KickAction kick = 12;
+        SetGameModeAction set_game_mode = 13;
+    }
+}
+
+message SendChatAction {
+    string target_uuid = 1;
+    string message = 2;
+}
+
+message TeleportAction {
+    string player_uuid = 1;
+    double x = 2;
+    double y = 3;
+    double z = 4;
+    float yaw = 5;
+    float pitch = 6;
+}
+
+message KickAction {
+    string player_uuid = 1;
+    string reason = 2;
+}
+
+message SetGameModeAction {
+    string player_uuid = 1;
+    GameMode game_mode = 2;
+}

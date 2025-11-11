@@ -1,0 +1,16 @@
+syntax = "proto3";
+package df.plugin;
+option go_package = "github.com/secmc/plugin/proto/generated";
+
+enum GameMode {
+    SURVIVAL = 0;
+    CREATIVE = 1;
+    ADVENTURE = 2;
+    SPECTATOR = 3;
+}
+
+message ItemStack {
+    string name = 1;
+    int32 meta = 2;
+    int32 count = 3;
+}

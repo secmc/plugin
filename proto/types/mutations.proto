@@ -1,0 +1,23 @@
+syntax = "proto3";
+package df.plugin;
+
+import "actions.proto";
+import "common.proto";
+
+message EventResult {
+    string event_id = 1;
+    optional bool cancel = 2;
+    oneof update {
+        ChatMutation chat = 10;
+        BlockBreakMutation block_break = 11;
+    }
+}
+
+message ChatMutation {
+    string message = 1;
+}
+
+message BlockBreakMutation {
+    repeated ItemStack drops = 1;
+    optional int32 xp = 2;
+}

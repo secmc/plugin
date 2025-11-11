@@ -6,65 +6,12 @@ option go_package = "github.com/secmc/plugin/proto/generated";
 
 import "player_events.proto";
 import "world_events.proto";
+import "actions.proto";
+import "mutations.proto";
+import "common.proto";
 
 service Plugin {
   rpc EventStream(stream PluginToHost) returns (stream HostToPlugin);
-}
-
-enum EventType {
-  EVENT_TYPE_UNSPECIFIED = 0;
-  EVENT_TYPE_ALL = 1;
-
-  PLAYER_JOIN = 10;
-  PLAYER_QUIT = 11;
-  PLAYER_MOVE = 12;
-  PLAYER_JUMP = 13;
-  PLAYER_TELEPORT = 14;
-  PLAYER_CHANGE_WORLD = 15;
-  PLAYER_TOGGLE_SPRINT = 16;
-  PLAYER_TOGGLE_SNEAK = 17;
-  CHAT = 18;
-  PLAYER_FOOD_LOSS = 19;
-  PLAYER_HEAL = 20;
-  PLAYER_HURT = 21;
-  PLAYER_DEATH = 22;
-  PLAYER_RESPAWN = 23;
-  PLAYER_SKIN_CHANGE = 24;
-  PLAYER_FIRE_EXTINGUISH = 25;
-  PLAYER_START_BREAK = 26;
-  PLAYER_BLOCK_BREAK = 27;
-  PLAYER_BLOCK_PLACE = 28;
-  PLAYER_BLOCK_PICK = 29;
-  PLAYER_ITEM_USE = 30;
-  PLAYER_ITEM_USE_ON_BLOCK = 31;
-  PLAYER_ITEM_USE_ON_ENTITY = 32;
-  PLAYER_ITEM_RELEASE = 33;
-  PLAYER_ITEM_CONSUME = 34;
-  PLAYER_ATTACK_ENTITY = 35;
-  PLAYER_EXPERIENCE_GAIN = 36;
-  PLAYER_PUNCH_AIR = 37;
-  PLAYER_SIGN_EDIT = 38;
-  PLAYER_LECTERN_PAGE_TURN = 39;
-  PLAYER_ITEM_DAMAGE = 40;
-  PLAYER_ITEM_PICKUP = 41;
-  PLAYER_HELD_SLOT_CHANGE = 42;
-  PLAYER_ITEM_DROP = 43;
-  PLAYER_TRANSFER = 44;
-  COMMAND = 45;
-  PLAYER_DIAGNOSTICS = 46;
-
-  WORLD_LIQUID_FLOW = 70;
-  WORLD_LIQUID_DECAY = 71;
-  WORLD_LIQUID_HARDEN = 72;
-  WORLD_SOUND = 73;
-  WORLD_FIRE_SPREAD = 74;
-  WORLD_BLOCK_BURN = 75;
-  WORLD_CROP_TRAMPLE = 76;
-  WORLD_LEAVES_DECAY = 77;
-  WORLD_ENTITY_SPAWN = 78;
-  WORLD_ENTITY_DESPAWN = 79;
-  WORLD_EXPLOSION = 80;
-  WORLD_CLOSE = 81;
 }
 
 message HostToPlugin {
@@ -121,80 +68,67 @@ message CommandSpec {
   repeated string aliases = 3;
 }
 
-message EventSubscribe {
-  repeated EventType events = 1;
-}
-
-message ActionBatch {
-  repeated Action actions = 1;
-}
-
-message Action {
-  optional string correlation_id = 1;
-  oneof kind {
-    SendChatAction send_chat = 10;
-    TeleportAction teleport = 11;
-    KickAction kick = 12;
-    SetGameModeAction set_game_mode = 13;
-  }
-}
-
-message SendChatAction {
-  string target_uuid = 1;
-  string message = 2;
-}
-
-message TeleportAction {
-  string player_uuid = 1;
-  double x = 2;
-  double y = 3;
-  double z = 4;
-  float yaw = 5;
-  float pitch = 6;
-}
-
-message KickAction {
-  string player_uuid = 1;
-  string reason = 2;
-}
-
-enum GameMode {
-  SURVIVAL = 0;
-  CREATIVE = 1;
-  ADVENTURE = 2;
-  SPECTATOR = 3;
-}
-
-message SetGameModeAction {
-  string player_uuid = 1;
-  GameMode game_mode = 2;
-}
-
 message LogMessage {
   string level = 1;
   string message = 2;
 }
 
-message EventResult {
-  string event_id = 1;
-  optional bool cancel = 2;
-  oneof update {
-    ChatMutation chat = 10;
-    BlockBreakMutation block_break = 11;
-  }
+message EventSubscribe {
+  repeated EventType events = 1;
 }
 
-message ChatMutation {
-  string message = 1;
-}
+enum EventType {
+  EVENT_TYPE_UNSPECIFIED = 0;
+  EVENT_TYPE_ALL = 1;
 
-message BlockBreakMutation {
-  repeated ItemStack drops = 1;
-  optional int32 xp = 2;
-}
+  PLAYER_JOIN = 10;
+  PLAYER_QUIT = 11;
+  PLAYER_MOVE = 12;
+  PLAYER_JUMP = 13;
+  PLAYER_TELEPORT = 14;
+  PLAYER_CHANGE_WORLD = 15;
+  PLAYER_TOGGLE_SPRINT = 16;
+  PLAYER_TOGGLE_SNEAK = 17;
+  CHAT = 18;
+  PLAYER_FOOD_LOSS = 19;
+  PLAYER_HEAL = 20;
+  PLAYER_HURT = 21;
+  PLAYER_DEATH = 22;
+  PLAYER_RESPAWN = 23;
+  PLAYER_SKIN_CHANGE = 24;
+  PLAYER_FIRE_EXTINGUISH = 25;
+  PLAYER_START_BREAK = 26;
+  PLAYER_BLOCK_BREAK = 27;
+  PLAYER_BLOCK_PLACE = 28;
+  PLAYER_BLOCK_PICK = 29;
+  PLAYER_ITEM_USE = 30;
+  PLAYER_ITEM_USE_ON_BLOCK = 31;
+  PLAYER_ITEM_USE_ON_ENTITY = 32;
+  PLAYER_ITEM_RELEASE = 33;
+  PLAYER_ITEM_CONSUME = 34;
+  PLAYER_ATTACK_ENTITY = 35;
+  PLAYER_EXPERIENCE_GAIN = 36;
+  PLAYER_PUNCH_AIR = 37;
+  PLAYER_SIGN_EDIT = 38;
+  PLAYER_LECTERN_PAGE_TURN = 39;
+  PLAYER_ITEM_DAMAGE = 40;
+  PLAYER_ITEM_PICKUP = 41;
+  PLAYER_HELD_SLOT_CHANGE = 42;
+  PLAYER_ITEM_DROP = 43;
+  PLAYER_TRANSFER = 44;
+  COMMAND = 45;
+  PLAYER_DIAGNOSTICS = 46;
 
-message ItemStack {
-  string name = 1;
-  int32 meta = 2;
-  int32 count = 3;
+  WORLD_LIQUID_FLOW = 70;
+  WORLD_LIQUID_DECAY = 71;
+  WORLD_LIQUID_HARDEN = 72;
+  WORLD_SOUND = 73;
+  WORLD_FIRE_SPREAD = 74;
+  WORLD_BLOCK_BURN = 75;
+  WORLD_CROP_TRAMPLE = 76;
+  WORLD_LEAVES_DECAY = 77;
+  WORLD_ENTITY_SPAWN = 78;
+  WORLD_ENTITY_DESPAWN = 79;
+  WORLD_EXPLOSION = 80;
+  WORLD_CLOSE = 81;
 }
