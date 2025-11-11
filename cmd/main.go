@@ -38,7 +38,7 @@ func main() {
 			return handlers.NewWorldHandler(e)
 		},
 	)
-	if err := manager.Start("examples/plugins/plugins.yaml"); err != nil {
+	if err := manager.Start("configs/plugins.yaml"); err != nil {
 		slog.Default().Error("start plugins", "error", err)
 	}
 	manager.AttachWorld(srv.World())
@@ -57,7 +57,7 @@ func main() {
 func readConfig(log *slog.Logger) (server.Config, error) {
 	c := server.DefaultConfig()
 	var zero server.Config
-	if _, err := os.Stat("config.toml"); err != nil {
+	if _, err := os.Stat("configs/config.toml"); err != nil {
 		if !errors.Is(err, os.ErrNotExist) {
 			return zero, fmt.Errorf("stat config: %w", err)
 		}
@@ -65,11 +65,11 @@ func readConfig(log *slog.Logger) (server.Config, error) {
 		if err != nil {
 			return zero, fmt.Errorf("encode default config: %w", err)
 		}
-		if err := os.WriteFile("config.toml", data, 0o644); err != nil {
+		if err := os.WriteFile("configs/config.toml", data, 0o644); err != nil {
 			return zero, fmt.Errorf("create default config: %w", err)
 		}
 	} else {
-		data, err := os.ReadFile("config.toml")
+		data, err := os.ReadFile("configs/config.toml")
 		if err != nil {
 			return zero, fmt.Errorf("read config: %w", err)
 		}
