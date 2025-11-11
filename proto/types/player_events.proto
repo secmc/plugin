@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package df.plugin;
+
+option go_package = "github.com/secmc/plugin/proto/generated";
+
+message PlayerJoinEvent {
+  string player_uuid = 1;
+  string name = 2;
+}
+
+message PlayerQuitEvent {
+  string player_uuid = 1;
+  string name = 2;
+}
+
+message ChatEvent {
+  string player_uuid = 1;
+  string name = 2;
+  string message = 3;
+}
+
+message CommandEvent {
+  string player_uuid = 1;
+  string name = 2;
+  string raw = 3; // Full command string like "/tp 100 64 200"
+  string command = 4; // Just the command name like "tp"
+  repeated string args = 5; // Parsed arguments like ["100", "64", "200"]
+}
+
+message BlockBreakEvent {
+  string player_uuid = 1;
+  string name = 2;
+  string world = 3;
+  int32 x = 4;
+  int32 y = 5;
+  int32 z = 6;
+}

@@ -9,7 +9,6 @@ import (
 	"log/slog"
 	"os"
 	"os/exec"
-	"strings"
 	"sync"
 	"sync/atomic"
 	"time"
@@ -226,25 +225,27 @@ func (p *pluginProcess) recvLoop() {
 	}
 }
 
-func (p *pluginProcess) HasSubscription(event string) bool {
+func (p *pluginProcess) HasSubscription(event pb.EventType) bool {
 	if !p.ready.Load() {
 		return false
 	}
-	if _, ok := p.subscriptions.Load("*"); ok {
+	if _, ok := p.subscriptions.Load(pb.EventType_EVENT_TYPE_ALL); ok {
 		return true
 	}
-	_, ok := p.subscriptions.Load(strings.ToUpper(event))
+	if event == pb.EventType_EVENT_TYPE_UNSPECIFIED {
+		return false
+	}
+	_, ok := p.subscriptions.Load(event)
 	return ok
 }
 
-func (p *pluginProcess) updateSubscriptions(events []string) {
+func (p *pluginProcess) updateSubscriptions(events []pb.EventType) {
 	p.subscriptions.Range(func(key, value any) bool {
 		p.subscriptions.Delete(key)
 		return true
 	})
 	for _, evt := range events {
-		evt = strings.ToUpper(strings.TrimSpace(evt))
-		if evt == "" {
+		if evt == pb.EventType_EVENT_TYPE_UNSPECIFIED {
 			continue
 		}
 		p.subscriptions.Store(evt, struct{}{})

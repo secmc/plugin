@@ -27,7 +27,7 @@ func (h *WorldHandler) HandleClose(tx *world.Tx) {
 	}
 	evt := &pb.EventEnvelope{
 		EventId: h.broadcaster.GenerateEventID(),
-		Type:    "WORLD_CLOSE",
+		Type:    pb.EventType_WORLD_CLOSE,
 		Payload: &pb.EventEnvelope_WorldClose{
 			WorldClose: &pb.WorldCloseEvent{},
 		},

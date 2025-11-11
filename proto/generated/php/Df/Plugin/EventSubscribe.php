@@ -15,7 +15,7 @@ use Google\Protobuf\RepeatedField;
 class EventSubscribe extends \Google\Protobuf\Internal\Message
 {
     /**
-     * Generated from protobuf field <code>repeated string events = 1 [json_name = "events"];</code>
+     * Generated from protobuf field <code>repeated .df.plugin.EventType events = 1 [json_name = "events"];</code>
      */
     private $events;
 
@@ -25,7 +25,7 @@ class EventSubscribe extends \Google\Protobuf\Internal\Message
      * @param array $data {
      *     Optional. Data for populating the Message object.
      *
-     *     @type string[] $events
+     *     @type int[] $events
      * }
      */
     public function __construct($data = NULL) {
@@ -34,8 +34,8 @@ class EventSubscribe extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>repeated string events = 1 [json_name = "events"];</code>
-     * @return RepeatedField<string>
+     * Generated from protobuf field <code>repeated .df.plugin.EventType events = 1 [json_name = "events"];</code>
+     * @return RepeatedField<int>
      */
     public function getEvents()
     {
@@ -43,13 +43,13 @@ class EventSubscribe extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>repeated string events = 1 [json_name = "events"];</code>
-     * @param string[] $var
+     * Generated from protobuf field <code>repeated .df.plugin.EventType events = 1 [json_name = "events"];</code>
+     * @param int[] $var
      * @return $this
      */
     public function setEvents($var)
     {
-        $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::STRING);
+        $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::ENUM, \Df\Plugin\EventType::class);
         $this->events = $arr;
 
         return $this;

@@ -18,7 +18,7 @@ type PluginManager interface {
 type PluginProcess interface {
 	Start(ctx context.Context) error
 	Stop()
-	HasSubscription(eventType string) bool
+	HasSubscription(eventType pb.EventType) bool
 	Queue(msg *pb.HostToPlugin)
 }
 

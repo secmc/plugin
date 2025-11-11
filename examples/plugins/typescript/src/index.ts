@@ -6,6 +6,7 @@ import {
     HostToPlugin,
     PluginToHost,
     GameMode,
+    EventType,
 } from '@dragonfly/proto';
 
 const pluginId = process.env.DF_PLUGIN_ID || 'typescript-plugin';
@@ -46,7 +47,7 @@ function handleEvent(
     event: NonNullable<HostToPlugin['event']>
 ) {
     switch (event.type) {
-        case 'PLAYER_JOIN': {
+        case EventType.PLAYER_JOIN: {
             const player = event.playerJoin;
             if (!player) break;
 
@@ -72,7 +73,7 @@ function handleEvent(
             break;
         }
 
-        case 'PLAYER_QUIT': {
+        case EventType.PLAYER_QUIT: {
             const player = event.playerQuit;
             if (!player) break;
             console.log(`[ts] player left ${player.name}`);
@@ -89,7 +90,7 @@ function handleEvent(
             break;
         }
 
-        case 'COMMAND': {
+        case EventType.COMMAND: {
             const cmd = event.command;
             if (!cmd) break;
 
@@ -228,7 +229,7 @@ function handleEvent(
             break;
         }
 
-        case 'CHAT': {
+        case EventType.CHAT: {
             const chat = event.chat;
             if (!chat) break;
 
@@ -292,7 +293,7 @@ function handleEvent(
             break;
         }
 
-        case 'BLOCK_BREAK': {
+        case EventType.PLAYER_BLOCK_BREAK: {
             const blockBreak = event.blockBreak;
             if (!blockBreak) break;
 
@@ -328,7 +329,7 @@ function handleEvent(
         }
 
         default:
-            console.log('[ts] unhandled event type:', event.type);
+            console.log('[ts] unhandled event type:', EventType[event.type] ?? event.type);
     }
 }
 
@@ -371,7 +372,13 @@ call.write(helloMessage);
 const initialSubscribe: PluginToHost = {
     pluginId,
     subscribe: {
-        events: ['PLAYER_JOIN', 'PLAYER_QUIT', 'COMMAND', 'CHAT', 'BLOCK_BREAK'],
+        events: [
+            EventType.PLAYER_JOIN,
+            EventType.PLAYER_QUIT,
+            EventType.COMMAND,
+            EventType.CHAT,
+            EventType.PLAYER_BLOCK_BREAK,
+        ],
     },
 };
 call.write(initialSubscribe);

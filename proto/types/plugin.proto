@@ -4,8 +4,67 @@ package df.plugin;
 
 option go_package = "github.com/secmc/plugin/proto/generated";
 
+import "player_events.proto";
+import "world_events.proto";
+
 service Plugin {
   rpc EventStream(stream PluginToHost) returns (stream HostToPlugin);
+}
+
+enum EventType {
+  EVENT_TYPE_UNSPECIFIED = 0;
+  EVENT_TYPE_ALL = 1;
+
+  PLAYER_JOIN = 10;
+  PLAYER_QUIT = 11;
+  PLAYER_MOVE = 12;
+  PLAYER_JUMP = 13;
+  PLAYER_TELEPORT = 14;
+  PLAYER_CHANGE_WORLD = 15;
+  PLAYER_TOGGLE_SPRINT = 16;
+  PLAYER_TOGGLE_SNEAK = 17;
+  CHAT = 18;
+  PLAYER_FOOD_LOSS = 19;
+  PLAYER_HEAL = 20;
+  PLAYER_HURT = 21;
+  PLAYER_DEATH = 22;
+  PLAYER_RESPAWN = 23;
+  PLAYER_SKIN_CHANGE = 24;
+  PLAYER_FIRE_EXTINGUISH = 25;
+  PLAYER_START_BREAK = 26;
+  PLAYER_BLOCK_BREAK = 27;
+  PLAYER_BLOCK_PLACE = 28;
+  PLAYER_BLOCK_PICK = 29;
+  PLAYER_ITEM_USE = 30;
+  PLAYER_ITEM_USE_ON_BLOCK = 31;
+  PLAYER_ITEM_USE_ON_ENTITY = 32;
+  PLAYER_ITEM_RELEASE = 33;
+  PLAYER_ITEM_CONSUME = 34;
+  PLAYER_ATTACK_ENTITY = 35;
+  PLAYER_EXPERIENCE_GAIN = 36;
+  PLAYER_PUNCH_AIR = 37;
+  PLAYER_SIGN_EDIT = 38;
+  PLAYER_LECTERN_PAGE_TURN = 39;
+  PLAYER_ITEM_DAMAGE = 40;
+  PLAYER_ITEM_PICKUP = 41;
+  PLAYER_HELD_SLOT_CHANGE = 42;
+  PLAYER_ITEM_DROP = 43;
+  PLAYER_TRANSFER = 44;
+  COMMAND = 45;
+  PLAYER_DIAGNOSTICS = 46;
+
+  WORLD_LIQUID_FLOW = 70;
+  WORLD_LIQUID_DECAY = 71;
+  WORLD_LIQUID_HARDEN = 72;
+  WORLD_SOUND = 73;
+  WORLD_FIRE_SPREAD = 74;
+  WORLD_BLOCK_BURN = 75;
+  WORLD_CROP_TRAMPLE = 76;
+  WORLD_LEAVES_DECAY = 77;
+  WORLD_ENTITY_SPAWN = 78;
+  WORLD_ENTITY_DESPAWN = 79;
+  WORLD_EXPLOSION = 80;
+  WORLD_CLOSE = 81;
 }
 
 message HostToPlugin {
@@ -27,7 +86,7 @@ message HostShutdown {
 
 message EventEnvelope {
   string event_id = 1;
-  string type = 2;
+  EventType type = 2;
   oneof payload {
     PlayerJoinEvent player_join = 10;
     PlayerQuitEvent player_quit = 11;
@@ -37,41 +96,6 @@ message EventEnvelope {
     WorldCloseEvent world_close = 15;
   }
 }
-
-message PlayerJoinEvent {
-  string player_uuid = 1;
-  string name = 2;
-}
-
-message PlayerQuitEvent {
-  string player_uuid = 1;
-  string name = 2;
-}
-
-message ChatEvent {
-  string player_uuid = 1;
-  string name = 2;
-  string message = 3;
-}
-
-message CommandEvent {
-  string player_uuid = 1;
-  string name = 2;
-  string raw = 3; // Full command string like "/tp 100 64 200"
-  string command = 4; // Just the command name like "tp"
-  repeated string args = 5; // Parsed arguments like ["100", "64", "200"]
-}
-
-message BlockBreakEvent {
-  string player_uuid = 1;
-  string name = 2;
-  string world = 3;
-  int32 x = 4;
-  int32 y = 5;
-  int32 z = 6;
-}
-
-message WorldCloseEvent {}
 
 message PluginToHost {
   string plugin_id = 1;
@@ -98,7 +122,7 @@ message CommandSpec {
 }
 
 message EventSubscribe {
-  repeated string events = 1;
+  repeated EventType events = 1;
 }
 
 message ActionBatch {

@@ -127,11 +127,13 @@ Host ←→ Plugin (EventStream)
 
 ### 4. Example Event Types
 
+Values come from the `EventType` enum:
+
 - `PLAYER_JOIN` - Player connected
 - `PLAYER_QUIT` - Player disconnected
 - `CHAT` - Player sent chat message
 - `COMMAND` - Player executed command
-- `BLOCK_BREAK` - Player broke a block
+- `PLAYER_BLOCK_BREAK` - Player broke a block
 - `WORLD_CLOSE` - World is closing
 
 ### 5. Example Actions

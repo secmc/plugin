@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+package df.plugin;
+
+option go_package = "github.com/secmc/plugin/proto/generated";
+
+message WorldCloseEvent {}

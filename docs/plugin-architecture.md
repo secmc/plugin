@@ -97,12 +97,13 @@ plugins:
 
 ## 4. Event Routing
 
-The manager sends events to plugins based on their subscriptions. Current events include:
+The manager sends events to plugins based on their subscriptions. Current events include values from the
+`EventType` enum, such as:
 
 * `PLAYER_JOIN` / `PLAYER_QUIT`
 * `CHAT`
 * `COMMAND`
-* `BLOCK_BREAK`
+* `PLAYER_BLOCK_BREAK`
 * `WORLD_CLOSE`
 
 Events carry minimal data required for action correlation (player UUID, name, coordinates). Plugins can correlate
@@ -147,7 +148,7 @@ respect Dragonfly’s threading model.
    * `api_version`
    * Optional command registrations (shown in `/help`).
 3. Dragonfly identifies the plugin by `plugin_id` and sends `HostHello(api_version="v1")`.
-4. Plugin sends `EventSubscribe` listing uppercase event names (`["PLAYER_JOIN", "COMMAND"]`).
+4. Plugin sends `EventSubscribe` listing `EventType` values (for example, `[EventType.PLAYER_JOIN, EventType.COMMAND]`).
 5. Stream enters steady state: host pushes events; plugin sends actions/logs as needed.
 
 ## 8. Backpressure & Fault Handling

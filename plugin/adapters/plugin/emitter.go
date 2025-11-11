@@ -220,7 +220,7 @@ func (m *Emitter) detachPlayer(p *player.Player) {
 func (m *Emitter) EmitPlayerJoin(p *player.Player) {
 	evt := &pb.EventEnvelope{
 		EventId: m.generateEventID(),
-		Type:    "PLAYER_JOIN",
+		Type:    pb.EventType_PLAYER_JOIN,
 		Payload: &pb.EventEnvelope_PlayerJoin{
 			PlayerJoin: &pb.PlayerJoinEvent{
 				PlayerUuid: p.UUID().String(),
@@ -234,7 +234,7 @@ func (m *Emitter) EmitPlayerJoin(p *player.Player) {
 func (m *Emitter) EmitPlayerQuit(p *player.Player) {
 	evt := &pb.EventEnvelope{
 		EventId: m.generateEventID(),
-		Type:    "PLAYER_QUIT",
+		Type:    pb.EventType_PLAYER_QUIT,
 		Payload: &pb.EventEnvelope_PlayerQuit{
 			PlayerQuit: &pb.PlayerQuitEvent{
 				PlayerUuid: p.UUID().String(),
@@ -251,7 +251,7 @@ func (m *Emitter) EmitChat(ctx *player.Context, p *player.Player, msg *string) {
 	}
 	evt := &pb.EventEnvelope{
 		EventId: m.generateEventID(),
-		Type:    "CHAT",
+		Type:    pb.EventType_CHAT,
 		Payload: &pb.EventEnvelope_Chat{
 			Chat: &pb.ChatEvent{
 				PlayerUuid: p.UUID().String(),
@@ -285,7 +285,7 @@ func (m *Emitter) EmitCommand(ctx *player.Context, p *player.Player, cmdName str
 	}
 	evt := &pb.EventEnvelope{
 		EventId: m.generateEventID(),
-		Type:    "COMMAND",
+		Type:    pb.EventType_COMMAND,
 		Payload: &pb.EventEnvelope_Command{
 			Command: &pb.CommandEvent{
 				PlayerUuid: p.UUID().String(),
@@ -308,7 +308,7 @@ func (m *Emitter) EmitCommand(ctx *player.Context, p *player.Player, cmdName str
 func (m *Emitter) EmitBlockBreak(ctx *player.Context, p *player.Player, pos cube.Pos, drops *[]item.Stack, xp *int, worldDim string) {
 	evt := &pb.EventEnvelope{
 		EventId: m.generateEventID(),
-		Type:    "BLOCK_BREAK",
+		Type:    pb.EventType_PLAYER_BLOCK_BREAK,
 		Payload: &pb.EventEnvelope_BlockBreak{
 			BlockBreak: &pb.BlockBreakEvent{
 				PlayerUuid: p.UUID().String(),
@@ -351,7 +351,7 @@ func (m *Emitter) dispatchEvent(envelope *pb.EventEnvelope, expectResult bool) [
 	if envelope == nil {
 		return nil
 	}
-	eventType := strings.ToUpper(envelope.Type)
+	eventType := envelope.Type
 	m.mu.RLock()
 	procs := make([]*pluginProcess, 0, len(m.plugins))
 	for _, proc := range m.plugins {
@@ -385,14 +385,14 @@ func (m *Emitter) dispatchEvent(envelope *pb.EventEnvelope, expectResult bool) [
 		res, err := proc.waitEventResult(waitCh, eventResponseTimeout)
 		if err != nil {
 			if errors.Is(err, context.DeadlineExceeded) {
-				proc.log.Warn("plugin did not respond to event", "event_id", envelope.EventId, "type", envelope.Type)
+				proc.log.Warn("plugin did not respond to event", "event_id", envelope.EventId, "type", envelope.Type.String())
 			}
 			proc.discardEventResult(envelope.EventId)
 			continue
 		}
 		if res != nil {
 			results = append(results, res)
-			if envelope.Type == "CHAT" {
+			if envelope.Type == pb.EventType_CHAT {
 				if chatEvt := envelope.GetChat(); chatEvt != nil {
 					if chatMut := res.GetChat(); chatMut != nil {
 						chatEvt.Message = chatMut.Message

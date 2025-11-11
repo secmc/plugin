@@ -14,6 +14,7 @@ use Df\Plugin\ChatMutation;
 use Df\Plugin\CommandSpec;
 use Df\Plugin\EventResult;
 use Df\Plugin\EventSubscribe;
+use Df\Plugin\EventType;
 use Df\Plugin\PluginClient;
 use Df\Plugin\PluginHello;
 use Df\Plugin\PluginToHost;
@@ -51,7 +52,11 @@ $call->write($hello);
 $subscribeMsg = new PluginToHost();
 $subscribeMsg->setPluginId($pluginId);
 $subscribe = new EventSubscribe();
-$subscribe->setEvents(['PLAYER_JOIN', 'COMMAND', 'CHAT']);
+$subscribe->setEvents([
+    EventType::PLAYER_JOIN,
+    EventType::COMMAND,
+    EventType::CHAT,
+]);
 $subscribeMsg->setSubscribe($subscribe);
 $call->write($subscribeMsg);
 
@@ -76,12 +81,12 @@ try {
             $event = $message->getEvent();
             $eventId = $event->getEventId();
 
-            if ($event->getType() === 'PLAYER_JOIN' && $event->hasPlayerJoin()) {
+            if ($event->getType() === EventType::PLAYER_JOIN && $event->hasPlayerJoin()) {
                 acknowledgeEvent($call, $pluginId, $eventId);
                 continue;
             }
 
-            if ($event->getType() === 'CHAT' && $event->hasChat()) {
+            if ($event->getType() === EventType::CHAT && $event->hasChat()) {
                 $chat = $event->getChat();
                 $text = $chat->getMessage();
 
@@ -101,7 +106,7 @@ try {
                 continue;
             }
 
-            if ($event->getType() === 'COMMAND' && $event->hasCommand()) {
+            if ($event->getType() === EventType::COMMAND && $event->hasCommand()) {
                 $commandEvent = $event->getCommand();
                 if ($commandEvent->getRaw() === '/cheers') {
                     $action = new Action();

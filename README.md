@@ -126,7 +126,11 @@ try {
             $sub = new \DF\Plugin\PluginToHost();
             $sub->setPluginId($pluginId);
             $subscribe = new \DF\Plugin\EventSubscribe();
-            $subscribe->setEvents(['PLAYER_JOIN', 'COMMAND', 'BLOCK_BREAK']);
+            $subscribe->setEvents([
+                \DF\Plugin\EventType::PLAYER_JOIN,
+                \DF\Plugin\EventType::COMMAND,
+                \DF\Plugin\EventType::PLAYER_BLOCK_BREAK,
+            ]);
             $sub->setSubscribe($subscribe);
             $stream->write($sub);
             continue;
@@ -136,7 +140,7 @@ try {
             $event = $message->getEvent();
             
             // Handle /mine command
-            if ($event->getType() === 'COMMAND' && $event->hasCommand()) {
+            if ($event->getType() === \DF\Plugin\EventType::COMMAND && $event->hasCommand()) {
                 $cmd = $event->getCommand();
                 if ($cmd->getCommand() === 'mine') {
                     // Send message to player
