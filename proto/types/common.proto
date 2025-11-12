@@ -9,6 +9,68 @@ enum GameMode {
     SPECTATOR = 3;
 }
 
+// EffectType mirrors Dragonfly's registered effect IDs for straightforward mapping.
+// Keep numeric values aligned with dragonfly/server/entity/effect/register.go.
+enum EffectType {
+    EFFECT_UNKNOWN = 0;
+    SPEED = 1;
+    SLOWNESS = 2;
+    HASTE = 3;
+    MINING_FATIGUE = 4;
+    STRENGTH = 5;
+    INSTANT_HEALTH = 6;
+    INSTANT_DAMAGE = 7;
+    JUMP_BOOST = 8;
+    NAUSEA = 9;
+    REGENERATION = 10;
+    RESISTANCE = 11;
+    FIRE_RESISTANCE = 12;
+    WATER_BREATHING = 13;
+    INVISIBILITY = 14;
+    BLINDNESS = 15;
+    NIGHT_VISION = 16;
+    HUNGER = 17;
+    WEAKNESS = 18;
+    POISON = 19;
+    WITHER = 20;
+    HEALTH_BOOST = 21;
+    ABSORPTION = 22;
+    SATURATION = 23;
+    LEVITATION = 24;
+    FATAL_POISON = 25;
+    CONDUIT_POWER = 26;
+    SLOW_FALLING = 27;
+    // 28, 29 intentionally omitted (Bad Omen, Hero of the Village - not implemented)
+    DARKNESS = 30;
+}
+
+// Sound is a curated list of common sounds that don't require extra parameters.
+// For sounds that require additional context (e.g., BlockPlace, Note), adapters
+// may use sensible defaults or ignore extra semantics for now.
+enum Sound {
+    SOUND_UNKNOWN = 0;
+    ATTACK = 1;
+    DROWNING = 2;
+    BURNING = 3;
+    FALL = 4;
+    BURP = 5;
+    POP = 6;
+    EXPLOSION = 7;
+    THUNDER = 8;
+    LEVEL_UP = 9;
+    EXPERIENCE = 10;
+    FIREWORK_LAUNCH = 11;
+    FIREWORK_HUGE_BLAST = 12;
+    FIREWORK_BLAST = 13;
+    FIREWORK_TWINKLE = 14;
+    TELEPORT = 15;
+    ARROW_HIT = 16;
+    ITEM_BREAK = 17;
+    ITEM_THROW = 18;
+    TOTEM = 19;
+    FIRE_EXTINGUISH = 20;
+}
+
 message Vec3 {
     double x = 1;
     double y = 2;

@@ -16,6 +16,25 @@ message Action {
         TeleportAction teleport = 11;
         KickAction kick = 12;
         SetGameModeAction set_game_mode = 13;
+        // Inventory & Items
+        GiveItemAction give_item = 14;
+        ClearInventoryAction clear_inventory = 15;
+        SetHeldItemAction set_held_item = 16;
+        // Player State
+        SetHealthAction set_health = 20;
+        SetFoodAction set_food = 21;
+        SetExperienceAction set_experience = 22;
+        SetVelocityAction set_velocity = 23;
+        // Effects & Status
+        AddEffectAction add_effect = 30;
+        RemoveEffectAction remove_effect = 31;
+        // UI & Communication
+        SendTitleAction send_title = 40;
+        SendPopupAction send_popup = 41;
+        SendTipAction send_tip = 42;
+        PlaySoundAction play_sound = 43;
+        // Commands
+        ExecuteCommandAction execute_command = 50;
     }
 }
 
@@ -40,4 +59,95 @@ message KickAction {
 message SetGameModeAction {
     string player_uuid = 1;
     GameMode game_mode = 2;
+}
+
+// Inventory & Items
+message GiveItemAction {
+    string player_uuid = 1;
+    ItemStack item = 2;
+}
+
+message ClearInventoryAction {
+    string player_uuid = 1;
+}
+
+message SetHeldItemAction {
+    string player_uuid = 1;
+    optional ItemStack main = 2;    // if set, updates main hand
+    optional ItemStack offhand = 3; // if set, updates offhand
+}
+
+// Player State
+message SetHealthAction {
+    string player_uuid = 1;
+    double health = 2;
+    optional double max_health = 3;
+}
+
+message SetFoodAction {
+    string player_uuid = 1;
+    int32 food = 2; // 0-20
+}
+
+message SetExperienceAction {
+    string player_uuid = 1;
+    // If set, the player's level is set to this value.
+    optional int32 level = 2;
+    // If set, the player's progress bar (0..1) is set to this value.
+    optional float progress = 3;
+    // If set, raw experience points are added (can be negative to remove).
+    optional int32 amount = 4;
+}
+
+message SetVelocityAction {
+    string player_uuid = 1;
+    Vec3 velocity = 2;
+}
+
+// Effects & Status
+message AddEffectAction {
+    string player_uuid = 1;
+    EffectType effect_type = 2;
+    int32 level = 3;        // amplifier level (1 = level I)
+    int64 duration_ms = 4;  // duration in milliseconds
+    bool show_particles = 5;
+}
+
+message RemoveEffectAction {
+    string player_uuid = 1;
+    EffectType effect_type = 2;
+}
+
+// UI & Communication
+message SendTitleAction {
+    string player_uuid = 1;
+    string title = 2;
+    optional string subtitle = 3;
+    optional int64 fade_in_ms = 4;
+    optional int64 duration_ms = 5;
+    optional int64 fade_out_ms = 6;
+}
+
+message SendPopupAction {
+    string player_uuid = 1;
+    string message = 2;
+}
+
+message SendTipAction {
+    string player_uuid = 1;
+    string message = 2;
+}
+
+message PlaySoundAction { // TODO: it should probably be a world action
+    string player_uuid = 1;
+    Sound sound = 2;
+    optional Vec3 position = 3;  // defaults to player position if unset
+    optional float volume = 4;   // default 1.0
+    optional float pitch = 5;    // default 1.0
+}
+
+// Commands
+message ExecuteCommandAction {
+    string player_uuid = 1;
+    string command = 2; // without leading slash
 }
