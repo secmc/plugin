@@ -94,261 +94,6 @@ namespace plugin {
 
 // -------------------------------------------------------------------
 
-class TeleportAction final : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:df.plugin.TeleportAction) */ {
- public:
-  inline TeleportAction() : TeleportAction(nullptr) {}
-  ~TeleportAction() PROTOBUF_FINAL;
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-  void operator delete(TeleportAction* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
-    SharedDtor(*msg);
-    ::google::protobuf::internal::SizedDelete(msg, sizeof(TeleportAction));
-  }
-#endif
-
-  template <typename = void>
-  explicit PROTOBUF_CONSTEXPR TeleportAction(::google::protobuf::internal::ConstantInitialized);
-
-  inline TeleportAction(const TeleportAction& from) : TeleportAction(nullptr, from) {}
-  inline TeleportAction(TeleportAction&& from) noexcept
-      : TeleportAction(nullptr, ::std::move(from)) {}
-  inline TeleportAction& operator=(const TeleportAction& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline TeleportAction& operator=(TeleportAction&& from) noexcept {
-    if (this == &from) return *this;
-    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
-  }
-  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-  }
-
-  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
-    return GetDescriptor();
-  }
-  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const TeleportAction& default_instance() {
-    return *reinterpret_cast<const TeleportAction*>(
-        &_TeleportAction_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages = 3;
-  friend void swap(TeleportAction& a, TeleportAction& b) { a.Swap(&b); }
-  inline void Swap(TeleportAction* PROTOBUF_NONNULL other) {
-    if (other == this) return;
-    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-      InternalSwap(other);
-    } else {
-      ::google::protobuf::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(TeleportAction* PROTOBUF_NONNULL other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  TeleportAction* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
-    return ::google::protobuf::Message::DefaultConstruct<TeleportAction>(arena);
-  }
-  using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const TeleportAction& from);
-  using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom(const TeleportAction& from) { TeleportAction::MergeImpl(*this, from); }
-
-  private:
-  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
-                        const ::google::protobuf::MessageLite& from_msg);
-
-  public:
-  bool IsInitialized() const {
-    return true;
-  }
-  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-  #if defined(PROTOBUF_CUSTOM_VTABLE)
-  private:
-  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
-      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
-      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
-
-  public:
-  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
-      ::uint8_t* PROTOBUF_NONNULL target,
-      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
-    return _InternalSerialize(*this, target, stream);
-  }
-  #else   // PROTOBUF_CUSTOM_VTABLE
-  ::size_t ByteSizeLong() const final;
-  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
-      ::uint8_t* PROTOBUF_NONNULL target,
-      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
-  #endif  // PROTOBUF_CUSTOM_VTABLE
-  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
-
-  private:
-  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
-  static void SharedDtor(MessageLite& self);
-  void InternalSwap(TeleportAction* PROTOBUF_NONNULL other);
- private:
-  template <typename T>
-  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "df.plugin.TeleportAction"; }
-
-  explicit TeleportAction(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
-  TeleportAction(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const TeleportAction& from);
-  TeleportAction(
-      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, TeleportAction&& from) noexcept
-      : TeleportAction(arena) {
-    *this = ::std::move(from);
-  }
-  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
-  static void* PROTOBUF_NONNULL PlacementNew_(
-      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
-      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
-  static constexpr auto InternalNewImpl_();
-
- public:
-  static constexpr auto InternalGenerateClassData_();
-
-  ::google::protobuf::Metadata GetMetadata() const;
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-  enum : int {
-    kPlayerUuidFieldNumber = 1,
-    kXFieldNumber = 2,
-    kYFieldNumber = 3,
-    kZFieldNumber = 4,
-    kYawFieldNumber = 5,
-    kPitchFieldNumber = 6,
-  };
-  // string player_uuid = 1 [json_name = "playerUuid"];
-  void clear_player_uuid() ;
-  const ::std::string& player_uuid() const;
-  template <typename Arg_ = const ::std::string&, typename... Args_>
-  void set_player_uuid(Arg_&& arg, Args_... args);
-  ::std::string* PROTOBUF_NONNULL mutable_player_uuid();
-  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_player_uuid();
-  void set_allocated_player_uuid(::std::string* PROTOBUF_NULLABLE value);
-
-  private:
-  const ::std::string& _internal_player_uuid() const;
-  PROTOBUF_ALWAYS_INLINE void _internal_set_player_uuid(const ::std::string& value);
-  ::std::string* PROTOBUF_NONNULL _internal_mutable_player_uuid();
-
-  public:
-  // double x = 2 [json_name = "x"];
-  void clear_x() ;
-  double x() const;
-  void set_x(double value);
-
-  private:
-  double _internal_x() const;
-  void _internal_set_x(double value);
-
-  public:
-  // double y = 3 [json_name = "y"];
-  void clear_y() ;
-  double y() const;
-  void set_y(double value);
-
-  private:
-  double _internal_y() const;
-  void _internal_set_y(double value);
-
-  public:
-  // double z = 4 [json_name = "z"];
-  void clear_z() ;
-  double z() const;
-  void set_z(double value);
-
-  private:
-  double _internal_z() const;
-  void _internal_set_z(double value);
-
-  public:
-  // float yaw = 5 [json_name = "yaw"];
-  void clear_yaw() ;
-  float yaw() const;
-  void set_yaw(float value);
-
-  private:
-  float _internal_yaw() const;
-  void _internal_set_yaw(float value);
-
-  public:
-  // float pitch = 6 [json_name = "pitch"];
-  void clear_pitch() ;
-  float pitch() const;
-  void set_pitch(float value);
-
-  private:
-  float _internal_pitch() const;
-  void _internal_set_pitch(float value);
-
-  public:
-  // @@protoc_insertion_point(class_scope:df.plugin.TeleportAction)
- private:
-  class _Internal;
-  friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<3, 6,
-                                   0, 44,
-                                   2>
-      _table_;
-
-  friend class ::google::protobuf::MessageLite;
-  friend class ::google::protobuf::Arena;
-  template <typename T>
-  friend class ::google::protobuf::Arena::InternalHelper;
-  using InternalArenaConstructable_ = void;
-  using DestructorSkippable_ = void;
-  struct Impl_ {
-    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-    inline explicit Impl_(
-        ::google::protobuf::internal::InternalVisibility visibility,
-        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
-    inline explicit Impl_(
-        ::google::protobuf::internal::InternalVisibility visibility,
-        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
-        const TeleportAction& from_msg);
-    ::google::protobuf::internal::HasBits<1> _has_bits_;
-    ::google::protobuf::internal::CachedSize _cached_size_;
-    ::google::protobuf::internal::ArenaStringPtr player_uuid_;
-    double x_;
-    double y_;
-    double z_;
-    float yaw_;
-    float pitch_;
-    PROTOBUF_TSAN_DECLARE_MEMBER
-  };
-  union { Impl_ _impl_; };
-  friend struct ::TableStruct_actions_2eproto;
-};
-
-extern const ::google::protobuf::internal::ClassDataFull TeleportAction_class_data_;
-// -------------------------------------------------------------------
-
 class SetGameModeAction final : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:df.plugin.SetGameModeAction) */ {
  public:
@@ -978,6 +723,235 @@ class KickAction final : public ::google::protobuf::Message
 };
 
 extern const ::google::protobuf::internal::ClassDataFull KickAction_class_data_;
+// -------------------------------------------------------------------
+
+class TeleportAction final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:df.plugin.TeleportAction) */ {
+ public:
+  inline TeleportAction() : TeleportAction(nullptr) {}
+  ~TeleportAction() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(TeleportAction* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(TeleportAction));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR TeleportAction(::google::protobuf::internal::ConstantInitialized);
+
+  inline TeleportAction(const TeleportAction& from) : TeleportAction(nullptr, from) {}
+  inline TeleportAction(TeleportAction&& from) noexcept
+      : TeleportAction(nullptr, ::std::move(from)) {}
+  inline TeleportAction& operator=(const TeleportAction& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline TeleportAction& operator=(TeleportAction&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const TeleportAction& default_instance() {
+    return *reinterpret_cast<const TeleportAction*>(
+        &_TeleportAction_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 3;
+  friend void swap(TeleportAction& a, TeleportAction& b) { a.Swap(&b); }
+  inline void Swap(TeleportAction* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(TeleportAction* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  TeleportAction* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<TeleportAction>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const TeleportAction& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const TeleportAction& from) { TeleportAction::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(TeleportAction* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "df.plugin.TeleportAction"; }
+
+  explicit TeleportAction(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  TeleportAction(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const TeleportAction& from);
+  TeleportAction(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, TeleportAction&& from) noexcept
+      : TeleportAction(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kPlayerUuidFieldNumber = 1,
+    kPositionFieldNumber = 2,
+    kRotationFieldNumber = 3,
+  };
+  // string player_uuid = 1 [json_name = "playerUuid"];
+  void clear_player_uuid() ;
+  const ::std::string& player_uuid() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_player_uuid(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_player_uuid();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_player_uuid();
+  void set_allocated_player_uuid(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_player_uuid() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_player_uuid(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_player_uuid();
+
+  public:
+  // .df.plugin.Vec3 position = 2 [json_name = "position"];
+  bool has_position() const;
+  void clear_position() ;
+  const ::df::plugin::Vec3& position() const;
+  [[nodiscard]] ::df::plugin::Vec3* PROTOBUF_NULLABLE release_position();
+  ::df::plugin::Vec3* PROTOBUF_NONNULL mutable_position();
+  void set_allocated_position(::df::plugin::Vec3* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_position(::df::plugin::Vec3* PROTOBUF_NULLABLE value);
+  ::df::plugin::Vec3* PROTOBUF_NULLABLE unsafe_arena_release_position();
+
+  private:
+  const ::df::plugin::Vec3& _internal_position() const;
+  ::df::plugin::Vec3* PROTOBUF_NONNULL _internal_mutable_position();
+
+  public:
+  // .df.plugin.Vec3 rotation = 3 [json_name = "rotation"];
+  bool has_rotation() const;
+  void clear_rotation() ;
+  const ::df::plugin::Vec3& rotation() const;
+  [[nodiscard]] ::df::plugin::Vec3* PROTOBUF_NULLABLE release_rotation();
+  ::df::plugin::Vec3* PROTOBUF_NONNULL mutable_rotation();
+  void set_allocated_rotation(::df::plugin::Vec3* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_rotation(::df::plugin::Vec3* PROTOBUF_NULLABLE value);
+  ::df::plugin::Vec3* PROTOBUF_NULLABLE unsafe_arena_release_rotation();
+
+  private:
+  const ::df::plugin::Vec3& _internal_rotation() const;
+  ::df::plugin::Vec3* PROTOBUF_NONNULL _internal_mutable_rotation();
+
+  public:
+  // @@protoc_insertion_point(class_scope:df.plugin.TeleportAction)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<2, 3,
+                                   2, 44,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const TeleportAction& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::internal::ArenaStringPtr player_uuid_;
+    ::df::plugin::Vec3* PROTOBUF_NULLABLE position_;
+    ::df::plugin::Vec3* PROTOBUF_NULLABLE rotation_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_actions_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull TeleportAction_class_data_;
 // -------------------------------------------------------------------
 
 class Action final : public ::google::protobuf::Message
@@ -2161,129 +2135,190 @@ inline void TeleportAction::set_allocated_player_uuid(::std::string* PROTOBUF_NU
   // @@protoc_insertion_point(field_set_allocated:df.plugin.TeleportAction.player_uuid)
 }
 
-// double x = 2 [json_name = "x"];
-inline void TeleportAction::clear_x() {
+// .df.plugin.Vec3 position = 2 [json_name = "position"];
+inline bool TeleportAction::has_position() const {
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000002U);
+  PROTOBUF_ASSUME(!value || _impl_.position_ != nullptr);
+  return value;
+}
+inline const ::df::plugin::Vec3& TeleportAction::_internal_position() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::df::plugin::Vec3* p = _impl_.position_;
+  return p != nullptr ? *p : reinterpret_cast<const ::df::plugin::Vec3&>(::df::plugin::_Vec3_default_instance_);
+}
+inline const ::df::plugin::Vec3& TeleportAction::position() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:df.plugin.TeleportAction.position)
+  return _internal_position();
+}
+inline void TeleportAction::unsafe_arena_set_allocated_position(
+    ::df::plugin::Vec3* PROTOBUF_NULLABLE value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.x_ = 0;
-  ClearHasBit(_impl_._has_bits_[0],
-                  0x00000002U);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.position_);
+  }
+  _impl_.position_ = reinterpret_cast<::df::plugin::Vec3*>(value);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:df.plugin.TeleportAction.position)
 }
-inline double TeleportAction::x() const {
-  // @@protoc_insertion_point(field_get:df.plugin.TeleportAction.x)
-  return _internal_x();
+inline ::df::plugin::Vec3* PROTOBUF_NULLABLE TeleportAction::release_position() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  ::df::plugin::Vec3* released = _impl_.position_;
+  _impl_.position_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
 }
-inline void TeleportAction::set_x(double value) {
-  _internal_set_x(value);
+inline ::df::plugin::Vec3* PROTOBUF_NULLABLE TeleportAction::unsafe_arena_release_position() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:df.plugin.TeleportAction.position)
+
+  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  ::df::plugin::Vec3* temp = _impl_.position_;
+  _impl_.position_ = nullptr;
+  return temp;
+}
+inline ::df::plugin::Vec3* PROTOBUF_NONNULL TeleportAction::_internal_mutable_position() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.position_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::df::plugin::Vec3>(GetArena());
+    _impl_.position_ = reinterpret_cast<::df::plugin::Vec3*>(p);
+  }
+  return _impl_.position_;
+}
+inline ::df::plugin::Vec3* PROTOBUF_NONNULL TeleportAction::mutable_position()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
   SetHasBit(_impl_._has_bits_[0], 0x00000002U);
-  // @@protoc_insertion_point(field_set:df.plugin.TeleportAction.x)
+  ::df::plugin::Vec3* _msg = _internal_mutable_position();
+  // @@protoc_insertion_point(field_mutable:df.plugin.TeleportAction.position)
+  return _msg;
 }
-inline double TeleportAction::_internal_x() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.x_;
-}
-inline void TeleportAction::_internal_set_x(double value) {
+inline void TeleportAction::set_allocated_position(::df::plugin::Vec3* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.x_ = value;
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.position_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::google::protobuf::Message*>(value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  }
+
+  _impl_.position_ = reinterpret_cast<::df::plugin::Vec3*>(value);
+  // @@protoc_insertion_point(field_set_allocated:df.plugin.TeleportAction.position)
 }
 
-// double y = 3 [json_name = "y"];
-inline void TeleportAction::clear_y() {
+// .df.plugin.Vec3 rotation = 3 [json_name = "rotation"];
+inline bool TeleportAction::has_rotation() const {
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000004U);
+  PROTOBUF_ASSUME(!value || _impl_.rotation_ != nullptr);
+  return value;
+}
+inline const ::df::plugin::Vec3& TeleportAction::_internal_rotation() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::df::plugin::Vec3* p = _impl_.rotation_;
+  return p != nullptr ? *p : reinterpret_cast<const ::df::plugin::Vec3&>(::df::plugin::_Vec3_default_instance_);
+}
+inline const ::df::plugin::Vec3& TeleportAction::rotation() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:df.plugin.TeleportAction.rotation)
+  return _internal_rotation();
+}
+inline void TeleportAction::unsafe_arena_set_allocated_rotation(
+    ::df::plugin::Vec3* PROTOBUF_NULLABLE value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.y_ = 0;
-  ClearHasBit(_impl_._has_bits_[0],
-                  0x00000004U);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.rotation_);
+  }
+  _impl_.rotation_ = reinterpret_cast<::df::plugin::Vec3*>(value);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:df.plugin.TeleportAction.rotation)
 }
-inline double TeleportAction::y() const {
-  // @@protoc_insertion_point(field_get:df.plugin.TeleportAction.y)
-  return _internal_y();
+inline ::df::plugin::Vec3* PROTOBUF_NULLABLE TeleportAction::release_rotation() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+  ::df::plugin::Vec3* released = _impl_.rotation_;
+  _impl_.rotation_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
 }
-inline void TeleportAction::set_y(double value) {
-  _internal_set_y(value);
+inline ::df::plugin::Vec3* PROTOBUF_NULLABLE TeleportAction::unsafe_arena_release_rotation() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:df.plugin.TeleportAction.rotation)
+
+  ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+  ::df::plugin::Vec3* temp = _impl_.rotation_;
+  _impl_.rotation_ = nullptr;
+  return temp;
+}
+inline ::df::plugin::Vec3* PROTOBUF_NONNULL TeleportAction::_internal_mutable_rotation() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.rotation_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::df::plugin::Vec3>(GetArena());
+    _impl_.rotation_ = reinterpret_cast<::df::plugin::Vec3*>(p);
+  }
+  return _impl_.rotation_;
+}
+inline ::df::plugin::Vec3* PROTOBUF_NONNULL TeleportAction::mutable_rotation()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
   SetHasBit(_impl_._has_bits_[0], 0x00000004U);
-  // @@protoc_insertion_point(field_set:df.plugin.TeleportAction.y)
+  ::df::plugin::Vec3* _msg = _internal_mutable_rotation();
+  // @@protoc_insertion_point(field_mutable:df.plugin.TeleportAction.rotation)
+  return _msg;
 }
-inline double TeleportAction::_internal_y() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.y_;
-}
-inline void TeleportAction::_internal_set_y(double value) {
+inline void TeleportAction::set_allocated_rotation(::df::plugin::Vec3* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.y_ = value;
-}
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.rotation_);
+  }
 
-// double z = 4 [json_name = "z"];
-inline void TeleportAction::clear_z() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.z_ = 0;
-  ClearHasBit(_impl_._has_bits_[0],
-                  0x00000008U);
-}
-inline double TeleportAction::z() const {
-  // @@protoc_insertion_point(field_get:df.plugin.TeleportAction.z)
-  return _internal_z();
-}
-inline void TeleportAction::set_z(double value) {
-  _internal_set_z(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
-  // @@protoc_insertion_point(field_set:df.plugin.TeleportAction.z)
-}
-inline double TeleportAction::_internal_z() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.z_;
-}
-inline void TeleportAction::_internal_set_z(double value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.z_ = value;
-}
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::google::protobuf::Message*>(value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+  }
 
-// float yaw = 5 [json_name = "yaw"];
-inline void TeleportAction::clear_yaw() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.yaw_ = 0;
-  ClearHasBit(_impl_._has_bits_[0],
-                  0x00000010U);
-}
-inline float TeleportAction::yaw() const {
-  // @@protoc_insertion_point(field_get:df.plugin.TeleportAction.yaw)
-  return _internal_yaw();
-}
-inline void TeleportAction::set_yaw(float value) {
-  _internal_set_yaw(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000010U);
-  // @@protoc_insertion_point(field_set:df.plugin.TeleportAction.yaw)
-}
-inline float TeleportAction::_internal_yaw() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.yaw_;
-}
-inline void TeleportAction::_internal_set_yaw(float value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.yaw_ = value;
-}
-
-// float pitch = 6 [json_name = "pitch"];
-inline void TeleportAction::clear_pitch() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.pitch_ = 0;
-  ClearHasBit(_impl_._has_bits_[0],
-                  0x00000020U);
-}
-inline float TeleportAction::pitch() const {
-  // @@protoc_insertion_point(field_get:df.plugin.TeleportAction.pitch)
-  return _internal_pitch();
-}
-inline void TeleportAction::set_pitch(float value) {
-  _internal_set_pitch(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000020U);
-  // @@protoc_insertion_point(field_set:df.plugin.TeleportAction.pitch)
-}
-inline float TeleportAction::_internal_pitch() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.pitch_;
-}
-inline void TeleportAction::_internal_set_pitch(float value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.pitch_ = value;
+  _impl_.rotation_ = reinterpret_cast<::df::plugin::Vec3*>(value);
+  // @@protoc_insertion_point(field_set_allocated:df.plugin.TeleportAction.rotation)
 }
 
 // -------------------------------------------------------------------

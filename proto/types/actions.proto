@@ -26,11 +26,10 @@ message SendChatAction {
 
 message TeleportAction {
     string player_uuid = 1;
-    double x = 2;
-    double y = 3;
-    double z = 4;
-    float yaw = 5;
-    float pitch = 6;
+    Vec3 position = 2;
+    // rotation vector mapping:
+    //  x = pitch, y = yaw, z = head_yaw
+    Vec3 rotation = 3;
 }
 
 message KickAction {

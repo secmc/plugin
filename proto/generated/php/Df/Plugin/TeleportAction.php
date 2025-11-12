@@ -19,25 +19,16 @@ class TeleportAction extends \Google\Protobuf\Internal\Message
      */
     protected $player_uuid = '';
     /**
-     * Generated from protobuf field <code>double x = 2 [json_name = "x"];</code>
+     * Generated from protobuf field <code>.df.plugin.Vec3 position = 2 [json_name = "position"];</code>
      */
-    protected $x = 0.0;
+    protected $position = null;
     /**
-     * Generated from protobuf field <code>double y = 3 [json_name = "y"];</code>
+     * rotation vector mapping:
+     *  x = pitch, y = yaw, z = head_yaw
+     *
+     * Generated from protobuf field <code>.df.plugin.Vec3 rotation = 3 [json_name = "rotation"];</code>
      */
-    protected $y = 0.0;
-    /**
-     * Generated from protobuf field <code>double z = 4 [json_name = "z"];</code>
-     */
-    protected $z = 0.0;
-    /**
-     * Generated from protobuf field <code>float yaw = 5 [json_name = "yaw"];</code>
-     */
-    protected $yaw = 0.0;
-    /**
-     * Generated from protobuf field <code>float pitch = 6 [json_name = "pitch"];</code>
-     */
-    protected $pitch = 0.0;
+    protected $rotation = null;
 
     /**
      * Constructor.
@@ -46,11 +37,10 @@ class TeleportAction extends \Google\Protobuf\Internal\Message
      *     Optional. Data for populating the Message object.
      *
      *     @type string $player_uuid
-     *     @type float $x
-     *     @type float $y
-     *     @type float $z
-     *     @type float $yaw
-     *     @type float $pitch
+     *     @type \Df\Plugin\Vec3 $position
+     *     @type \Df\Plugin\Vec3 $rotation
+     *           rotation vector mapping:
+     *            x = pitch, y = yaw, z = head_yaw
      * }
      */
     public function __construct($data = NULL) {
@@ -81,111 +71,71 @@ class TeleportAction extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>double x = 2 [json_name = "x"];</code>
-     * @return float
+     * Generated from protobuf field <code>.df.plugin.Vec3 position = 2 [json_name = "position"];</code>
+     * @return \Df\Plugin\Vec3|null
      */
-    public function getX()
+    public function getPosition()
     {
-        return $this->x;
+        return $this->position;
+    }
+
+    public function hasPosition()
+    {
+        return isset($this->position);
+    }
+
+    public function clearPosition()
+    {
+        unset($this->position);
     }
 
     /**
-     * Generated from protobuf field <code>double x = 2 [json_name = "x"];</code>
-     * @param float $var
+     * Generated from protobuf field <code>.df.plugin.Vec3 position = 2 [json_name = "position"];</code>
+     * @param \Df\Plugin\Vec3 $var
      * @return $this
      */
-    public function setX($var)
+    public function setPosition($var)
     {
-        GPBUtil::checkDouble($var);
-        $this->x = $var;
+        GPBUtil::checkMessage($var, \Df\Plugin\Vec3::class);
+        $this->position = $var;
 
         return $this;
     }
 
     /**
-     * Generated from protobuf field <code>double y = 3 [json_name = "y"];</code>
-     * @return float
+     * rotation vector mapping:
+     *  x = pitch, y = yaw, z = head_yaw
+     *
+     * Generated from protobuf field <code>.df.plugin.Vec3 rotation = 3 [json_name = "rotation"];</code>
+     * @return \Df\Plugin\Vec3|null
      */
-    public function getY()
+    public function getRotation()
     {
-        return $this->y;
+        return $this->rotation;
+    }
+
+    public function hasRotation()
+    {
+        return isset($this->rotation);
+    }
+
+    public function clearRotation()
+    {
+        unset($this->rotation);
     }
 
     /**
-     * Generated from protobuf field <code>double y = 3 [json_name = "y"];</code>
-     * @param float $var
+     * rotation vector mapping:
+     *  x = pitch, y = yaw, z = head_yaw
+     *
+     * Generated from protobuf field <code>.df.plugin.Vec3 rotation = 3 [json_name = "rotation"];</code>
+     * @param \Df\Plugin\Vec3 $var
      * @return $this
      */
-    public function setY($var)
+    public function setRotation($var)
     {
-        GPBUtil::checkDouble($var);
-        $this->y = $var;
-
-        return $this;
-    }
-
-    /**
-     * Generated from protobuf field <code>double z = 4 [json_name = "z"];</code>
-     * @return float
-     */
-    public function getZ()
-    {
-        return $this->z;
-    }
-
-    /**
-     * Generated from protobuf field <code>double z = 4 [json_name = "z"];</code>
-     * @param float $var
-     * @return $this
-     */
-    public function setZ($var)
-    {
-        GPBUtil::checkDouble($var);
-        $this->z = $var;
-
-        return $this;
-    }
-
-    /**
-     * Generated from protobuf field <code>float yaw = 5 [json_name = "yaw"];</code>
-     * @return float
-     */
-    public function getYaw()
-    {
-        return $this->yaw;
-    }
-
-    /**
-     * Generated from protobuf field <code>float yaw = 5 [json_name = "yaw"];</code>
-     * @param float $var
-     * @return $this
-     */
-    public function setYaw($var)
-    {
-        GPBUtil::checkFloat($var);
-        $this->yaw = $var;
-
-        return $this;
-    }
-
-    /**
-     * Generated from protobuf field <code>float pitch = 6 [json_name = "pitch"];</code>
-     * @return float
-     */
-    public function getPitch()
-    {
-        return $this->pitch;
-    }
-
-    /**
-     * Generated from protobuf field <code>float pitch = 6 [json_name = "pitch"];</code>
-     * @param float $var
-     * @return $this
-     */
-    public function setPitch($var)
-    {
-        GPBUtil::checkFloat($var);
-        $this->pitch = $var;
+        GPBUtil::checkMessage($var, \Df\Plugin\Vec3::class);
+        $this->rotation = $var;
 
         return $this;
     }

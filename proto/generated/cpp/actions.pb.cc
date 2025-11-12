@@ -27,38 +27,6 @@ namespace _fl = ::google::protobuf::internal::field_layout;
 namespace df {
 namespace plugin {
 
-inline constexpr TeleportAction::Impl_::Impl_(
-    ::_pbi::ConstantInitialized) noexcept
-      : _cached_size_{0},
-        player_uuid_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
-        x_{0},
-        y_{0},
-        z_{0},
-        yaw_{0},
-        pitch_{0} {}
-
-template <typename>
-PROTOBUF_CONSTEXPR TeleportAction::TeleportAction(::_pbi::ConstantInitialized)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(TeleportAction_class_data_.base()),
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(),
-#endif  // PROTOBUF_CUSTOM_VTABLE
-      _impl_(::_pbi::ConstantInitialized()) {
-}
-struct TeleportActionDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR TeleportActionDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~TeleportActionDefaultTypeInternal() {}
-  union {
-    TeleportAction _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 TeleportActionDefaultTypeInternal _TeleportAction_default_instance_;
-
 inline constexpr SetGameModeAction::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : _cached_size_{0},
@@ -146,6 +114,35 @@ struct KickActionDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 KickActionDefaultTypeInternal _KickAction_default_instance_;
+
+inline constexpr TeleportAction::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        player_uuid_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        position_{nullptr},
+        rotation_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR TeleportAction::TeleportAction(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(TeleportAction_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct TeleportActionDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR TeleportActionDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~TeleportActionDefaultTypeInternal() {}
+  union {
+    TeleportAction _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 TeleportActionDefaultTypeInternal _TeleportAction_default_instance_;
 
 inline constexpr Action::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
@@ -238,19 +235,13 @@ const ::uint32_t
         1,
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::df::plugin::TeleportAction, _impl_._has_bits_),
-        9, // hasbit index offset
+        6, // hasbit index offset
         PROTOBUF_FIELD_OFFSET(::df::plugin::TeleportAction, _impl_.player_uuid_),
-        PROTOBUF_FIELD_OFFSET(::df::plugin::TeleportAction, _impl_.x_),
-        PROTOBUF_FIELD_OFFSET(::df::plugin::TeleportAction, _impl_.y_),
-        PROTOBUF_FIELD_OFFSET(::df::plugin::TeleportAction, _impl_.z_),
-        PROTOBUF_FIELD_OFFSET(::df::plugin::TeleportAction, _impl_.yaw_),
-        PROTOBUF_FIELD_OFFSET(::df::plugin::TeleportAction, _impl_.pitch_),
+        PROTOBUF_FIELD_OFFSET(::df::plugin::TeleportAction, _impl_.position_),
+        PROTOBUF_FIELD_OFFSET(::df::plugin::TeleportAction, _impl_.rotation_),
         0,
         1,
         2,
-        3,
-        4,
-        5,
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::df::plugin::KickAction, _impl_._has_bits_),
         5, // hasbit index offset
@@ -273,8 +264,8 @@ static const ::_pbi::MigrationSchema
         {5, sizeof(::df::plugin::Action)},
         {20, sizeof(::df::plugin::SendChatAction)},
         {27, sizeof(::df::plugin::TeleportAction)},
-        {42, sizeof(::df::plugin::KickAction)},
-        {49, sizeof(::df::plugin::SetGameModeAction)},
+        {36, sizeof(::df::plugin::KickAction)},
+        {43, sizeof(::df::plugin::SetGameModeAction)},
 };
 static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::df::plugin::_ActionBatch_default_instance_._instance,
@@ -298,18 +289,18 @@ const char descriptor_table_protodef_actions_2eproto[] ABSL_ATTRIBUTE_SECTION_VA
     "deActionH\000R\013setGameModeB\006\n\004kindB\021\n\017_corr"
     "elation_id\"K\n\016SendChatAction\022\037\n\013target_u"
     "uid\030\001 \001(\tR\ntargetUuid\022\030\n\007message\030\002 \001(\tR\007"
-    "message\"\203\001\n\016TeleportAction\022\037\n\013player_uui"
-    "d\030\001 \001(\tR\nplayerUuid\022\014\n\001x\030\002 \001(\001R\001x\022\014\n\001y\030\003"
-    " \001(\001R\001y\022\014\n\001z\030\004 \001(\001R\001z\022\020\n\003yaw\030\005 \001(\002R\003yaw\022"
-    "\024\n\005pitch\030\006 \001(\002R\005pitch\"E\n\nKickAction\022\037\n\013p"
-    "layer_uuid\030\001 \001(\tR\nplayerUuid\022\026\n\006reason\030\002"
-    " \001(\tR\006reason\"f\n\021SetGameModeAction\022\037\n\013pla"
-    "yer_uuid\030\001 \001(\tR\nplayerUuid\0220\n\tgame_mode\030"
-    "\002 \001(\0162\023.df.plugin.GameModeR\010gameModeB\213\001\n"
-    "\rcom.df.pluginB\014ActionsProtoP\001Z\'github.c"
-    "om/secmc/plugin/proto/generated\242\002\003DPX\252\002\t"
-    "Df.Plugin\312\002\tDf\\Plugin\342\002\025Df\\Plugin\\GPBMet"
-    "adata\352\002\nDf::Pluginb\006proto3"
+    "message\"\213\001\n\016TeleportAction\022\037\n\013player_uui"
+    "d\030\001 \001(\tR\nplayerUuid\022+\n\010position\030\002 \001(\0132\017."
+    "df.plugin.Vec3R\010position\022+\n\010rotation\030\003 \001"
+    "(\0132\017.df.plugin.Vec3R\010rotation\"E\n\nKickAct"
+    "ion\022\037\n\013player_uuid\030\001 \001(\tR\nplayerUuid\022\026\n\006"
+    "reason\030\002 \001(\tR\006reason\"f\n\021SetGameModeActio"
+    "n\022\037\n\013player_uuid\030\001 \001(\tR\nplayerUuid\0220\n\tga"
+    "me_mode\030\002 \001(\0162\023.df.plugin.GameModeR\010game"
+    "ModeB\213\001\n\rcom.df.pluginB\014ActionsProtoP\001Z\'"
+    "github.com/secmc/plugin/proto/generated\242"
+    "\002\003DPX\252\002\tDf.Plugin\312\002\tDf\\Plugin\342\002\025Df\\Plugi"
+    "n\\GPBMetadata\352\002\nDf::Pluginb\006proto3"
 };
 static const ::_pbi::DescriptorTable* PROTOBUF_NONNULL const
     descriptor_table_actions_2eproto_deps[1] = {
@@ -319,7 +310,7 @@ static ::absl::once_flag descriptor_table_actions_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_actions_2eproto = {
     false,
     false,
-    946,
+    954,
     descriptor_table_protodef_actions_2eproto,
     "actions.proto",
     &descriptor_table_actions_2eproto_once,
@@ -1456,6 +1447,18 @@ class TeleportAction::_Internal {
       8 * PROTOBUF_FIELD_OFFSET(TeleportAction, _impl_._has_bits_);
 };
 
+void TeleportAction::clear_position() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.position_ != nullptr) _impl_.position_->Clear();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000002U);
+}
+void TeleportAction::clear_rotation() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.rotation_ != nullptr) _impl_.rotation_->Clear();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000004U);
+}
 TeleportAction::TeleportAction(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
     : ::google::protobuf::Message(arena, TeleportAction_class_data_.base()) {
@@ -1486,13 +1489,13 @@ TeleportAction::TeleportAction(
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
   new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-  ::memcpy(reinterpret_cast<char*>(&_impl_) +
-               offsetof(Impl_, x_),
-           reinterpret_cast<const char*>(&from._impl_) +
-               offsetof(Impl_, x_),
-           offsetof(Impl_, pitch_) -
-               offsetof(Impl_, x_) +
-               sizeof(Impl_::pitch_));
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.position_ = (CheckHasBit(cached_has_bits, 0x00000002U))
+                ? ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.position_)
+                : nullptr;
+  _impl_.rotation_ = (CheckHasBit(cached_has_bits, 0x00000004U))
+                ? ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.rotation_)
+                : nullptr;
 
   // @@protoc_insertion_point(copy_constructor:df.plugin.TeleportAction)
 }
@@ -1505,11 +1508,11 @@ PROTOBUF_NDEBUG_INLINE TeleportAction::Impl_::Impl_(
 inline void TeleportAction::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
   ::memset(reinterpret_cast<char*>(&_impl_) +
-               offsetof(Impl_, x_),
+               offsetof(Impl_, position_),
            0,
-           offsetof(Impl_, pitch_) -
-               offsetof(Impl_, x_) +
-               sizeof(Impl_::pitch_));
+           offsetof(Impl_, rotation_) -
+               offsetof(Impl_, position_) +
+               sizeof(Impl_::rotation_));
 }
 TeleportAction::~TeleportAction() {
   // @@protoc_insertion_point(destructor:df.plugin.TeleportAction)
@@ -1523,6 +1526,8 @@ inline void TeleportAction::SharedDtor(MessageLite& self) {
   this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   ABSL_DCHECK(this_.GetArena() == nullptr);
   this_._impl_.player_uuid_.Destroy();
+  delete this_._impl_.position_;
+  delete this_._impl_.rotation_;
   this_._impl_.~Impl_();
 }
 
@@ -1569,18 +1574,18 @@ TeleportAction::GetClassData() const {
   return TeleportAction_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<3, 6, 0, 44, 2>
+const ::_pbi::TcParseTable<2, 3, 2, 44, 2>
 TeleportAction::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(TeleportAction, _impl_._has_bits_),
     0, // no _extensions_
-    6, 56,  // max_field_number, fast_idx_mask
+    3, 24,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967232,  // skipmap
+    4294967288,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    6,  // num_field_entries
-    0,  // num_aux_entries
-    offsetof(decltype(_table_), field_names),  // no aux_entries
+    3,  // num_field_entries
+    2,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
     TeleportAction_class_data_.base(),
     nullptr,  // post_loop_handler
     ::_pbi::TcParser::GenericFallback,  // fallback
@@ -1593,44 +1598,28 @@ TeleportAction::_table_ = {
     {::_pbi::TcParser::FastUS1,
      {10, 0, 0,
       PROTOBUF_FIELD_OFFSET(TeleportAction, _impl_.player_uuid_)}},
-    // double x = 2 [json_name = "x"];
-    {::_pbi::TcParser::FastF64S1,
-     {17, 1, 0,
-      PROTOBUF_FIELD_OFFSET(TeleportAction, _impl_.x_)}},
-    // double y = 3 [json_name = "y"];
-    {::_pbi::TcParser::FastF64S1,
-     {25, 2, 0,
-      PROTOBUF_FIELD_OFFSET(TeleportAction, _impl_.y_)}},
-    // double z = 4 [json_name = "z"];
-    {::_pbi::TcParser::FastF64S1,
-     {33, 3, 0,
-      PROTOBUF_FIELD_OFFSET(TeleportAction, _impl_.z_)}},
-    // float yaw = 5 [json_name = "yaw"];
-    {::_pbi::TcParser::FastF32S1,
-     {45, 4, 0,
-      PROTOBUF_FIELD_OFFSET(TeleportAction, _impl_.yaw_)}},
-    // float pitch = 6 [json_name = "pitch"];
-    {::_pbi::TcParser::FastF32S1,
-     {53, 5, 0,
-      PROTOBUF_FIELD_OFFSET(TeleportAction, _impl_.pitch_)}},
-    {::_pbi::TcParser::MiniParse, {}},
+    // .df.plugin.Vec3 position = 2 [json_name = "position"];
+    {::_pbi::TcParser::FastMtS1,
+     {18, 1, 0,
+      PROTOBUF_FIELD_OFFSET(TeleportAction, _impl_.position_)}},
+    // .df.plugin.Vec3 rotation = 3 [json_name = "rotation"];
+    {::_pbi::TcParser::FastMtS1,
+     {26, 2, 1,
+      PROTOBUF_FIELD_OFFSET(TeleportAction, _impl_.rotation_)}},
   }}, {{
     65535, 65535
   }}, {{
     // string player_uuid = 1 [json_name = "playerUuid"];
     {PROTOBUF_FIELD_OFFSET(TeleportAction, _impl_.player_uuid_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // double x = 2 [json_name = "x"];
-    {PROTOBUF_FIELD_OFFSET(TeleportAction, _impl_.x_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kDouble)},
-    // double y = 3 [json_name = "y"];
-    {PROTOBUF_FIELD_OFFSET(TeleportAction, _impl_.y_), _Internal::kHasBitsOffset + 2, 0, (0 | ::_fl::kFcOptional | ::_fl::kDouble)},
-    // double z = 4 [json_name = "z"];
-    {PROTOBUF_FIELD_OFFSET(TeleportAction, _impl_.z_), _Internal::kHasBitsOffset + 3, 0, (0 | ::_fl::kFcOptional | ::_fl::kDouble)},
-    // float yaw = 5 [json_name = "yaw"];
-    {PROTOBUF_FIELD_OFFSET(TeleportAction, _impl_.yaw_), _Internal::kHasBitsOffset + 4, 0, (0 | ::_fl::kFcOptional | ::_fl::kFloat)},
-    // float pitch = 6 [json_name = "pitch"];
-    {PROTOBUF_FIELD_OFFSET(TeleportAction, _impl_.pitch_), _Internal::kHasBitsOffset + 5, 0, (0 | ::_fl::kFcOptional | ::_fl::kFloat)},
+    // .df.plugin.Vec3 position = 2 [json_name = "position"];
+    {PROTOBUF_FIELD_OFFSET(TeleportAction, _impl_.position_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .df.plugin.Vec3 rotation = 3 [json_name = "rotation"];
+    {PROTOBUF_FIELD_OFFSET(TeleportAction, _impl_.rotation_), _Internal::kHasBitsOffset + 2, 1, (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
   }},
-  // no aux_entries
+  {{
+      {::_pbi::TcParser::GetTable<::df::plugin::Vec3>()},
+      {::_pbi::TcParser::GetTable<::df::plugin::Vec3>()},
+  }},
   {{
     "\30\13\0\0\0\0\0\0"
     "df.plugin.TeleportAction"
@@ -1645,13 +1634,18 @@ PROTOBUF_NOINLINE void TeleportAction::Clear() {
   (void) cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
-  if (CheckHasBit(cached_has_bits, 0x00000001U)) {
-    _impl_.player_uuid_.ClearNonDefaultToEmpty();
-  }
-  if (BatchCheckHasBit(cached_has_bits, 0x0000003eU)) {
-    ::memset(&_impl_.x_, 0, static_cast<::size_t>(
-        reinterpret_cast<char*>(&_impl_.pitch_) -
-        reinterpret_cast<char*>(&_impl_.x_)) + sizeof(_impl_.pitch_));
+  if (BatchCheckHasBit(cached_has_bits, 0x00000007U)) {
+    if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+      _impl_.player_uuid_.ClearNonDefaultToEmpty();
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+      ABSL_DCHECK(_impl_.position_ != nullptr);
+      _impl_.position_->Clear();
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+      ABSL_DCHECK(_impl_.rotation_ != nullptr);
+      _impl_.rotation_->Clear();
+    }
   }
   _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
@@ -1686,49 +1680,18 @@ PROTOBUF_NOINLINE void TeleportAction::Clear() {
     }
   }
 
-  // double x = 2 [json_name = "x"];
+  // .df.plugin.Vec3 position = 2 [json_name = "position"];
   if (CheckHasBit(cached_has_bits, 0x00000002U)) {
-    if (::absl::bit_cast<::uint64_t>(this_._internal_x()) != 0) {
-      target = stream->EnsureSpace(target);
-      target = ::_pbi::WireFormatLite::WriteDoubleToArray(
-          2, this_._internal_x(), target);
-    }
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        2, *this_._impl_.position_, this_._impl_.position_->GetCachedSize(), target,
+        stream);
   }
 
-  // double y = 3 [json_name = "y"];
+  // .df.plugin.Vec3 rotation = 3 [json_name = "rotation"];
   if (CheckHasBit(cached_has_bits, 0x00000004U)) {
-    if (::absl::bit_cast<::uint64_t>(this_._internal_y()) != 0) {
-      target = stream->EnsureSpace(target);
-      target = ::_pbi::WireFormatLite::WriteDoubleToArray(
-          3, this_._internal_y(), target);
-    }
-  }
-
-  // double z = 4 [json_name = "z"];
-  if (CheckHasBit(cached_has_bits, 0x00000008U)) {
-    if (::absl::bit_cast<::uint64_t>(this_._internal_z()) != 0) {
-      target = stream->EnsureSpace(target);
-      target = ::_pbi::WireFormatLite::WriteDoubleToArray(
-          4, this_._internal_z(), target);
-    }
-  }
-
-  // float yaw = 5 [json_name = "yaw"];
-  if (CheckHasBit(cached_has_bits, 0x00000010U)) {
-    if (::absl::bit_cast<::uint32_t>(this_._internal_yaw()) != 0) {
-      target = stream->EnsureSpace(target);
-      target = ::_pbi::WireFormatLite::WriteFloatToArray(
-          5, this_._internal_yaw(), target);
-    }
-  }
-
-  // float pitch = 6 [json_name = "pitch"];
-  if (CheckHasBit(cached_has_bits, 0x00000020U)) {
-    if (::absl::bit_cast<::uint32_t>(this_._internal_pitch()) != 0) {
-      target = stream->EnsureSpace(target);
-      target = ::_pbi::WireFormatLite::WriteFloatToArray(
-          6, this_._internal_pitch(), target);
-    }
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        3, *this_._impl_.rotation_, this_._impl_.rotation_->GetCachedSize(), target,
+        stream);
   }
 
   if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
@@ -1756,7 +1719,7 @@ PROTOBUF_NOINLINE void TeleportAction::Clear() {
 
   ::_pbi::Prefetch5LinesFrom7Lines(&this_);
   cached_has_bits = this_._impl_._has_bits_[0];
-  if (BatchCheckHasBit(cached_has_bits, 0x0000003fU)) {
+  if (BatchCheckHasBit(cached_has_bits, 0x00000007U)) {
     // string player_uuid = 1 [json_name = "playerUuid"];
     if (CheckHasBit(cached_has_bits, 0x00000001U)) {
       if (!this_._internal_player_uuid().empty()) {
@@ -1764,35 +1727,15 @@ PROTOBUF_NOINLINE void TeleportAction::Clear() {
                                         this_._internal_player_uuid());
       }
     }
-    // double x = 2 [json_name = "x"];
+    // .df.plugin.Vec3 position = 2 [json_name = "position"];
     if (CheckHasBit(cached_has_bits, 0x00000002U)) {
-      if (::absl::bit_cast<::uint64_t>(this_._internal_x()) != 0) {
-        total_size += 9;
-      }
+      total_size += 1 +
+                    ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.position_);
     }
-    // double y = 3 [json_name = "y"];
+    // .df.plugin.Vec3 rotation = 3 [json_name = "rotation"];
     if (CheckHasBit(cached_has_bits, 0x00000004U)) {
-      if (::absl::bit_cast<::uint64_t>(this_._internal_y()) != 0) {
-        total_size += 9;
-      }
-    }
-    // double z = 4 [json_name = "z"];
-    if (CheckHasBit(cached_has_bits, 0x00000008U)) {
-      if (::absl::bit_cast<::uint64_t>(this_._internal_z()) != 0) {
-        total_size += 9;
-      }
-    }
-    // float yaw = 5 [json_name = "yaw"];
-    if (CheckHasBit(cached_has_bits, 0x00000010U)) {
-      if (::absl::bit_cast<::uint32_t>(this_._internal_yaw()) != 0) {
-        total_size += 5;
-      }
-    }
-    // float pitch = 6 [json_name = "pitch"];
-    if (CheckHasBit(cached_has_bits, 0x00000020U)) {
-      if (::absl::bit_cast<::uint32_t>(this_._internal_pitch()) != 0) {
-        total_size += 5;
-      }
+      total_size += 1 +
+                    ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.rotation_);
     }
   }
   return this_.MaybeComputeUnknownFieldsSize(total_size,
@@ -1807,13 +1750,14 @@ void TeleportAction::MergeImpl(::google::protobuf::MessageLite& to_msg,
   if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
     from.CheckHasBitConsistency();
   }
+  ::google::protobuf::Arena* arena = _this->GetArena();
   // @@protoc_insertion_point(class_specific_merge_from_start:df.plugin.TeleportAction)
   ABSL_DCHECK_NE(&from, _this);
   ::uint32_t cached_has_bits = 0;
   (void)cached_has_bits;
 
   cached_has_bits = from._impl_._has_bits_[0];
-  if (BatchCheckHasBit(cached_has_bits, 0x0000003fU)) {
+  if (BatchCheckHasBit(cached_has_bits, 0x00000007U)) {
     if (CheckHasBit(cached_has_bits, 0x00000001U)) {
       if (!from._internal_player_uuid().empty()) {
         _this->_internal_set_player_uuid(from._internal_player_uuid());
@@ -1824,28 +1768,19 @@ void TeleportAction::MergeImpl(::google::protobuf::MessageLite& to_msg,
       }
     }
     if (CheckHasBit(cached_has_bits, 0x00000002U)) {
-      if (::absl::bit_cast<::uint64_t>(from._internal_x()) != 0) {
-        _this->_impl_.x_ = from._impl_.x_;
+      ABSL_DCHECK(from._impl_.position_ != nullptr);
+      if (_this->_impl_.position_ == nullptr) {
+        _this->_impl_.position_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.position_);
+      } else {
+        _this->_impl_.position_->MergeFrom(*from._impl_.position_);
       }
     }
     if (CheckHasBit(cached_has_bits, 0x00000004U)) {
-      if (::absl::bit_cast<::uint64_t>(from._internal_y()) != 0) {
-        _this->_impl_.y_ = from._impl_.y_;
-      }
-    }
-    if (CheckHasBit(cached_has_bits, 0x00000008U)) {
-      if (::absl::bit_cast<::uint64_t>(from._internal_z()) != 0) {
-        _this->_impl_.z_ = from._impl_.z_;
-      }
-    }
-    if (CheckHasBit(cached_has_bits, 0x00000010U)) {
-      if (::absl::bit_cast<::uint32_t>(from._internal_yaw()) != 0) {
-        _this->_impl_.yaw_ = from._impl_.yaw_;
-      }
-    }
-    if (CheckHasBit(cached_has_bits, 0x00000020U)) {
-      if (::absl::bit_cast<::uint32_t>(from._internal_pitch()) != 0) {
-        _this->_impl_.pitch_ = from._impl_.pitch_;
+      ABSL_DCHECK(from._impl_.rotation_ != nullptr);
+      if (_this->_impl_.rotation_ == nullptr) {
+        _this->_impl_.rotation_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.rotation_);
+      } else {
+        _this->_impl_.rotation_->MergeFrom(*from._impl_.rotation_);
       }
     }
   }
@@ -1870,11 +1805,11 @@ void TeleportAction::InternalSwap(TeleportAction* PROTOBUF_RESTRICT PROTOBUF_NON
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.player_uuid_, &other->_impl_.player_uuid_, arena);
   ::google::protobuf::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(TeleportAction, _impl_.pitch_)
-      + sizeof(TeleportAction::_impl_.pitch_)
-      - PROTOBUF_FIELD_OFFSET(TeleportAction, _impl_.x_)>(
-          reinterpret_cast<char*>(&_impl_.x_),
-          reinterpret_cast<char*>(&other->_impl_.x_));
+      PROTOBUF_FIELD_OFFSET(TeleportAction, _impl_.rotation_)
+      + sizeof(TeleportAction::_impl_.rotation_)
+      - PROTOBUF_FIELD_OFFSET(TeleportAction, _impl_.position_)>(
+          reinterpret_cast<char*>(&_impl_.position_),
+          reinterpret_cast<char*>(&other->_impl_.position_));
 }
 
 ::google::protobuf::Metadata TeleportAction::GetMetadata() const {

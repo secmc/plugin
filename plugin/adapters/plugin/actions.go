@@ -55,11 +55,19 @@ func (m *Manager) handleTeleport(act *pb.TeleportAction) {
 	}
 
 	m.execMethod(id, func(pl *player.Player) {
-		pl.Teleport(mgl64.Vec3{act.X, act.Y, act.Z})
-		rot := pl.Rotation()
-		deltaYaw := float64(act.Yaw) - rot.Yaw()
-		deltaPitch := float64(act.Pitch) - rot.Pitch()
-		pl.Move(mgl64.Vec3{}, deltaYaw, deltaPitch)
+		pos, ok := vec3FromProto(act.Position)
+		if ok {
+			pl.Teleport(pos)
+		}
+		rot, ok := vec3FromProto(act.Rotation)
+		if ok {
+			playerRot := pl.Rotation()
+			deltaYaw := rot[1] - playerRot.Yaw()
+			deltaPitch := rot[0] - playerRot.Pitch()
+			if deltaYaw != 0 || deltaPitch != 0 {
+				pl.Move(mgl64.Vec3{}, deltaYaw, deltaPitch)
+			}
+		}
 	})
 }
 

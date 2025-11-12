@@ -5,7 +5,7 @@
 // source: actions.proto
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
-import { gameModeFromJSON, gameModeToJSON } from "./common.js";
+import { gameModeFromJSON, gameModeToJSON, Vec3 } from "./common.js";
 export const protobufPackage = "df.plugin";
 function createBaseActionBatch() {
     return { actions: [] };
@@ -256,27 +256,18 @@ export const SendChatAction = {
     },
 };
 function createBaseTeleportAction() {
-    return { playerUuid: "", x: 0, y: 0, z: 0, yaw: 0, pitch: 0 };
+    return { playerUuid: "", position: undefined, rotation: undefined };
 }
 export const TeleportAction = {
     encode(message, writer = new BinaryWriter()) {
         if (message.playerUuid !== "") {
             writer.uint32(10).string(message.playerUuid);
         }
-        if (message.x !== 0) {
-            writer.uint32(17).double(message.x);
+        if (message.position !== undefined) {
+            Vec3.encode(message.position, writer.uint32(18).fork()).join();
         }
-        if (message.y !== 0) {
-            writer.uint32(25).double(message.y);
-        }
-        if (message.z !== 0) {
-            writer.uint32(33).double(message.z);
-        }
-        if (message.yaw !== 0) {
-            writer.uint32(45).float(message.yaw);
-        }
-        if (message.pitch !== 0) {
-            writer.uint32(53).float(message.pitch);
+        if (message.rotation !== undefined) {
+            Vec3.encode(message.rotation, writer.uint32(26).fork()).join();
         }
         return writer;
     },
@@ -295,38 +286,17 @@ export const TeleportAction = {
                     continue;
                 }
                 case 2: {
-                    if (tag !== 17) {
+                    if (tag !== 18) {
                         break;
                     }
-                    message.x = reader.double();
+                    message.position = Vec3.decode(reader, reader.uint32());
                     continue;
                 }
                 case 3: {
-                    if (tag !== 25) {
+                    if (tag !== 26) {
                         break;
                     }
-                    message.y = reader.double();
-                    continue;
-                }
-                case 4: {
-                    if (tag !== 33) {
-                        break;
-                    }
-                    message.z = reader.double();
-                    continue;
-                }
-                case 5: {
-                    if (tag !== 45) {
-                        break;
-                    }
-                    message.yaw = reader.float();
-                    continue;
-                }
-                case 6: {
-                    if (tag !== 53) {
-                        break;
-                    }
-                    message.pitch = reader.float();
+                    message.rotation = Vec3.decode(reader, reader.uint32());
                     continue;
                 }
             }
@@ -340,11 +310,8 @@ export const TeleportAction = {
     fromJSON(object) {
         return {
             playerUuid: isSet(object.playerUuid) ? globalThis.String(object.playerUuid) : "",
-            x: isSet(object.x) ? globalThis.Number(object.x) : 0,
-            y: isSet(object.y) ? globalThis.Number(object.y) : 0,
-            z: isSet(object.z) ? globalThis.Number(object.z) : 0,
-            yaw: isSet(object.yaw) ? globalThis.Number(object.yaw) : 0,
-            pitch: isSet(object.pitch) ? globalThis.Number(object.pitch) : 0,
+            position: isSet(object.position) ? Vec3.fromJSON(object.position) : undefined,
+            rotation: isSet(object.rotation) ? Vec3.fromJSON(object.rotation) : undefined,
         };
     },
     toJSON(message) {
@@ -352,20 +319,11 @@ export const TeleportAction = {
         if (message.playerUuid !== "") {
             obj.playerUuid = message.playerUuid;
         }
-        if (message.x !== 0) {
-            obj.x = message.x;
+        if (message.position !== undefined) {
+            obj.position = Vec3.toJSON(message.position);
         }
-        if (message.y !== 0) {
-            obj.y = message.y;
-        }
-        if (message.z !== 0) {
-            obj.z = message.z;
-        }
-        if (message.yaw !== 0) {
-            obj.yaw = message.yaw;
-        }
-        if (message.pitch !== 0) {
-            obj.pitch = message.pitch;
+        if (message.rotation !== undefined) {
+            obj.rotation = Vec3.toJSON(message.rotation);
         }
         return obj;
     },
@@ -375,11 +333,12 @@ export const TeleportAction = {
     fromPartial(object) {
         const message = createBaseTeleportAction();
         message.playerUuid = object.playerUuid ?? "";
-        message.x = object.x ?? 0;
-        message.y = object.y ?? 0;
-        message.z = object.z ?? 0;
-        message.yaw = object.yaw ?? 0;
-        message.pitch = object.pitch ?? 0;
+        message.position = (object.position !== undefined && object.position !== null)
+            ? Vec3.fromPartial(object.position)
+            : undefined;
+        message.rotation = (object.rotation !== undefined && object.rotation !== null)
+            ? Vec3.fromPartial(object.rotation)
+            : undefined;
         return message;
     },
 };

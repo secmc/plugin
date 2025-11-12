@@ -272,3 +272,4 @@ func worldFromContext(ctx *world.Context) *world.World {
 	}
 	return tx.World()
 }
+

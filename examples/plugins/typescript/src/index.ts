@@ -137,11 +137,8 @@ function handleEvent(
                                 correlationId: `tp-${Date.now()}`,
                                 teleport: {
                                     playerUuid: cmd.playerUuid,
-                                    x,
-                                    y,
-                                    z,
-                                    yaw: 0,
-                                    pitch: 0,
+                                    position: { x, y, z },
+                                    rotation: { x: 0, y: 0, z: 0 },
                                 },
                             },
                             {
