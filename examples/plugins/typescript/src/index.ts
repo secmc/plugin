@@ -10,7 +10,14 @@ import {
 import { GameMode } from '@dragonfly/proto/common';
 
 const pluginId = process.env.DF_PLUGIN_ID || 'typescript-plugin';
-const serverAddress = process.env.DF_PLUGIN_SERVER_ADDRESS || '127.0.0.1:50050';
+const rawAddress = process.env.DF_PLUGIN_SERVER_ADDRESS || 'unix:///tmp/dragonfly_plugin.sock';
+
+// Ensure Unix socket paths have the unix: prefix for Node.js gRPC
+let serverAddress = rawAddress;
+if (rawAddress.startsWith('/') && !rawAddress.startsWith('unix:')) {
+    serverAddress = 'unix://' + rawAddress;
+}
+
 const API_VERSION = 'v1';
 
 // Helper function to send a message to a player
