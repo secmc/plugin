@@ -21,8 +21,11 @@ plugins:
   #     NODE_ENV: development
   - id: example-typescript
     name: Example TypeScript Plugin
-    command: "node"
-    args: ["../examples/plugins/typescript/dist/index.js"]
+    #command: "node"
+    #args: ["../examples/plugins/typescript/dist/index.js"]
+    command: "npm"
+    args: ["run", "dev"]
+    work_dir: "../examples/plugins/typescript"
     env:
       NODE_ENV: production
   - id: example-php

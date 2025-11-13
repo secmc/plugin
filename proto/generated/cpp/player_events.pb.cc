@@ -359,43 +359,6 @@ struct PlayerDiagnosticsEventDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PlayerDiagnosticsEventDefaultTypeInternal _PlayerDiagnosticsEvent_default_instance_;
 
-inline constexpr CommandEvent::Impl_::Impl_(
-    ::_pbi::ConstantInitialized) noexcept
-      : _cached_size_{0},
-        args_{},
-        player_uuid_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
-        name_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
-        raw_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
-        command_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()) {}
-
-template <typename>
-PROTOBUF_CONSTEXPR CommandEvent::CommandEvent(::_pbi::ConstantInitialized)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(CommandEvent_class_data_.base()),
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(),
-#endif  // PROTOBUF_CUSTOM_VTABLE
-      _impl_(::_pbi::ConstantInitialized()) {
-}
-struct CommandEventDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR CommandEventDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~CommandEventDefaultTypeInternal() {}
-  union {
-    CommandEvent _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 CommandEventDefaultTypeInternal _CommandEvent_default_instance_;
-
 inline constexpr ChatEvent::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : _cached_size_{0},
@@ -1715,19 +1678,6 @@ const ::uint32_t
         1,
         2,
         0x081, // bitmap
-        PROTOBUF_FIELD_OFFSET(::df::plugin::CommandEvent, _impl_._has_bits_),
-        8, // hasbit index offset
-        PROTOBUF_FIELD_OFFSET(::df::plugin::CommandEvent, _impl_.player_uuid_),
-        PROTOBUF_FIELD_OFFSET(::df::plugin::CommandEvent, _impl_.name_),
-        PROTOBUF_FIELD_OFFSET(::df::plugin::CommandEvent, _impl_.raw_),
-        PROTOBUF_FIELD_OFFSET(::df::plugin::CommandEvent, _impl_.command_),
-        PROTOBUF_FIELD_OFFSET(::df::plugin::CommandEvent, _impl_.args_),
-        1,
-        2,
-        3,
-        4,
-        0,
-        0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::df::plugin::PlayerDiagnosticsEvent, _impl_._has_bits_),
         14, // hasbit index offset
         PROTOBUF_FIELD_OFFSET(::df::plugin::PlayerDiagnosticsEvent, _impl_.player_uuid_),
@@ -1791,8 +1741,7 @@ static const ::_pbi::MigrationSchema
         {380, sizeof(::df::plugin::PlayerHeldSlotChangeEvent)},
         {393, sizeof(::df::plugin::PlayerItemDropEvent)},
         {404, sizeof(::df::plugin::PlayerTransferEvent)},
-        {413, sizeof(::df::plugin::CommandEvent)},
-        {426, sizeof(::df::plugin::PlayerDiagnosticsEvent)},
+        {413, sizeof(::df::plugin::PlayerDiagnosticsEvent)},
 };
 static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::df::plugin::_PlayerJoinEvent_default_instance_._instance,
@@ -1830,7 +1779,6 @@ static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::df::plugin::_PlayerHeldSlotChangeEvent_default_instance_._instance,
     &::df::plugin::_PlayerItemDropEvent_default_instance_._instance,
     &::df::plugin::_PlayerTransferEvent_default_instance_._instance,
-    &::df::plugin::_CommandEvent_default_instance_._instance,
     &::df::plugin::_PlayerDiagnosticsEvent_default_instance_._instance,
 };
 const char descriptor_table_protodef_player_5fevents_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
@@ -1981,29 +1929,26 @@ const char descriptor_table_protodef_player_5fevents_2eproto[] ABSL_ATTRIBUTE_SE
     "\n\023PlayerTransferEvent\022\037\n\013player_uuid\030\001 \001"
     "(\tR\nplayerUuid\022\022\n\004name\030\002 \001(\tR\004name\0221\n\007ad"
     "dress\030\003 \001(\0132\022.df.plugin.AddressH\000R\007addre"
-    "ss\210\001\001B\n\n\010_address\"\203\001\n\014CommandEvent\022\037\n\013pl"
-    "ayer_uuid\030\001 \001(\tR\nplayerUuid\022\022\n\004name\030\002 \001("
-    "\tR\004name\022\020\n\003raw\030\003 \001(\tR\003raw\022\030\n\007command\030\004 \001"
-    "(\tR\007command\022\022\n\004args\030\005 \003(\tR\004args\"\342\004\n\026Play"
-    "erDiagnosticsEvent\022\037\n\013player_uuid\030\001 \001(\tR"
-    "\nplayerUuid\022\022\n\004name\030\002 \001(\tR\004name\0229\n\031avera"
-    "ge_frames_per_second\030\003 \001(\001R\026averageFrame"
-    "sPerSecond\022>\n\034average_server_sim_tick_ti"
-    "me\030\004 \001(\001R\030averageServerSimTickTime\022>\n\034av"
-    "erage_client_sim_tick_time\030\005 \001(\001R\030averag"
-    "eClientSimTickTime\0227\n\030average_begin_fram"
-    "e_time\030\006 \001(\001R\025averageBeginFrameTime\022,\n\022a"
-    "verage_input_time\030\007 \001(\001R\020averageInputTim"
-    "e\022.\n\023average_render_time\030\010 \001(\001R\021averageR"
-    "enderTime\0223\n\026average_end_frame_time\030\t \001("
-    "\001R\023averageEndFrameTime\022C\n\036average_remain"
-    "der_time_percent\030\n \001(\001R\033averageRemainder"
-    "TimePercent\022G\n average_unaccounted_time_"
-    "percent\030\013 \001(\001R\035averageUnaccountedTimePer"
-    "centB\220\001\n\rcom.df.pluginB\021PlayerEventsProt"
-    "oP\001Z\'github.com/secmc/plugin/proto/gener"
-    "ated\242\002\003DPX\252\002\tDf.Plugin\312\002\tDf\\Plugin\342\002\025Df\\"
-    "Plugin\\GPBMetadata\352\002\nDf::Pluginb\006proto3"
+    "ss\210\001\001B\n\n\010_address\"\342\004\n\026PlayerDiagnosticsE"
+    "vent\022\037\n\013player_uuid\030\001 \001(\tR\nplayerUuid\022\022\n"
+    "\004name\030\002 \001(\tR\004name\0229\n\031average_frames_per_"
+    "second\030\003 \001(\001R\026averageFramesPerSecond\022>\n\034"
+    "average_server_sim_tick_time\030\004 \001(\001R\030aver"
+    "ageServerSimTickTime\022>\n\034average_client_s"
+    "im_tick_time\030\005 \001(\001R\030averageClientSimTick"
+    "Time\0227\n\030average_begin_frame_time\030\006 \001(\001R\025"
+    "averageBeginFrameTime\022,\n\022average_input_t"
+    "ime\030\007 \001(\001R\020averageInputTime\022.\n\023average_r"
+    "ender_time\030\010 \001(\001R\021averageRenderTime\0223\n\026a"
+    "verage_end_frame_time\030\t \001(\001R\023averageEndF"
+    "rameTime\022C\n\036average_remainder_time_perce"
+    "nt\030\n \001(\001R\033averageRemainderTimePercent\022G\n"
+    " average_unaccounted_time_percent\030\013 \001(\001R"
+    "\035averageUnaccountedTimePercentB\220\001\n\rcom.d"
+    "f.pluginB\021PlayerEventsProtoP\001Z\'github.co"
+    "m/secmc/plugin/proto/generated\242\002\003DPX\252\002\tD"
+    "f.Plugin\312\002\tDf\\Plugin\342\002\025Df\\Plugin\\GPBMeta"
+    "data\352\002\nDf::Pluginb\006proto3"
 };
 static const ::_pbi::DescriptorTable* PROTOBUF_NONNULL const
     descriptor_table_player_5fevents_2eproto_deps[1] = {
@@ -2013,13 +1958,13 @@ static ::absl::once_flag descriptor_table_player_5fevents_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_player_5fevents_2eproto = {
     false,
     false,
-    6759,
+    6625,
     descriptor_table_protodef_player_5fevents_2eproto,
     "player_events.proto",
     &descriptor_table_player_5fevents_2eproto_once,
     descriptor_table_player_5fevents_2eproto_deps,
     1,
-    37,
+    36,
     schemas,
     file_default_instances,
     TableStruct_player_5fevents_2eproto::offsets,
@@ -16736,459 +16681,6 @@ void PlayerTransferEvent::InternalSwap(PlayerTransferEvent* PROTOBUF_RESTRICT PR
 }
 
 ::google::protobuf::Metadata PlayerTransferEvent::GetMetadata() const {
-  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
-}
-// ===================================================================
-
-class CommandEvent::_Internal {
- public:
-  using HasBits =
-      decltype(::std::declval<CommandEvent>()._impl_._has_bits_);
-  static constexpr ::int32_t kHasBitsOffset =
-      8 * PROTOBUF_FIELD_OFFSET(CommandEvent, _impl_._has_bits_);
-};
-
-CommandEvent::CommandEvent(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, CommandEvent_class_data_.base()) {
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena) {
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  SharedCtor(arena);
-  // @@protoc_insertion_point(arena_constructor:df.plugin.CommandEvent)
-}
-PROTOBUF_NDEBUG_INLINE CommandEvent::Impl_::Impl_(
-    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
-    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
-    [[maybe_unused]] const ::df::plugin::CommandEvent& from_msg)
-      : _has_bits_{from._has_bits_},
-        _cached_size_{0},
-        args_{visibility, arena, from.args_},
-        player_uuid_(arena, from.player_uuid_),
-        name_(arena, from.name_),
-        raw_(arena, from.raw_),
-        command_(arena, from.command_) {}
-
-CommandEvent::CommandEvent(
-    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
-    const CommandEvent& from)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, CommandEvent_class_data_.base()) {
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena) {
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  CommandEvent* const _this = this;
-  (void)_this;
-  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-      from._internal_metadata_);
-  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-
-  // @@protoc_insertion_point(copy_constructor:df.plugin.CommandEvent)
-}
-PROTOBUF_NDEBUG_INLINE CommandEvent::Impl_::Impl_(
-    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
-    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
-      : _cached_size_{0},
-        args_{visibility, arena},
-        player_uuid_(arena),
-        name_(arena),
-        raw_(arena),
-        command_(arena) {}
-
-inline void CommandEvent::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
-  new (&_impl_) Impl_(internal_visibility(), arena);
-}
-CommandEvent::~CommandEvent() {
-  // @@protoc_insertion_point(destructor:df.plugin.CommandEvent)
-  SharedDtor(*this);
-}
-inline void CommandEvent::SharedDtor(MessageLite& self) {
-  CommandEvent& this_ = static_cast<CommandEvent&>(self);
-  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
-    this_.CheckHasBitConsistency();
-  }
-  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-  ABSL_DCHECK(this_.GetArena() == nullptr);
-  this_._impl_.player_uuid_.Destroy();
-  this_._impl_.name_.Destroy();
-  this_._impl_.raw_.Destroy();
-  this_._impl_.command_.Destroy();
-  this_._impl_.~Impl_();
-}
-
-inline void* PROTOBUF_NONNULL CommandEvent::PlacementNew_(
-    const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
-    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
-  return ::new (mem) CommandEvent(arena);
-}
-constexpr auto CommandEvent::InternalNewImpl_() {
-  constexpr auto arena_bits = ::google::protobuf::internal::EncodePlacementArenaOffsets({
-      PROTOBUF_FIELD_OFFSET(CommandEvent, _impl_.args_) +
-          decltype(CommandEvent::_impl_.args_)::
-              InternalGetArenaOffset(
-                  ::google::protobuf::Message::internal_visibility()),
-  });
-  if (arena_bits.has_value()) {
-    return ::google::protobuf::internal::MessageCreator::CopyInit(
-        sizeof(CommandEvent), alignof(CommandEvent), *arena_bits);
-  } else {
-    return ::google::protobuf::internal::MessageCreator(&CommandEvent::PlacementNew_,
-                                 sizeof(CommandEvent),
-                                 alignof(CommandEvent));
-  }
-}
-constexpr auto CommandEvent::InternalGenerateClassData_() {
-  return ::google::protobuf::internal::ClassDataFull{
-      ::google::protobuf::internal::ClassData{
-          &_CommandEvent_default_instance_._instance,
-          &_table_.header,
-          nullptr,  // OnDemandRegisterArenaDtor
-          nullptr,  // IsInitialized
-          &CommandEvent::MergeImpl,
-          ::google::protobuf::Message::GetNewImpl<CommandEvent>(),
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-          &CommandEvent::SharedDtor,
-          ::google::protobuf::Message::GetClearImpl<CommandEvent>(), &CommandEvent::ByteSizeLong,
-              &CommandEvent::_InternalSerialize,
-#endif  // PROTOBUF_CUSTOM_VTABLE
-          PROTOBUF_FIELD_OFFSET(CommandEvent, _impl_._cached_size_),
-          false,
-      },
-      &CommandEvent::kDescriptorMethods,
-      &descriptor_table_player_5fevents_2eproto,
-      nullptr,  // tracker
-  };
-}
-
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
-    ::google::protobuf::internal::ClassDataFull CommandEvent_class_data_ =
-        CommandEvent::InternalGenerateClassData_();
-
-PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
-CommandEvent::GetClassData() const {
-  ::google::protobuf::internal::PrefetchToLocalCache(&CommandEvent_class_data_);
-  ::google::protobuf::internal::PrefetchToLocalCache(CommandEvent_class_data_.tc_table);
-  return CommandEvent_class_data_.base();
-}
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<3, 5, 0, 60, 2>
-CommandEvent::_table_ = {
-  {
-    PROTOBUF_FIELD_OFFSET(CommandEvent, _impl_._has_bits_),
-    0, // no _extensions_
-    5, 56,  // max_field_number, fast_idx_mask
-    offsetof(decltype(_table_), field_lookup_table),
-    4294967264,  // skipmap
-    offsetof(decltype(_table_), field_entries),
-    5,  // num_field_entries
-    0,  // num_aux_entries
-    offsetof(decltype(_table_), field_names),  // no aux_entries
-    CommandEvent_class_data_.base(),
-    nullptr,  // post_loop_handler
-    ::_pbi::TcParser::GenericFallback,  // fallback
-    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-    ::_pbi::TcParser::GetTable<::df::plugin::CommandEvent>(),  // to_prefetch
-    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
-  }, {{
-    {::_pbi::TcParser::MiniParse, {}},
-    // string player_uuid = 1 [json_name = "playerUuid"];
-    {::_pbi::TcParser::FastUS1,
-     {10, 1, 0,
-      PROTOBUF_FIELD_OFFSET(CommandEvent, _impl_.player_uuid_)}},
-    // string name = 2 [json_name = "name"];
-    {::_pbi::TcParser::FastUS1,
-     {18, 2, 0,
-      PROTOBUF_FIELD_OFFSET(CommandEvent, _impl_.name_)}},
-    // string raw = 3 [json_name = "raw"];
-    {::_pbi::TcParser::FastUS1,
-     {26, 3, 0,
-      PROTOBUF_FIELD_OFFSET(CommandEvent, _impl_.raw_)}},
-    // string command = 4 [json_name = "command"];
-    {::_pbi::TcParser::FastUS1,
-     {34, 4, 0,
-      PROTOBUF_FIELD_OFFSET(CommandEvent, _impl_.command_)}},
-    // repeated string args = 5 [json_name = "args"];
-    {::_pbi::TcParser::FastUR1,
-     {42, 0, 0,
-      PROTOBUF_FIELD_OFFSET(CommandEvent, _impl_.args_)}},
-    {::_pbi::TcParser::MiniParse, {}},
-    {::_pbi::TcParser::MiniParse, {}},
-  }}, {{
-    65535, 65535
-  }}, {{
-    // string player_uuid = 1 [json_name = "playerUuid"];
-    {PROTOBUF_FIELD_OFFSET(CommandEvent, _impl_.player_uuid_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string name = 2 [json_name = "name"];
-    {PROTOBUF_FIELD_OFFSET(CommandEvent, _impl_.name_), _Internal::kHasBitsOffset + 2, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string raw = 3 [json_name = "raw"];
-    {PROTOBUF_FIELD_OFFSET(CommandEvent, _impl_.raw_), _Internal::kHasBitsOffset + 3, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string command = 4 [json_name = "command"];
-    {PROTOBUF_FIELD_OFFSET(CommandEvent, _impl_.command_), _Internal::kHasBitsOffset + 4, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // repeated string args = 5 [json_name = "args"];
-    {PROTOBUF_FIELD_OFFSET(CommandEvent, _impl_.args_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcRepeated | ::_fl::kUtf8String | ::_fl::kRepSString)},
-  }},
-  // no aux_entries
-  {{
-    "\26\13\4\3\7\4\0\0"
-    "df.plugin.CommandEvent"
-    "player_uuid"
-    "name"
-    "raw"
-    "command"
-    "args"
-  }},
-};
-PROTOBUF_NOINLINE void CommandEvent::Clear() {
-// @@protoc_insertion_point(message_clear_start:df.plugin.CommandEvent)
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  ::uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  cached_has_bits = _impl_._has_bits_[0];
-  if (BatchCheckHasBit(cached_has_bits, 0x0000001fU)) {
-    if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
-      _impl_.args_.Clear();
-    }
-    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
-      _impl_.player_uuid_.ClearNonDefaultToEmpty();
-    }
-    if (CheckHasBit(cached_has_bits, 0x00000004U)) {
-      _impl_.name_.ClearNonDefaultToEmpty();
-    }
-    if (CheckHasBit(cached_has_bits, 0x00000008U)) {
-      _impl_.raw_.ClearNonDefaultToEmpty();
-    }
-    if (CheckHasBit(cached_has_bits, 0x00000010U)) {
-      _impl_.command_.ClearNonDefaultToEmpty();
-    }
-  }
-  _impl_._has_bits_.Clear();
-  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-::uint8_t* PROTOBUF_NONNULL CommandEvent::_InternalSerialize(
-    const ::google::protobuf::MessageLite& base, ::uint8_t* PROTOBUF_NONNULL target,
-    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) {
-  const CommandEvent& this_ = static_cast<const CommandEvent&>(base);
-#else   // PROTOBUF_CUSTOM_VTABLE
-::uint8_t* PROTOBUF_NONNULL CommandEvent::_InternalSerialize(
-    ::uint8_t* PROTOBUF_NONNULL target,
-    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
-  const CommandEvent& this_ = *this;
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
-    this_.CheckHasBitConsistency();
-  }
-  // @@protoc_insertion_point(serialize_to_array_start:df.plugin.CommandEvent)
-  ::uint32_t cached_has_bits = 0;
-  (void)cached_has_bits;
-
-  cached_has_bits = this_._impl_._has_bits_[0];
-  // string player_uuid = 1 [json_name = "playerUuid"];
-  if (CheckHasBit(cached_has_bits, 0x00000002U)) {
-    if (!this_._internal_player_uuid().empty()) {
-      const ::std::string& _s = this_._internal_player_uuid();
-      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "df.plugin.CommandEvent.player_uuid");
-      target = stream->WriteStringMaybeAliased(1, _s, target);
-    }
-  }
-
-  // string name = 2 [json_name = "name"];
-  if (CheckHasBit(cached_has_bits, 0x00000004U)) {
-    if (!this_._internal_name().empty()) {
-      const ::std::string& _s = this_._internal_name();
-      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "df.plugin.CommandEvent.name");
-      target = stream->WriteStringMaybeAliased(2, _s, target);
-    }
-  }
-
-  // string raw = 3 [json_name = "raw"];
-  if (CheckHasBit(cached_has_bits, 0x00000008U)) {
-    if (!this_._internal_raw().empty()) {
-      const ::std::string& _s = this_._internal_raw();
-      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "df.plugin.CommandEvent.raw");
-      target = stream->WriteStringMaybeAliased(3, _s, target);
-    }
-  }
-
-  // string command = 4 [json_name = "command"];
-  if (CheckHasBit(cached_has_bits, 0x00000010U)) {
-    if (!this_._internal_command().empty()) {
-      const ::std::string& _s = this_._internal_command();
-      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "df.plugin.CommandEvent.command");
-      target = stream->WriteStringMaybeAliased(4, _s, target);
-    }
-  }
-
-  // repeated string args = 5 [json_name = "args"];
-  if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
-    for (int i = 0, n = this_._internal_args_size(); i < n; ++i) {
-      const auto& s = this_._internal_args().Get(i);
-      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-          s.data(), static_cast<int>(s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "df.plugin.CommandEvent.args");
-      target = stream->WriteString(5, s, target);
-    }
-  }
-
-  if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-    target =
-        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
-  }
-  // @@protoc_insertion_point(serialize_to_array_end:df.plugin.CommandEvent)
-  return target;
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-::size_t CommandEvent::ByteSizeLong(const MessageLite& base) {
-  const CommandEvent& this_ = static_cast<const CommandEvent&>(base);
-#else   // PROTOBUF_CUSTOM_VTABLE
-::size_t CommandEvent::ByteSizeLong() const {
-  const CommandEvent& this_ = *this;
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  // @@protoc_insertion_point(message_byte_size_start:df.plugin.CommandEvent)
-  ::size_t total_size = 0;
-
-  ::uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void)cached_has_bits;
-
-  ::_pbi::Prefetch5LinesFrom7Lines(&this_);
-  cached_has_bits = this_._impl_._has_bits_[0];
-  if (BatchCheckHasBit(cached_has_bits, 0x0000001fU)) {
-    // repeated string args = 5 [json_name = "args"];
-    if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
-      total_size +=
-          1 * ::google::protobuf::internal::FromIntSize(this_._internal_args().size());
-      for (int i = 0, n = this_._internal_args().size(); i < n; ++i) {
-        total_size += ::google::protobuf::internal::WireFormatLite::StringSize(
-            this_._internal_args().Get(i));
-      }
-    }
-    // string player_uuid = 1 [json_name = "playerUuid"];
-    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
-      if (!this_._internal_player_uuid().empty()) {
-        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                        this_._internal_player_uuid());
-      }
-    }
-    // string name = 2 [json_name = "name"];
-    if (CheckHasBit(cached_has_bits, 0x00000004U)) {
-      if (!this_._internal_name().empty()) {
-        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                        this_._internal_name());
-      }
-    }
-    // string raw = 3 [json_name = "raw"];
-    if (CheckHasBit(cached_has_bits, 0x00000008U)) {
-      if (!this_._internal_raw().empty()) {
-        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                        this_._internal_raw());
-      }
-    }
-    // string command = 4 [json_name = "command"];
-    if (CheckHasBit(cached_has_bits, 0x00000010U)) {
-      if (!this_._internal_command().empty()) {
-        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                        this_._internal_command());
-      }
-    }
-  }
-  return this_.MaybeComputeUnknownFieldsSize(total_size,
-                                             &this_._impl_._cached_size_);
-}
-
-void CommandEvent::MergeImpl(::google::protobuf::MessageLite& to_msg,
-                            const ::google::protobuf::MessageLite& from_msg) {
-   auto* const _this =
-      static_cast<CommandEvent*>(&to_msg);
-  auto& from = static_cast<const CommandEvent&>(from_msg);
-  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
-    from.CheckHasBitConsistency();
-  }
-  ::google::protobuf::Arena* arena = _this->GetArena();
-  // @@protoc_insertion_point(class_specific_merge_from_start:df.plugin.CommandEvent)
-  ABSL_DCHECK_NE(&from, _this);
-  ::uint32_t cached_has_bits = 0;
-  (void)cached_has_bits;
-
-  cached_has_bits = from._impl_._has_bits_[0];
-  if (BatchCheckHasBit(cached_has_bits, 0x0000001fU)) {
-    if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
-      _this->_internal_mutable_args()->InternalMergeFromWithArena(
-          ::google::protobuf::MessageLite::internal_visibility(), arena,
-          from._internal_args());
-    }
-    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
-      if (!from._internal_player_uuid().empty()) {
-        _this->_internal_set_player_uuid(from._internal_player_uuid());
-      } else {
-        if (_this->_impl_.player_uuid_.IsDefault()) {
-          _this->_internal_set_player_uuid("");
-        }
-      }
-    }
-    if (CheckHasBit(cached_has_bits, 0x00000004U)) {
-      if (!from._internal_name().empty()) {
-        _this->_internal_set_name(from._internal_name());
-      } else {
-        if (_this->_impl_.name_.IsDefault()) {
-          _this->_internal_set_name("");
-        }
-      }
-    }
-    if (CheckHasBit(cached_has_bits, 0x00000008U)) {
-      if (!from._internal_raw().empty()) {
-        _this->_internal_set_raw(from._internal_raw());
-      } else {
-        if (_this->_impl_.raw_.IsDefault()) {
-          _this->_internal_set_raw("");
-        }
-      }
-    }
-    if (CheckHasBit(cached_has_bits, 0x00000010U)) {
-      if (!from._internal_command().empty()) {
-        _this->_internal_set_command(from._internal_command());
-      } else {
-        if (_this->_impl_.command_.IsDefault()) {
-          _this->_internal_set_command("");
-        }
-      }
-    }
-  }
-  _this->_impl_._has_bits_[0] |= cached_has_bits;
-  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-      from._internal_metadata_);
-}
-
-void CommandEvent::CopyFrom(const CommandEvent& from) {
-  // @@protoc_insertion_point(class_specific_copy_from_start:df.plugin.CommandEvent)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-
-void CommandEvent::InternalSwap(CommandEvent* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
-  using ::std::swap;
-  auto* arena = GetArena();
-  ABSL_DCHECK_EQ(arena, other->GetArena());
-  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
-  _impl_.args_.InternalSwap(&other->_impl_.args_);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.player_uuid_, &other->_impl_.player_uuid_, arena);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.name_, &other->_impl_.name_, arena);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.raw_, &other->_impl_.raw_, arena);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.command_, &other->_impl_.command_, arena);
-}
-
-::google::protobuf::Metadata CommandEvent::GetMetadata() const {
   return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================

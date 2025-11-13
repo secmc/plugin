@@ -13,7 +13,8 @@
   "autoload": {
     "psr-4": {
       "Df\\": "../../../proto/generated/php/Df/",
-      "Dragonfly\\PluginLib\\": "lib/"
+      "Dragonfly\\PluginLib\\": "lib/",
+      "ExamplePhp\\": "src/"
     }
   },
   "config": {

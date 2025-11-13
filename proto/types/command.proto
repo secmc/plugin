@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+package df.plugin;
+
+option go_package = "github.com/secmc/plugin/proto/generated";
+
+// Supported parameter types for commands.
+enum ParamType {
+  PARAM_STRING = 0;
+  PARAM_INT = 1;
+  PARAM_FLOAT = 2;
+  PARAM_BOOL = 3;
+  PARAM_VARARGS = 4;
+  PARAM_ENUM = 5;
+}
+
+// Parameter specification for a command.
+message ParamSpec {
+  string name = 1;
+  ParamType type = 2;
+  bool optional = 3;
+  // Optional suffix as supported by Go cmd tags (e.g., units)
+  string suffix = 4;
+  // Optional list of enum values to present in the client UI.
+  // When set, the parameter is shown as an enum selector regardless of ParamType.
+  repeated string enum_values = 5;
+}
+
+// Command specification announced by a plugin during handshake.
+message CommandSpec {
+  string name = 1;
+  string description = 2;
+  repeated string aliases = 3;
+  repeated ParamSpec params = 4;
+}
+
+// Player command execution event.
+message CommandEvent {
+  string player_uuid = 1;
+  string name = 2;
+  string raw = 3; // Full command string like "/tp 100 64 200"
+  string command = 4; // Just the command name like "tp"
+  repeated string args = 5; // Parsed arguments like ["100", "64", "200"]
+}
+

@@ -265,14 +265,6 @@ message PlayerTransferEvent {
   optional Address address = 3;
 }
 
-message CommandEvent {
-  string player_uuid = 1;
-  string name = 2;
-  string raw = 3; // Full command string like "/tp 100 64 200"
-  string command = 4; // Just the command name like "tp"
-  repeated string args = 5; // Parsed arguments like ["100", "64", "200"]
-}
-
 message PlayerDiagnosticsEvent {
   string player_uuid = 1;
   string name = 2;

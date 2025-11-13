@@ -377,9 +377,9 @@ const helloMessage: PluginToHost = {
         version: '0.1.0',
         apiVersion: API_VERSION,
         commands: [
-            { name: '/greet', description: 'Send a greeting from the TypeScript plugin', aliases: [] },
-            { name: '/tp', description: 'Teleport to spawn', aliases: [] },
-            { name: '/gamemode', description: 'Change game mode (survival, creative, adventure, spectator)', aliases: ['gm'] },
+            { name: '/greet', description: 'Send a greeting from the TypeScript plugin', aliases: [], params: [] },
+            { name: '/tp', description: 'Teleport to spawn', aliases: [], params: [] },
+            { name: '/gamemode', description: 'Change game mode (survival, creative, adventure, spectator)', aliases: ['gm'], params: [] },
         ],
         customItems: [],
     },
