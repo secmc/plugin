@@ -6,6 +6,7 @@ option go_package = "github.com/secmc/plugin/proto/generated";
 
 import "player_events.proto";
 import "world_events.proto";
+import "command.proto";
 import "actions.proto";
 import "mutations.proto";
 import "common.proto";
@@ -105,12 +106,6 @@ message PluginHello {
   string api_version = 3;
   repeated CommandSpec commands = 4;
   repeated CustomItemDefinition custom_items = 5;
-}
-
-message CommandSpec {
-  string name = 1;
-  string description = 2;
-  repeated string aliases = 3;
 }
 
 message LogMessage {

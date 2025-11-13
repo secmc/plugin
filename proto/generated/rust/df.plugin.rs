@@ -643,6 +643,94 @@ pub struct ExecuteCommandAction {
     #[prost(string, tag="2")]
     pub command: ::prost::alloc::string::String,
 }
+/// Parameter specification for a command.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ParamSpec {
+    #[prost(string, tag="1")]
+    pub name: ::prost::alloc::string::String,
+    #[prost(enumeration="ParamType", tag="2")]
+    pub r#type: i32,
+    #[prost(bool, tag="3")]
+    pub optional: bool,
+    /// Optional suffix as supported by Go cmd tags (e.g., units)
+    #[prost(string, tag="4")]
+    pub suffix: ::prost::alloc::string::String,
+    /// Optional list of enum values to present in the client UI.
+    /// When set, the parameter is shown as an enum selector regardless of ParamType.
+    #[prost(string, repeated, tag="5")]
+    pub enum_values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Command specification announced by a plugin during handshake.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CommandSpec {
+    #[prost(string, tag="1")]
+    pub name: ::prost::alloc::string::String,
+    #[prost(string, tag="2")]
+    pub description: ::prost::alloc::string::String,
+    #[prost(string, repeated, tag="3")]
+    pub aliases: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    #[prost(message, repeated, tag="4")]
+    pub params: ::prost::alloc::vec::Vec<ParamSpec>,
+}
+/// Player command execution event.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CommandEvent {
+    #[prost(string, tag="1")]
+    pub player_uuid: ::prost::alloc::string::String,
+    #[prost(string, tag="2")]
+    pub name: ::prost::alloc::string::String,
+    /// Full command string like "/tp 100 64 200"
+    #[prost(string, tag="3")]
+    pub raw: ::prost::alloc::string::String,
+    /// Just the command name like "tp"
+    #[prost(string, tag="4")]
+    pub command: ::prost::alloc::string::String,
+    /// Parsed arguments like \["100", "64", "200"\]
+    #[prost(string, repeated, tag="5")]
+    pub args: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Supported parameter types for commands.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum ParamType {
+    ParamString = 0,
+    ParamInt = 1,
+    ParamFloat = 2,
+    ParamBool = 3,
+    ParamVarargs = 4,
+    ParamEnum = 5,
+}
+impl ParamType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            ParamType::ParamString => "PARAM_STRING",
+            ParamType::ParamInt => "PARAM_INT",
+            ParamType::ParamFloat => "PARAM_FLOAT",
+            ParamType::ParamBool => "PARAM_BOOL",
+            ParamType::ParamVarargs => "PARAM_VARARGS",
+            ParamType::ParamEnum => "PARAM_ENUM",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "PARAM_STRING" => Some(Self::ParamString),
+            "PARAM_INT" => Some(Self::ParamInt),
+            "PARAM_FLOAT" => Some(Self::ParamFloat),
+            "PARAM_BOOL" => Some(Self::ParamBool),
+            "PARAM_VARARGS" => Some(Self::ParamVarargs),
+            "PARAM_ENUM" => Some(Self::ParamEnum),
+            _ => None,
+        }
+    }
+}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EventResult {
@@ -1249,23 +1337,6 @@ pub struct PlayerTransferEvent {
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CommandEvent {
-    #[prost(string, tag="1")]
-    pub player_uuid: ::prost::alloc::string::String,
-    #[prost(string, tag="2")]
-    pub name: ::prost::alloc::string::String,
-    /// Full command string like "/tp 100 64 200"
-    #[prost(string, tag="3")]
-    pub raw: ::prost::alloc::string::String,
-    /// Just the command name like "tp"
-    #[prost(string, tag="4")]
-    pub command: ::prost::alloc::string::String,
-    /// Parsed arguments like \["100", "64", "200"\]
-    #[prost(string, repeated, tag="5")]
-    pub args: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-}
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PlayerDiagnosticsEvent {
     #[prost(string, tag="1")]
     pub player_uuid: ::prost::alloc::string::String,
@@ -1601,16 +1672,6 @@ pub struct PluginHello {
     pub commands: ::prost::alloc::vec::Vec<CommandSpec>,
     #[prost(message, repeated, tag="5")]
     pub custom_items: ::prost::alloc::vec::Vec<CustomItemDefinition>,
-}
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CommandSpec {
-    #[prost(string, tag="1")]
-    pub name: ::prost::alloc::string::String,
-    #[prost(string, tag="2")]
-    pub description: ::prost::alloc::string::String,
-    #[prost(string, repeated, tag="3")]
-    pub aliases: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]

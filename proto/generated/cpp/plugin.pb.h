@@ -32,6 +32,7 @@
 #include "google/protobuf/unknown_field_set.h"
 #include "player_events.pb.h"
 #include "world_events.pb.h"
+#include "command.pb.h"
 #include "actions.pb.h"
 #include "mutations.pb.h"
 #include "common.pb.h"
@@ -62,10 +63,6 @@ namespace df {
 namespace plugin {
 enum EventType : int;
 extern const uint32_t EventType_internal_data_[];
-class CommandSpec;
-struct CommandSpecDefaultTypeInternal;
-extern CommandSpecDefaultTypeInternal _CommandSpec_default_instance_;
-extern const ::google::protobuf::internal::ClassDataFull CommandSpec_class_data_;
 class EventEnvelope;
 struct EventEnvelopeDefaultTypeInternal;
 extern EventEnvelopeDefaultTypeInternal _EventEnvelope_default_instance_;
@@ -256,7 +253,7 @@ class LogMessage final : public ::google::protobuf::Message
     return *reinterpret_cast<const LogMessage*>(
         &_LogMessage_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 7;
+  static constexpr int kIndexInFileMessages = 6;
   friend void swap(LogMessage& a, LogMessage& b) { a.Swap(&b); }
   inline void Swap(LogMessage* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -858,7 +855,7 @@ class EventSubscribe final : public ::google::protobuf::Message
     return *reinterpret_cast<const EventSubscribe*>(
         &_EventSubscribe_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 8;
+  static constexpr int kIndexInFileMessages = 7;
   friend void swap(EventSubscribe& a, EventSubscribe& b) { a.Swap(&b); }
   inline void Swap(EventSubscribe* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -1001,242 +998,6 @@ class EventSubscribe final : public ::google::protobuf::Message
 };
 
 extern const ::google::protobuf::internal::ClassDataFull EventSubscribe_class_data_;
-// -------------------------------------------------------------------
-
-class CommandSpec final : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:df.plugin.CommandSpec) */ {
- public:
-  inline CommandSpec() : CommandSpec(nullptr) {}
-  ~CommandSpec() PROTOBUF_FINAL;
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-  void operator delete(CommandSpec* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
-    SharedDtor(*msg);
-    ::google::protobuf::internal::SizedDelete(msg, sizeof(CommandSpec));
-  }
-#endif
-
-  template <typename = void>
-  explicit PROTOBUF_CONSTEXPR CommandSpec(::google::protobuf::internal::ConstantInitialized);
-
-  inline CommandSpec(const CommandSpec& from) : CommandSpec(nullptr, from) {}
-  inline CommandSpec(CommandSpec&& from) noexcept
-      : CommandSpec(nullptr, ::std::move(from)) {}
-  inline CommandSpec& operator=(const CommandSpec& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline CommandSpec& operator=(CommandSpec&& from) noexcept {
-    if (this == &from) return *this;
-    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
-  }
-  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-  }
-
-  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
-    return GetDescriptor();
-  }
-  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const CommandSpec& default_instance() {
-    return *reinterpret_cast<const CommandSpec*>(
-        &_CommandSpec_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages = 6;
-  friend void swap(CommandSpec& a, CommandSpec& b) { a.Swap(&b); }
-  inline void Swap(CommandSpec* PROTOBUF_NONNULL other) {
-    if (other == this) return;
-    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-      InternalSwap(other);
-    } else {
-      ::google::protobuf::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(CommandSpec* PROTOBUF_NONNULL other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  CommandSpec* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
-    return ::google::protobuf::Message::DefaultConstruct<CommandSpec>(arena);
-  }
-  using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const CommandSpec& from);
-  using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom(const CommandSpec& from) { CommandSpec::MergeImpl(*this, from); }
-
-  private:
-  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
-                        const ::google::protobuf::MessageLite& from_msg);
-
-  public:
-  bool IsInitialized() const {
-    return true;
-  }
-  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-  #if defined(PROTOBUF_CUSTOM_VTABLE)
-  private:
-  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
-      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
-      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
-
-  public:
-  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
-      ::uint8_t* PROTOBUF_NONNULL target,
-      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
-    return _InternalSerialize(*this, target, stream);
-  }
-  #else   // PROTOBUF_CUSTOM_VTABLE
-  ::size_t ByteSizeLong() const final;
-  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
-      ::uint8_t* PROTOBUF_NONNULL target,
-      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
-  #endif  // PROTOBUF_CUSTOM_VTABLE
-  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
-
-  private:
-  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
-  static void SharedDtor(MessageLite& self);
-  void InternalSwap(CommandSpec* PROTOBUF_NONNULL other);
- private:
-  template <typename T>
-  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "df.plugin.CommandSpec"; }
-
-  explicit CommandSpec(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
-  CommandSpec(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const CommandSpec& from);
-  CommandSpec(
-      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, CommandSpec&& from) noexcept
-      : CommandSpec(arena) {
-    *this = ::std::move(from);
-  }
-  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
-  static void* PROTOBUF_NONNULL PlacementNew_(
-      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
-      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
-  static constexpr auto InternalNewImpl_();
-
- public:
-  static constexpr auto InternalGenerateClassData_();
-
-  ::google::protobuf::Metadata GetMetadata() const;
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-  enum : int {
-    kAliasesFieldNumber = 3,
-    kNameFieldNumber = 1,
-    kDescriptionFieldNumber = 2,
-  };
-  // repeated string aliases = 3 [json_name = "aliases"];
-  int aliases_size() const;
-  private:
-  int _internal_aliases_size() const;
-
-  public:
-  void clear_aliases() ;
-  const ::std::string& aliases(int index) const;
-  ::std::string* PROTOBUF_NONNULL mutable_aliases(int index);
-  template <typename Arg_ = const ::std::string&, typename... Args_>
-  void set_aliases(int index, Arg_&& value, Args_... args);
-  ::std::string* PROTOBUF_NONNULL add_aliases();
-  template <typename Arg_ = const ::std::string&, typename... Args_>
-  void add_aliases(Arg_&& value, Args_... args);
-  const ::google::protobuf::RepeatedPtrField<::std::string>& aliases() const;
-  ::google::protobuf::RepeatedPtrField<::std::string>* PROTOBUF_NONNULL mutable_aliases();
-
-  private:
-  const ::google::protobuf::RepeatedPtrField<::std::string>& _internal_aliases() const;
-  ::google::protobuf::RepeatedPtrField<::std::string>* PROTOBUF_NONNULL _internal_mutable_aliases();
-
-  public:
-  // string name = 1 [json_name = "name"];
-  void clear_name() ;
-  const ::std::string& name() const;
-  template <typename Arg_ = const ::std::string&, typename... Args_>
-  void set_name(Arg_&& arg, Args_... args);
-  ::std::string* PROTOBUF_NONNULL mutable_name();
-  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_name();
-  void set_allocated_name(::std::string* PROTOBUF_NULLABLE value);
-
-  private:
-  const ::std::string& _internal_name() const;
-  PROTOBUF_ALWAYS_INLINE void _internal_set_name(const ::std::string& value);
-  ::std::string* PROTOBUF_NONNULL _internal_mutable_name();
-
-  public:
-  // string description = 2 [json_name = "description"];
-  void clear_description() ;
-  const ::std::string& description() const;
-  template <typename Arg_ = const ::std::string&, typename... Args_>
-  void set_description(Arg_&& arg, Args_... args);
-  ::std::string* PROTOBUF_NONNULL mutable_description();
-  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_description();
-  void set_allocated_description(::std::string* PROTOBUF_NULLABLE value);
-
-  private:
-  const ::std::string& _internal_description() const;
-  PROTOBUF_ALWAYS_INLINE void _internal_set_description(const ::std::string& value);
-  ::std::string* PROTOBUF_NONNULL _internal_mutable_description();
-
-  public:
-  // @@protoc_insertion_point(class_scope:df.plugin.CommandSpec)
- private:
-  class _Internal;
-  friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<2, 3,
-                                   0, 52,
-                                   2>
-      _table_;
-
-  friend class ::google::protobuf::MessageLite;
-  friend class ::google::protobuf::Arena;
-  template <typename T>
-  friend class ::google::protobuf::Arena::InternalHelper;
-  using InternalArenaConstructable_ = void;
-  using DestructorSkippable_ = void;
-  struct Impl_ {
-    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-    inline explicit Impl_(
-        ::google::protobuf::internal::InternalVisibility visibility,
-        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
-    inline explicit Impl_(
-        ::google::protobuf::internal::InternalVisibility visibility,
-        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
-        const CommandSpec& from_msg);
-    ::google::protobuf::internal::HasBits<1> _has_bits_;
-    ::google::protobuf::internal::CachedSize _cached_size_;
-    ::google::protobuf::RepeatedPtrField<::std::string> aliases_;
-    ::google::protobuf::internal::ArenaStringPtr name_;
-    ::google::protobuf::internal::ArenaStringPtr description_;
-    PROTOBUF_TSAN_DECLARE_MEMBER
-  };
-  union { Impl_ _impl_; };
-  friend struct ::TableStruct_plugin_2eproto;
-};
-
-extern const ::google::protobuf::internal::ClassDataFull CommandSpec_class_data_;
 // -------------------------------------------------------------------
 
 class PluginHello final : public ::google::protobuf::Message
@@ -8214,12 +7975,6 @@ inline int PluginHello::_internal_commands_size() const {
 inline int PluginHello::commands_size() const {
   return _internal_commands_size();
 }
-inline void PluginHello::clear_commands() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.commands_.Clear();
-  ClearHasBitForRepeated(_impl_._has_bits_[0],
-                  0x00000001U);
-}
 inline ::df::plugin::CommandSpec* PROTOBUF_NONNULL PluginHello::mutable_commands(int index)
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
   // @@protoc_insertion_point(field_mutable:df.plugin.PluginHello.commands)
@@ -8311,212 +8066,6 @@ inline ::google::protobuf::RepeatedPtrField<::df::plugin::CustomItemDefinition>*
 PluginHello::_internal_mutable_custom_items() {
   ::google::protobuf::internal::TSanRead(&_impl_);
   return &_impl_.custom_items_;
-}
-
-// -------------------------------------------------------------------
-
-// CommandSpec
-
-// string name = 1 [json_name = "name"];
-inline void CommandSpec::clear_name() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.name_.ClearToEmpty();
-  ClearHasBit(_impl_._has_bits_[0],
-                  0x00000002U);
-}
-inline const ::std::string& CommandSpec::name() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:df.plugin.CommandSpec.name)
-  return _internal_name();
-}
-template <typename Arg_, typename... Args_>
-PROTOBUF_ALWAYS_INLINE void CommandSpec::set_name(Arg_&& arg, Args_... args) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
-  _impl_.name_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:df.plugin.CommandSpec.name)
-}
-inline ::std::string* PROTOBUF_NONNULL CommandSpec::mutable_name()
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
-  ::std::string* _s = _internal_mutable_name();
-  // @@protoc_insertion_point(field_mutable:df.plugin.CommandSpec.name)
-  return _s;
-}
-inline const ::std::string& CommandSpec::_internal_name() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.name_.Get();
-}
-inline void CommandSpec::_internal_set_name(const ::std::string& value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.name_.Set(value, GetArena());
-}
-inline ::std::string* PROTOBUF_NONNULL CommandSpec::_internal_mutable_name() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _impl_.name_.Mutable( GetArena());
-}
-inline ::std::string* PROTOBUF_NULLABLE CommandSpec::release_name() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:df.plugin.CommandSpec.name)
-  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000002U)) {
-    return nullptr;
-  }
-  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
-  auto* released = _impl_.name_.Release();
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
-    _impl_.name_.Set("", GetArena());
-  }
-  return released;
-}
-inline void CommandSpec::set_allocated_name(::std::string* PROTOBUF_NULLABLE value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (value != nullptr) {
-    SetHasBit(_impl_._has_bits_[0], 0x00000002U);
-  } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
-  }
-  _impl_.name_.SetAllocated(value, GetArena());
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.name_.IsDefault()) {
-    _impl_.name_.Set("", GetArena());
-  }
-  // @@protoc_insertion_point(field_set_allocated:df.plugin.CommandSpec.name)
-}
-
-// string description = 2 [json_name = "description"];
-inline void CommandSpec::clear_description() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.description_.ClearToEmpty();
-  ClearHasBit(_impl_._has_bits_[0],
-                  0x00000004U);
-}
-inline const ::std::string& CommandSpec::description() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:df.plugin.CommandSpec.description)
-  return _internal_description();
-}
-template <typename Arg_, typename... Args_>
-PROTOBUF_ALWAYS_INLINE void CommandSpec::set_description(Arg_&& arg, Args_... args) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
-  _impl_.description_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:df.plugin.CommandSpec.description)
-}
-inline ::std::string* PROTOBUF_NONNULL CommandSpec::mutable_description()
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
-  ::std::string* _s = _internal_mutable_description();
-  // @@protoc_insertion_point(field_mutable:df.plugin.CommandSpec.description)
-  return _s;
-}
-inline const ::std::string& CommandSpec::_internal_description() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.description_.Get();
-}
-inline void CommandSpec::_internal_set_description(const ::std::string& value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.description_.Set(value, GetArena());
-}
-inline ::std::string* PROTOBUF_NONNULL CommandSpec::_internal_mutable_description() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _impl_.description_.Mutable( GetArena());
-}
-inline ::std::string* PROTOBUF_NULLABLE CommandSpec::release_description() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:df.plugin.CommandSpec.description)
-  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000004U)) {
-    return nullptr;
-  }
-  ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
-  auto* released = _impl_.description_.Release();
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
-    _impl_.description_.Set("", GetArena());
-  }
-  return released;
-}
-inline void CommandSpec::set_allocated_description(::std::string* PROTOBUF_NULLABLE value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (value != nullptr) {
-    SetHasBit(_impl_._has_bits_[0], 0x00000004U);
-  } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
-  }
-  _impl_.description_.SetAllocated(value, GetArena());
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.description_.IsDefault()) {
-    _impl_.description_.Set("", GetArena());
-  }
-  // @@protoc_insertion_point(field_set_allocated:df.plugin.CommandSpec.description)
-}
-
-// repeated string aliases = 3 [json_name = "aliases"];
-inline int CommandSpec::_internal_aliases_size() const {
-  return _internal_aliases().size();
-}
-inline int CommandSpec::aliases_size() const {
-  return _internal_aliases_size();
-}
-inline void CommandSpec::clear_aliases() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.aliases_.Clear();
-  ClearHasBitForRepeated(_impl_._has_bits_[0],
-                  0x00000001U);
-}
-inline ::std::string* PROTOBUF_NONNULL CommandSpec::add_aliases()
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  ::std::string* _s =
-      _internal_mutable_aliases()->InternalAddWithArena(
-          ::google::protobuf::MessageLite::internal_visibility(), GetArena());
-  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000001U);
-  // @@protoc_insertion_point(field_add_mutable:df.plugin.CommandSpec.aliases)
-  return _s;
-}
-inline const ::std::string& CommandSpec::aliases(int index) const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:df.plugin.CommandSpec.aliases)
-  return _internal_aliases().Get(index);
-}
-inline ::std::string* PROTOBUF_NONNULL CommandSpec::mutable_aliases(int index)
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable:df.plugin.CommandSpec.aliases)
-  return _internal_mutable_aliases()->Mutable(index);
-}
-template <typename Arg_, typename... Args_>
-inline void CommandSpec::set_aliases(int index, Arg_&& value, Args_... args) {
-  ::google::protobuf::internal::AssignToString(*_internal_mutable_aliases()->Mutable(index), ::std::forward<Arg_>(value),
-                        args... );
-  // @@protoc_insertion_point(field_set:df.plugin.CommandSpec.aliases)
-}
-template <typename Arg_, typename... Args_>
-inline void CommandSpec::add_aliases(Arg_&& value, Args_... args) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  ::google::protobuf::internal::AddToRepeatedPtrField(
-      ::google::protobuf::MessageLite::internal_visibility(), GetArena(),
-      *_internal_mutable_aliases(), ::std::forward<Arg_>(value),
-      args... );
-  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000001U);
-  // @@protoc_insertion_point(field_add:df.plugin.CommandSpec.aliases)
-}
-inline const ::google::protobuf::RepeatedPtrField<::std::string>& CommandSpec::aliases()
-    const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_list:df.plugin.CommandSpec.aliases)
-  return _internal_aliases();
-}
-inline ::google::protobuf::RepeatedPtrField<::std::string>* PROTOBUF_NONNULL
-CommandSpec::mutable_aliases() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000001U);
-  // @@protoc_insertion_point(field_mutable_list:df.plugin.CommandSpec.aliases)
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _internal_mutable_aliases();
-}
-inline const ::google::protobuf::RepeatedPtrField<::std::string>&
-CommandSpec::_internal_aliases() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.aliases_;
-}
-inline ::google::protobuf::RepeatedPtrField<::std::string>* PROTOBUF_NONNULL
-CommandSpec::_internal_mutable_aliases() {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return &_impl_.aliases_;
 }
 
 // -------------------------------------------------------------------

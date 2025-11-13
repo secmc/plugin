@@ -1,4 +1,5 @@
 <?php
+namespace ExamplePhp;
 // Example Dragonfly plugin implemented in PHP (client mode).
 // Requires: pecl install grpc protobuf
 //
@@ -19,6 +20,7 @@ use Df\Plugin\PlayerAttackEntityMutation;
 use Dragonfly\PluginLib\PluginBase;
 use Dragonfly\PluginLib\Events\EventContext;
 use Dragonfly\PluginLib\Events\Listener;
+use ExamplePhp\EffectCommand;
 
 class HelloPlugin extends PluginBase implements Listener {
 
@@ -26,6 +28,7 @@ class HelloPlugin extends PluginBase implements Listener {
     protected string $version = '0.1.0';
 
     public function onEnable(): void {
+        $this->registerCommandClass(new EffectCommand());
         $this->registerCommand('/cheers', 'Send a toast from PHP');
         $this->registerCommand('/pokemon', 'Give a Pokemon item');
         // Register custom items

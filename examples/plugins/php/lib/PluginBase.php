@@ -10,6 +10,10 @@ use Df\Plugin\PluginClient;
 use Df\Plugin\PluginHello;
 use Df\Plugin\PluginToHost;
 use Df\Plugin\CustomItemDefinition;
+use Df\Plugin\ParamSpec as PbParamSpec;
+use Df\Plugin\ParamType as PbParamType;
+use Dragonfly\PluginLib\Commands\Command;
+use Dragonfly\PluginLib\Commands\CommandSender;
 use Dragonfly\PluginLib\Events\EventContext;
 use Dragonfly\PluginLib\Events\Listener;
 use Grpc\ChannelCredentials;
@@ -41,11 +45,15 @@ abstract class PluginBase {
 
     private bool $running = false;
 
-    /** @var array<int, array{name: string, description: string}> */
+    /** @var array<int, array{name: string, description: string, aliases?: string[]}> */
     private array $commandSpecs = [];
 
     /** @var CustomItemDefinition[] */
     private array $customItems = [];
+
+    /** @var array<string, Command> name/alias => command instance */
+    private array $commandInstances = [];
+    private bool $commandHandlerRegistered = false;
 
     public function __construct(?string $pluginId = null, ?string $serverAddress = null) {
         $this->pluginId = $pluginId ?? (getenv('DF_PLUGIN_ID') ?: 'php-plugin');
@@ -120,6 +128,36 @@ abstract class PluginBase {
 
     public function registerCommand(string $name, string $description): void {
         $this->commandSpecs[] = ['name' => $name, 'description' => $description];
+    }
+
+    /**
+     * Register a Command class. Automatically wires command event handling and
+     * includes aliases in the handshake.
+     */
+    public function registerCommandClass(Command $cmd): void {
+        $name = $cmd->getName();
+        if ($name === '') {
+            throw new \InvalidArgumentException('Command name must not be empty.');
+        }
+        // Store instance by name and aliases for quick lookup.
+        $this->commandInstances[$name] = $cmd;
+        foreach ($cmd->getAliases() as $alias) {
+            if ($alias !== '' && !isset($this->commandInstances[$alias])) {
+                $this->commandInstances[$alias] = $cmd;
+            }
+        }
+        // Queue spec for handshake (with aliases).
+        $spec = [
+            'name' => $name,
+            'description' => $cmd->getDescription(),
+        ];
+        $aliases = $cmd->getAliases();
+        if (!empty($aliases)) {
+            $spec['aliases'] = array_values(array_unique($aliases));
+        }
+        $this->commandSpecs[] = $spec;
+        // Ensure we are subscribed to command events.
+        $this->ensureCommandHandler();
     }
 
     /**
@@ -279,6 +317,39 @@ abstract class PluginBase {
                 $c = new CommandSpec();
                 $c->setName($spec['name']);
                 $c->setDescription($spec['description']);
+                if (isset($spec['aliases']) && is_array($spec['aliases']) && !empty($spec['aliases'])) {
+                    $c->setAliases($spec['aliases']);
+                }
+                // If protobuf has params field, populate it from the registered command class.
+                if (method_exists($c, 'setParams') && isset($this->commandInstances[$spec['name']])) {
+                    $cmd = $this->commandInstances[$spec['name']];
+                    $schema = $cmd->serializeParamSpec();
+                    $pbParams = [];
+                    foreach ($schema as $p) {
+                        $pp = new PbParamSpec();
+                        $pp->setName($p['name']);
+                        // Map string type to enum.
+                        $type = $p['type'] ?? 'string';
+                        $pp->setType(match ($type) {
+                            'int' => PbParamType::PARAM_INT,
+                            'float' => PbParamType::PARAM_FLOAT,
+                            'bool' => PbParamType::PARAM_BOOL,
+                            'enum' => PbParamType::PARAM_ENUM,
+                            'varargs' => PbParamType::PARAM_VARARGS,
+                            default => PbParamType::PARAM_STRING,
+                        });
+                        if (!empty($p['optional'])) {
+                            $pp->setOptional(true);
+                        }
+                        if (!empty($p['enum_values']) && method_exists($pp, 'setEnumValues')) {
+                            $pp->setEnumValues($p['enum_values']);
+                        }
+                        $pbParams[] = $pp;
+                    }
+                    if (!empty($pbParams)) {
+                        $c->setParams($pbParams);
+                    }
+                }
                 $cmds[] = $c;
             }
             $pluginHello->setCommands($cmds);
@@ -355,6 +426,61 @@ abstract class PluginBase {
         }
     }
 
+    /**
+     * Ensure a command event handler is registered once to parse and execute
+     * registered Command classes.
+     */
+    private function ensureCommandHandler(): void {
+        if ($this->commandHandlerRegistered) {
+            return;
+        }
+        $this->commandHandlerRegistered = true;
+        $this->addEventHandler(EventType::COMMAND, function (string $eventId, EventEnvelope $event): void {
+            $cmdEvt = $event->getCommand();
+            if ($cmdEvt === null) {
+                return;
+            }
+            $commandName = $cmdEvt->getCommand();
+            if ($commandName === '' || !isset($this->commandInstances[$commandName])) {
+                return;
+            }
+            // Work with a fresh instance per execution.
+            $template = $this->commandInstances[$commandName];
+            $cmd = clone $template;
+
+            $senderUuid = $cmdEvt->getPlayerUuid();
+            $senderName = $cmdEvt->getName();
+            $sender = new CommandSender($senderUuid, $senderName);
+            $ctx = new EventContext($this->pluginId, $eventId, $this->sender, $event->getExpectsResponse());
+
+            try {
+                $argsField = $cmdEvt->getArgs();
+                // Convert protobuf RepeatedField to a native array.
+                if (is_array($argsField)) {
+                    $args = $argsField;
+                } elseif ($argsField instanceof \Traversable) {
+                    $args = iterator_to_array($argsField);
+                } else {
+                    $args = [];
+                }
+                if (!$cmd->parseArgs($args)) {
+                    $usage = method_exists($cmd, 'generateUsage') ? $cmd->generateUsage() : ('/' . $commandName);
+                    $ctx->chatToUuid($senderUuid, "§cUsage: " . $usage);
+                    $ctx->cancel();
+                    return;
+                }
+                $cmd->execute($sender, $ctx);
+                // Ensure base command execution is suppressed server-side.
+                $ctx->cancel();
+            } catch (\Throwable $e) {
+                $ctx->chatToUuid($senderUuid, "§cCommand error: " . $e->getMessage());
+                // Suppress base command execution even on error to avoid duplicate messages.
+                $ctx->cancel();
+            } finally {
+                $ctx->ackIfUnhandled();
+            }
+        });
+    }
 }
 
 

@@ -70,9 +70,11 @@ func (m *Manager) EmitCommand(ctx *player.Context, p *player.Player, cmdName str
 	if p == nil {
 		return
 	}
+	// Normalize arguments: trim spaces and drop empties to avoid usage errors on trailing/multiple spaces.
+	norm := normalizeArgs(args)
 	raw := "/" + cmdName
-	if len(args) > 0 {
-		raw += " " + strings.Join(args, " ")
+	if len(norm) > 0 {
+		raw += " " + strings.Join(norm, " ")
 	}
 	m.emitCancellable(ctx, &pb.EventEnvelope{
 		Type: pb.EventType_COMMAND,
@@ -82,10 +84,15 @@ func (m *Manager) EmitCommand(ctx *player.Context, p *player.Player, cmdName str
 				Name:       p.Name(),
 				Raw:        raw,
 				Command:    cmdName,
-				Args:       args,
+				Args:       norm,
 			},
 		},
 	})
+}
+
+// normalizeArgs trims each argument and removes empty entries.
+func normalizeArgs(args []string) []string {
+	return strings.Fields(strings.Join(args, " "))
 }
 
 func (m *Manager) EmitBlockBreak(ctx *player.Context, p *player.Player, pos cube.Pos, drops *[]item.Stack, xp *int, worldDim string) {

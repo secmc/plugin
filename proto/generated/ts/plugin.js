@@ -6,9 +6,10 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ActionBatch } from "./actions.js";
+import { CommandEvent, CommandSpec } from "./command.js";
 import { CustomItemDefinition } from "./common.js";
 import { EventResult } from "./mutations.js";
-import { BlockBreakEvent, ChatEvent, CommandEvent, PlayerAttackEntityEvent, PlayerBlockPickEvent, PlayerBlockPlaceEvent, PlayerChangeWorldEvent, PlayerDeathEvent, PlayerDiagnosticsEvent, PlayerExperienceGainEvent, PlayerFireExtinguishEvent, PlayerFoodLossEvent, PlayerHealEvent, PlayerHeldSlotChangeEvent, PlayerHurtEvent, PlayerItemConsumeEvent, PlayerItemDamageEvent, PlayerItemDropEvent, PlayerItemPickupEvent, PlayerItemReleaseEvent, PlayerItemUseEvent, PlayerItemUseOnBlockEvent, PlayerItemUseOnEntityEvent, PlayerJoinEvent, PlayerJumpEvent, PlayerLecternPageTurnEvent, PlayerMoveEvent, PlayerPunchAirEvent, PlayerQuitEvent, PlayerRespawnEvent, PlayerSignEditEvent, PlayerSkinChangeEvent, PlayerStartBreakEvent, PlayerTeleportEvent, PlayerToggleSneakEvent, PlayerToggleSprintEvent, PlayerTransferEvent, } from "./player_events.js";
+import { BlockBreakEvent, ChatEvent, PlayerAttackEntityEvent, PlayerBlockPickEvent, PlayerBlockPlaceEvent, PlayerChangeWorldEvent, PlayerDeathEvent, PlayerDiagnosticsEvent, PlayerExperienceGainEvent, PlayerFireExtinguishEvent, PlayerFoodLossEvent, PlayerHealEvent, PlayerHeldSlotChangeEvent, PlayerHurtEvent, PlayerItemConsumeEvent, PlayerItemDamageEvent, PlayerItemDropEvent, PlayerItemPickupEvent, PlayerItemReleaseEvent, PlayerItemUseEvent, PlayerItemUseOnBlockEvent, PlayerItemUseOnEntityEvent, PlayerJoinEvent, PlayerJumpEvent, PlayerLecternPageTurnEvent, PlayerMoveEvent, PlayerPunchAirEvent, PlayerQuitEvent, PlayerRespawnEvent, PlayerSignEditEvent, PlayerSkinChangeEvent, PlayerStartBreakEvent, PlayerTeleportEvent, PlayerToggleSneakEvent, PlayerToggleSprintEvent, PlayerTransferEvent, } from "./player_events.js";
 import { WorldBlockBurnEvent, WorldCloseEvent, WorldCropTrampleEvent, WorldEntityDespawnEvent, WorldEntitySpawnEvent, WorldExplosionEvent, WorldFireSpreadEvent, WorldLeavesDecayEvent, WorldLiquidDecayEvent, WorldLiquidFlowEvent, WorldLiquidHardenEvent, WorldSoundEvent, } from "./world_events.js";
 export const protobufPackage = "df.plugin";
 export var EventType;
@@ -1822,89 +1823,6 @@ export const PluginHello = {
         message.apiVersion = object.apiVersion ?? "";
         message.commands = object.commands?.map((e) => CommandSpec.fromPartial(e)) || [];
         message.customItems = object.customItems?.map((e) => CustomItemDefinition.fromPartial(e)) || [];
-        return message;
-    },
-};
-function createBaseCommandSpec() {
-    return { name: "", description: "", aliases: [] };
-}
-export const CommandSpec = {
-    encode(message, writer = new BinaryWriter()) {
-        if (message.name !== "") {
-            writer.uint32(10).string(message.name);
-        }
-        if (message.description !== "") {
-            writer.uint32(18).string(message.description);
-        }
-        for (const v of message.aliases) {
-            writer.uint32(26).string(v);
-        }
-        return writer;
-    },
-    decode(input, length) {
-        const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseCommandSpec();
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1: {
-                    if (tag !== 10) {
-                        break;
-                    }
-                    message.name = reader.string();
-                    continue;
-                }
-                case 2: {
-                    if (tag !== 18) {
-                        break;
-                    }
-                    message.description = reader.string();
-                    continue;
-                }
-                case 3: {
-                    if (tag !== 26) {
-                        break;
-                    }
-                    message.aliases.push(reader.string());
-                    continue;
-                }
-            }
-            if ((tag & 7) === 4 || tag === 0) {
-                break;
-            }
-            reader.skip(tag & 7);
-        }
-        return message;
-    },
-    fromJSON(object) {
-        return {
-            name: isSet(object.name) ? globalThis.String(object.name) : "",
-            description: isSet(object.description) ? globalThis.String(object.description) : "",
-            aliases: globalThis.Array.isArray(object?.aliases) ? object.aliases.map((e) => globalThis.String(e)) : [],
-        };
-    },
-    toJSON(message) {
-        const obj = {};
-        if (message.name !== "") {
-            obj.name = message.name;
-        }
-        if (message.description !== "") {
-            obj.description = message.description;
-        }
-        if (message.aliases?.length) {
-            obj.aliases = message.aliases;
-        }
-        return obj;
-    },
-    create(base) {
-        return CommandSpec.fromPartial(base ?? {});
-    },
-    fromPartial(object) {
-        const message = createBaseCommandSpec();
-        message.name = object.name ?? "";
-        message.description = object.description ?? "";
-        message.aliases = object.aliases?.map((e) => e) || [];
         return message;
     },
 };
