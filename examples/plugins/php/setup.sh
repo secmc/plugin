@@ -15,40 +15,20 @@ if [[ "$OS" == MINGW* ]] || [[ "$OS" == MSYS* ]] || [[ "$OS" == CYGWIN* ]]; then
     OS="Windows"
 fi
 
-# OVERRIDE: Force x86_64 builds on unsupported platforms (macOS, Linux ARM64)
-# Set to false to restore original behavior
-FORCE_X86_64_OVERRIDE=true
-
-if [ "$FORCE_X86_64_OVERRIDE" = true ]; then
-    if [ "$OS" = "Darwin" ]; then
-        echo "⚠️  Using x86_64 build on macOS (will use Rosetta 2 on ARM Macs)"
-        OS="Linux"
-        ARCH="x86_64"
-    elif [ "$OS" = "Linux" ] && ([ "$ARCH" = "aarch64" ] || [ "$ARCH" = "arm64" ]); then
-        echo "⚠️  Using x86_64 build on Linux ARM64 (requires emulation support)"
-        ARCH="x86_64"
-    fi
-fi
-
-# PHP build URL (PocketMine PHP 8.4 with gRPC built-in)
-# Note: Only Linux x86_64 and Windows x64 pre-built binaries are available
+# PHP build URL (PocketMine PHP 8.3 with gRPC built-in)
+# Source: secmc/PHP-Binaries
 if [ "$OS" = "Darwin" ]; then
-    echo "❌ Pre-built PHP binaries are not available for macOS"
-    echo ""
-    echo "Please use one of these alternatives:"
-    echo ""
-    echo "  Option 1: Use system PHP with manual gRPC installation"
-    echo "    - Install PHP 8.1+ via Homebrew: brew install php"
-    echo "    - Install gRPC extension: pecl install grpc"
-    echo "    - Install protobuf extension: pecl install protobuf"
-    echo ""
-    echo "  Option 2: Use Docker"
-    echo "    - See CUSTOM_PHP.md for Docker setup instructions"
-    echo ""
-    echo "  Option 3: Run on Linux (VM or WSL)"
-    echo "    - Transfer your plugin to a Linux x86_64 system"
-    echo ""
-    exit 1
+    # macOS - both arm64 and x86_64 supported!
+    if [ "$ARCH" = "arm64" ]; then
+        PHP_BUILD_URL="https://github.com/secmc/PHP-Binaries/releases/download/pm5-php-8.3-latest/PHP-8.3-MacOS-arm64-PM5.tar.gz"
+        PHP_BIN="bin/php7/bin/php"
+        IS_WINDOWS=false
+    else
+        # x86_64 or other arch - use x86_64 build
+        PHP_BUILD_URL="https://github.com/secmc/PHP-Binaries/releases/download/pm5-php-8.3-latest/PHP-8.3-MacOS-x86_64-PM5.tar.gz"
+        PHP_BIN="bin/php7/bin/php"
+        IS_WINDOWS=false
+    fi
 elif [ "$OS" = "Linux" ]; then
     if [ "$ARCH" = "aarch64" ] || [ "$ARCH" = "arm64" ]; then
         echo "❌ Pre-built PHP binaries are not available for Linux ARM64"
@@ -67,18 +47,18 @@ elif [ "$OS" = "Linux" ]; then
         exit 1
     else
         # Linux x86_64 - supported!
-        PHP_BUILD_URL="https://github.com/NetherGamesMC/php-build-scripts/releases/download/pm5-php-8.4-latest/PHP-8.4-Linux-x86_64-PM5.tar.gz"
+        PHP_BUILD_URL="https://github.com/secmc/PHP-Binaries/releases/download/pm5-php-8.3-latest/PHP-8.3-Linux-x86_64-PM5.tar.gz"
         PHP_BIN="bin/php7/bin/php"
         IS_WINDOWS=false
     fi
 elif [ "$OS" = "Windows" ]; then
     # Windows x64 - supported!
-    PHP_BUILD_URL="https://github.com/NetherGamesMC/php-build-scripts/releases/download/pm5-php-8.4-latest/PHP-8.4-Windows-x64-PM5.zip"
+    PHP_BUILD_URL="https://github.com/secmc/PHP-Binaries/releases/download/pm5-php-8.3-latest/PHP-8.3-Windows-x64-PM5.zip"
     PHP_BIN="bin/php/php.exe"
     IS_WINDOWS=true
 else
     echo "❌ Unsupported OS: $OS"
-    echo "   Pre-built binaries available for: Linux x86_64, Windows x64"
+    echo "   Pre-built binaries available for: macOS (arm64/x86_64), Linux x86_64, Windows x64"
     echo "   See CUSTOM_PHP.md for manual installation on other platforms"
     exit 1
 fi
@@ -91,8 +71,8 @@ if [ -f "$PHP_BIN" ]; then
     PHP_VERSION=$($PHP_BIN -v | head -n 1)
     echo "   $PHP_VERSION"
 else
-    echo "📥 Downloading pre-compiled PHP 8.4 with gRPC..."
-    echo "   Source: NetherGamesMC/php-build-scripts"
+    echo "📥 Downloading pre-compiled PHP 8.3 with gRPC..."
+    echo "   Source: secmc/PHP-Binaries"
     echo ""
     
     # Download PHP build
