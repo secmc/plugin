@@ -2,8 +2,6 @@ module github.com/secmc/plugin
 
 go 1.25.0
 
-replace github.com/df-mc/dragonfly => ./dragonfly
-
 require (
 	github.com/df-mc/dragonfly v0.10.10-0.20251115132555-564b905699ba
 	github.com/didntpot/pregdk v0.0.0-20251104095621-63cf2e4d7716
