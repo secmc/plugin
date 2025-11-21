@@ -256,7 +256,17 @@ dragonfly-plugins/
 
 
 ## Protobuf generation
-to generate our protobuf types, you will need to install [buf](https://buf.build/docs/cli/installation/) and then run 
+to generate our protobuf types, you will need to install [buf](https://buf.build/docs/cli/installation/) and protoc-gen-go:
+
+```bash
+# Install buf
+# Follow instructions at https://buf.build/docs/cli/installation/
+
+# Install protoc-gen-go
+go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
 ```
+
+Then run:
+```bash
 make proto
 ```
