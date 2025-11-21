@@ -5,7 +5,7 @@ managed:
     - file_option: go_package_prefix
       value: github.com/secmc/plugin/proto/generated
 plugins:
-  - local: protoc-gen-go
+  - remote: buf.build/protocolbuffers/go
     out: generated
     opt:
       - paths=source_relative
