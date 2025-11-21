@@ -254,3 +254,9 @@ dragonfly-plugins/
 - **[Protocol Buffer Definitions](plugin/proto/types/plugin.proto)** - API reference
 - **[Plugin Architecture](docs/plugin-architecture.md)** - Design documentation
 
+
+## Protobuf generation
+to generate our protobuf types, you will need to install [buf](https://buf.build/docs/cli/installation/) and then run 
+```
+make proto
+```

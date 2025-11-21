@@ -9,3 +9,38 @@ plugins:
     out: generated
     opt:
       - paths=source_relative
+  # C++
+  - remote: buf.build/protocolbuffers/cpp
+    out: generated/cpp
+  - remote: buf.build/grpc/cpp
+    out: generated/cpp
+
+  # Php
+  - remote: buf.build/protocolbuffers/php
+    out: generated/php
+  - remote: buf.build/grpc/php
+    out: generated/php
+
+  # Python
+  - remote: buf.build/protocolbuffers/python
+    out: generated/python
+  - remote: buf.build/grpc/python
+    out: generated/python
+
+  # Rust
+  - remote: buf.build/community/neoeinstein-prost
+    out: generated/rust
+  - remote: buf.build/community/neoeinstein-tonic
+    out: generated/rust
+    opt:
+      - compile_well_known_types
+      - extern_path=.google.protobuf=::pbjson_types
+
+  # Typescript
+  - remote: buf.build/community/stephenh-ts-proto
+    out: generated/ts
+    opt:
+      - esModuleInterop=true
+      - outputServices=generic-definitions
+      - useExactTypes=false
+      - importSuffix=.js
