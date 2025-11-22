@@ -35,6 +35,18 @@ message Action {
         PlaySoundAction play_sound = 43;
         // Commands
         ExecuteCommandAction execute_command = 50;
+        // World configuration and effects
+        WorldSetDefaultGameModeAction world_set_default_game_mode = 60;
+        WorldSetDifficultyAction world_set_difficulty = 61;
+        WorldSetTickRangeAction world_set_tick_range = 62;
+        WorldSetBlockAction world_set_block = 63;
+        WorldPlaySoundAction world_play_sound = 64;
+        WorldAddParticleAction world_add_particle = 65;
+        // World queries
+        WorldQueryEntitiesAction world_query_entities = 70;
+        WorldQueryPlayersAction world_query_players = 71;
+        WorldQueryEntitiesWithinAction world_query_entities_within = 72;
+        WorldQueryViewersAction world_query_viewers = 73;
     }
 }
 
@@ -150,4 +162,117 @@ message PlaySoundAction { // TODO: it should probably be a world action
 message ExecuteCommandAction {
     string player_uuid = 1;
     string command = 2; // without leading slash
+}
+
+message WorldSetDefaultGameModeAction {
+    WorldRef world = 1;
+    GameMode game_mode = 2;
+}
+
+message WorldSetDifficultyAction {
+    WorldRef world = 1;
+    Difficulty difficulty = 2;
+}
+
+message WorldSetTickRangeAction {
+    WorldRef world = 1;
+    int32 tick_range = 2;
+}
+
+message WorldSetBlockAction {
+    WorldRef world = 1;
+    BlockPos position = 2;
+    optional BlockState block = 3; // nil clears to air
+}
+
+message WorldPlaySoundAction {
+    WorldRef world = 1;
+    Sound sound = 2;
+    Vec3 position = 3;
+}
+
+message WorldAddParticleAction {
+    WorldRef world = 1;
+    Vec3 position = 2;
+    ParticleType particle = 3;
+    optional BlockState block = 4; // used for block-based particles when provided
+    optional int32 face = 5; // used for punch_block when provided
+}
+
+enum ParticleType {
+    PARTICLE_TYPE_UNSPECIFIED = 0;
+    PARTICLE_HUGE_EXPLOSION = 1;
+    PARTICLE_ENDERMAN_TELEPORT = 2;
+    PARTICLE_SNOWBALL_POOF = 3;
+    PARTICLE_EGG_SMASH = 4;
+    PARTICLE_SPLASH = 5;
+    PARTICLE_EFFECT = 6;
+    PARTICLE_ENTITY_FLAME = 7;
+    PARTICLE_FLAME = 8;
+    PARTICLE_DUST = 9;
+    PARTICLE_BLOCK_FORCE_FIELD = 10;
+    PARTICLE_BONE_MEAL = 11;
+    PARTICLE_EVAPORATE = 12;
+    PARTICLE_WATER_DRIP = 13;
+    PARTICLE_LAVA_DRIP = 14;
+    PARTICLE_LAVA = 15;
+    PARTICLE_DUST_PLUME = 16;
+    PARTICLE_BLOCK_BREAK = 17;
+    PARTICLE_PUNCH_BLOCK = 18;
+}
+
+message WorldQueryEntitiesAction {
+    WorldRef world = 1;
+}
+
+message WorldQueryPlayersAction {
+    WorldRef world = 1;
+}
+
+message WorldQueryEntitiesWithinAction {
+    WorldRef world = 1;
+    BBox box = 2;
+}
+
+message WorldQueryViewersAction {
+    WorldRef world = 1;
+    Vec3 position = 2;
+}
+
+message ActionStatus {
+    bool ok = 1;
+    optional string error = 2;
+}
+
+message WorldEntitiesResult {
+    WorldRef world = 1;
+    repeated EntityRef entities = 2;
+}
+
+message WorldEntitiesWithinResult {
+    WorldRef world = 1;
+    BBox box = 2;
+    repeated EntityRef entities = 3;
+}
+
+message WorldPlayersResult {
+    WorldRef world = 1;
+    repeated EntityRef players = 2;
+}
+
+message WorldViewersResult {
+    WorldRef world = 1;
+    Vec3 position = 2;
+    repeated string viewer_uuids = 3;
+}
+
+message ActionResult {
+    string correlation_id = 1;
+    optional ActionStatus status = 2;
+    oneof result {
+        WorldEntitiesResult world_entities = 10;
+        WorldPlayersResult world_players = 11;
+        WorldEntitiesWithinResult world_entities_within = 12;
+        WorldViewersResult world_viewers = 13;
+    }
 }

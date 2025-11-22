@@ -9,6 +9,13 @@ enum GameMode {
     SPECTATOR = 3;
 }
 
+enum Difficulty {
+    PEACEFUL = 0;
+    EASY = 1;
+    NORMAL = 2;
+    HARD = 3;
+}
+
 // EffectType mirrors Dragonfly's registered effect IDs for straightforward mapping.
 // Keep numeric values aligned with dragonfly/server/entity/effect/register.go.
 enum EffectType {
@@ -80,6 +87,11 @@ message Vec3 {
 message Rotation {
     float yaw = 1;
     float pitch = 2;
+}
+
+message BBox {
+    Vec3 min = 1;
+    Vec3 max = 2;
 }
 
 message BlockPos {

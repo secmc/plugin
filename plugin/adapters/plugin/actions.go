@@ -1,9 +1,9 @@
 package plugin
 
 import (
-	"strings"
 	"time"
 
+	"github.com/df-mc/dragonfly/server/block/cube"
 	"github.com/df-mc/dragonfly/server/entity"
 	"github.com/df-mc/dragonfly/server/entity/effect"
 	"github.com/df-mc/dragonfly/server/item"
@@ -11,6 +11,7 @@ import (
 	"github.com/df-mc/dragonfly/server/player/chat"
 	"github.com/df-mc/dragonfly/server/player/title"
 	"github.com/df-mc/dragonfly/server/world"
+	"github.com/df-mc/dragonfly/server/world/particle"
 	"github.com/df-mc/dragonfly/server/world/sound"
 	"github.com/go-gl/mathgl/mgl64"
 	"github.com/google/uuid"
@@ -25,6 +26,7 @@ func (m *Manager) applyActions(p *pluginProcess, batch *pb.ActionBatch) {
 		if action == nil {
 			continue
 		}
+		correlationID := action.GetCorrelationId()
 		switch kind := action.Kind.(type) {
 		case *pb.Action_SendChat:
 			m.handleSendChat(kind.SendChat)
@@ -62,6 +64,26 @@ func (m *Manager) applyActions(p *pluginProcess, batch *pb.ActionBatch) {
 			m.handlePlaySound(kind.PlaySound)
 		case *pb.Action_ExecuteCommand:
 			m.handleExecuteCommand(kind.ExecuteCommand)
+		case *pb.Action_WorldSetDefaultGameMode:
+			m.handleWorldSetDefaultGameMode(p, correlationID, kind.WorldSetDefaultGameMode)
+		case *pb.Action_WorldSetDifficulty:
+			m.handleWorldSetDifficulty(p, correlationID, kind.WorldSetDifficulty)
+		case *pb.Action_WorldSetTickRange:
+			m.handleWorldSetTickRange(p, correlationID, kind.WorldSetTickRange)
+		case *pb.Action_WorldSetBlock:
+			m.handleWorldSetBlock(p, correlationID, kind.WorldSetBlock)
+		case *pb.Action_WorldPlaySound:
+			m.handleWorldPlaySound(p, correlationID, kind.WorldPlaySound)
+		case *pb.Action_WorldAddParticle:
+			m.handleWorldAddParticle(p, correlationID, kind.WorldAddParticle)
+		case *pb.Action_WorldQueryEntities:
+			m.handleWorldQueryEntities(p, correlationID, kind.WorldQueryEntities)
+		case *pb.Action_WorldQueryPlayers:
+			m.handleWorldQueryPlayers(p, correlationID, kind.WorldQueryPlayers)
+		case *pb.Action_WorldQueryEntitiesWithin:
+			m.handleWorldQueryEntitiesWithin(p, correlationID, kind.WorldQueryEntitiesWithin)
+		case *pb.Action_WorldQueryViewers:
+			m.handleWorldQueryViewers(p, correlationID, kind.WorldQueryViewers)
 		}
 	}
 }
@@ -338,6 +360,218 @@ func (m *Manager) handleExecuteCommand(act *pb.ExecuteCommandAction) {
 	})
 }
 
+func (m *Manager) handleWorldSetDefaultGameMode(p *pluginProcess, correlationID string, act *pb.WorldSetDefaultGameModeAction) {
+	w := m.worldFromRef(act.GetWorld())
+	if w == nil {
+		m.sendActionError(p, correlationID, "world not found")
+		return
+	}
+	mode, ok := world.GameModeByID(int(act.GameMode))
+	if !ok {
+		m.sendActionError(p, correlationID, "unknown game mode")
+		return
+	}
+	w.SetDefaultGameMode(mode)
+	m.sendActionOK(p, correlationID)
+}
+
+func (m *Manager) handleWorldSetDifficulty(p *pluginProcess, correlationID string, act *pb.WorldSetDifficultyAction) {
+	w := m.worldFromRef(act.GetWorld())
+	if w == nil {
+		m.sendActionError(p, correlationID, "world not found")
+		return
+	}
+	diff, ok := world.DifficultyByID(int(act.Difficulty))
+	if !ok {
+		m.sendActionError(p, correlationID, "unknown difficulty")
+		return
+	}
+	w.SetDifficulty(diff)
+	m.sendActionOK(p, correlationID)
+}
+
+func (m *Manager) handleWorldSetTickRange(p *pluginProcess, correlationID string, act *pb.WorldSetTickRangeAction) {
+	w := m.worldFromRef(act.GetWorld())
+	if w == nil {
+		m.sendActionError(p, correlationID, "world not found")
+		return
+	}
+	if act.TickRange < 0 {
+		m.sendActionError(p, correlationID, "tick range must be non-negative")
+		return
+	}
+	w.SetTickRange(int(act.TickRange))
+	m.sendActionOK(p, correlationID)
+}
+
+func (m *Manager) handleWorldSetBlock(p *pluginProcess, correlationID string, act *pb.WorldSetBlockAction) {
+	w := m.worldFromRef(act.GetWorld())
+	if w == nil {
+		m.sendActionError(p, correlationID, "world not found")
+		return
+	}
+	if act.Position == nil {
+		m.sendActionError(p, correlationID, "missing position")
+		return
+	}
+	pos := cube.Pos{int(act.Position.X), int(act.Position.Y), int(act.Position.Z)}
+	var blk world.Block
+	var ok bool
+	if act.Block != nil {
+		blk, ok = blockFromProto(act.Block)
+		if !ok {
+			m.sendActionError(p, correlationID, "unknown block")
+			return
+		}
+	}
+	<-w.Exec(func(tx *world.Tx) {
+		tx.SetBlock(pos, blk, nil)
+	})
+	m.sendActionOK(p, correlationID)
+}
+
+func (m *Manager) handleWorldPlaySound(p *pluginProcess, correlationID string, act *pb.WorldPlaySoundAction) {
+	w := m.worldFromRef(act.GetWorld())
+	if w == nil {
+		m.sendActionError(p, correlationID, "world not found")
+		return
+	}
+	pos, ok := vec3FromProto(act.Position)
+	if !ok {
+		m.sendActionError(p, correlationID, "invalid position")
+		return
+	}
+	s := soundFromProto(act.Sound)
+	<-w.Exec(func(tx *world.Tx) {
+		tx.PlaySound(pos, s)
+	})
+	m.sendActionOK(p, correlationID)
+}
+
+func (m *Manager) handleWorldAddParticle(p *pluginProcess, correlationID string, act *pb.WorldAddParticleAction) {
+	w := m.worldFromRef(act.GetWorld())
+	if w == nil {
+		m.sendActionError(p, correlationID, "world not found")
+		return
+	}
+	pos, ok := vec3FromProto(act.Position)
+	if !ok {
+		m.sendActionError(p, correlationID, "invalid position")
+		return
+	}
+	part, ok := particleFromProto(act)
+	if !ok {
+		m.sendActionError(p, correlationID, "unknown particle")
+		return
+	}
+	<-w.Exec(func(tx *world.Tx) {
+		tx.AddParticle(pos, part)
+	})
+	m.sendActionOK(p, correlationID)
+}
+
+func (m *Manager) handleWorldQueryEntities(p *pluginProcess, correlationID string, act *pb.WorldQueryEntitiesAction) {
+	w := m.worldFromRef(act.GetWorld())
+	if w == nil {
+		m.sendActionError(p, correlationID, "world not found")
+		return
+	}
+	entities := make([]world.Entity, 0)
+	<-w.Exec(func(tx *world.Tx) {
+		for e := range tx.Entities() {
+			entities = append(entities, e)
+		}
+	})
+	m.sendActionResult(p, &pb.ActionResult{
+		CorrelationId: correlationID,
+		Status:        &pb.ActionStatus{Ok: true},
+		Result: &pb.ActionResult_WorldEntities{WorldEntities: &pb.WorldEntitiesResult{
+			World:    protoWorldRef(w),
+			Entities: protoEntityRefs(entities),
+		}},
+	})
+}
+
+func (m *Manager) handleWorldQueryPlayers(p *pluginProcess, correlationID string, act *pb.WorldQueryPlayersAction) {
+	w := m.worldFromRef(act.GetWorld())
+	if w == nil {
+		m.sendActionError(p, correlationID, "world not found")
+		return
+	}
+	players := make([]world.Entity, 0)
+	<-w.Exec(func(tx *world.Tx) {
+		for pl := range tx.Players() {
+			players = append(players, pl)
+		}
+	})
+	m.sendActionResult(p, &pb.ActionResult{
+		CorrelationId: correlationID,
+		Status:        &pb.ActionStatus{Ok: true},
+		Result: &pb.ActionResult_WorldPlayers{WorldPlayers: &pb.WorldPlayersResult{
+			World:   protoWorldRef(w),
+			Players: protoEntityRefs(players),
+		}},
+	})
+}
+
+func (m *Manager) handleWorldQueryEntitiesWithin(p *pluginProcess, correlationID string, act *pb.WorldQueryEntitiesWithinAction) {
+	w := m.worldFromRef(act.GetWorld())
+	if w == nil {
+		m.sendActionError(p, correlationID, "world not found")
+		return
+	}
+	box, ok := bboxFromProto(act.Box)
+	if !ok {
+		m.sendActionError(p, correlationID, "invalid bounding box")
+		return
+	}
+	entities := make([]world.Entity, 0)
+	<-w.Exec(func(tx *world.Tx) {
+		for e := range tx.EntitiesWithin(box) {
+			entities = append(entities, e)
+		}
+	})
+	m.sendActionResult(p, &pb.ActionResult{
+		CorrelationId: correlationID,
+		Status:        &pb.ActionStatus{Ok: true},
+		Result: &pb.ActionResult_WorldEntitiesWithin{WorldEntitiesWithin: &pb.WorldEntitiesWithinResult{
+			World:    protoWorldRef(w),
+			Box:      protoBBox(box),
+			Entities: protoEntityRefs(entities),
+		}},
+	})
+}
+
+func (m *Manager) handleWorldQueryViewers(p *pluginProcess, correlationID string, act *pb.WorldQueryViewersAction) {
+	w := m.worldFromRef(act.GetWorld())
+	if w == nil {
+		m.sendActionError(p, correlationID, "world not found")
+		return
+	}
+	pos, ok := vec3FromProto(act.Position)
+	if !ok {
+		m.sendActionError(p, correlationID, "invalid position")
+		return
+	}
+	viewers := make([]string, 0)
+	<-w.Exec(func(tx *world.Tx) {
+		for _, v := range tx.Viewers(pos) {
+			if pl, ok := v.(*player.Player); ok {
+				viewers = append(viewers, pl.UUID().String())
+			}
+		}
+	})
+	m.sendActionResult(p, &pb.ActionResult{
+		CorrelationId: correlationID,
+		Status:        &pb.ActionStatus{Ok: true},
+		Result: &pb.ActionResult_WorldViewers{WorldViewers: &pb.WorldViewersResult{
+			World:       protoWorldRef(w),
+			Position:    protoVec3(pos),
+			ViewerUuids: viewers,
+		}},
+	})
+}
+
 func (m *Manager) execMethod(id uuid.UUID, method func(pl *player.Player)) {
 	if m.srv == nil {
 		return
@@ -349,6 +583,30 @@ func (m *Manager) execMethod(id uuid.UUID, method func(pl *player.Player)) {
 			}
 		})
 	}
+}
+
+func (m *Manager) sendActionResult(p *pluginProcess, result *pb.ActionResult) {
+	if p == nil || result == nil || result.CorrelationId == "" {
+		return
+	}
+	p.queue(&pb.HostToPlugin{
+		PluginId: p.id,
+		Payload:  &pb.HostToPlugin_ActionResult{ActionResult: result},
+	})
+}
+
+func (m *Manager) sendActionOK(p *pluginProcess, correlationID string) {
+	if correlationID == "" {
+		return
+	}
+	m.sendActionResult(p, &pb.ActionResult{CorrelationId: correlationID, Status: &pb.ActionStatus{Ok: true}})
+}
+
+func (m *Manager) sendActionError(p *pluginProcess, correlationID, msg string) {
+	if correlationID == "" {
+		return
+	}
+	m.sendActionResult(p, &pb.ActionResult{CorrelationId: correlationID, Status: &pb.ActionStatus{Ok: false, Error: &msg}})
 }
 
 func soundFromProto(s pb.Sound) world.Sound {
@@ -396,6 +654,60 @@ func soundFromProto(s pb.Sound) world.Sound {
 	default:
 		return sound.Pop{}
 	}
+}
+
+func particleFromProto(act *pb.WorldAddParticleAction) (world.Particle, bool) {
+	switch act.GetParticle() {
+	case pb.ParticleType_PARTICLE_HUGE_EXPLOSION:
+		return particle.HugeExplosion{}, true
+	case pb.ParticleType_PARTICLE_ENDERMAN_TELEPORT:
+		return particle.EndermanTeleport{}, true
+	case pb.ParticleType_PARTICLE_SNOWBALL_POOF:
+		return particle.SnowballPoof{}, true
+	case pb.ParticleType_PARTICLE_EGG_SMASH:
+		return particle.EggSmash{}, true
+	case pb.ParticleType_PARTICLE_SPLASH:
+		return particle.Splash{}, true
+	case pb.ParticleType_PARTICLE_EFFECT:
+		return particle.Effect{}, true
+	case pb.ParticleType_PARTICLE_ENTITY_FLAME:
+		return particle.EntityFlame{}, true
+	case pb.ParticleType_PARTICLE_FLAME:
+		return particle.Flame{}, true
+	case pb.ParticleType_PARTICLE_DUST:
+		return particle.Dust{}, true
+	case pb.ParticleType_PARTICLE_BLOCK_FORCE_FIELD:
+		return particle.BlockForceField{}, true
+	case pb.ParticleType_PARTICLE_BONE_MEAL:
+		return particle.BoneMeal{}, true
+	case pb.ParticleType_PARTICLE_EVAPORATE:
+		return particle.Evaporate{}, true
+	case pb.ParticleType_PARTICLE_WATER_DRIP:
+		return particle.WaterDrip{}, true
+	case pb.ParticleType_PARTICLE_LAVA_DRIP:
+		return particle.LavaDrip{}, true
+	case pb.ParticleType_PARTICLE_LAVA:
+		return particle.Lava{}, true
+	case pb.ParticleType_PARTICLE_DUST_PLUME:
+		return particle.DustPlume{}, true
+	case pb.ParticleType_PARTICLE_BLOCK_BREAK:
+		if act.Block != nil {
+			if blk, ok := blockFromProto(act.Block); ok {
+				return particle.BlockBreak{Block: blk}, true
+			}
+		}
+	case pb.ParticleType_PARTICLE_PUNCH_BLOCK:
+		if act.Block != nil {
+			if blk, ok := blockFromProto(act.Block); ok {
+				face := cube.Face(0)
+				if act.Face != nil {
+					face = cube.Face(*act.Face)
+				}
+				return particle.PunchBlock{Block: blk, Face: face}, true
+			}
+		}
+	}
+	return nil, false
 }
 
 func playerTitleFromAction(act *pb.SendTitleAction) title.Title {

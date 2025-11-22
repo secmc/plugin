@@ -3,6 +3,7 @@ package plugin
 import (
 	"fmt"
 	"net"
+	"strconv"
 	"strings"
 
 	"github.com/df-mc/dragonfly/server/block/cube"
@@ -48,6 +49,17 @@ func protoVec3(v mgl64.Vec3) *pb.Vec3 {
 func protoRotation(r cube.Rotation) *pb.Rotation {
 	yaw, pitch := r.Elem()
 	return &pb.Rotation{Yaw: float32(yaw), Pitch: float32(pitch)}
+}
+
+func protoBBox(box cube.BBox) *pb.BBox {
+	return &pb.BBox{Min: protoVec3(box.Min()), Max: protoVec3(box.Max())}
+}
+
+func bboxFromProto(box *pb.BBox) (cube.BBox, bool) {
+	if box == nil || box.Min == nil || box.Max == nil {
+		return cube.BBox{}, false
+	}
+	return cube.Box(box.Min.X, box.Min.Y, box.Min.Z, box.Max.X, box.Max.Y, box.Max.Z), true
 }
 
 func protoBlockPos(pos cube.Pos) *pb.BlockPos {
@@ -127,6 +139,30 @@ func convertProtoItemStackValue(stack *pb.ItemStack) (item.Stack, bool) {
 		return item.Stack{}, false
 	}
 	return item.NewStack(material, count), true
+}
+
+func blockFromProto(state *pb.BlockState) (world.Block, bool) {
+	if state == nil || state.Name == "" {
+		return nil, false
+	}
+	properties := make(map[string]any, len(state.Properties))
+	for k, v := range state.Properties {
+		properties[k] = parsePropertyValue(v)
+	}
+	return world.BlockByName(state.Name, properties)
+}
+
+func parsePropertyValue(v string) any {
+	if b, err := strconv.ParseBool(v); err == nil {
+		return b
+	}
+	if i, err := strconv.ParseInt(v, 10, 64); err == nil {
+		return int(i)
+	}
+	if f, err := strconv.ParseFloat(v, 64); err == nil {
+		return f
+	}
+	return v
 }
 
 func convertProtoBlockPositionsToCube(blocks []*pb.BlockPos) []cube.Pos {
@@ -272,4 +308,3 @@ func worldFromContext(ctx *world.Context) *world.World {
 	}
 	return tx.World()
 }
-
