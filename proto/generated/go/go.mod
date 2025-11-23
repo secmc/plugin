@@ -1,6 +1,6 @@
 module github.com/secmc/plugin/proto/generated/go
 
-go 1.25.4
+go 1.25
 
 require (
 	google.golang.org/grpc v1.77.0

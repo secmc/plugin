@@ -5,6 +5,4 @@ npm install
 npm run build
 
 cd ../go
-rm -rf go.*
-go mod init github.com/secmc/plugin/proto/generated/go
 go mod tidy
