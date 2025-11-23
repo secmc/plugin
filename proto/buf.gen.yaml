@@ -10,10 +10,12 @@ plugins:
     out: generated/go
     opt:
       - paths=source_relative
+  # Go GRPC client
   - remote: buf.build/grpc/go
     out: generated/go
     opt:
       - paths=source_relative
+
   # C++
   - remote: buf.build/protocolbuffers/cpp
     out: generated/cpp
