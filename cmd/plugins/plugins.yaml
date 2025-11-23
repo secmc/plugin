@@ -49,4 +49,5 @@ plugins:
     args: ["run", "cmd/main.go"]
     work_dir:
       remote_git: true
+      remote_persistent: true
       path: https://github.com/secmc/plugin-go

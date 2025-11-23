@@ -26,8 +26,11 @@ type PluginConfig struct {
 	Command string   `yaml:"command"`
 	Args    []string `yaml:"args"`
 	WorkDir struct {
-		RemoteGit bool   `yaml:"remote_git"`
-		Path      string `yaml:"path"`
+		RemoteGit bool `yaml:"remote_git"`
+		// RemotePersistent is used to choose whether or not to clone the remote git
+		// plugin on every startup
+		RemotePersistent bool   `yaml:"remote_persistent"`
+		Path             string `yaml:"path"`
 	} `yaml:"work_dir"`
 	Env     map[string]string `yaml:"env"`
 	Address string            `yaml:"address"`
@@ -61,29 +64,49 @@ func LoadConfig(path string) (Config, error) {
 		if pl.ID == "" {
 			pl.ID = fmt.Sprintf("plugin-%d", i+1)
 		}
-		if pl.Command != "" && pl.WorkDir.Path != "" {
-			if pl.WorkDir.RemoteGit {
-				path := "/tmp/" + pl.ID
-				err := os.RemoveAll(path)
-				if err != nil {
-					return cfg, err
-				}
+		if pl.Command == "" || pl.WorkDir.Path == "" {
+			continue
+		}
 
-				cmd := exec.Command("git", "clone", pl.WorkDir.Path, path, "--depth=1")
+		if pl.WorkDir.RemoteGit {
+			path := filepath.Join(os.TempDir(), pl.ID)
+			remote := pl.WorkDir.Path
+
+			clone := func() error {
+				cmd := exec.Command("git", "clone", remote, path, "--depth=1")
 				cmd.Stdout = os.Stdout
 				cmd.Stderr = os.Stderr
 
-				err = cmd.Run()
-				if err != nil {
-					return cfg, err
+				if err := cmd.Run(); err != nil {
+					return err
 				}
-
-				pl.WorkDir.Path = path
+				return nil
 			}
 
-			if !filepath.IsAbs(pl.WorkDir.Path) {
-				pl.WorkDir.Path = filepath.Clean(pl.WorkDir.Path)
+			needClone := true
+			if pl.WorkDir.RemotePersistent {
+				if _, err := os.Stat(path); err == nil {
+					needClone = false
+				} else if !errors.Is(err, os.ErrNotExist) {
+					return cfg, fmt.Errorf("stat remote plugin %q: %w", pl.ID, err)
+				}
+			} else {
+				if err := os.RemoveAll(path); err != nil {
+					return cfg, fmt.Errorf("reset remote plugin %q: %w", pl.ID, err)
+				}
 			}
+
+			if needClone {
+				if err := clone(); err != nil {
+					return cfg, fmt.Errorf("clone remote plugin %q: %w", pl.ID, err)
+				}
+			}
+
+			pl.WorkDir.Path = path
+		}
+
+		if !filepath.IsAbs(pl.WorkDir.Path) {
+			pl.WorkDir.Path = filepath.Clean(pl.WorkDir.Path)
 		}
 	}
 	return cfg, nil
