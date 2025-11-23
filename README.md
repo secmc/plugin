@@ -262,9 +262,8 @@ to generate our protobuf types, you will need to install [buf](https://buf.build
 # Install buf
 # Follow instructions at https://buf.build/docs/cli/installation/
 
-# Install protoc-gen-go and protoc-gen-go-grpc
+# Install protoc-gen-go
 go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
-go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
 ```
 
 Then run:
