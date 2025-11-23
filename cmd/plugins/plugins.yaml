@@ -48,6 +48,8 @@ plugins:
     command: "go"
     args: ["run", "cmd/main.go"]
     work_dir:
-      remote_git: true
-      remote_persistent: true
+      git:
+        enabled: true
+        #persistent: true
+        version: tags/v0.0.1
       path: https://github.com/secmc/plugin-go

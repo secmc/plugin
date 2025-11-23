@@ -26,11 +26,12 @@ type PluginConfig struct {
 	Command string   `yaml:"command"`
 	Args    []string `yaml:"args"`
 	WorkDir struct {
-		RemoteGit bool `yaml:"remote_git"`
-		// RemotePersistent is used to choose whether or not to clone the remote git
-		// plugin on every startup
-		RemotePersistent bool   `yaml:"remote_persistent"`
-		Path             string `yaml:"path"`
+		Git struct {
+			Enabled    bool   `yaml:"enabled"`
+			Persistent bool   `yaml:"persistent"`
+			Version    string `yaml:"version"`
+		} `yaml:"git"`
+		Path string `yaml:"path"`
 	} `yaml:"work_dir"`
 	Env     map[string]string `yaml:"env"`
 	Address string            `yaml:"address"`
@@ -68,20 +69,12 @@ func LoadConfig(path string) (Config, error) {
 			continue
 		}
 
-		if pl.WorkDir.RemoteGit {
+		if pl.WorkDir.Git.Enabled {
 			path := filepath.Join(os.TempDir(), pl.ID)
 			remote := pl.WorkDir.Path
 
-			clone := func() error {
-				cmd := exec.Command("git", "clone", remote, path, "--depth=1")
-				cmd.Stdout = os.Stdout
-				cmd.Stderr = os.Stderr
-
-				return cmd.Run()
-			}
-
 			needClone := true
-			if pl.WorkDir.RemotePersistent {
+			if pl.WorkDir.Git.Persistent {
 				if _, err := os.Stat(path); err == nil {
 					needClone = false
 				} else if !errors.Is(err, os.ErrNotExist) {
@@ -94,8 +87,14 @@ func LoadConfig(path string) (Config, error) {
 			}
 
 			if needClone {
-				if err := clone(); err != nil {
+				if err := run("git", "", "clone", remote, path, "--depth=1"); err != nil {
 					return cfg, fmt.Errorf("clone remote plugin %q: %w", pl.ID, err)
+				}
+
+				if pl.WorkDir.Git.Version != "" {
+					if err := run("git", path, "checkout", "--detach", pl.WorkDir.Git.Version); err != nil {
+						return cfg, err
+					}
 				}
 			}
 
@@ -107,4 +106,16 @@ func LoadConfig(path string) (Config, error) {
 		}
 	}
 	return cfg, nil
+}
+
+func run(bin string, path string, args ...string) error {
+	cmd := exec.Command(bin, args...)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+
+	if path != "" {
+		cmd.Dir = path
+	}
+
+	return cmd.Run()
 }
