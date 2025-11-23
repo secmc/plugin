@@ -474,7 +474,6 @@ func (m *Manager) handlePluginMessage(p *pluginProcess, msg *pb.PluginToHost) {
 		for _, pl := range m.plugins {
 			pluginNames = append(pluginNames, pl.cfg.Name)
 		}
-
 		p.sendServerInfo(pluginNames)
 	default:
 		p.log.Info(fmt.Sprintf("unhandled event: %#v", payload))

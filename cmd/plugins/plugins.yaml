@@ -49,8 +49,8 @@ plugins:
     args: ["run", "cmd/main.go"]
     work_dir:
       git:
-        enabled: false
+        enabled: true
         #persistent: true # persistent can be set to true if you don't
         # want the plugin to be cloned at every startup
         #version: tags/v0.0.1 # can also specify commit hashes
-      path: /home/restart/projects/test/plugin-go
+      path: https://github.com/secmc/plugin-go
