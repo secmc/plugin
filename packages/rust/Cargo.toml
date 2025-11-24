@@ -1,3 +1,7 @@
+[workspace]
+resolver = "3"
+members = [".", "rust-plugin-macro", "rust-plugin-test", "xtask"]
+
 [package]
 name = "dragonfly-plugin"
 version = "0.1.0"
@@ -10,5 +14,9 @@ description = "Dragonfly gRPC plugin SDK for Rust"
 path = "src/lib.rs"
 
 [dependencies]
+async-trait = "0.1.89"
+prettyplease = "0.2.37"
 prost = "0.13"
+tokio = "1.48.0"
+tokio-stream = "0.1.17"
 tonic = { version = "0.12", features = ["transport"] }
