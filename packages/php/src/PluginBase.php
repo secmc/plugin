@@ -412,6 +412,12 @@ abstract class PluginBase {
                     continue;
                 }
 
+                if ($message->hasActionResult()) {
+                    $result = $message->getActionResult();
+                    $this->sender->dispatchActionResult($result);
+                    continue;
+                }
+
                 if ($message->hasShutdown()) {
                     fwrite(STDOUT, "[php] shutdown received\n");
                     $this->running = false;

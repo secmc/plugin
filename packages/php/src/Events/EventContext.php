@@ -75,4 +75,12 @@ final class EventContext {
             $r->{$setter}($mutation);
         });
     }
+
+    /**
+     * Register a callback to be invoked when an ActionResult with the given correlation ID is received.
+     * The callback receives (\Df\Plugin\ActionResult $result).
+     */
+    public function onActionResult(string $correlationId, callable $handler): void {
+        $this->sender->onActionResult($correlationId, $handler);
+    }
 }
