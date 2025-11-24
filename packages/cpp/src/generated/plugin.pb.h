@@ -1612,351 +1612,6 @@ class PluginHello final : public ::google::protobuf::Message
 extern const ::google::protobuf::internal::ClassDataFull PluginHello_class_data_;
 // -------------------------------------------------------------------
 
-class PluginToHost final : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:df.plugin.PluginToHost) */ {
- public:
-  inline PluginToHost() : PluginToHost(nullptr) {}
-  ~PluginToHost() PROTOBUF_FINAL;
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-  void operator delete(PluginToHost* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
-    SharedDtor(*msg);
-    ::google::protobuf::internal::SizedDelete(msg, sizeof(PluginToHost));
-  }
-#endif
-
-  template <typename = void>
-  explicit PROTOBUF_CONSTEXPR PluginToHost(::google::protobuf::internal::ConstantInitialized);
-
-  inline PluginToHost(const PluginToHost& from) : PluginToHost(nullptr, from) {}
-  inline PluginToHost(PluginToHost&& from) noexcept
-      : PluginToHost(nullptr, ::std::move(from)) {}
-  inline PluginToHost& operator=(const PluginToHost& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline PluginToHost& operator=(PluginToHost&& from) noexcept {
-    if (this == &from) return *this;
-    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
-  }
-  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-  }
-
-  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
-    return GetDescriptor();
-  }
-  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const PluginToHost& default_instance() {
-    return *reinterpret_cast<const PluginToHost*>(
-        &_PluginToHost_default_instance_);
-  }
-  enum PayloadCase {
-    kHello = 10,
-    kSubscribe = 11,
-    kServerInfo = 12,
-    kActions = 20,
-    kLog = 30,
-    kEventResult = 40,
-    PAYLOAD_NOT_SET = 0,
-  };
-  static constexpr int kIndexInFileMessages = 6;
-  friend void swap(PluginToHost& a, PluginToHost& b) { a.Swap(&b); }
-  inline void Swap(PluginToHost* PROTOBUF_NONNULL other) {
-    if (other == this) return;
-    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-      InternalSwap(other);
-    } else {
-      ::google::protobuf::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(PluginToHost* PROTOBUF_NONNULL other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  PluginToHost* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
-    return ::google::protobuf::Message::DefaultConstruct<PluginToHost>(arena);
-  }
-  using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const PluginToHost& from);
-  using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom(const PluginToHost& from) { PluginToHost::MergeImpl(*this, from); }
-
-  private:
-  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
-                        const ::google::protobuf::MessageLite& from_msg);
-
-  public:
-  bool IsInitialized() const {
-    return true;
-  }
-  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-  #if defined(PROTOBUF_CUSTOM_VTABLE)
-  private:
-  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
-      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
-      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
-
-  public:
-  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
-      ::uint8_t* PROTOBUF_NONNULL target,
-      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
-    return _InternalSerialize(*this, target, stream);
-  }
-  #else   // PROTOBUF_CUSTOM_VTABLE
-  ::size_t ByteSizeLong() const final;
-  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
-      ::uint8_t* PROTOBUF_NONNULL target,
-      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
-  #endif  // PROTOBUF_CUSTOM_VTABLE
-  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
-
-  private:
-  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
-  static void SharedDtor(MessageLite& self);
-  void InternalSwap(PluginToHost* PROTOBUF_NONNULL other);
- private:
-  template <typename T>
-  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "df.plugin.PluginToHost"; }
-
-  explicit PluginToHost(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
-  PluginToHost(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const PluginToHost& from);
-  PluginToHost(
-      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, PluginToHost&& from) noexcept
-      : PluginToHost(arena) {
-    *this = ::std::move(from);
-  }
-  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
-  static void* PROTOBUF_NONNULL PlacementNew_(
-      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
-      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
-  static constexpr auto InternalNewImpl_();
-
- public:
-  static constexpr auto InternalGenerateClassData_();
-
-  ::google::protobuf::Metadata GetMetadata() const;
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-  enum : int {
-    kPluginIdFieldNumber = 1,
-    kHelloFieldNumber = 10,
-    kSubscribeFieldNumber = 11,
-    kServerInfoFieldNumber = 12,
-    kActionsFieldNumber = 20,
-    kLogFieldNumber = 30,
-    kEventResultFieldNumber = 40,
-  };
-  // string plugin_id = 1 [json_name = "pluginId"];
-  void clear_plugin_id() ;
-  const ::std::string& plugin_id() const;
-  template <typename Arg_ = const ::std::string&, typename... Args_>
-  void set_plugin_id(Arg_&& arg, Args_... args);
-  ::std::string* PROTOBUF_NONNULL mutable_plugin_id();
-  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_plugin_id();
-  void set_allocated_plugin_id(::std::string* PROTOBUF_NULLABLE value);
-
-  private:
-  const ::std::string& _internal_plugin_id() const;
-  PROTOBUF_ALWAYS_INLINE void _internal_set_plugin_id(const ::std::string& value);
-  ::std::string* PROTOBUF_NONNULL _internal_mutable_plugin_id();
-
-  public:
-  // .df.plugin.PluginHello hello = 10 [json_name = "hello"];
-  bool has_hello() const;
-  private:
-  bool _internal_has_hello() const;
-
-  public:
-  void clear_hello() ;
-  const ::df::plugin::PluginHello& hello() const;
-  [[nodiscard]] ::df::plugin::PluginHello* PROTOBUF_NULLABLE release_hello();
-  ::df::plugin::PluginHello* PROTOBUF_NONNULL mutable_hello();
-  void set_allocated_hello(::df::plugin::PluginHello* PROTOBUF_NULLABLE value);
-  void unsafe_arena_set_allocated_hello(::df::plugin::PluginHello* PROTOBUF_NULLABLE value);
-  ::df::plugin::PluginHello* PROTOBUF_NULLABLE unsafe_arena_release_hello();
-
-  private:
-  const ::df::plugin::PluginHello& _internal_hello() const;
-  ::df::plugin::PluginHello* PROTOBUF_NONNULL _internal_mutable_hello();
-
-  public:
-  // .df.plugin.EventSubscribe subscribe = 11 [json_name = "subscribe"];
-  bool has_subscribe() const;
-  private:
-  bool _internal_has_subscribe() const;
-
-  public:
-  void clear_subscribe() ;
-  const ::df::plugin::EventSubscribe& subscribe() const;
-  [[nodiscard]] ::df::plugin::EventSubscribe* PROTOBUF_NULLABLE release_subscribe();
-  ::df::plugin::EventSubscribe* PROTOBUF_NONNULL mutable_subscribe();
-  void set_allocated_subscribe(::df::plugin::EventSubscribe* PROTOBUF_NULLABLE value);
-  void unsafe_arena_set_allocated_subscribe(::df::plugin::EventSubscribe* PROTOBUF_NULLABLE value);
-  ::df::plugin::EventSubscribe* PROTOBUF_NULLABLE unsafe_arena_release_subscribe();
-
-  private:
-  const ::df::plugin::EventSubscribe& _internal_subscribe() const;
-  ::df::plugin::EventSubscribe* PROTOBUF_NONNULL _internal_mutable_subscribe();
-
-  public:
-  // .df.plugin.ServerInformationRequest server_info = 12 [json_name = "serverInfo"];
-  bool has_server_info() const;
-  private:
-  bool _internal_has_server_info() const;
-
-  public:
-  void clear_server_info() ;
-  const ::df::plugin::ServerInformationRequest& server_info() const;
-  [[nodiscard]] ::df::plugin::ServerInformationRequest* PROTOBUF_NULLABLE release_server_info();
-  ::df::plugin::ServerInformationRequest* PROTOBUF_NONNULL mutable_server_info();
-  void set_allocated_server_info(::df::plugin::ServerInformationRequest* PROTOBUF_NULLABLE value);
-  void unsafe_arena_set_allocated_server_info(::df::plugin::ServerInformationRequest* PROTOBUF_NULLABLE value);
-  ::df::plugin::ServerInformationRequest* PROTOBUF_NULLABLE unsafe_arena_release_server_info();
-
-  private:
-  const ::df::plugin::ServerInformationRequest& _internal_server_info() const;
-  ::df::plugin::ServerInformationRequest* PROTOBUF_NONNULL _internal_mutable_server_info();
-
-  public:
-  // .df.plugin.ActionBatch actions = 20 [json_name = "actions"];
-  bool has_actions() const;
-  private:
-  bool _internal_has_actions() const;
-
-  public:
-  void clear_actions() ;
-  const ::df::plugin::ActionBatch& actions() const;
-  [[nodiscard]] ::df::plugin::ActionBatch* PROTOBUF_NULLABLE release_actions();
-  ::df::plugin::ActionBatch* PROTOBUF_NONNULL mutable_actions();
-  void set_allocated_actions(::df::plugin::ActionBatch* PROTOBUF_NULLABLE value);
-  void unsafe_arena_set_allocated_actions(::df::plugin::ActionBatch* PROTOBUF_NULLABLE value);
-  ::df::plugin::ActionBatch* PROTOBUF_NULLABLE unsafe_arena_release_actions();
-
-  private:
-  const ::df::plugin::ActionBatch& _internal_actions() const;
-  ::df::plugin::ActionBatch* PROTOBUF_NONNULL _internal_mutable_actions();
-
-  public:
-  // .df.plugin.LogMessage log = 30 [json_name = "log"];
-  bool has_log() const;
-  private:
-  bool _internal_has_log() const;
-
-  public:
-  void clear_log() ;
-  const ::df::plugin::LogMessage& log() const;
-  [[nodiscard]] ::df::plugin::LogMessage* PROTOBUF_NULLABLE release_log();
-  ::df::plugin::LogMessage* PROTOBUF_NONNULL mutable_log();
-  void set_allocated_log(::df::plugin::LogMessage* PROTOBUF_NULLABLE value);
-  void unsafe_arena_set_allocated_log(::df::plugin::LogMessage* PROTOBUF_NULLABLE value);
-  ::df::plugin::LogMessage* PROTOBUF_NULLABLE unsafe_arena_release_log();
-
-  private:
-  const ::df::plugin::LogMessage& _internal_log() const;
-  ::df::plugin::LogMessage* PROTOBUF_NONNULL _internal_mutable_log();
-
-  public:
-  // .df.plugin.EventResult event_result = 40 [json_name = "eventResult"];
-  bool has_event_result() const;
-  private:
-  bool _internal_has_event_result() const;
-
-  public:
-  void clear_event_result() ;
-  const ::df::plugin::EventResult& event_result() const;
-  [[nodiscard]] ::df::plugin::EventResult* PROTOBUF_NULLABLE release_event_result();
-  ::df::plugin::EventResult* PROTOBUF_NONNULL mutable_event_result();
-  void set_allocated_event_result(::df::plugin::EventResult* PROTOBUF_NULLABLE value);
-  void unsafe_arena_set_allocated_event_result(::df::plugin::EventResult* PROTOBUF_NULLABLE value);
-  ::df::plugin::EventResult* PROTOBUF_NULLABLE unsafe_arena_release_event_result();
-
-  private:
-  const ::df::plugin::EventResult& _internal_event_result() const;
-  ::df::plugin::EventResult* PROTOBUF_NONNULL _internal_mutable_event_result();
-
-  public:
-  void clear_payload();
-  PayloadCase payload_case() const;
-  // @@protoc_insertion_point(class_scope:df.plugin.PluginToHost)
- private:
-  class _Internal;
-  void set_has_hello();
-  void set_has_subscribe();
-  void set_has_server_info();
-  void set_has_actions();
-  void set_has_log();
-  void set_has_event_result();
-  inline bool has_payload() const;
-  inline void clear_has_payload();
-  friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<0, 7,
-                                   6, 40,
-                                   7>
-      _table_;
-
-  friend class ::google::protobuf::MessageLite;
-  friend class ::google::protobuf::Arena;
-  template <typename T>
-  friend class ::google::protobuf::Arena::InternalHelper;
-  using InternalArenaConstructable_ = void;
-  using DestructorSkippable_ = void;
-  struct Impl_ {
-    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-    inline explicit Impl_(
-        ::google::protobuf::internal::InternalVisibility visibility,
-        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
-    inline explicit Impl_(
-        ::google::protobuf::internal::InternalVisibility visibility,
-        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
-        const PluginToHost& from_msg);
-    ::google::protobuf::internal::HasBits<1> _has_bits_;
-    ::google::protobuf::internal::CachedSize _cached_size_;
-    ::google::protobuf::internal::ArenaStringPtr plugin_id_;
-    union PayloadUnion {
-      constexpr PayloadUnion() : _constinit_{} {}
-      ::google::protobuf::internal::ConstantInitialized _constinit_;
-      ::google::protobuf::Message* PROTOBUF_NULLABLE hello_;
-      ::google::protobuf::Message* PROTOBUF_NULLABLE subscribe_;
-      ::google::protobuf::Message* PROTOBUF_NULLABLE server_info_;
-      ::google::protobuf::Message* PROTOBUF_NULLABLE actions_;
-      ::google::protobuf::Message* PROTOBUF_NULLABLE log_;
-      ::google::protobuf::Message* PROTOBUF_NULLABLE event_result_;
-    } payload_;
-    ::uint32_t _oneof_case_[1];
-    PROTOBUF_TSAN_DECLARE_MEMBER
-  };
-  union { Impl_ _impl_; };
-  friend struct ::TableStruct_plugin_2eproto;
-};
-
-extern const ::google::protobuf::internal::ClassDataFull PluginToHost_class_data_;
-// -------------------------------------------------------------------
-
 class EventEnvelope final : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:df.plugin.EventEnvelope) */ {
  public:
@@ -3315,6 +2970,351 @@ class EventEnvelope final : public ::google::protobuf::Message
 extern const ::google::protobuf::internal::ClassDataFull EventEnvelope_class_data_;
 // -------------------------------------------------------------------
 
+class PluginToHost final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:df.plugin.PluginToHost) */ {
+ public:
+  inline PluginToHost() : PluginToHost(nullptr) {}
+  ~PluginToHost() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(PluginToHost* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(PluginToHost));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR PluginToHost(::google::protobuf::internal::ConstantInitialized);
+
+  inline PluginToHost(const PluginToHost& from) : PluginToHost(nullptr, from) {}
+  inline PluginToHost(PluginToHost&& from) noexcept
+      : PluginToHost(nullptr, ::std::move(from)) {}
+  inline PluginToHost& operator=(const PluginToHost& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline PluginToHost& operator=(PluginToHost&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const PluginToHost& default_instance() {
+    return *reinterpret_cast<const PluginToHost*>(
+        &_PluginToHost_default_instance_);
+  }
+  enum PayloadCase {
+    kHello = 10,
+    kSubscribe = 11,
+    kServerInfo = 12,
+    kActions = 20,
+    kLog = 30,
+    kEventResult = 40,
+    PAYLOAD_NOT_SET = 0,
+  };
+  static constexpr int kIndexInFileMessages = 6;
+  friend void swap(PluginToHost& a, PluginToHost& b) { a.Swap(&b); }
+  inline void Swap(PluginToHost* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(PluginToHost* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  PluginToHost* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<PluginToHost>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const PluginToHost& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const PluginToHost& from) { PluginToHost::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(PluginToHost* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "df.plugin.PluginToHost"; }
+
+  explicit PluginToHost(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  PluginToHost(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const PluginToHost& from);
+  PluginToHost(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, PluginToHost&& from) noexcept
+      : PluginToHost(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kPluginIdFieldNumber = 1,
+    kHelloFieldNumber = 10,
+    kSubscribeFieldNumber = 11,
+    kServerInfoFieldNumber = 12,
+    kActionsFieldNumber = 20,
+    kLogFieldNumber = 30,
+    kEventResultFieldNumber = 40,
+  };
+  // string plugin_id = 1 [json_name = "pluginId"];
+  void clear_plugin_id() ;
+  const ::std::string& plugin_id() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_plugin_id(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_plugin_id();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_plugin_id();
+  void set_allocated_plugin_id(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_plugin_id() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_plugin_id(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_plugin_id();
+
+  public:
+  // .df.plugin.PluginHello hello = 10 [json_name = "hello"];
+  bool has_hello() const;
+  private:
+  bool _internal_has_hello() const;
+
+  public:
+  void clear_hello() ;
+  const ::df::plugin::PluginHello& hello() const;
+  [[nodiscard]] ::df::plugin::PluginHello* PROTOBUF_NULLABLE release_hello();
+  ::df::plugin::PluginHello* PROTOBUF_NONNULL mutable_hello();
+  void set_allocated_hello(::df::plugin::PluginHello* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_hello(::df::plugin::PluginHello* PROTOBUF_NULLABLE value);
+  ::df::plugin::PluginHello* PROTOBUF_NULLABLE unsafe_arena_release_hello();
+
+  private:
+  const ::df::plugin::PluginHello& _internal_hello() const;
+  ::df::plugin::PluginHello* PROTOBUF_NONNULL _internal_mutable_hello();
+
+  public:
+  // .df.plugin.EventSubscribe subscribe = 11 [json_name = "subscribe"];
+  bool has_subscribe() const;
+  private:
+  bool _internal_has_subscribe() const;
+
+  public:
+  void clear_subscribe() ;
+  const ::df::plugin::EventSubscribe& subscribe() const;
+  [[nodiscard]] ::df::plugin::EventSubscribe* PROTOBUF_NULLABLE release_subscribe();
+  ::df::plugin::EventSubscribe* PROTOBUF_NONNULL mutable_subscribe();
+  void set_allocated_subscribe(::df::plugin::EventSubscribe* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_subscribe(::df::plugin::EventSubscribe* PROTOBUF_NULLABLE value);
+  ::df::plugin::EventSubscribe* PROTOBUF_NULLABLE unsafe_arena_release_subscribe();
+
+  private:
+  const ::df::plugin::EventSubscribe& _internal_subscribe() const;
+  ::df::plugin::EventSubscribe* PROTOBUF_NONNULL _internal_mutable_subscribe();
+
+  public:
+  // .df.plugin.ServerInformationRequest server_info = 12 [json_name = "serverInfo"];
+  bool has_server_info() const;
+  private:
+  bool _internal_has_server_info() const;
+
+  public:
+  void clear_server_info() ;
+  const ::df::plugin::ServerInformationRequest& server_info() const;
+  [[nodiscard]] ::df::plugin::ServerInformationRequest* PROTOBUF_NULLABLE release_server_info();
+  ::df::plugin::ServerInformationRequest* PROTOBUF_NONNULL mutable_server_info();
+  void set_allocated_server_info(::df::plugin::ServerInformationRequest* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_server_info(::df::plugin::ServerInformationRequest* PROTOBUF_NULLABLE value);
+  ::df::plugin::ServerInformationRequest* PROTOBUF_NULLABLE unsafe_arena_release_server_info();
+
+  private:
+  const ::df::plugin::ServerInformationRequest& _internal_server_info() const;
+  ::df::plugin::ServerInformationRequest* PROTOBUF_NONNULL _internal_mutable_server_info();
+
+  public:
+  // .df.plugin.ActionBatch actions = 20 [json_name = "actions"];
+  bool has_actions() const;
+  private:
+  bool _internal_has_actions() const;
+
+  public:
+  void clear_actions() ;
+  const ::df::plugin::ActionBatch& actions() const;
+  [[nodiscard]] ::df::plugin::ActionBatch* PROTOBUF_NULLABLE release_actions();
+  ::df::plugin::ActionBatch* PROTOBUF_NONNULL mutable_actions();
+  void set_allocated_actions(::df::plugin::ActionBatch* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_actions(::df::plugin::ActionBatch* PROTOBUF_NULLABLE value);
+  ::df::plugin::ActionBatch* PROTOBUF_NULLABLE unsafe_arena_release_actions();
+
+  private:
+  const ::df::plugin::ActionBatch& _internal_actions() const;
+  ::df::plugin::ActionBatch* PROTOBUF_NONNULL _internal_mutable_actions();
+
+  public:
+  // .df.plugin.LogMessage log = 30 [json_name = "log"];
+  bool has_log() const;
+  private:
+  bool _internal_has_log() const;
+
+  public:
+  void clear_log() ;
+  const ::df::plugin::LogMessage& log() const;
+  [[nodiscard]] ::df::plugin::LogMessage* PROTOBUF_NULLABLE release_log();
+  ::df::plugin::LogMessage* PROTOBUF_NONNULL mutable_log();
+  void set_allocated_log(::df::plugin::LogMessage* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_log(::df::plugin::LogMessage* PROTOBUF_NULLABLE value);
+  ::df::plugin::LogMessage* PROTOBUF_NULLABLE unsafe_arena_release_log();
+
+  private:
+  const ::df::plugin::LogMessage& _internal_log() const;
+  ::df::plugin::LogMessage* PROTOBUF_NONNULL _internal_mutable_log();
+
+  public:
+  // .df.plugin.EventResult event_result = 40 [json_name = "eventResult"];
+  bool has_event_result() const;
+  private:
+  bool _internal_has_event_result() const;
+
+  public:
+  void clear_event_result() ;
+  const ::df::plugin::EventResult& event_result() const;
+  [[nodiscard]] ::df::plugin::EventResult* PROTOBUF_NULLABLE release_event_result();
+  ::df::plugin::EventResult* PROTOBUF_NONNULL mutable_event_result();
+  void set_allocated_event_result(::df::plugin::EventResult* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_event_result(::df::plugin::EventResult* PROTOBUF_NULLABLE value);
+  ::df::plugin::EventResult* PROTOBUF_NULLABLE unsafe_arena_release_event_result();
+
+  private:
+  const ::df::plugin::EventResult& _internal_event_result() const;
+  ::df::plugin::EventResult* PROTOBUF_NONNULL _internal_mutable_event_result();
+
+  public:
+  void clear_payload();
+  PayloadCase payload_case() const;
+  // @@protoc_insertion_point(class_scope:df.plugin.PluginToHost)
+ private:
+  class _Internal;
+  void set_has_hello();
+  void set_has_subscribe();
+  void set_has_server_info();
+  void set_has_actions();
+  void set_has_log();
+  void set_has_event_result();
+  inline bool has_payload() const;
+  inline void clear_has_payload();
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<0, 7,
+                                   6, 40,
+                                   7>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const PluginToHost& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::internal::ArenaStringPtr plugin_id_;
+    union PayloadUnion {
+      constexpr PayloadUnion() : _constinit_{} {}
+      ::google::protobuf::internal::ConstantInitialized _constinit_;
+      ::google::protobuf::Message* PROTOBUF_NULLABLE hello_;
+      ::google::protobuf::Message* PROTOBUF_NULLABLE subscribe_;
+      ::google::protobuf::Message* PROTOBUF_NULLABLE server_info_;
+      ::google::protobuf::Message* PROTOBUF_NULLABLE actions_;
+      ::google::protobuf::Message* PROTOBUF_NULLABLE log_;
+      ::google::protobuf::Message* PROTOBUF_NULLABLE event_result_;
+    } payload_;
+    ::uint32_t _oneof_case_[1];
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_plugin_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull PluginToHost_class_data_;
+// -------------------------------------------------------------------
+
 class HostToPlugin final : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:df.plugin.HostToPlugin) */ {
  public:
@@ -3375,6 +3375,7 @@ class HostToPlugin final : public ::google::protobuf::Message
     kShutdown = 11,
     kServerInfo = 12,
     kEvent = 20,
+    kActionResult = 21,
     PAYLOAD_NOT_SET = 0,
   };
   static constexpr int kIndexInFileMessages = 0;
@@ -3469,6 +3470,7 @@ class HostToPlugin final : public ::google::protobuf::Message
     kShutdownFieldNumber = 11,
     kServerInfoFieldNumber = 12,
     kEventFieldNumber = 20,
+    kActionResultFieldNumber = 21,
   };
   // string plugin_id = 1 [json_name = "pluginId"];
   void clear_plugin_id() ;
@@ -3561,6 +3563,25 @@ class HostToPlugin final : public ::google::protobuf::Message
   ::df::plugin::EventEnvelope* PROTOBUF_NONNULL _internal_mutable_event();
 
   public:
+  // .df.plugin.ActionResult action_result = 21 [json_name = "actionResult"];
+  bool has_action_result() const;
+  private:
+  bool _internal_has_action_result() const;
+
+  public:
+  void clear_action_result() ;
+  const ::df::plugin::ActionResult& action_result() const;
+  [[nodiscard]] ::df::plugin::ActionResult* PROTOBUF_NULLABLE release_action_result();
+  ::df::plugin::ActionResult* PROTOBUF_NONNULL mutable_action_result();
+  void set_allocated_action_result(::df::plugin::ActionResult* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_action_result(::df::plugin::ActionResult* PROTOBUF_NULLABLE value);
+  ::df::plugin::ActionResult* PROTOBUF_NULLABLE unsafe_arena_release_action_result();
+
+  private:
+  const ::df::plugin::ActionResult& _internal_action_result() const;
+  ::df::plugin::ActionResult* PROTOBUF_NONNULL _internal_mutable_action_result();
+
+  public:
   void clear_payload();
   PayloadCase payload_case() const;
   // @@protoc_insertion_point(class_scope:df.plugin.HostToPlugin)
@@ -3570,11 +3591,12 @@ class HostToPlugin final : public ::google::protobuf::Message
   void set_has_shutdown();
   void set_has_server_info();
   void set_has_event();
+  void set_has_action_result();
   inline bool has_payload() const;
   inline void clear_has_payload();
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<0, 5,
-                                   4, 40,
+  static const ::google::protobuf::internal::TcParseTable<0, 6,
+                                   5, 40,
                                    2>
       _table_;
 
@@ -3603,6 +3625,7 @@ class HostToPlugin final : public ::google::protobuf::Message
       ::google::protobuf::Message* PROTOBUF_NULLABLE shutdown_;
       ::google::protobuf::Message* PROTOBUF_NULLABLE server_info_;
       ::google::protobuf::Message* PROTOBUF_NULLABLE event_;
+      ::google::protobuf::Message* PROTOBUF_NULLABLE action_result_;
     } payload_;
     ::uint32_t _oneof_case_[1];
     PROTOBUF_TSAN_DECLARE_MEMBER
@@ -4019,6 +4042,77 @@ inline ::df::plugin::EventEnvelope* PROTOBUF_NONNULL HostToPlugin::mutable_event
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
   ::df::plugin::EventEnvelope* _msg = _internal_mutable_event();
   // @@protoc_insertion_point(field_mutable:df.plugin.HostToPlugin.event)
+  return _msg;
+}
+
+// .df.plugin.ActionResult action_result = 21 [json_name = "actionResult"];
+inline bool HostToPlugin::has_action_result() const {
+  return payload_case() == kActionResult;
+}
+inline bool HostToPlugin::_internal_has_action_result() const {
+  return payload_case() == kActionResult;
+}
+inline void HostToPlugin::set_has_action_result() {
+  _impl_._oneof_case_[0] = kActionResult;
+}
+inline ::df::plugin::ActionResult* PROTOBUF_NULLABLE HostToPlugin::release_action_result() {
+  // @@protoc_insertion_point(field_release:df.plugin.HostToPlugin.action_result)
+  if (payload_case() == kActionResult) {
+    clear_has_payload();
+    auto* temp = reinterpret_cast<::df::plugin::ActionResult*>(_impl_.payload_.action_result_);
+    if (GetArena() != nullptr) {
+      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.payload_.action_result_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::df::plugin::ActionResult& HostToPlugin::_internal_action_result() const {
+  return payload_case() == kActionResult ? static_cast<const ::df::plugin::ActionResult&>(*reinterpret_cast<::df::plugin::ActionResult*>(_impl_.payload_.action_result_))
+                     : reinterpret_cast<const ::df::plugin::ActionResult&>(::df::plugin::_ActionResult_default_instance_);
+}
+inline const ::df::plugin::ActionResult& HostToPlugin::action_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:df.plugin.HostToPlugin.action_result)
+  return _internal_action_result();
+}
+inline ::df::plugin::ActionResult* PROTOBUF_NULLABLE HostToPlugin::unsafe_arena_release_action_result() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:df.plugin.HostToPlugin.action_result)
+  if (payload_case() == kActionResult) {
+    clear_has_payload();
+    auto* temp = reinterpret_cast<::df::plugin::ActionResult*>(_impl_.payload_.action_result_);
+    _impl_.payload_.action_result_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void HostToPlugin::unsafe_arena_set_allocated_action_result(
+    ::df::plugin::ActionResult* PROTOBUF_NULLABLE value) {
+  // We rely on the oneof clear method to free the earlier contents
+  // of this oneof. We can directly use the pointer we're given to
+  // set the new value.
+  clear_payload();
+  if (value) {
+    set_has_action_result();
+    _impl_.payload_.action_result_ = reinterpret_cast<::google::protobuf::Message*>(value);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:df.plugin.HostToPlugin.action_result)
+}
+inline ::df::plugin::ActionResult* PROTOBUF_NONNULL HostToPlugin::_internal_mutable_action_result() {
+  if (payload_case() != kActionResult) {
+    clear_payload();
+    set_has_action_result();
+    _impl_.payload_.action_result_ = reinterpret_cast<::google::protobuf::Message*>(
+        ::google::protobuf::Message::DefaultConstruct<::df::plugin::ActionResult>(GetArena()));
+  }
+  return reinterpret_cast<::df::plugin::ActionResult*>(_impl_.payload_.action_result_);
+}
+inline ::df::plugin::ActionResult* PROTOBUF_NONNULL HostToPlugin::mutable_action_result()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::df::plugin::ActionResult* _msg = _internal_mutable_action_result();
+  // @@protoc_insertion_point(field_mutable:df.plugin.HostToPlugin.action_result)
   return _msg;
 }
 

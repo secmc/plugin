@@ -20,6 +20,14 @@ pub struct Rotation {
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct BBox {
+    #[prost(message, optional, tag="1")]
+    pub min: ::core::option::Option<Vec3>,
+    #[prost(message, optional, tag="2")]
+    pub max: ::core::option::Option<Vec3>,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BlockPos {
     #[prost(int32, tag="1")]
     pub x: i32,
@@ -156,6 +164,38 @@ impl GameMode {
             "CREATIVE" => Some(Self::Creative),
             "ADVENTURE" => Some(Self::Adventure),
             "SPECTATOR" => Some(Self::Spectator),
+            _ => None,
+        }
+    }
+}
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum Difficulty {
+    Peaceful = 0,
+    Easy = 1,
+    Normal = 2,
+    Hard = 3,
+}
+impl Difficulty {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Difficulty::Peaceful => "PEACEFUL",
+            Difficulty::Easy => "EASY",
+            Difficulty::Normal => "NORMAL",
+            Difficulty::Hard => "HARD",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "PEACEFUL" => Some(Self::Peaceful),
+            "EASY" => Some(Self::Easy),
+            "NORMAL" => Some(Self::Normal),
+            "HARD" => Some(Self::Hard),
             _ => None,
         }
     }
@@ -400,7 +440,7 @@ pub struct ActionBatch {
 pub struct Action {
     #[prost(string, optional, tag="1")]
     pub correlation_id: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(oneof="action::Kind", tags="10, 11, 12, 13, 14, 15, 16, 20, 21, 22, 23, 30, 31, 40, 41, 42, 43, 50")]
+    #[prost(oneof="action::Kind", tags="10, 11, 12, 13, 14, 15, 16, 20, 21, 22, 23, 30, 31, 40, 41, 42, 43, 50, 60, 61, 62, 63, 64, 65, 70, 71, 72, 73")]
     pub kind: ::core::option::Option<action::Kind>,
 }
 /// Nested message and enum types in `Action`.
@@ -449,6 +489,28 @@ pub mod action {
         /// Commands
         #[prost(message, tag="50")]
         ExecuteCommand(super::ExecuteCommandAction),
+        /// World configuration and effects
+        #[prost(message, tag="60")]
+        WorldSetDefaultGameMode(super::WorldSetDefaultGameModeAction),
+        #[prost(message, tag="61")]
+        WorldSetDifficulty(super::WorldSetDifficultyAction),
+        #[prost(message, tag="62")]
+        WorldSetTickRange(super::WorldSetTickRangeAction),
+        #[prost(message, tag="63")]
+        WorldSetBlock(super::WorldSetBlockAction),
+        #[prost(message, tag="64")]
+        WorldPlaySound(super::WorldPlaySoundAction),
+        #[prost(message, tag="65")]
+        WorldAddParticle(super::WorldAddParticleAction),
+        /// World queries
+        #[prost(message, tag="70")]
+        WorldQueryEntities(super::WorldQueryEntitiesAction),
+        #[prost(message, tag="71")]
+        WorldQueryPlayers(super::WorldQueryPlayersAction),
+        #[prost(message, tag="72")]
+        WorldQueryEntitiesWithin(super::WorldQueryEntitiesWithinAction),
+        #[prost(message, tag="73")]
+        WorldQueryViewers(super::WorldQueryViewersAction),
     }
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -642,6 +704,241 @@ pub struct ExecuteCommandAction {
     /// without leading slash
     #[prost(string, tag="2")]
     pub command: ::prost::alloc::string::String,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct WorldSetDefaultGameModeAction {
+    #[prost(message, optional, tag="1")]
+    pub world: ::core::option::Option<WorldRef>,
+    #[prost(enumeration="GameMode", tag="2")]
+    pub game_mode: i32,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct WorldSetDifficultyAction {
+    #[prost(message, optional, tag="1")]
+    pub world: ::core::option::Option<WorldRef>,
+    #[prost(enumeration="Difficulty", tag="2")]
+    pub difficulty: i32,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct WorldSetTickRangeAction {
+    #[prost(message, optional, tag="1")]
+    pub world: ::core::option::Option<WorldRef>,
+    #[prost(int32, tag="2")]
+    pub tick_range: i32,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct WorldSetBlockAction {
+    #[prost(message, optional, tag="1")]
+    pub world: ::core::option::Option<WorldRef>,
+    #[prost(message, optional, tag="2")]
+    pub position: ::core::option::Option<BlockPos>,
+    /// nil clears to air
+    #[prost(message, optional, tag="3")]
+    pub block: ::core::option::Option<BlockState>,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct WorldPlaySoundAction {
+    #[prost(message, optional, tag="1")]
+    pub world: ::core::option::Option<WorldRef>,
+    #[prost(enumeration="Sound", tag="2")]
+    pub sound: i32,
+    #[prost(message, optional, tag="3")]
+    pub position: ::core::option::Option<Vec3>,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct WorldAddParticleAction {
+    #[prost(message, optional, tag="1")]
+    pub world: ::core::option::Option<WorldRef>,
+    #[prost(message, optional, tag="2")]
+    pub position: ::core::option::Option<Vec3>,
+    #[prost(enumeration="ParticleType", tag="3")]
+    pub particle: i32,
+    /// used for block-based particles when provided
+    #[prost(message, optional, tag="4")]
+    pub block: ::core::option::Option<BlockState>,
+    /// used for punch_block when provided
+    #[prost(int32, optional, tag="5")]
+    pub face: ::core::option::Option<i32>,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct WorldQueryEntitiesAction {
+    #[prost(message, optional, tag="1")]
+    pub world: ::core::option::Option<WorldRef>,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct WorldQueryPlayersAction {
+    #[prost(message, optional, tag="1")]
+    pub world: ::core::option::Option<WorldRef>,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct WorldQueryEntitiesWithinAction {
+    #[prost(message, optional, tag="1")]
+    pub world: ::core::option::Option<WorldRef>,
+    #[prost(message, optional, tag="2")]
+    pub r#box: ::core::option::Option<BBox>,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct WorldQueryViewersAction {
+    #[prost(message, optional, tag="1")]
+    pub world: ::core::option::Option<WorldRef>,
+    #[prost(message, optional, tag="2")]
+    pub position: ::core::option::Option<Vec3>,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ActionStatus {
+    #[prost(bool, tag="1")]
+    pub ok: bool,
+    #[prost(string, optional, tag="2")]
+    pub error: ::core::option::Option<::prost::alloc::string::String>,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct WorldEntitiesResult {
+    #[prost(message, optional, tag="1")]
+    pub world: ::core::option::Option<WorldRef>,
+    #[prost(message, repeated, tag="2")]
+    pub entities: ::prost::alloc::vec::Vec<EntityRef>,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct WorldEntitiesWithinResult {
+    #[prost(message, optional, tag="1")]
+    pub world: ::core::option::Option<WorldRef>,
+    #[prost(message, optional, tag="2")]
+    pub r#box: ::core::option::Option<BBox>,
+    #[prost(message, repeated, tag="3")]
+    pub entities: ::prost::alloc::vec::Vec<EntityRef>,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct WorldPlayersResult {
+    #[prost(message, optional, tag="1")]
+    pub world: ::core::option::Option<WorldRef>,
+    #[prost(message, repeated, tag="2")]
+    pub players: ::prost::alloc::vec::Vec<EntityRef>,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct WorldViewersResult {
+    #[prost(message, optional, tag="1")]
+    pub world: ::core::option::Option<WorldRef>,
+    #[prost(message, optional, tag="2")]
+    pub position: ::core::option::Option<Vec3>,
+    #[prost(string, repeated, tag="3")]
+    pub viewer_uuids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ActionResult {
+    #[prost(string, tag="1")]
+    pub correlation_id: ::prost::alloc::string::String,
+    #[prost(message, optional, tag="2")]
+    pub status: ::core::option::Option<ActionStatus>,
+    #[prost(oneof="action_result::Result", tags="10, 11, 12, 13")]
+    pub result: ::core::option::Option<action_result::Result>,
+}
+/// Nested message and enum types in `ActionResult`.
+pub mod action_result {
+    #[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Result {
+        #[prost(message, tag="10")]
+        WorldEntities(super::WorldEntitiesResult),
+        #[prost(message, tag="11")]
+        WorldPlayers(super::WorldPlayersResult),
+        #[prost(message, tag="12")]
+        WorldEntitiesWithin(super::WorldEntitiesWithinResult),
+        #[prost(message, tag="13")]
+        WorldViewers(super::WorldViewersResult),
+    }
+}
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum ParticleType {
+    Unspecified = 0,
+    ParticleHugeExplosion = 1,
+    ParticleEndermanTeleport = 2,
+    ParticleSnowballPoof = 3,
+    ParticleEggSmash = 4,
+    ParticleSplash = 5,
+    ParticleEffect = 6,
+    ParticleEntityFlame = 7,
+    ParticleFlame = 8,
+    ParticleDust = 9,
+    ParticleBlockForceField = 10,
+    ParticleBoneMeal = 11,
+    ParticleEvaporate = 12,
+    ParticleWaterDrip = 13,
+    ParticleLavaDrip = 14,
+    ParticleLava = 15,
+    ParticleDustPlume = 16,
+    ParticleBlockBreak = 17,
+    ParticlePunchBlock = 18,
+}
+impl ParticleType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            ParticleType::Unspecified => "PARTICLE_TYPE_UNSPECIFIED",
+            ParticleType::ParticleHugeExplosion => "PARTICLE_HUGE_EXPLOSION",
+            ParticleType::ParticleEndermanTeleport => "PARTICLE_ENDERMAN_TELEPORT",
+            ParticleType::ParticleSnowballPoof => "PARTICLE_SNOWBALL_POOF",
+            ParticleType::ParticleEggSmash => "PARTICLE_EGG_SMASH",
+            ParticleType::ParticleSplash => "PARTICLE_SPLASH",
+            ParticleType::ParticleEffect => "PARTICLE_EFFECT",
+            ParticleType::ParticleEntityFlame => "PARTICLE_ENTITY_FLAME",
+            ParticleType::ParticleFlame => "PARTICLE_FLAME",
+            ParticleType::ParticleDust => "PARTICLE_DUST",
+            ParticleType::ParticleBlockForceField => "PARTICLE_BLOCK_FORCE_FIELD",
+            ParticleType::ParticleBoneMeal => "PARTICLE_BONE_MEAL",
+            ParticleType::ParticleEvaporate => "PARTICLE_EVAPORATE",
+            ParticleType::ParticleWaterDrip => "PARTICLE_WATER_DRIP",
+            ParticleType::ParticleLavaDrip => "PARTICLE_LAVA_DRIP",
+            ParticleType::ParticleLava => "PARTICLE_LAVA",
+            ParticleType::ParticleDustPlume => "PARTICLE_DUST_PLUME",
+            ParticleType::ParticleBlockBreak => "PARTICLE_BLOCK_BREAK",
+            ParticleType::ParticlePunchBlock => "PARTICLE_PUNCH_BLOCK",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "PARTICLE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "PARTICLE_HUGE_EXPLOSION" => Some(Self::ParticleHugeExplosion),
+            "PARTICLE_ENDERMAN_TELEPORT" => Some(Self::ParticleEndermanTeleport),
+            "PARTICLE_SNOWBALL_POOF" => Some(Self::ParticleSnowballPoof),
+            "PARTICLE_EGG_SMASH" => Some(Self::ParticleEggSmash),
+            "PARTICLE_SPLASH" => Some(Self::ParticleSplash),
+            "PARTICLE_EFFECT" => Some(Self::ParticleEffect),
+            "PARTICLE_ENTITY_FLAME" => Some(Self::ParticleEntityFlame),
+            "PARTICLE_FLAME" => Some(Self::ParticleFlame),
+            "PARTICLE_DUST" => Some(Self::ParticleDust),
+            "PARTICLE_BLOCK_FORCE_FIELD" => Some(Self::ParticleBlockForceField),
+            "PARTICLE_BONE_MEAL" => Some(Self::ParticleBoneMeal),
+            "PARTICLE_EVAPORATE" => Some(Self::ParticleEvaporate),
+            "PARTICLE_WATER_DRIP" => Some(Self::ParticleWaterDrip),
+            "PARTICLE_LAVA_DRIP" => Some(Self::ParticleLavaDrip),
+            "PARTICLE_LAVA" => Some(Self::ParticleLava),
+            "PARTICLE_DUST_PLUME" => Some(Self::ParticleDustPlume),
+            "PARTICLE_BLOCK_BREAK" => Some(Self::ParticleBlockBreak),
+            "PARTICLE_PUNCH_BLOCK" => Some(Self::ParticlePunchBlock),
+            _ => None,
+        }
+    }
 }
 /// Parameter specification for a command.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1488,7 +1785,7 @@ pub struct WorldCloseEvent {
 pub struct HostToPlugin {
     #[prost(string, tag="1")]
     pub plugin_id: ::prost::alloc::string::String,
-    #[prost(oneof="host_to_plugin::Payload", tags="10, 11, 12, 20")]
+    #[prost(oneof="host_to_plugin::Payload", tags="10, 11, 12, 20, 21")]
     pub payload: ::core::option::Option<host_to_plugin::Payload>,
 }
 /// Nested message and enum types in `HostToPlugin`.
@@ -1504,6 +1801,8 @@ pub mod host_to_plugin {
         ServerInfo(super::ServerInformationResponse),
         #[prost(message, tag="20")]
         Event(super::EventEnvelope),
+        #[prost(message, tag="21")]
+        ActionResult(super::ActionResult),
     }
 }
 #[allow(clippy::derive_partial_eq_without_eq)]

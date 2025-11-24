@@ -59,6 +59,8 @@ extern const ::google::protobuf::internal::DescriptorTable descriptor_table_comm
 }  // extern "C"
 namespace df {
 namespace plugin {
+enum Difficulty : int;
+extern const uint32_t Difficulty_internal_data_[];
 enum EffectType : int;
 extern const uint32_t EffectType_internal_data_[];
 enum GameMode : int;
@@ -71,6 +73,10 @@ class Address;
 struct AddressDefaultTypeInternal;
 extern AddressDefaultTypeInternal _Address_default_instance_;
 extern const ::google::protobuf::internal::ClassDataFull Address_class_data_;
+class BBox;
+struct BBoxDefaultTypeInternal;
+extern BBoxDefaultTypeInternal _BBox_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull BBox_class_data_;
 class BlockPos;
 struct BlockPosDefaultTypeInternal;
 extern BlockPosDefaultTypeInternal _BlockPos_default_instance_;
@@ -124,6 +130,9 @@ extern const ::google::protobuf::internal::ClassDataFull WorldRef_class_data_;
 namespace google {
 namespace protobuf {
 template <>
+internal::EnumTraitsT<::df::plugin::Difficulty_internal_data_>
+    internal::EnumTraitsImpl::value<::df::plugin::Difficulty>;
+template <>
 internal::EnumTraitsT<::df::plugin::EffectType_internal_data_>
     internal::EnumTraitsImpl::value<::df::plugin::EffectType>;
 template <>
@@ -176,6 +185,44 @@ inline const ::std::string& GameMode_Name(GameMode value) {
 inline bool GameMode_Parse(
     ::absl::string_view name, GameMode* PROTOBUF_NONNULL value) {
   return ::google::protobuf::internal::ParseNamedEnum<GameMode>(GameMode_descriptor(), name,
+                                           value);
+}
+enum Difficulty : int {
+  PEACEFUL = 0,
+  EASY = 1,
+  NORMAL = 2,
+  HARD = 3,
+  Difficulty_INT_MIN_SENTINEL_DO_NOT_USE_ =
+      ::std::numeric_limits<::int32_t>::min(),
+  Difficulty_INT_MAX_SENTINEL_DO_NOT_USE_ =
+      ::std::numeric_limits<::int32_t>::max(),
+};
+
+extern const uint32_t Difficulty_internal_data_[];
+inline constexpr Difficulty Difficulty_MIN =
+    static_cast<Difficulty>(0);
+inline constexpr Difficulty Difficulty_MAX =
+    static_cast<Difficulty>(3);
+inline bool Difficulty_IsValid(int value) {
+  return 0 <= value && value <= 3;
+}
+inline constexpr int Difficulty_ARRAYSIZE = 3 + 1;
+const ::google::protobuf::EnumDescriptor* PROTOBUF_NONNULL Difficulty_descriptor();
+template <typename T>
+const ::std::string& Difficulty_Name(T value) {
+  static_assert(::std::is_same<T, Difficulty>::value ||
+                    ::std::is_integral<T>::value,
+                "Incorrect type passed to Difficulty_Name().");
+  return Difficulty_Name(static_cast<Difficulty>(value));
+}
+template <>
+inline const ::std::string& Difficulty_Name(Difficulty value) {
+  return ::google::protobuf::internal::NameOfDenseEnum<Difficulty_descriptor, 0, 3>(
+      static_cast<int>(value));
+}
+inline bool Difficulty_Parse(
+    ::absl::string_view name, Difficulty* PROTOBUF_NONNULL value) {
+  return ::google::protobuf::internal::ParseNamedEnum<Difficulty>(Difficulty_descriptor(), name,
                                            value);
 }
 enum EffectType : int {
@@ -395,7 +442,7 @@ class WorldRef final : public ::google::protobuf::Message
     return *reinterpret_cast<const WorldRef*>(
         &_WorldRef_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 7;
+  static constexpr int kIndexInFileMessages = 8;
   friend void swap(WorldRef& a, WorldRef& b) { a.Swap(&b); }
   inline void Swap(WorldRef* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -1023,7 +1070,7 @@ class ItemStack final : public ::google::protobuf::Message
     return *reinterpret_cast<const ItemStack*>(
         &_ItemStack_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 3;
+  static constexpr int kIndexInFileMessages = 4;
   friend void swap(ItemStack& a, ItemStack& b) { a.Swap(&b); }
   inline void Swap(ItemStack* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -1242,7 +1289,7 @@ class HealingSource final : public ::google::protobuf::Message
     return *reinterpret_cast<const HealingSource*>(
         &_HealingSource_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 10;
+  static constexpr int kIndexInFileMessages = 11;
   friend void swap(HealingSource& a, HealingSource& b) { a.Swap(&b); }
   inline void Swap(HealingSource* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -1455,7 +1502,7 @@ class DamageSource final : public ::google::protobuf::Message
     return *reinterpret_cast<const DamageSource*>(
         &_DamageSource_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 9;
+  static constexpr int kIndexInFileMessages = 10;
   friend void swap(DamageSource& a, DamageSource& b) { a.Swap(&b); }
   inline void Swap(DamageSource* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -1668,7 +1715,7 @@ class CustomItemDefinition final : public ::google::protobuf::Message
     return *reinterpret_cast<const CustomItemDefinition*>(
         &_CustomItemDefinition_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 12;
+  static constexpr int kIndexInFileMessages = 13;
   friend void swap(CustomItemDefinition& a, CustomItemDefinition& b) { a.Swap(&b); }
   inline void Swap(CustomItemDefinition* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -1978,7 +2025,7 @@ class BlockPos final : public ::google::protobuf::Message
     return *reinterpret_cast<const BlockPos*>(
         &_BlockPos_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 2;
+  static constexpr int kIndexInFileMessages = 3;
   friend void swap(BlockPos& a, BlockPos& b) { a.Swap(&b); }
   inline void Swap(BlockPos* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -2192,7 +2239,7 @@ class Address final : public ::google::protobuf::Message
     return *reinterpret_cast<const Address*>(
         &_Address_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 11;
+  static constexpr int kIndexInFileMessages = 12;
   friend void swap(Address& a, Address& b) { a.Swap(&b); }
   inline void Swap(Address* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -2399,7 +2446,7 @@ class EntityRef final : public ::google::protobuf::Message
     return *reinterpret_cast<const EntityRef*>(
         &_EntityRef_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 8;
+  static constexpr int kIndexInFileMessages = 9;
   friend void swap(EntityRef& a, EntityRef& b) { a.Swap(&b); }
   inline void Swap(EntityRef* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -2663,7 +2710,7 @@ class BlockState final : public ::google::protobuf::Message
     return *reinterpret_cast<const BlockState*>(
         &_BlockState_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 5;
+  static constexpr int kIndexInFileMessages = 6;
   friend void swap(BlockState& a, BlockState& b) { a.Swap(&b); }
   inline void Swap(BlockState* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -2823,6 +2870,218 @@ class BlockState final : public ::google::protobuf::Message
 extern const ::google::protobuf::internal::ClassDataFull BlockState_class_data_;
 // -------------------------------------------------------------------
 
+class BBox final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:df.plugin.BBox) */ {
+ public:
+  inline BBox() : BBox(nullptr) {}
+  ~BBox() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(BBox* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(BBox));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR BBox(::google::protobuf::internal::ConstantInitialized);
+
+  inline BBox(const BBox& from) : BBox(nullptr, from) {}
+  inline BBox(BBox&& from) noexcept
+      : BBox(nullptr, ::std::move(from)) {}
+  inline BBox& operator=(const BBox& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline BBox& operator=(BBox&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const BBox& default_instance() {
+    return *reinterpret_cast<const BBox*>(
+        &_BBox_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 2;
+  friend void swap(BBox& a, BBox& b) { a.Swap(&b); }
+  inline void Swap(BBox* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(BBox* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  BBox* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<BBox>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const BBox& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const BBox& from) { BBox::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(BBox* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "df.plugin.BBox"; }
+
+  explicit BBox(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  BBox(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const BBox& from);
+  BBox(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, BBox&& from) noexcept
+      : BBox(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kMinFieldNumber = 1,
+    kMaxFieldNumber = 2,
+  };
+  // .df.plugin.Vec3 min = 1 [json_name = "min"];
+  bool has_min() const;
+  void clear_min() ;
+  const ::df::plugin::Vec3& min() const;
+  [[nodiscard]] ::df::plugin::Vec3* PROTOBUF_NULLABLE release_min();
+  ::df::plugin::Vec3* PROTOBUF_NONNULL mutable_min();
+  void set_allocated_min(::df::plugin::Vec3* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_min(::df::plugin::Vec3* PROTOBUF_NULLABLE value);
+  ::df::plugin::Vec3* PROTOBUF_NULLABLE unsafe_arena_release_min();
+
+  private:
+  const ::df::plugin::Vec3& _internal_min() const;
+  ::df::plugin::Vec3* PROTOBUF_NONNULL _internal_mutable_min();
+
+  public:
+  // .df.plugin.Vec3 max = 2 [json_name = "max"];
+  bool has_max() const;
+  void clear_max() ;
+  const ::df::plugin::Vec3& max() const;
+  [[nodiscard]] ::df::plugin::Vec3* PROTOBUF_NULLABLE release_max();
+  ::df::plugin::Vec3* PROTOBUF_NONNULL mutable_max();
+  void set_allocated_max(::df::plugin::Vec3* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_max(::df::plugin::Vec3* PROTOBUF_NULLABLE value);
+  ::df::plugin::Vec3* PROTOBUF_NULLABLE unsafe_arena_release_max();
+
+  private:
+  const ::df::plugin::Vec3& _internal_max() const;
+  ::df::plugin::Vec3* PROTOBUF_NONNULL _internal_mutable_max();
+
+  public:
+  // @@protoc_insertion_point(class_scope:df.plugin.BBox)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<1, 2,
+                                   2, 0,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const BBox& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::df::plugin::Vec3* PROTOBUF_NULLABLE min_;
+    ::df::plugin::Vec3* PROTOBUF_NULLABLE max_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_common_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull BBox_class_data_;
+// -------------------------------------------------------------------
+
 class LiquidState final : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:df.plugin.LiquidState) */ {
  public:
@@ -2878,7 +3137,7 @@ class LiquidState final : public ::google::protobuf::Message
     return *reinterpret_cast<const LiquidState*>(
         &_LiquidState_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 6;
+  static constexpr int kIndexInFileMessages = 7;
   friend void swap(LiquidState& a, LiquidState& b) { a.Swap(&b); }
   inline void Swap(LiquidState* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -3201,6 +3460,208 @@ inline float Rotation::_internal_pitch() const {
 inline void Rotation::_internal_set_pitch(float value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.pitch_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// BBox
+
+// .df.plugin.Vec3 min = 1 [json_name = "min"];
+inline bool BBox::has_min() const {
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000001U);
+  PROTOBUF_ASSUME(!value || _impl_.min_ != nullptr);
+  return value;
+}
+inline void BBox::clear_min() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.min_ != nullptr) _impl_.min_->Clear();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000001U);
+}
+inline const ::df::plugin::Vec3& BBox::_internal_min() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::df::plugin::Vec3* p = _impl_.min_;
+  return p != nullptr ? *p : reinterpret_cast<const ::df::plugin::Vec3&>(::df::plugin::_Vec3_default_instance_);
+}
+inline const ::df::plugin::Vec3& BBox::min() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:df.plugin.BBox.min)
+  return _internal_min();
+}
+inline void BBox::unsafe_arena_set_allocated_min(
+    ::df::plugin::Vec3* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.min_);
+  }
+  _impl_.min_ = reinterpret_cast<::df::plugin::Vec3*>(value);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:df.plugin.BBox.min)
+}
+inline ::df::plugin::Vec3* PROTOBUF_NULLABLE BBox::release_min() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ::df::plugin::Vec3* released = _impl_.min_;
+  _impl_.min_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::df::plugin::Vec3* PROTOBUF_NULLABLE BBox::unsafe_arena_release_min() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:df.plugin.BBox.min)
+
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ::df::plugin::Vec3* temp = _impl_.min_;
+  _impl_.min_ = nullptr;
+  return temp;
+}
+inline ::df::plugin::Vec3* PROTOBUF_NONNULL BBox::_internal_mutable_min() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.min_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::df::plugin::Vec3>(GetArena());
+    _impl_.min_ = reinterpret_cast<::df::plugin::Vec3*>(p);
+  }
+  return _impl_.min_;
+}
+inline ::df::plugin::Vec3* PROTOBUF_NONNULL BBox::mutable_min()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ::df::plugin::Vec3* _msg = _internal_mutable_min();
+  // @@protoc_insertion_point(field_mutable:df.plugin.BBox.min)
+  return _msg;
+}
+inline void BBox::set_allocated_min(::df::plugin::Vec3* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.min_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = value->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  }
+
+  _impl_.min_ = reinterpret_cast<::df::plugin::Vec3*>(value);
+  // @@protoc_insertion_point(field_set_allocated:df.plugin.BBox.min)
+}
+
+// .df.plugin.Vec3 max = 2 [json_name = "max"];
+inline bool BBox::has_max() const {
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000002U);
+  PROTOBUF_ASSUME(!value || _impl_.max_ != nullptr);
+  return value;
+}
+inline void BBox::clear_max() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.max_ != nullptr) _impl_.max_->Clear();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000002U);
+}
+inline const ::df::plugin::Vec3& BBox::_internal_max() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::df::plugin::Vec3* p = _impl_.max_;
+  return p != nullptr ? *p : reinterpret_cast<const ::df::plugin::Vec3&>(::df::plugin::_Vec3_default_instance_);
+}
+inline const ::df::plugin::Vec3& BBox::max() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:df.plugin.BBox.max)
+  return _internal_max();
+}
+inline void BBox::unsafe_arena_set_allocated_max(
+    ::df::plugin::Vec3* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.max_);
+  }
+  _impl_.max_ = reinterpret_cast<::df::plugin::Vec3*>(value);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:df.plugin.BBox.max)
+}
+inline ::df::plugin::Vec3* PROTOBUF_NULLABLE BBox::release_max() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  ::df::plugin::Vec3* released = _impl_.max_;
+  _impl_.max_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::df::plugin::Vec3* PROTOBUF_NULLABLE BBox::unsafe_arena_release_max() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:df.plugin.BBox.max)
+
+  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  ::df::plugin::Vec3* temp = _impl_.max_;
+  _impl_.max_ = nullptr;
+  return temp;
+}
+inline ::df::plugin::Vec3* PROTOBUF_NONNULL BBox::_internal_mutable_max() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.max_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::df::plugin::Vec3>(GetArena());
+    _impl_.max_ = reinterpret_cast<::df::plugin::Vec3*>(p);
+  }
+  return _impl_.max_;
+}
+inline ::df::plugin::Vec3* PROTOBUF_NONNULL BBox::mutable_max()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  ::df::plugin::Vec3* _msg = _internal_mutable_max();
+  // @@protoc_insertion_point(field_mutable:df.plugin.BBox.max)
+  return _msg;
+}
+inline void BBox::set_allocated_max(::df::plugin::Vec3* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.max_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = value->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  }
+
+  _impl_.max_ = reinterpret_cast<::df::plugin::Vec3*>(value);
+  // @@protoc_insertion_point(field_set_allocated:df.plugin.BBox.max)
 }
 
 // -------------------------------------------------------------------
@@ -4962,6 +5423,12 @@ struct is_proto_enum<::df::plugin::GameMode> : std::true_type {};
 template <>
 inline const EnumDescriptor* PROTOBUF_NONNULL GetEnumDescriptor<::df::plugin::GameMode>() {
   return ::df::plugin::GameMode_descriptor();
+}
+template <>
+struct is_proto_enum<::df::plugin::Difficulty> : std::true_type {};
+template <>
+inline const EnumDescriptor* PROTOBUF_NONNULL GetEnumDescriptor<::df::plugin::Difficulty>() {
+  return ::df::plugin::Difficulty_descriptor();
 }
 template <>
 struct is_proto_enum<::df::plugin::EffectType> : std::true_type {};

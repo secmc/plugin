@@ -50,6 +50,18 @@ class Action extends \Google\Protobuf\Internal\Message
      *     @type \Df\Plugin\PlaySoundAction $play_sound
      *     @type \Df\Plugin\ExecuteCommandAction $execute_command
      *           Commands
+     *     @type \Df\Plugin\WorldSetDefaultGameModeAction $world_set_default_game_mode
+     *           World configuration and effects
+     *     @type \Df\Plugin\WorldSetDifficultyAction $world_set_difficulty
+     *     @type \Df\Plugin\WorldSetTickRangeAction $world_set_tick_range
+     *     @type \Df\Plugin\WorldSetBlockAction $world_set_block
+     *     @type \Df\Plugin\WorldPlaySoundAction $world_play_sound
+     *     @type \Df\Plugin\WorldAddParticleAction $world_add_particle
+     *     @type \Df\Plugin\WorldQueryEntitiesAction $world_query_entities
+     *           World queries
+     *     @type \Df\Plugin\WorldQueryPlayersAction $world_query_players
+     *     @type \Df\Plugin\WorldQueryEntitiesWithinAction $world_query_entities_within
+     *     @type \Df\Plugin\WorldQueryViewersAction $world_query_viewers
      * }
      */
     public function __construct($data = NULL) {
@@ -591,6 +603,284 @@ class Action extends \Google\Protobuf\Internal\Message
     {
         GPBUtil::checkMessage($var, \Df\Plugin\ExecuteCommandAction::class);
         $this->writeOneof(50, $var);
+
+        return $this;
+    }
+
+    /**
+     * World configuration and effects
+     *
+     * Generated from protobuf field <code>.df.plugin.WorldSetDefaultGameModeAction world_set_default_game_mode = 60 [json_name = "worldSetDefaultGameMode"];</code>
+     * @return \Df\Plugin\WorldSetDefaultGameModeAction|null
+     */
+    public function getWorldSetDefaultGameMode()
+    {
+        return $this->readOneof(60);
+    }
+
+    public function hasWorldSetDefaultGameMode()
+    {
+        return $this->hasOneof(60);
+    }
+
+    /**
+     * World configuration and effects
+     *
+     * Generated from protobuf field <code>.df.plugin.WorldSetDefaultGameModeAction world_set_default_game_mode = 60 [json_name = "worldSetDefaultGameMode"];</code>
+     * @param \Df\Plugin\WorldSetDefaultGameModeAction $var
+     * @return $this
+     */
+    public function setWorldSetDefaultGameMode($var)
+    {
+        GPBUtil::checkMessage($var, \Df\Plugin\WorldSetDefaultGameModeAction::class);
+        $this->writeOneof(60, $var);
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.WorldSetDifficultyAction world_set_difficulty = 61 [json_name = "worldSetDifficulty"];</code>
+     * @return \Df\Plugin\WorldSetDifficultyAction|null
+     */
+    public function getWorldSetDifficulty()
+    {
+        return $this->readOneof(61);
+    }
+
+    public function hasWorldSetDifficulty()
+    {
+        return $this->hasOneof(61);
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.WorldSetDifficultyAction world_set_difficulty = 61 [json_name = "worldSetDifficulty"];</code>
+     * @param \Df\Plugin\WorldSetDifficultyAction $var
+     * @return $this
+     */
+    public function setWorldSetDifficulty($var)
+    {
+        GPBUtil::checkMessage($var, \Df\Plugin\WorldSetDifficultyAction::class);
+        $this->writeOneof(61, $var);
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.WorldSetTickRangeAction world_set_tick_range = 62 [json_name = "worldSetTickRange"];</code>
+     * @return \Df\Plugin\WorldSetTickRangeAction|null
+     */
+    public function getWorldSetTickRange()
+    {
+        return $this->readOneof(62);
+    }
+
+    public function hasWorldSetTickRange()
+    {
+        return $this->hasOneof(62);
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.WorldSetTickRangeAction world_set_tick_range = 62 [json_name = "worldSetTickRange"];</code>
+     * @param \Df\Plugin\WorldSetTickRangeAction $var
+     * @return $this
+     */
+    public function setWorldSetTickRange($var)
+    {
+        GPBUtil::checkMessage($var, \Df\Plugin\WorldSetTickRangeAction::class);
+        $this->writeOneof(62, $var);
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.WorldSetBlockAction world_set_block = 63 [json_name = "worldSetBlock"];</code>
+     * @return \Df\Plugin\WorldSetBlockAction|null
+     */
+    public function getWorldSetBlock()
+    {
+        return $this->readOneof(63);
+    }
+
+    public function hasWorldSetBlock()
+    {
+        return $this->hasOneof(63);
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.WorldSetBlockAction world_set_block = 63 [json_name = "worldSetBlock"];</code>
+     * @param \Df\Plugin\WorldSetBlockAction $var
+     * @return $this
+     */
+    public function setWorldSetBlock($var)
+    {
+        GPBUtil::checkMessage($var, \Df\Plugin\WorldSetBlockAction::class);
+        $this->writeOneof(63, $var);
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.WorldPlaySoundAction world_play_sound = 64 [json_name = "worldPlaySound"];</code>
+     * @return \Df\Plugin\WorldPlaySoundAction|null
+     */
+    public function getWorldPlaySound()
+    {
+        return $this->readOneof(64);
+    }
+
+    public function hasWorldPlaySound()
+    {
+        return $this->hasOneof(64);
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.WorldPlaySoundAction world_play_sound = 64 [json_name = "worldPlaySound"];</code>
+     * @param \Df\Plugin\WorldPlaySoundAction $var
+     * @return $this
+     */
+    public function setWorldPlaySound($var)
+    {
+        GPBUtil::checkMessage($var, \Df\Plugin\WorldPlaySoundAction::class);
+        $this->writeOneof(64, $var);
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.WorldAddParticleAction world_add_particle = 65 [json_name = "worldAddParticle"];</code>
+     * @return \Df\Plugin\WorldAddParticleAction|null
+     */
+    public function getWorldAddParticle()
+    {
+        return $this->readOneof(65);
+    }
+
+    public function hasWorldAddParticle()
+    {
+        return $this->hasOneof(65);
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.WorldAddParticleAction world_add_particle = 65 [json_name = "worldAddParticle"];</code>
+     * @param \Df\Plugin\WorldAddParticleAction $var
+     * @return $this
+     */
+    public function setWorldAddParticle($var)
+    {
+        GPBUtil::checkMessage($var, \Df\Plugin\WorldAddParticleAction::class);
+        $this->writeOneof(65, $var);
+
+        return $this;
+    }
+
+    /**
+     * World queries
+     *
+     * Generated from protobuf field <code>.df.plugin.WorldQueryEntitiesAction world_query_entities = 70 [json_name = "worldQueryEntities"];</code>
+     * @return \Df\Plugin\WorldQueryEntitiesAction|null
+     */
+    public function getWorldQueryEntities()
+    {
+        return $this->readOneof(70);
+    }
+
+    public function hasWorldQueryEntities()
+    {
+        return $this->hasOneof(70);
+    }
+
+    /**
+     * World queries
+     *
+     * Generated from protobuf field <code>.df.plugin.WorldQueryEntitiesAction world_query_entities = 70 [json_name = "worldQueryEntities"];</code>
+     * @param \Df\Plugin\WorldQueryEntitiesAction $var
+     * @return $this
+     */
+    public function setWorldQueryEntities($var)
+    {
+        GPBUtil::checkMessage($var, \Df\Plugin\WorldQueryEntitiesAction::class);
+        $this->writeOneof(70, $var);
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.WorldQueryPlayersAction world_query_players = 71 [json_name = "worldQueryPlayers"];</code>
+     * @return \Df\Plugin\WorldQueryPlayersAction|null
+     */
+    public function getWorldQueryPlayers()
+    {
+        return $this->readOneof(71);
+    }
+
+    public function hasWorldQueryPlayers()
+    {
+        return $this->hasOneof(71);
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.WorldQueryPlayersAction world_query_players = 71 [json_name = "worldQueryPlayers"];</code>
+     * @param \Df\Plugin\WorldQueryPlayersAction $var
+     * @return $this
+     */
+    public function setWorldQueryPlayers($var)
+    {
+        GPBUtil::checkMessage($var, \Df\Plugin\WorldQueryPlayersAction::class);
+        $this->writeOneof(71, $var);
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.WorldQueryEntitiesWithinAction world_query_entities_within = 72 [json_name = "worldQueryEntitiesWithin"];</code>
+     * @return \Df\Plugin\WorldQueryEntitiesWithinAction|null
+     */
+    public function getWorldQueryEntitiesWithin()
+    {
+        return $this->readOneof(72);
+    }
+
+    public function hasWorldQueryEntitiesWithin()
+    {
+        return $this->hasOneof(72);
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.WorldQueryEntitiesWithinAction world_query_entities_within = 72 [json_name = "worldQueryEntitiesWithin"];</code>
+     * @param \Df\Plugin\WorldQueryEntitiesWithinAction $var
+     * @return $this
+     */
+    public function setWorldQueryEntitiesWithin($var)
+    {
+        GPBUtil::checkMessage($var, \Df\Plugin\WorldQueryEntitiesWithinAction::class);
+        $this->writeOneof(72, $var);
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.WorldQueryViewersAction world_query_viewers = 73 [json_name = "worldQueryViewers"];</code>
+     * @return \Df\Plugin\WorldQueryViewersAction|null
+     */
+    public function getWorldQueryViewers()
+    {
+        return $this->readOneof(73);
+    }
+
+    public function hasWorldQueryViewers()
+    {
+        return $this->hasOneof(73);
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.WorldQueryViewersAction world_query_viewers = 73 [json_name = "worldQueryViewers"];</code>
+     * @param \Df\Plugin\WorldQueryViewersAction $var
+     * @return $this
+     */
+    public function setWorldQueryViewers($var)
+    {
+        GPBUtil::checkMessage($var, \Df\Plugin\WorldQueryViewersAction::class);
+        $this->writeOneof(73, $var);
 
         return $this;
     }

@@ -54,6 +54,51 @@ export function gameModeToJSON(object: GameMode): string {
   }
 }
 
+export enum Difficulty {
+  PEACEFUL = 0,
+  EASY = 1,
+  NORMAL = 2,
+  HARD = 3,
+  UNRECOGNIZED = -1,
+}
+
+export function difficultyFromJSON(object: any): Difficulty {
+  switch (object) {
+    case 0:
+    case "PEACEFUL":
+      return Difficulty.PEACEFUL;
+    case 1:
+    case "EASY":
+      return Difficulty.EASY;
+    case 2:
+    case "NORMAL":
+      return Difficulty.NORMAL;
+    case 3:
+    case "HARD":
+      return Difficulty.HARD;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return Difficulty.UNRECOGNIZED;
+  }
+}
+
+export function difficultyToJSON(object: Difficulty): string {
+  switch (object) {
+    case Difficulty.PEACEFUL:
+      return "PEACEFUL";
+    case Difficulty.EASY:
+      return "EASY";
+    case Difficulty.NORMAL:
+      return "NORMAL";
+    case Difficulty.HARD:
+      return "HARD";
+    case Difficulty.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
 /**
  * EffectType mirrors Dragonfly's registered effect IDs for straightforward mapping.
  * Keep numeric values aligned with dragonfly/server/entity/effect/register.go.
@@ -463,6 +508,11 @@ export interface Rotation {
   pitch: number;
 }
 
+export interface BBox {
+  min: Vec3 | undefined;
+  max: Vec3 | undefined;
+}
+
 export interface BlockPos {
   x: number;
   y: number;
@@ -705,6 +755,82 @@ export const Rotation: MessageFns<Rotation> = {
     const message = createBaseRotation();
     message.yaw = object.yaw ?? 0;
     message.pitch = object.pitch ?? 0;
+    return message;
+  },
+};
+
+function createBaseBBox(): BBox {
+  return { min: undefined, max: undefined };
+}
+
+export const BBox: MessageFns<BBox> = {
+  encode(message: BBox, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.min !== undefined) {
+      Vec3.encode(message.min, writer.uint32(10).fork()).join();
+    }
+    if (message.max !== undefined) {
+      Vec3.encode(message.max, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): BBox {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseBBox();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.min = Vec3.decode(reader, reader.uint32());
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.max = Vec3.decode(reader, reader.uint32());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): BBox {
+    return {
+      min: isSet(object.min) ? Vec3.fromJSON(object.min) : undefined,
+      max: isSet(object.max) ? Vec3.fromJSON(object.max) : undefined,
+    };
+  },
+
+  toJSON(message: BBox): unknown {
+    const obj: any = {};
+    if (message.min !== undefined) {
+      obj.min = Vec3.toJSON(message.min);
+    }
+    if (message.max !== undefined) {
+      obj.max = Vec3.toJSON(message.max);
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<BBox>): BBox {
+    return BBox.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<BBox>): BBox {
+    const message = createBaseBBox();
+    message.min = (object.min !== undefined && object.min !== null) ? Vec3.fromPartial(object.min) : undefined;
+    message.max = (object.max !== undefined && object.max !== null) ? Vec3.fromPartial(object.max) : undefined;
     return message;
   },
 };

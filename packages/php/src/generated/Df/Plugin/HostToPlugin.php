@@ -31,6 +31,7 @@ class HostToPlugin extends \Google\Protobuf\Internal\Message
      *     @type \Df\Plugin\HostShutdown $shutdown
      *     @type \Df\Plugin\ServerInformationResponse $server_info
      *     @type \Df\Plugin\EventEnvelope $event
+     *     @type \Df\Plugin\ActionResult $action_result
      * }
      */
     public function __construct($data = NULL) {
@@ -164,6 +165,33 @@ class HostToPlugin extends \Google\Protobuf\Internal\Message
     {
         GPBUtil::checkMessage($var, \Df\Plugin\EventEnvelope::class);
         $this->writeOneof(20, $var);
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.ActionResult action_result = 21 [json_name = "actionResult"];</code>
+     * @return \Df\Plugin\ActionResult|null
+     */
+    public function getActionResult()
+    {
+        return $this->readOneof(21);
+    }
+
+    public function hasActionResult()
+    {
+        return $this->hasOneof(21);
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.ActionResult action_result = 21 [json_name = "actionResult"];</code>
+     * @param \Df\Plugin\ActionResult $var
+     * @return $this
+     */
+    public function setActionResult($var)
+    {
+        GPBUtil::checkMessage($var, \Df\Plugin\ActionResult::class);
+        $this->writeOneof(21, $var);
 
         return $this;
     }

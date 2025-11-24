@@ -373,6 +373,32 @@ struct BlockStateDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 BlockStateDefaultTypeInternal _BlockState_default_instance_;
 
+inline constexpr BBox::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        min_{nullptr},
+        max_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR BBox::BBox(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(BBox_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct BBoxDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR BBoxDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~BBoxDefaultTypeInternal() {}
+  union {
+    BBox _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 BBoxDefaultTypeInternal _BBox_default_instance_;
+
 inline constexpr LiquidState::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : _cached_size_{0},
@@ -405,7 +431,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
 }  // namespace plugin
 }  // namespace df
 static const ::_pb::EnumDescriptor* PROTOBUF_NONNULL
-    file_level_enum_descriptors_common_2eproto[4];
+    file_level_enum_descriptors_common_2eproto[5];
 static constexpr const ::_pb::ServiceDescriptor* PROTOBUF_NONNULL* PROTOBUF_NULLABLE
     file_level_service_descriptors_common_2eproto = nullptr;
 const ::uint32_t
@@ -425,6 +451,13 @@ const ::uint32_t
         5, // hasbit index offset
         PROTOBUF_FIELD_OFFSET(::df::plugin::Rotation, _impl_.yaw_),
         PROTOBUF_FIELD_OFFSET(::df::plugin::Rotation, _impl_.pitch_),
+        0,
+        1,
+        0x081, // bitmap
+        PROTOBUF_FIELD_OFFSET(::df::plugin::BBox, _impl_._has_bits_),
+        5, // hasbit index offset
+        PROTOBUF_FIELD_OFFSET(::df::plugin::BBox, _impl_.min_),
+        PROTOBUF_FIELD_OFFSET(::df::plugin::BBox, _impl_.max_),
         0,
         1,
         0x081, // bitmap
@@ -532,21 +565,23 @@ static const ::_pbi::MigrationSchema
     schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
         {0, sizeof(::df::plugin::Vec3)},
         {9, sizeof(::df::plugin::Rotation)},
-        {16, sizeof(::df::plugin::BlockPos)},
-        {25, sizeof(::df::plugin::ItemStack)},
-        {34, sizeof(::df::plugin::BlockState_PropertiesEntry_DoNotUse)},
-        {41, sizeof(::df::plugin::BlockState)},
-        {48, sizeof(::df::plugin::LiquidState)},
-        {59, sizeof(::df::plugin::WorldRef)},
-        {66, sizeof(::df::plugin::EntityRef)},
-        {79, sizeof(::df::plugin::DamageSource)},
-        {86, sizeof(::df::plugin::HealingSource)},
-        {93, sizeof(::df::plugin::Address)},
-        {100, sizeof(::df::plugin::CustomItemDefinition)},
+        {16, sizeof(::df::plugin::BBox)},
+        {23, sizeof(::df::plugin::BlockPos)},
+        {32, sizeof(::df::plugin::ItemStack)},
+        {41, sizeof(::df::plugin::BlockState_PropertiesEntry_DoNotUse)},
+        {48, sizeof(::df::plugin::BlockState)},
+        {55, sizeof(::df::plugin::LiquidState)},
+        {66, sizeof(::df::plugin::WorldRef)},
+        {73, sizeof(::df::plugin::EntityRef)},
+        {86, sizeof(::df::plugin::DamageSource)},
+        {93, sizeof(::df::plugin::HealingSource)},
+        {100, sizeof(::df::plugin::Address)},
+        {107, sizeof(::df::plugin::CustomItemDefinition)},
 };
 static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::df::plugin::_Vec3_default_instance_._instance,
     &::df::plugin::_Rotation_default_instance_._instance,
+    &::df::plugin::_BBox_default_instance_._instance,
     &::df::plugin::_BlockPos_default_instance_._instance,
     &::df::plugin::_ItemStack_default_instance_._instance,
     &::df::plugin::_BlockState_PropertiesEntry_DoNotUse_default_instance_._instance,
@@ -564,77 +599,81 @@ const char descriptor_table_protodef_common_2eproto[] ABSL_ATTRIBUTE_SECTION_VAR
     "\n\014common.proto\022\tdf.plugin\"0\n\004Vec3\022\014\n\001x\030\001"
     " \001(\001R\001x\022\014\n\001y\030\002 \001(\001R\001y\022\014\n\001z\030\003 \001(\001R\001z\"2\n\010R"
     "otation\022\020\n\003yaw\030\001 \001(\002R\003yaw\022\024\n\005pitch\030\002 \001(\002"
-    "R\005pitch\"4\n\010BlockPos\022\014\n\001x\030\001 \001(\005R\001x\022\014\n\001y\030\002"
-    " \001(\005R\001y\022\014\n\001z\030\003 \001(\005R\001z\"I\n\tItemStack\022\022\n\004na"
-    "me\030\001 \001(\tR\004name\022\022\n\004meta\030\002 \001(\005R\004meta\022\024\n\005co"
-    "unt\030\003 \001(\005R\005count\"\246\001\n\nBlockState\022\022\n\004name\030"
-    "\001 \001(\tR\004name\022E\n\nproperties\030\002 \003(\0132%.df.plu"
-    "gin.BlockState.PropertiesEntryR\nproperti"
-    "es\032=\n\017PropertiesEntry\022\020\n\003key\030\001 \001(\tR\003key\022"
-    "\024\n\005value\030\002 \001(\tR\005value:\0028\001\"\213\001\n\013LiquidStat"
-    "e\022+\n\005block\030\001 \001(\0132\025.df.plugin.BlockStateR"
-    "\005block\022\024\n\005depth\030\002 \001(\005R\005depth\022\030\n\007falling\030"
-    "\003 \001(\010R\007falling\022\037\n\013liquid_type\030\004 \001(\tR\nliq"
-    "uidType\"<\n\010WorldRef\022\022\n\004name\030\001 \001(\tR\004name\022"
-    "\034\n\tdimension\030\002 \001(\tR\tdimension\"\327\001\n\tEntity"
-    "Ref\022\022\n\004uuid\030\001 \001(\tR\004uuid\022\022\n\004type\030\002 \001(\tR\004t"
-    "ype\022\027\n\004name\030\003 \001(\tH\000R\004name\210\001\001\0220\n\010position"
-    "\030\004 \001(\0132\017.df.plugin.Vec3H\001R\010position\210\001\001\0224"
-    "\n\010rotation\030\005 \001(\0132\023.df.plugin.RotationH\002R"
-    "\010rotation\210\001\001B\007\n\005_nameB\013\n\t_positionB\013\n\t_r"
-    "otation\"Y\n\014DamageSource\022\022\n\004type\030\001 \001(\tR\004t"
-    "ype\022%\n\013description\030\002 \001(\tH\000R\013description\210"
-    "\001\001B\016\n\014_description\"Z\n\rHealingSource\022\022\n\004t"
-    "ype\030\001 \001(\tR\004type\022%\n\013description\030\002 \001(\tH\000R\013"
-    "description\210\001\001B\016\n\014_description\"1\n\007Addres"
-    "s\022\022\n\004host\030\001 \001(\tR\004host\022\022\n\004port\030\002 \001(\005R\004por"
-    "t\"\332\001\n\024CustomItemDefinition\022\016\n\002id\030\001 \001(\tR\002"
-    "id\022!\n\014display_name\030\002 \001(\tR\013displayName\022!\n"
-    "\014texture_data\030\003 \001(\014R\013textureData\0223\n\010cate"
-    "gory\030\004 \001(\0162\027.df.plugin.ItemCategoryR\010cat"
-    "egory\022\031\n\005group\030\005 \001(\tH\000R\005group\210\001\001\022\022\n\004meta"
-    "\030\006 \001(\005R\004metaB\010\n\006_group*D\n\010GameMode\022\014\n\010SU"
-    "RVIVAL\020\000\022\014\n\010CREATIVE\020\001\022\r\n\tADVENTURE\020\002\022\r\n"
-    "\tSPECTATOR\020\003*\342\003\n\nEffectType\022\022\n\016EFFECT_UN"
-    "KNOWN\020\000\022\t\n\005SPEED\020\001\022\014\n\010SLOWNESS\020\002\022\t\n\005HAST"
-    "E\020\003\022\022\n\016MINING_FATIGUE\020\004\022\014\n\010STRENGTH\020\005\022\022\n"
-    "\016INSTANT_HEALTH\020\006\022\022\n\016INSTANT_DAMAGE\020\007\022\016\n"
-    "\nJUMP_BOOST\020\010\022\n\n\006NAUSEA\020\t\022\020\n\014REGENERATIO"
-    "N\020\n\022\016\n\nRESISTANCE\020\013\022\023\n\017FIRE_RESISTANCE\020\014"
-    "\022\023\n\017WATER_BREATHING\020\r\022\020\n\014INVISIBILITY\020\016\022"
-    "\r\n\tBLINDNESS\020\017\022\020\n\014NIGHT_VISION\020\020\022\n\n\006HUNG"
-    "ER\020\021\022\014\n\010WEAKNESS\020\022\022\n\n\006POISON\020\023\022\n\n\006WITHER"
-    "\020\024\022\020\n\014HEALTH_BOOST\020\025\022\016\n\nABSORPTION\020\026\022\016\n\n"
-    "SATURATION\020\027\022\016\n\nLEVITATION\020\030\022\020\n\014FATAL_PO"
-    "ISON\020\031\022\021\n\rCONDUIT_POWER\020\032\022\020\n\014SLOW_FALLIN"
-    "G\020\033\022\014\n\010DARKNESS\020\036*\315\002\n\005Sound\022\021\n\rSOUND_UNK"
-    "NOWN\020\000\022\n\n\006ATTACK\020\001\022\014\n\010DROWNING\020\002\022\013\n\007BURN"
-    "ING\020\003\022\010\n\004FALL\020\004\022\010\n\004BURP\020\005\022\007\n\003POP\020\006\022\r\n\tEX"
-    "PLOSION\020\007\022\013\n\007THUNDER\020\010\022\014\n\010LEVEL_UP\020\t\022\016\n\n"
-    "EXPERIENCE\020\n\022\023\n\017FIREWORK_LAUNCH\020\013\022\027\n\023FIR"
-    "EWORK_HUGE_BLAST\020\014\022\022\n\016FIREWORK_BLAST\020\r\022\024"
-    "\n\020FIREWORK_TWINKLE\020\016\022\014\n\010TELEPORT\020\017\022\r\n\tAR"
-    "ROW_HIT\020\020\022\016\n\nITEM_BREAK\020\021\022\016\n\nITEM_THROW\020"
-    "\022\022\t\n\005TOTEM\020\023\022\023\n\017FIRE_EXTINGUISH\020\024*~\n\014Ite"
-    "mCategory\022\036\n\032ITEM_CATEGORY_CONSTRUCTION\020"
-    "\000\022\030\n\024ITEM_CATEGORY_NATURE\020\001\022\033\n\027ITEM_CATE"
-    "GORY_EQUIPMENT\020\002\022\027\n\023ITEM_CATEGORY_ITEMS\020"
-    "\003B\212\001\n\rcom.df.pluginB\013CommonProtoP\001Z\'gith"
-    "ub.com/secmc/plugin/proto/generated\242\002\003DP"
-    "X\252\002\tDf.Plugin\312\002\tDf\\Plugin\342\002\025Df\\Plugin\\GP"
-    "BMetadata\352\002\nDf::Pluginb\006proto3"
+    "R\005pitch\"L\n\004BBox\022!\n\003min\030\001 \001(\0132\017.df.plugin"
+    ".Vec3R\003min\022!\n\003max\030\002 \001(\0132\017.df.plugin.Vec3"
+    "R\003max\"4\n\010BlockPos\022\014\n\001x\030\001 \001(\005R\001x\022\014\n\001y\030\002 \001"
+    "(\005R\001y\022\014\n\001z\030\003 \001(\005R\001z\"I\n\tItemStack\022\022\n\004name"
+    "\030\001 \001(\tR\004name\022\022\n\004meta\030\002 \001(\005R\004meta\022\024\n\005coun"
+    "t\030\003 \001(\005R\005count\"\246\001\n\nBlockState\022\022\n\004name\030\001 "
+    "\001(\tR\004name\022E\n\nproperties\030\002 \003(\0132%.df.plugi"
+    "n.BlockState.PropertiesEntryR\nproperties"
+    "\032=\n\017PropertiesEntry\022\020\n\003key\030\001 \001(\tR\003key\022\024\n"
+    "\005value\030\002 \001(\tR\005value:\0028\001\"\213\001\n\013LiquidState\022"
+    "+\n\005block\030\001 \001(\0132\025.df.plugin.BlockStateR\005b"
+    "lock\022\024\n\005depth\030\002 \001(\005R\005depth\022\030\n\007falling\030\003 "
+    "\001(\010R\007falling\022\037\n\013liquid_type\030\004 \001(\tR\nliqui"
+    "dType\"<\n\010WorldRef\022\022\n\004name\030\001 \001(\tR\004name\022\034\n"
+    "\tdimension\030\002 \001(\tR\tdimension\"\327\001\n\tEntityRe"
+    "f\022\022\n\004uuid\030\001 \001(\tR\004uuid\022\022\n\004type\030\002 \001(\tR\004typ"
+    "e\022\027\n\004name\030\003 \001(\tH\000R\004name\210\001\001\0220\n\010position\030\004"
+    " \001(\0132\017.df.plugin.Vec3H\001R\010position\210\001\001\0224\n\010"
+    "rotation\030\005 \001(\0132\023.df.plugin.RotationH\002R\010r"
+    "otation\210\001\001B\007\n\005_nameB\013\n\t_positionB\013\n\t_rot"
+    "ation\"Y\n\014DamageSource\022\022\n\004type\030\001 \001(\tR\004typ"
+    "e\022%\n\013description\030\002 \001(\tH\000R\013description\210\001\001"
+    "B\016\n\014_description\"Z\n\rHealingSource\022\022\n\004typ"
+    "e\030\001 \001(\tR\004type\022%\n\013description\030\002 \001(\tH\000R\013de"
+    "scription\210\001\001B\016\n\014_description\"1\n\007Address\022"
+    "\022\n\004host\030\001 \001(\tR\004host\022\022\n\004port\030\002 \001(\005R\004port\""
+    "\332\001\n\024CustomItemDefinition\022\016\n\002id\030\001 \001(\tR\002id"
+    "\022!\n\014display_name\030\002 \001(\tR\013displayName\022!\n\014t"
+    "exture_data\030\003 \001(\014R\013textureData\0223\n\010catego"
+    "ry\030\004 \001(\0162\027.df.plugin.ItemCategoryR\010categ"
+    "ory\022\031\n\005group\030\005 \001(\tH\000R\005group\210\001\001\022\022\n\004meta\030\006"
+    " \001(\005R\004metaB\010\n\006_group*D\n\010GameMode\022\014\n\010SURV"
+    "IVAL\020\000\022\014\n\010CREATIVE\020\001\022\r\n\tADVENTURE\020\002\022\r\n\tS"
+    "PECTATOR\020\003*:\n\nDifficulty\022\014\n\010PEACEFUL\020\000\022\010"
+    "\n\004EASY\020\001\022\n\n\006NORMAL\020\002\022\010\n\004HARD\020\003*\342\003\n\nEffec"
+    "tType\022\022\n\016EFFECT_UNKNOWN\020\000\022\t\n\005SPEED\020\001\022\014\n\010"
+    "SLOWNESS\020\002\022\t\n\005HASTE\020\003\022\022\n\016MINING_FATIGUE\020"
+    "\004\022\014\n\010STRENGTH\020\005\022\022\n\016INSTANT_HEALTH\020\006\022\022\n\016I"
+    "NSTANT_DAMAGE\020\007\022\016\n\nJUMP_BOOST\020\010\022\n\n\006NAUSE"
+    "A\020\t\022\020\n\014REGENERATION\020\n\022\016\n\nRESISTANCE\020\013\022\023\n"
+    "\017FIRE_RESISTANCE\020\014\022\023\n\017WATER_BREATHING\020\r\022"
+    "\020\n\014INVISIBILITY\020\016\022\r\n\tBLINDNESS\020\017\022\020\n\014NIGH"
+    "T_VISION\020\020\022\n\n\006HUNGER\020\021\022\014\n\010WEAKNESS\020\022\022\n\n\006"
+    "POISON\020\023\022\n\n\006WITHER\020\024\022\020\n\014HEALTH_BOOST\020\025\022\016"
+    "\n\nABSORPTION\020\026\022\016\n\nSATURATION\020\027\022\016\n\nLEVITA"
+    "TION\020\030\022\020\n\014FATAL_POISON\020\031\022\021\n\rCONDUIT_POWE"
+    "R\020\032\022\020\n\014SLOW_FALLING\020\033\022\014\n\010DARKNESS\020\036*\315\002\n\005"
+    "Sound\022\021\n\rSOUND_UNKNOWN\020\000\022\n\n\006ATTACK\020\001\022\014\n\010"
+    "DROWNING\020\002\022\013\n\007BURNING\020\003\022\010\n\004FALL\020\004\022\010\n\004BUR"
+    "P\020\005\022\007\n\003POP\020\006\022\r\n\tEXPLOSION\020\007\022\013\n\007THUNDER\020\010"
+    "\022\014\n\010LEVEL_UP\020\t\022\016\n\nEXPERIENCE\020\n\022\023\n\017FIREWO"
+    "RK_LAUNCH\020\013\022\027\n\023FIREWORK_HUGE_BLAST\020\014\022\022\n\016"
+    "FIREWORK_BLAST\020\r\022\024\n\020FIREWORK_TWINKLE\020\016\022\014"
+    "\n\010TELEPORT\020\017\022\r\n\tARROW_HIT\020\020\022\016\n\nITEM_BREA"
+    "K\020\021\022\016\n\nITEM_THROW\020\022\022\t\n\005TOTEM\020\023\022\023\n\017FIRE_E"
+    "XTINGUISH\020\024*~\n\014ItemCategory\022\036\n\032ITEM_CATE"
+    "GORY_CONSTRUCTION\020\000\022\030\n\024ITEM_CATEGORY_NAT"
+    "URE\020\001\022\033\n\027ITEM_CATEGORY_EQUIPMENT\020\002\022\027\n\023IT"
+    "EM_CATEGORY_ITEMS\020\003B\212\001\n\rcom.df.pluginB\013C"
+    "ommonProtoP\001Z\'github.com/secmc/plugin/pr"
+    "oto/generated\242\002\003DPX\252\002\tDf.Plugin\312\002\tDf\\Plu"
+    "gin\342\002\025Df\\Plugin\\GPBMetadata\352\002\nDf::Plugin"
+    "b\006proto3"
 };
 static ::absl::once_flag descriptor_table_common_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_common_2eproto = {
     false,
     false,
-    2470,
+    2608,
     descriptor_table_protodef_common_2eproto,
     "common.proto",
     &descriptor_table_common_2eproto_once,
     nullptr,
     0,
-    13,
+    14,
     schemas,
     file_default_instances,
     TableStruct_common_2eproto::offsets,
@@ -649,21 +688,27 @@ const ::google::protobuf::EnumDescriptor* PROTOBUF_NONNULL GameMode_descriptor()
 }
 PROTOBUF_CONSTINIT const uint32_t GameMode_internal_data_[] = {
     262144u, 0u, };
-const ::google::protobuf::EnumDescriptor* PROTOBUF_NONNULL EffectType_descriptor() {
+const ::google::protobuf::EnumDescriptor* PROTOBUF_NONNULL Difficulty_descriptor() {
   ::google::protobuf::internal::AssignDescriptors(&descriptor_table_common_2eproto);
   return file_level_enum_descriptors_common_2eproto[1];
+}
+PROTOBUF_CONSTINIT const uint32_t Difficulty_internal_data_[] = {
+    262144u, 0u, };
+const ::google::protobuf::EnumDescriptor* PROTOBUF_NONNULL EffectType_descriptor() {
+  ::google::protobuf::internal::AssignDescriptors(&descriptor_table_common_2eproto);
+  return file_level_enum_descriptors_common_2eproto[2];
 }
 PROTOBUF_CONSTINIT const uint32_t EffectType_internal_data_[] = {
     1835008u, 32u, 4u, };
 const ::google::protobuf::EnumDescriptor* PROTOBUF_NONNULL Sound_descriptor() {
   ::google::protobuf::internal::AssignDescriptors(&descriptor_table_common_2eproto);
-  return file_level_enum_descriptors_common_2eproto[2];
+  return file_level_enum_descriptors_common_2eproto[3];
 }
 PROTOBUF_CONSTINIT const uint32_t Sound_internal_data_[] = {
     1376256u, 0u, };
 const ::google::protobuf::EnumDescriptor* PROTOBUF_NONNULL ItemCategory_descriptor() {
   ::google::protobuf::internal::AssignDescriptors(&descriptor_table_common_2eproto);
-  return file_level_enum_descriptors_common_2eproto[3];
+  return file_level_enum_descriptors_common_2eproto[4];
 }
 PROTOBUF_CONSTINIT const uint32_t ItemCategory_internal_data_[] = {
     262144u, 0u, };
@@ -1274,6 +1319,327 @@ void Rotation::InternalSwap(Rotation* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) 
 }
 
 ::google::protobuf::Metadata Rotation::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class BBox::_Internal {
+ public:
+  using HasBits =
+      decltype(::std::declval<BBox>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(BBox, _impl_._has_bits_);
+};
+
+BBox::BBox(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, BBox_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:df.plugin.BBox)
+}
+PROTOBUF_NDEBUG_INLINE BBox::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+    [[maybe_unused]] const ::df::plugin::BBox& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
+
+BBox::BBox(
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
+    const BBox& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, BBox_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  BBox* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.min_ = (CheckHasBit(cached_has_bits, 0x00000001U))
+                ? ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.min_)
+                : nullptr;
+  _impl_.max_ = (CheckHasBit(cached_has_bits, 0x00000002U))
+                ? ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.max_)
+                : nullptr;
+
+  // @@protoc_insertion_point(copy_constructor:df.plugin.BBox)
+}
+PROTOBUF_NDEBUG_INLINE BBox::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+      : _cached_size_{0} {}
+
+inline void BBox::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char*>(&_impl_) +
+               offsetof(Impl_, min_),
+           0,
+           offsetof(Impl_, max_) -
+               offsetof(Impl_, min_) +
+               sizeof(Impl_::max_));
+}
+BBox::~BBox() {
+  // @@protoc_insertion_point(destructor:df.plugin.BBox)
+  SharedDtor(*this);
+}
+inline void BBox::SharedDtor(MessageLite& self) {
+  BBox& this_ = static_cast<BBox&>(self);
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    this_.CheckHasBitConsistency();
+  }
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  delete this_._impl_.min_;
+  delete this_._impl_.max_;
+  this_._impl_.~Impl_();
+}
+
+inline void* PROTOBUF_NONNULL BBox::PlacementNew_(
+    const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
+  return ::new (mem) BBox(arena);
+}
+constexpr auto BBox::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(BBox),
+                                            alignof(BBox));
+}
+constexpr auto BBox::InternalGenerateClassData_() {
+  return ::google::protobuf::internal::ClassDataFull{
+      ::google::protobuf::internal::ClassData{
+          &_BBox_default_instance_._instance,
+          &_table_.header,
+          nullptr,  // OnDemandRegisterArenaDtor
+          nullptr,  // IsInitialized
+          &BBox::MergeImpl,
+          ::google::protobuf::Message::GetNewImpl<BBox>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+          &BBox::SharedDtor,
+          ::google::protobuf::Message::GetClearImpl<BBox>(), &BBox::ByteSizeLong,
+              &BBox::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          PROTOBUF_FIELD_OFFSET(BBox, _impl_._cached_size_),
+          false,
+      },
+      &BBox::kDescriptorMethods,
+      &descriptor_table_common_2eproto,
+      nullptr,  // tracker
+  };
+}
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
+    ::google::protobuf::internal::ClassDataFull BBox_class_data_ =
+        BBox::InternalGenerateClassData_();
+
+PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+BBox::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&BBox_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(BBox_class_data_.tc_table);
+  return BBox_class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<1, 2, 2, 0, 2>
+BBox::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(BBox, _impl_._has_bits_),
+    0, // no _extensions_
+    2, 8,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    2,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    BBox_class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::df::plugin::BBox>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // .df.plugin.Vec3 max = 2 [json_name = "max"];
+    {::_pbi::TcParser::FastMtS1,
+     {18, 1, 1,
+      PROTOBUF_FIELD_OFFSET(BBox, _impl_.max_)}},
+    // .df.plugin.Vec3 min = 1 [json_name = "min"];
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0,
+      PROTOBUF_FIELD_OFFSET(BBox, _impl_.min_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .df.plugin.Vec3 min = 1 [json_name = "min"];
+    {PROTOBUF_FIELD_OFFSET(BBox, _impl_.min_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .df.plugin.Vec3 max = 2 [json_name = "max"];
+    {PROTOBUF_FIELD_OFFSET(BBox, _impl_.max_), _Internal::kHasBitsOffset + 1, 1, (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }},
+  {{
+      {::_pbi::TcParser::GetTable<::df::plugin::Vec3>()},
+      {::_pbi::TcParser::GetTable<::df::plugin::Vec3>()},
+  }},
+  {{
+  }},
+};
+PROTOBUF_NOINLINE void BBox::Clear() {
+// @@protoc_insertion_point(message_clear_start:df.plugin.BBox)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (BatchCheckHasBit(cached_has_bits, 0x00000003U)) {
+    if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+      ABSL_DCHECK(_impl_.min_ != nullptr);
+      _impl_.min_->Clear();
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+      ABSL_DCHECK(_impl_.max_ != nullptr);
+      _impl_.max_->Clear();
+    }
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::uint8_t* PROTOBUF_NONNULL BBox::_InternalSerialize(
+    const ::google::protobuf::MessageLite& base, ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) {
+  const BBox& this_ = static_cast<const BBox&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::uint8_t* PROTOBUF_NONNULL BBox::_InternalSerialize(
+    ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+  const BBox& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    this_.CheckHasBitConsistency();
+  }
+  // @@protoc_insertion_point(serialize_to_array_start:df.plugin.BBox)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  cached_has_bits = this_._impl_._has_bits_[0];
+  // .df.plugin.Vec3 min = 1 [json_name = "min"];
+  if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        1, *this_._impl_.min_, this_._impl_.min_->GetCachedSize(), target,
+        stream);
+  }
+
+  // .df.plugin.Vec3 max = 2 [json_name = "max"];
+  if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        2, *this_._impl_.max_, this_._impl_.max_->GetCachedSize(), target,
+        stream);
+  }
+
+  if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:df.plugin.BBox)
+  return target;
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::size_t BBox::ByteSizeLong(const MessageLite& base) {
+  const BBox& this_ = static_cast<const BBox&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::size_t BBox::ByteSizeLong() const {
+  const BBox& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(message_byte_size_start:df.plugin.BBox)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void)cached_has_bits;
+
+  ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+  cached_has_bits = this_._impl_._has_bits_[0];
+  if (BatchCheckHasBit(cached_has_bits, 0x00000003U)) {
+    // .df.plugin.Vec3 min = 1 [json_name = "min"];
+    if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+      total_size += 1 +
+                    ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.min_);
+    }
+    // .df.plugin.Vec3 max = 2 [json_name = "max"];
+    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+      total_size += 1 +
+                    ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.max_);
+    }
+  }
+  return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                             &this_._impl_._cached_size_);
+}
+
+void BBox::MergeImpl(::google::protobuf::MessageLite& to_msg,
+                            const ::google::protobuf::MessageLite& from_msg) {
+   auto* const _this =
+      static_cast<BBox*>(&to_msg);
+  auto& from = static_cast<const BBox&>(from_msg);
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    from.CheckHasBitConsistency();
+  }
+  ::google::protobuf::Arena* arena = _this->GetArena();
+  // @@protoc_insertion_point(class_specific_merge_from_start:df.plugin.BBox)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (BatchCheckHasBit(cached_has_bits, 0x00000003U)) {
+    if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+      ABSL_DCHECK(from._impl_.min_ != nullptr);
+      if (_this->_impl_.min_ == nullptr) {
+        _this->_impl_.min_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.min_);
+      } else {
+        _this->_impl_.min_->MergeFrom(*from._impl_.min_);
+      }
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+      ABSL_DCHECK(from._impl_.max_ != nullptr);
+      if (_this->_impl_.max_ == nullptr) {
+        _this->_impl_.max_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.max_);
+      } else {
+        _this->_impl_.max_->MergeFrom(*from._impl_.max_);
+      }
+    }
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+}
+
+void BBox::CopyFrom(const BBox& from) {
+  // @@protoc_insertion_point(class_specific_copy_from_start:df.plugin.BBox)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void BBox::InternalSwap(BBox* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
+  using ::std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(BBox, _impl_.max_)
+      + sizeof(BBox::_impl_.max_)
+      - PROTOBUF_FIELD_OFFSET(BBox, _impl_.min_)>(
+          reinterpret_cast<char*>(&_impl_.min_),
+          reinterpret_cast<char*>(&other->_impl_.min_));
+}
+
+::google::protobuf::Metadata BBox::GetMetadata() const {
   return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================

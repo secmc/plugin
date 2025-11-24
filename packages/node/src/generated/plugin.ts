@@ -6,7 +6,7 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
-import { ActionBatch } from "./actions.js";
+import { ActionBatch, ActionResult } from "./actions.js";
 import { CommandEvent, CommandSpec } from "./command.js";
 import { CustomItemDefinition } from "./common.js";
 import { EventResult } from "./mutations.js";
@@ -398,6 +398,7 @@ export interface HostToPlugin {
   shutdown?: HostShutdown | undefined;
   serverInfo?: ServerInformationResponse | undefined;
   event?: EventEnvelope | undefined;
+  actionResult?: ActionResult | undefined;
 }
 
 export interface ServerInformationRequest {
@@ -499,7 +500,14 @@ export interface EventSubscribe {
 }
 
 function createBaseHostToPlugin(): HostToPlugin {
-  return { pluginId: "", hello: undefined, shutdown: undefined, serverInfo: undefined, event: undefined };
+  return {
+    pluginId: "",
+    hello: undefined,
+    shutdown: undefined,
+    serverInfo: undefined,
+    event: undefined,
+    actionResult: undefined,
+  };
 }
 
 export const HostToPlugin: MessageFns<HostToPlugin> = {
@@ -518,6 +526,9 @@ export const HostToPlugin: MessageFns<HostToPlugin> = {
     }
     if (message.event !== undefined) {
       EventEnvelope.encode(message.event, writer.uint32(162).fork()).join();
+    }
+    if (message.actionResult !== undefined) {
+      ActionResult.encode(message.actionResult, writer.uint32(170).fork()).join();
     }
     return writer;
   },
@@ -569,6 +580,14 @@ export const HostToPlugin: MessageFns<HostToPlugin> = {
           message.event = EventEnvelope.decode(reader, reader.uint32());
           continue;
         }
+        case 21: {
+          if (tag !== 170) {
+            break;
+          }
+
+          message.actionResult = ActionResult.decode(reader, reader.uint32());
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -585,6 +604,7 @@ export const HostToPlugin: MessageFns<HostToPlugin> = {
       shutdown: isSet(object.shutdown) ? HostShutdown.fromJSON(object.shutdown) : undefined,
       serverInfo: isSet(object.serverInfo) ? ServerInformationResponse.fromJSON(object.serverInfo) : undefined,
       event: isSet(object.event) ? EventEnvelope.fromJSON(object.event) : undefined,
+      actionResult: isSet(object.actionResult) ? ActionResult.fromJSON(object.actionResult) : undefined,
     };
   },
 
@@ -604,6 +624,9 @@ export const HostToPlugin: MessageFns<HostToPlugin> = {
     }
     if (message.event !== undefined) {
       obj.event = EventEnvelope.toJSON(message.event);
+    }
+    if (message.actionResult !== undefined) {
+      obj.actionResult = ActionResult.toJSON(message.actionResult);
     }
     return obj;
   },
@@ -625,6 +648,9 @@ export const HostToPlugin: MessageFns<HostToPlugin> = {
       : undefined;
     message.event = (object.event !== undefined && object.event !== null)
       ? EventEnvelope.fromPartial(object.event)
+      : undefined;
+    message.actionResult = (object.actionResult !== undefined && object.actionResult !== null)
+      ? ActionResult.fromPartial(object.actionResult)
       : undefined;
     return message;
   },

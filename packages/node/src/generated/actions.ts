@@ -7,9 +7,16 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import {
+  BBox,
+  BlockPos,
+  BlockState,
+  Difficulty,
+  difficultyFromJSON,
+  difficultyToJSON,
   EffectType,
   effectTypeFromJSON,
   effectTypeToJSON,
+  EntityRef,
   GameMode,
   gameModeFromJSON,
   gameModeToJSON,
@@ -18,9 +25,145 @@ import {
   soundFromJSON,
   soundToJSON,
   Vec3,
+  WorldRef,
 } from "./common.js";
 
 export const protobufPackage = "df.plugin";
+
+export enum ParticleType {
+  PARTICLE_TYPE_UNSPECIFIED = 0,
+  PARTICLE_HUGE_EXPLOSION = 1,
+  PARTICLE_ENDERMAN_TELEPORT = 2,
+  PARTICLE_SNOWBALL_POOF = 3,
+  PARTICLE_EGG_SMASH = 4,
+  PARTICLE_SPLASH = 5,
+  PARTICLE_EFFECT = 6,
+  PARTICLE_ENTITY_FLAME = 7,
+  PARTICLE_FLAME = 8,
+  PARTICLE_DUST = 9,
+  PARTICLE_BLOCK_FORCE_FIELD = 10,
+  PARTICLE_BONE_MEAL = 11,
+  PARTICLE_EVAPORATE = 12,
+  PARTICLE_WATER_DRIP = 13,
+  PARTICLE_LAVA_DRIP = 14,
+  PARTICLE_LAVA = 15,
+  PARTICLE_DUST_PLUME = 16,
+  PARTICLE_BLOCK_BREAK = 17,
+  PARTICLE_PUNCH_BLOCK = 18,
+  UNRECOGNIZED = -1,
+}
+
+export function particleTypeFromJSON(object: any): ParticleType {
+  switch (object) {
+    case 0:
+    case "PARTICLE_TYPE_UNSPECIFIED":
+      return ParticleType.PARTICLE_TYPE_UNSPECIFIED;
+    case 1:
+    case "PARTICLE_HUGE_EXPLOSION":
+      return ParticleType.PARTICLE_HUGE_EXPLOSION;
+    case 2:
+    case "PARTICLE_ENDERMAN_TELEPORT":
+      return ParticleType.PARTICLE_ENDERMAN_TELEPORT;
+    case 3:
+    case "PARTICLE_SNOWBALL_POOF":
+      return ParticleType.PARTICLE_SNOWBALL_POOF;
+    case 4:
+    case "PARTICLE_EGG_SMASH":
+      return ParticleType.PARTICLE_EGG_SMASH;
+    case 5:
+    case "PARTICLE_SPLASH":
+      return ParticleType.PARTICLE_SPLASH;
+    case 6:
+    case "PARTICLE_EFFECT":
+      return ParticleType.PARTICLE_EFFECT;
+    case 7:
+    case "PARTICLE_ENTITY_FLAME":
+      return ParticleType.PARTICLE_ENTITY_FLAME;
+    case 8:
+    case "PARTICLE_FLAME":
+      return ParticleType.PARTICLE_FLAME;
+    case 9:
+    case "PARTICLE_DUST":
+      return ParticleType.PARTICLE_DUST;
+    case 10:
+    case "PARTICLE_BLOCK_FORCE_FIELD":
+      return ParticleType.PARTICLE_BLOCK_FORCE_FIELD;
+    case 11:
+    case "PARTICLE_BONE_MEAL":
+      return ParticleType.PARTICLE_BONE_MEAL;
+    case 12:
+    case "PARTICLE_EVAPORATE":
+      return ParticleType.PARTICLE_EVAPORATE;
+    case 13:
+    case "PARTICLE_WATER_DRIP":
+      return ParticleType.PARTICLE_WATER_DRIP;
+    case 14:
+    case "PARTICLE_LAVA_DRIP":
+      return ParticleType.PARTICLE_LAVA_DRIP;
+    case 15:
+    case "PARTICLE_LAVA":
+      return ParticleType.PARTICLE_LAVA;
+    case 16:
+    case "PARTICLE_DUST_PLUME":
+      return ParticleType.PARTICLE_DUST_PLUME;
+    case 17:
+    case "PARTICLE_BLOCK_BREAK":
+      return ParticleType.PARTICLE_BLOCK_BREAK;
+    case 18:
+    case "PARTICLE_PUNCH_BLOCK":
+      return ParticleType.PARTICLE_PUNCH_BLOCK;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return ParticleType.UNRECOGNIZED;
+  }
+}
+
+export function particleTypeToJSON(object: ParticleType): string {
+  switch (object) {
+    case ParticleType.PARTICLE_TYPE_UNSPECIFIED:
+      return "PARTICLE_TYPE_UNSPECIFIED";
+    case ParticleType.PARTICLE_HUGE_EXPLOSION:
+      return "PARTICLE_HUGE_EXPLOSION";
+    case ParticleType.PARTICLE_ENDERMAN_TELEPORT:
+      return "PARTICLE_ENDERMAN_TELEPORT";
+    case ParticleType.PARTICLE_SNOWBALL_POOF:
+      return "PARTICLE_SNOWBALL_POOF";
+    case ParticleType.PARTICLE_EGG_SMASH:
+      return "PARTICLE_EGG_SMASH";
+    case ParticleType.PARTICLE_SPLASH:
+      return "PARTICLE_SPLASH";
+    case ParticleType.PARTICLE_EFFECT:
+      return "PARTICLE_EFFECT";
+    case ParticleType.PARTICLE_ENTITY_FLAME:
+      return "PARTICLE_ENTITY_FLAME";
+    case ParticleType.PARTICLE_FLAME:
+      return "PARTICLE_FLAME";
+    case ParticleType.PARTICLE_DUST:
+      return "PARTICLE_DUST";
+    case ParticleType.PARTICLE_BLOCK_FORCE_FIELD:
+      return "PARTICLE_BLOCK_FORCE_FIELD";
+    case ParticleType.PARTICLE_BONE_MEAL:
+      return "PARTICLE_BONE_MEAL";
+    case ParticleType.PARTICLE_EVAPORATE:
+      return "PARTICLE_EVAPORATE";
+    case ParticleType.PARTICLE_WATER_DRIP:
+      return "PARTICLE_WATER_DRIP";
+    case ParticleType.PARTICLE_LAVA_DRIP:
+      return "PARTICLE_LAVA_DRIP";
+    case ParticleType.PARTICLE_LAVA:
+      return "PARTICLE_LAVA";
+    case ParticleType.PARTICLE_DUST_PLUME:
+      return "PARTICLE_DUST_PLUME";
+    case ParticleType.PARTICLE_BLOCK_BREAK:
+      return "PARTICLE_BLOCK_BREAK";
+    case ParticleType.PARTICLE_PUNCH_BLOCK:
+      return "PARTICLE_PUNCH_BLOCK";
+    case ParticleType.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
 
 export interface ActionBatch {
   actions: Action[];
@@ -60,7 +203,23 @@ export interface Action {
     | PlaySoundAction
     | undefined;
   /** Commands */
-  executeCommand?: ExecuteCommandAction | undefined;
+  executeCommand?:
+    | ExecuteCommandAction
+    | undefined;
+  /** World configuration and effects */
+  worldSetDefaultGameMode?: WorldSetDefaultGameModeAction | undefined;
+  worldSetDifficulty?: WorldSetDifficultyAction | undefined;
+  worldSetTickRange?: WorldSetTickRangeAction | undefined;
+  worldSetBlock?: WorldSetBlockAction | undefined;
+  worldPlaySound?: WorldPlaySoundAction | undefined;
+  worldAddParticle?:
+    | WorldAddParticleAction
+    | undefined;
+  /** World queries */
+  worldQueryEntities?: WorldQueryEntitiesAction | undefined;
+  worldQueryPlayers?: WorldQueryPlayersAction | undefined;
+  worldQueryEntitiesWithin?: WorldQueryEntitiesWithinAction | undefined;
+  worldQueryViewers?: WorldQueryViewersAction | undefined;
 }
 
 export interface SendChatAction {
@@ -201,6 +360,102 @@ export interface ExecuteCommandAction {
   command: string;
 }
 
+export interface WorldSetDefaultGameModeAction {
+  world: WorldRef | undefined;
+  gameMode: GameMode;
+}
+
+export interface WorldSetDifficultyAction {
+  world: WorldRef | undefined;
+  difficulty: Difficulty;
+}
+
+export interface WorldSetTickRangeAction {
+  world: WorldRef | undefined;
+  tickRange: number;
+}
+
+export interface WorldSetBlockAction {
+  world: WorldRef | undefined;
+  position:
+    | BlockPos
+    | undefined;
+  /** nil clears to air */
+  block?: BlockState | undefined;
+}
+
+export interface WorldPlaySoundAction {
+  world: WorldRef | undefined;
+  sound: Sound;
+  position: Vec3 | undefined;
+}
+
+export interface WorldAddParticleAction {
+  world: WorldRef | undefined;
+  position: Vec3 | undefined;
+  particle: ParticleType;
+  /** used for block-based particles when provided */
+  block?:
+    | BlockState
+    | undefined;
+  /** used for punch_block when provided */
+  face?: number | undefined;
+}
+
+export interface WorldQueryEntitiesAction {
+  world: WorldRef | undefined;
+}
+
+export interface WorldQueryPlayersAction {
+  world: WorldRef | undefined;
+}
+
+export interface WorldQueryEntitiesWithinAction {
+  world: WorldRef | undefined;
+  box: BBox | undefined;
+}
+
+export interface WorldQueryViewersAction {
+  world: WorldRef | undefined;
+  position: Vec3 | undefined;
+}
+
+export interface ActionStatus {
+  ok: boolean;
+  error?: string | undefined;
+}
+
+export interface WorldEntitiesResult {
+  world: WorldRef | undefined;
+  entities: EntityRef[];
+}
+
+export interface WorldEntitiesWithinResult {
+  world: WorldRef | undefined;
+  box: BBox | undefined;
+  entities: EntityRef[];
+}
+
+export interface WorldPlayersResult {
+  world: WorldRef | undefined;
+  players: EntityRef[];
+}
+
+export interface WorldViewersResult {
+  world: WorldRef | undefined;
+  position: Vec3 | undefined;
+  viewerUuids: string[];
+}
+
+export interface ActionResult {
+  correlationId: string;
+  status?: ActionStatus | undefined;
+  worldEntities?: WorldEntitiesResult | undefined;
+  worldPlayers?: WorldPlayersResult | undefined;
+  worldEntitiesWithin?: WorldEntitiesWithinResult | undefined;
+  worldViewers?: WorldViewersResult | undefined;
+}
+
 function createBaseActionBatch(): ActionBatch {
   return { actions: [] };
 }
@@ -282,6 +537,16 @@ function createBaseAction(): Action {
     sendTip: undefined,
     playSound: undefined,
     executeCommand: undefined,
+    worldSetDefaultGameMode: undefined,
+    worldSetDifficulty: undefined,
+    worldSetTickRange: undefined,
+    worldSetBlock: undefined,
+    worldPlaySound: undefined,
+    worldAddParticle: undefined,
+    worldQueryEntities: undefined,
+    worldQueryPlayers: undefined,
+    worldQueryEntitiesWithin: undefined,
+    worldQueryViewers: undefined,
   };
 }
 
@@ -343,6 +608,36 @@ export const Action: MessageFns<Action> = {
     }
     if (message.executeCommand !== undefined) {
       ExecuteCommandAction.encode(message.executeCommand, writer.uint32(402).fork()).join();
+    }
+    if (message.worldSetDefaultGameMode !== undefined) {
+      WorldSetDefaultGameModeAction.encode(message.worldSetDefaultGameMode, writer.uint32(482).fork()).join();
+    }
+    if (message.worldSetDifficulty !== undefined) {
+      WorldSetDifficultyAction.encode(message.worldSetDifficulty, writer.uint32(490).fork()).join();
+    }
+    if (message.worldSetTickRange !== undefined) {
+      WorldSetTickRangeAction.encode(message.worldSetTickRange, writer.uint32(498).fork()).join();
+    }
+    if (message.worldSetBlock !== undefined) {
+      WorldSetBlockAction.encode(message.worldSetBlock, writer.uint32(506).fork()).join();
+    }
+    if (message.worldPlaySound !== undefined) {
+      WorldPlaySoundAction.encode(message.worldPlaySound, writer.uint32(514).fork()).join();
+    }
+    if (message.worldAddParticle !== undefined) {
+      WorldAddParticleAction.encode(message.worldAddParticle, writer.uint32(522).fork()).join();
+    }
+    if (message.worldQueryEntities !== undefined) {
+      WorldQueryEntitiesAction.encode(message.worldQueryEntities, writer.uint32(562).fork()).join();
+    }
+    if (message.worldQueryPlayers !== undefined) {
+      WorldQueryPlayersAction.encode(message.worldQueryPlayers, writer.uint32(570).fork()).join();
+    }
+    if (message.worldQueryEntitiesWithin !== undefined) {
+      WorldQueryEntitiesWithinAction.encode(message.worldQueryEntitiesWithin, writer.uint32(578).fork()).join();
+    }
+    if (message.worldQueryViewers !== undefined) {
+      WorldQueryViewersAction.encode(message.worldQueryViewers, writer.uint32(586).fork()).join();
     }
     return writer;
   },
@@ -506,6 +801,86 @@ export const Action: MessageFns<Action> = {
           message.executeCommand = ExecuteCommandAction.decode(reader, reader.uint32());
           continue;
         }
+        case 60: {
+          if (tag !== 482) {
+            break;
+          }
+
+          message.worldSetDefaultGameMode = WorldSetDefaultGameModeAction.decode(reader, reader.uint32());
+          continue;
+        }
+        case 61: {
+          if (tag !== 490) {
+            break;
+          }
+
+          message.worldSetDifficulty = WorldSetDifficultyAction.decode(reader, reader.uint32());
+          continue;
+        }
+        case 62: {
+          if (tag !== 498) {
+            break;
+          }
+
+          message.worldSetTickRange = WorldSetTickRangeAction.decode(reader, reader.uint32());
+          continue;
+        }
+        case 63: {
+          if (tag !== 506) {
+            break;
+          }
+
+          message.worldSetBlock = WorldSetBlockAction.decode(reader, reader.uint32());
+          continue;
+        }
+        case 64: {
+          if (tag !== 514) {
+            break;
+          }
+
+          message.worldPlaySound = WorldPlaySoundAction.decode(reader, reader.uint32());
+          continue;
+        }
+        case 65: {
+          if (tag !== 522) {
+            break;
+          }
+
+          message.worldAddParticle = WorldAddParticleAction.decode(reader, reader.uint32());
+          continue;
+        }
+        case 70: {
+          if (tag !== 562) {
+            break;
+          }
+
+          message.worldQueryEntities = WorldQueryEntitiesAction.decode(reader, reader.uint32());
+          continue;
+        }
+        case 71: {
+          if (tag !== 570) {
+            break;
+          }
+
+          message.worldQueryPlayers = WorldQueryPlayersAction.decode(reader, reader.uint32());
+          continue;
+        }
+        case 72: {
+          if (tag !== 578) {
+            break;
+          }
+
+          message.worldQueryEntitiesWithin = WorldQueryEntitiesWithinAction.decode(reader, reader.uint32());
+          continue;
+        }
+        case 73: {
+          if (tag !== 586) {
+            break;
+          }
+
+          message.worldQueryViewers = WorldQueryViewersAction.decode(reader, reader.uint32());
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -536,6 +911,32 @@ export const Action: MessageFns<Action> = {
       sendTip: isSet(object.sendTip) ? SendTipAction.fromJSON(object.sendTip) : undefined,
       playSound: isSet(object.playSound) ? PlaySoundAction.fromJSON(object.playSound) : undefined,
       executeCommand: isSet(object.executeCommand) ? ExecuteCommandAction.fromJSON(object.executeCommand) : undefined,
+      worldSetDefaultGameMode: isSet(object.worldSetDefaultGameMode)
+        ? WorldSetDefaultGameModeAction.fromJSON(object.worldSetDefaultGameMode)
+        : undefined,
+      worldSetDifficulty: isSet(object.worldSetDifficulty)
+        ? WorldSetDifficultyAction.fromJSON(object.worldSetDifficulty)
+        : undefined,
+      worldSetTickRange: isSet(object.worldSetTickRange)
+        ? WorldSetTickRangeAction.fromJSON(object.worldSetTickRange)
+        : undefined,
+      worldSetBlock: isSet(object.worldSetBlock) ? WorldSetBlockAction.fromJSON(object.worldSetBlock) : undefined,
+      worldPlaySound: isSet(object.worldPlaySound) ? WorldPlaySoundAction.fromJSON(object.worldPlaySound) : undefined,
+      worldAddParticle: isSet(object.worldAddParticle)
+        ? WorldAddParticleAction.fromJSON(object.worldAddParticle)
+        : undefined,
+      worldQueryEntities: isSet(object.worldQueryEntities)
+        ? WorldQueryEntitiesAction.fromJSON(object.worldQueryEntities)
+        : undefined,
+      worldQueryPlayers: isSet(object.worldQueryPlayers)
+        ? WorldQueryPlayersAction.fromJSON(object.worldQueryPlayers)
+        : undefined,
+      worldQueryEntitiesWithin: isSet(object.worldQueryEntitiesWithin)
+        ? WorldQueryEntitiesWithinAction.fromJSON(object.worldQueryEntitiesWithin)
+        : undefined,
+      worldQueryViewers: isSet(object.worldQueryViewers)
+        ? WorldQueryViewersAction.fromJSON(object.worldQueryViewers)
+        : undefined,
     };
   },
 
@@ -597,6 +998,36 @@ export const Action: MessageFns<Action> = {
     }
     if (message.executeCommand !== undefined) {
       obj.executeCommand = ExecuteCommandAction.toJSON(message.executeCommand);
+    }
+    if (message.worldSetDefaultGameMode !== undefined) {
+      obj.worldSetDefaultGameMode = WorldSetDefaultGameModeAction.toJSON(message.worldSetDefaultGameMode);
+    }
+    if (message.worldSetDifficulty !== undefined) {
+      obj.worldSetDifficulty = WorldSetDifficultyAction.toJSON(message.worldSetDifficulty);
+    }
+    if (message.worldSetTickRange !== undefined) {
+      obj.worldSetTickRange = WorldSetTickRangeAction.toJSON(message.worldSetTickRange);
+    }
+    if (message.worldSetBlock !== undefined) {
+      obj.worldSetBlock = WorldSetBlockAction.toJSON(message.worldSetBlock);
+    }
+    if (message.worldPlaySound !== undefined) {
+      obj.worldPlaySound = WorldPlaySoundAction.toJSON(message.worldPlaySound);
+    }
+    if (message.worldAddParticle !== undefined) {
+      obj.worldAddParticle = WorldAddParticleAction.toJSON(message.worldAddParticle);
+    }
+    if (message.worldQueryEntities !== undefined) {
+      obj.worldQueryEntities = WorldQueryEntitiesAction.toJSON(message.worldQueryEntities);
+    }
+    if (message.worldQueryPlayers !== undefined) {
+      obj.worldQueryPlayers = WorldQueryPlayersAction.toJSON(message.worldQueryPlayers);
+    }
+    if (message.worldQueryEntitiesWithin !== undefined) {
+      obj.worldQueryEntitiesWithin = WorldQueryEntitiesWithinAction.toJSON(message.worldQueryEntitiesWithin);
+    }
+    if (message.worldQueryViewers !== undefined) {
+      obj.worldQueryViewers = WorldQueryViewersAction.toJSON(message.worldQueryViewers);
     }
     return obj;
   },
@@ -660,6 +1091,38 @@ export const Action: MessageFns<Action> = {
       : undefined;
     message.executeCommand = (object.executeCommand !== undefined && object.executeCommand !== null)
       ? ExecuteCommandAction.fromPartial(object.executeCommand)
+      : undefined;
+    message.worldSetDefaultGameMode =
+      (object.worldSetDefaultGameMode !== undefined && object.worldSetDefaultGameMode !== null)
+        ? WorldSetDefaultGameModeAction.fromPartial(object.worldSetDefaultGameMode)
+        : undefined;
+    message.worldSetDifficulty = (object.worldSetDifficulty !== undefined && object.worldSetDifficulty !== null)
+      ? WorldSetDifficultyAction.fromPartial(object.worldSetDifficulty)
+      : undefined;
+    message.worldSetTickRange = (object.worldSetTickRange !== undefined && object.worldSetTickRange !== null)
+      ? WorldSetTickRangeAction.fromPartial(object.worldSetTickRange)
+      : undefined;
+    message.worldSetBlock = (object.worldSetBlock !== undefined && object.worldSetBlock !== null)
+      ? WorldSetBlockAction.fromPartial(object.worldSetBlock)
+      : undefined;
+    message.worldPlaySound = (object.worldPlaySound !== undefined && object.worldPlaySound !== null)
+      ? WorldPlaySoundAction.fromPartial(object.worldPlaySound)
+      : undefined;
+    message.worldAddParticle = (object.worldAddParticle !== undefined && object.worldAddParticle !== null)
+      ? WorldAddParticleAction.fromPartial(object.worldAddParticle)
+      : undefined;
+    message.worldQueryEntities = (object.worldQueryEntities !== undefined && object.worldQueryEntities !== null)
+      ? WorldQueryEntitiesAction.fromPartial(object.worldQueryEntities)
+      : undefined;
+    message.worldQueryPlayers = (object.worldQueryPlayers !== undefined && object.worldQueryPlayers !== null)
+      ? WorldQueryPlayersAction.fromPartial(object.worldQueryPlayers)
+      : undefined;
+    message.worldQueryEntitiesWithin =
+      (object.worldQueryEntitiesWithin !== undefined && object.worldQueryEntitiesWithin !== null)
+        ? WorldQueryEntitiesWithinAction.fromPartial(object.worldQueryEntitiesWithin)
+        : undefined;
+    message.worldQueryViewers = (object.worldQueryViewers !== undefined && object.worldQueryViewers !== null)
+      ? WorldQueryViewersAction.fromPartial(object.worldQueryViewers)
       : undefined;
     return message;
   },
@@ -2268,6 +2731,1429 @@ export const ExecuteCommandAction: MessageFns<ExecuteCommandAction> = {
     const message = createBaseExecuteCommandAction();
     message.playerUuid = object.playerUuid ?? "";
     message.command = object.command ?? "";
+    return message;
+  },
+};
+
+function createBaseWorldSetDefaultGameModeAction(): WorldSetDefaultGameModeAction {
+  return { world: undefined, gameMode: 0 };
+}
+
+export const WorldSetDefaultGameModeAction: MessageFns<WorldSetDefaultGameModeAction> = {
+  encode(message: WorldSetDefaultGameModeAction, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.world !== undefined) {
+      WorldRef.encode(message.world, writer.uint32(10).fork()).join();
+    }
+    if (message.gameMode !== 0) {
+      writer.uint32(16).int32(message.gameMode);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): WorldSetDefaultGameModeAction {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseWorldSetDefaultGameModeAction();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.world = WorldRef.decode(reader, reader.uint32());
+          continue;
+        }
+        case 2: {
+          if (tag !== 16) {
+            break;
+          }
+
+          message.gameMode = reader.int32() as any;
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): WorldSetDefaultGameModeAction {
+    return {
+      world: isSet(object.world) ? WorldRef.fromJSON(object.world) : undefined,
+      gameMode: isSet(object.gameMode) ? gameModeFromJSON(object.gameMode) : 0,
+    };
+  },
+
+  toJSON(message: WorldSetDefaultGameModeAction): unknown {
+    const obj: any = {};
+    if (message.world !== undefined) {
+      obj.world = WorldRef.toJSON(message.world);
+    }
+    if (message.gameMode !== 0) {
+      obj.gameMode = gameModeToJSON(message.gameMode);
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<WorldSetDefaultGameModeAction>): WorldSetDefaultGameModeAction {
+    return WorldSetDefaultGameModeAction.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<WorldSetDefaultGameModeAction>): WorldSetDefaultGameModeAction {
+    const message = createBaseWorldSetDefaultGameModeAction();
+    message.world = (object.world !== undefined && object.world !== null)
+      ? WorldRef.fromPartial(object.world)
+      : undefined;
+    message.gameMode = object.gameMode ?? 0;
+    return message;
+  },
+};
+
+function createBaseWorldSetDifficultyAction(): WorldSetDifficultyAction {
+  return { world: undefined, difficulty: 0 };
+}
+
+export const WorldSetDifficultyAction: MessageFns<WorldSetDifficultyAction> = {
+  encode(message: WorldSetDifficultyAction, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.world !== undefined) {
+      WorldRef.encode(message.world, writer.uint32(10).fork()).join();
+    }
+    if (message.difficulty !== 0) {
+      writer.uint32(16).int32(message.difficulty);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): WorldSetDifficultyAction {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseWorldSetDifficultyAction();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.world = WorldRef.decode(reader, reader.uint32());
+          continue;
+        }
+        case 2: {
+          if (tag !== 16) {
+            break;
+          }
+
+          message.difficulty = reader.int32() as any;
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): WorldSetDifficultyAction {
+    return {
+      world: isSet(object.world) ? WorldRef.fromJSON(object.world) : undefined,
+      difficulty: isSet(object.difficulty) ? difficultyFromJSON(object.difficulty) : 0,
+    };
+  },
+
+  toJSON(message: WorldSetDifficultyAction): unknown {
+    const obj: any = {};
+    if (message.world !== undefined) {
+      obj.world = WorldRef.toJSON(message.world);
+    }
+    if (message.difficulty !== 0) {
+      obj.difficulty = difficultyToJSON(message.difficulty);
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<WorldSetDifficultyAction>): WorldSetDifficultyAction {
+    return WorldSetDifficultyAction.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<WorldSetDifficultyAction>): WorldSetDifficultyAction {
+    const message = createBaseWorldSetDifficultyAction();
+    message.world = (object.world !== undefined && object.world !== null)
+      ? WorldRef.fromPartial(object.world)
+      : undefined;
+    message.difficulty = object.difficulty ?? 0;
+    return message;
+  },
+};
+
+function createBaseWorldSetTickRangeAction(): WorldSetTickRangeAction {
+  return { world: undefined, tickRange: 0 };
+}
+
+export const WorldSetTickRangeAction: MessageFns<WorldSetTickRangeAction> = {
+  encode(message: WorldSetTickRangeAction, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.world !== undefined) {
+      WorldRef.encode(message.world, writer.uint32(10).fork()).join();
+    }
+    if (message.tickRange !== 0) {
+      writer.uint32(16).int32(message.tickRange);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): WorldSetTickRangeAction {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseWorldSetTickRangeAction();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.world = WorldRef.decode(reader, reader.uint32());
+          continue;
+        }
+        case 2: {
+          if (tag !== 16) {
+            break;
+          }
+
+          message.tickRange = reader.int32();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): WorldSetTickRangeAction {
+    return {
+      world: isSet(object.world) ? WorldRef.fromJSON(object.world) : undefined,
+      tickRange: isSet(object.tickRange) ? globalThis.Number(object.tickRange) : 0,
+    };
+  },
+
+  toJSON(message: WorldSetTickRangeAction): unknown {
+    const obj: any = {};
+    if (message.world !== undefined) {
+      obj.world = WorldRef.toJSON(message.world);
+    }
+    if (message.tickRange !== 0) {
+      obj.tickRange = Math.round(message.tickRange);
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<WorldSetTickRangeAction>): WorldSetTickRangeAction {
+    return WorldSetTickRangeAction.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<WorldSetTickRangeAction>): WorldSetTickRangeAction {
+    const message = createBaseWorldSetTickRangeAction();
+    message.world = (object.world !== undefined && object.world !== null)
+      ? WorldRef.fromPartial(object.world)
+      : undefined;
+    message.tickRange = object.tickRange ?? 0;
+    return message;
+  },
+};
+
+function createBaseWorldSetBlockAction(): WorldSetBlockAction {
+  return { world: undefined, position: undefined, block: undefined };
+}
+
+export const WorldSetBlockAction: MessageFns<WorldSetBlockAction> = {
+  encode(message: WorldSetBlockAction, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.world !== undefined) {
+      WorldRef.encode(message.world, writer.uint32(10).fork()).join();
+    }
+    if (message.position !== undefined) {
+      BlockPos.encode(message.position, writer.uint32(18).fork()).join();
+    }
+    if (message.block !== undefined) {
+      BlockState.encode(message.block, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): WorldSetBlockAction {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseWorldSetBlockAction();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.world = WorldRef.decode(reader, reader.uint32());
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.position = BlockPos.decode(reader, reader.uint32());
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.block = BlockState.decode(reader, reader.uint32());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): WorldSetBlockAction {
+    return {
+      world: isSet(object.world) ? WorldRef.fromJSON(object.world) : undefined,
+      position: isSet(object.position) ? BlockPos.fromJSON(object.position) : undefined,
+      block: isSet(object.block) ? BlockState.fromJSON(object.block) : undefined,
+    };
+  },
+
+  toJSON(message: WorldSetBlockAction): unknown {
+    const obj: any = {};
+    if (message.world !== undefined) {
+      obj.world = WorldRef.toJSON(message.world);
+    }
+    if (message.position !== undefined) {
+      obj.position = BlockPos.toJSON(message.position);
+    }
+    if (message.block !== undefined) {
+      obj.block = BlockState.toJSON(message.block);
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<WorldSetBlockAction>): WorldSetBlockAction {
+    return WorldSetBlockAction.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<WorldSetBlockAction>): WorldSetBlockAction {
+    const message = createBaseWorldSetBlockAction();
+    message.world = (object.world !== undefined && object.world !== null)
+      ? WorldRef.fromPartial(object.world)
+      : undefined;
+    message.position = (object.position !== undefined && object.position !== null)
+      ? BlockPos.fromPartial(object.position)
+      : undefined;
+    message.block = (object.block !== undefined && object.block !== null)
+      ? BlockState.fromPartial(object.block)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseWorldPlaySoundAction(): WorldPlaySoundAction {
+  return { world: undefined, sound: 0, position: undefined };
+}
+
+export const WorldPlaySoundAction: MessageFns<WorldPlaySoundAction> = {
+  encode(message: WorldPlaySoundAction, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.world !== undefined) {
+      WorldRef.encode(message.world, writer.uint32(10).fork()).join();
+    }
+    if (message.sound !== 0) {
+      writer.uint32(16).int32(message.sound);
+    }
+    if (message.position !== undefined) {
+      Vec3.encode(message.position, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): WorldPlaySoundAction {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseWorldPlaySoundAction();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.world = WorldRef.decode(reader, reader.uint32());
+          continue;
+        }
+        case 2: {
+          if (tag !== 16) {
+            break;
+          }
+
+          message.sound = reader.int32() as any;
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.position = Vec3.decode(reader, reader.uint32());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): WorldPlaySoundAction {
+    return {
+      world: isSet(object.world) ? WorldRef.fromJSON(object.world) : undefined,
+      sound: isSet(object.sound) ? soundFromJSON(object.sound) : 0,
+      position: isSet(object.position) ? Vec3.fromJSON(object.position) : undefined,
+    };
+  },
+
+  toJSON(message: WorldPlaySoundAction): unknown {
+    const obj: any = {};
+    if (message.world !== undefined) {
+      obj.world = WorldRef.toJSON(message.world);
+    }
+    if (message.sound !== 0) {
+      obj.sound = soundToJSON(message.sound);
+    }
+    if (message.position !== undefined) {
+      obj.position = Vec3.toJSON(message.position);
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<WorldPlaySoundAction>): WorldPlaySoundAction {
+    return WorldPlaySoundAction.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<WorldPlaySoundAction>): WorldPlaySoundAction {
+    const message = createBaseWorldPlaySoundAction();
+    message.world = (object.world !== undefined && object.world !== null)
+      ? WorldRef.fromPartial(object.world)
+      : undefined;
+    message.sound = object.sound ?? 0;
+    message.position = (object.position !== undefined && object.position !== null)
+      ? Vec3.fromPartial(object.position)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseWorldAddParticleAction(): WorldAddParticleAction {
+  return { world: undefined, position: undefined, particle: 0, block: undefined, face: undefined };
+}
+
+export const WorldAddParticleAction: MessageFns<WorldAddParticleAction> = {
+  encode(message: WorldAddParticleAction, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.world !== undefined) {
+      WorldRef.encode(message.world, writer.uint32(10).fork()).join();
+    }
+    if (message.position !== undefined) {
+      Vec3.encode(message.position, writer.uint32(18).fork()).join();
+    }
+    if (message.particle !== 0) {
+      writer.uint32(24).int32(message.particle);
+    }
+    if (message.block !== undefined) {
+      BlockState.encode(message.block, writer.uint32(34).fork()).join();
+    }
+    if (message.face !== undefined) {
+      writer.uint32(40).int32(message.face);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): WorldAddParticleAction {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseWorldAddParticleAction();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.world = WorldRef.decode(reader, reader.uint32());
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.position = Vec3.decode(reader, reader.uint32());
+          continue;
+        }
+        case 3: {
+          if (tag !== 24) {
+            break;
+          }
+
+          message.particle = reader.int32() as any;
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.block = BlockState.decode(reader, reader.uint32());
+          continue;
+        }
+        case 5: {
+          if (tag !== 40) {
+            break;
+          }
+
+          message.face = reader.int32();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): WorldAddParticleAction {
+    return {
+      world: isSet(object.world) ? WorldRef.fromJSON(object.world) : undefined,
+      position: isSet(object.position) ? Vec3.fromJSON(object.position) : undefined,
+      particle: isSet(object.particle) ? particleTypeFromJSON(object.particle) : 0,
+      block: isSet(object.block) ? BlockState.fromJSON(object.block) : undefined,
+      face: isSet(object.face) ? globalThis.Number(object.face) : undefined,
+    };
+  },
+
+  toJSON(message: WorldAddParticleAction): unknown {
+    const obj: any = {};
+    if (message.world !== undefined) {
+      obj.world = WorldRef.toJSON(message.world);
+    }
+    if (message.position !== undefined) {
+      obj.position = Vec3.toJSON(message.position);
+    }
+    if (message.particle !== 0) {
+      obj.particle = particleTypeToJSON(message.particle);
+    }
+    if (message.block !== undefined) {
+      obj.block = BlockState.toJSON(message.block);
+    }
+    if (message.face !== undefined) {
+      obj.face = Math.round(message.face);
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<WorldAddParticleAction>): WorldAddParticleAction {
+    return WorldAddParticleAction.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<WorldAddParticleAction>): WorldAddParticleAction {
+    const message = createBaseWorldAddParticleAction();
+    message.world = (object.world !== undefined && object.world !== null)
+      ? WorldRef.fromPartial(object.world)
+      : undefined;
+    message.position = (object.position !== undefined && object.position !== null)
+      ? Vec3.fromPartial(object.position)
+      : undefined;
+    message.particle = object.particle ?? 0;
+    message.block = (object.block !== undefined && object.block !== null)
+      ? BlockState.fromPartial(object.block)
+      : undefined;
+    message.face = object.face ?? undefined;
+    return message;
+  },
+};
+
+function createBaseWorldQueryEntitiesAction(): WorldQueryEntitiesAction {
+  return { world: undefined };
+}
+
+export const WorldQueryEntitiesAction: MessageFns<WorldQueryEntitiesAction> = {
+  encode(message: WorldQueryEntitiesAction, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.world !== undefined) {
+      WorldRef.encode(message.world, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): WorldQueryEntitiesAction {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseWorldQueryEntitiesAction();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.world = WorldRef.decode(reader, reader.uint32());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): WorldQueryEntitiesAction {
+    return { world: isSet(object.world) ? WorldRef.fromJSON(object.world) : undefined };
+  },
+
+  toJSON(message: WorldQueryEntitiesAction): unknown {
+    const obj: any = {};
+    if (message.world !== undefined) {
+      obj.world = WorldRef.toJSON(message.world);
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<WorldQueryEntitiesAction>): WorldQueryEntitiesAction {
+    return WorldQueryEntitiesAction.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<WorldQueryEntitiesAction>): WorldQueryEntitiesAction {
+    const message = createBaseWorldQueryEntitiesAction();
+    message.world = (object.world !== undefined && object.world !== null)
+      ? WorldRef.fromPartial(object.world)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseWorldQueryPlayersAction(): WorldQueryPlayersAction {
+  return { world: undefined };
+}
+
+export const WorldQueryPlayersAction: MessageFns<WorldQueryPlayersAction> = {
+  encode(message: WorldQueryPlayersAction, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.world !== undefined) {
+      WorldRef.encode(message.world, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): WorldQueryPlayersAction {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseWorldQueryPlayersAction();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.world = WorldRef.decode(reader, reader.uint32());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): WorldQueryPlayersAction {
+    return { world: isSet(object.world) ? WorldRef.fromJSON(object.world) : undefined };
+  },
+
+  toJSON(message: WorldQueryPlayersAction): unknown {
+    const obj: any = {};
+    if (message.world !== undefined) {
+      obj.world = WorldRef.toJSON(message.world);
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<WorldQueryPlayersAction>): WorldQueryPlayersAction {
+    return WorldQueryPlayersAction.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<WorldQueryPlayersAction>): WorldQueryPlayersAction {
+    const message = createBaseWorldQueryPlayersAction();
+    message.world = (object.world !== undefined && object.world !== null)
+      ? WorldRef.fromPartial(object.world)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseWorldQueryEntitiesWithinAction(): WorldQueryEntitiesWithinAction {
+  return { world: undefined, box: undefined };
+}
+
+export const WorldQueryEntitiesWithinAction: MessageFns<WorldQueryEntitiesWithinAction> = {
+  encode(message: WorldQueryEntitiesWithinAction, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.world !== undefined) {
+      WorldRef.encode(message.world, writer.uint32(10).fork()).join();
+    }
+    if (message.box !== undefined) {
+      BBox.encode(message.box, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): WorldQueryEntitiesWithinAction {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseWorldQueryEntitiesWithinAction();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.world = WorldRef.decode(reader, reader.uint32());
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.box = BBox.decode(reader, reader.uint32());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): WorldQueryEntitiesWithinAction {
+    return {
+      world: isSet(object.world) ? WorldRef.fromJSON(object.world) : undefined,
+      box: isSet(object.box) ? BBox.fromJSON(object.box) : undefined,
+    };
+  },
+
+  toJSON(message: WorldQueryEntitiesWithinAction): unknown {
+    const obj: any = {};
+    if (message.world !== undefined) {
+      obj.world = WorldRef.toJSON(message.world);
+    }
+    if (message.box !== undefined) {
+      obj.box = BBox.toJSON(message.box);
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<WorldQueryEntitiesWithinAction>): WorldQueryEntitiesWithinAction {
+    return WorldQueryEntitiesWithinAction.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<WorldQueryEntitiesWithinAction>): WorldQueryEntitiesWithinAction {
+    const message = createBaseWorldQueryEntitiesWithinAction();
+    message.world = (object.world !== undefined && object.world !== null)
+      ? WorldRef.fromPartial(object.world)
+      : undefined;
+    message.box = (object.box !== undefined && object.box !== null) ? BBox.fromPartial(object.box) : undefined;
+    return message;
+  },
+};
+
+function createBaseWorldQueryViewersAction(): WorldQueryViewersAction {
+  return { world: undefined, position: undefined };
+}
+
+export const WorldQueryViewersAction: MessageFns<WorldQueryViewersAction> = {
+  encode(message: WorldQueryViewersAction, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.world !== undefined) {
+      WorldRef.encode(message.world, writer.uint32(10).fork()).join();
+    }
+    if (message.position !== undefined) {
+      Vec3.encode(message.position, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): WorldQueryViewersAction {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseWorldQueryViewersAction();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.world = WorldRef.decode(reader, reader.uint32());
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.position = Vec3.decode(reader, reader.uint32());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): WorldQueryViewersAction {
+    return {
+      world: isSet(object.world) ? WorldRef.fromJSON(object.world) : undefined,
+      position: isSet(object.position) ? Vec3.fromJSON(object.position) : undefined,
+    };
+  },
+
+  toJSON(message: WorldQueryViewersAction): unknown {
+    const obj: any = {};
+    if (message.world !== undefined) {
+      obj.world = WorldRef.toJSON(message.world);
+    }
+    if (message.position !== undefined) {
+      obj.position = Vec3.toJSON(message.position);
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<WorldQueryViewersAction>): WorldQueryViewersAction {
+    return WorldQueryViewersAction.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<WorldQueryViewersAction>): WorldQueryViewersAction {
+    const message = createBaseWorldQueryViewersAction();
+    message.world = (object.world !== undefined && object.world !== null)
+      ? WorldRef.fromPartial(object.world)
+      : undefined;
+    message.position = (object.position !== undefined && object.position !== null)
+      ? Vec3.fromPartial(object.position)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseActionStatus(): ActionStatus {
+  return { ok: false, error: undefined };
+}
+
+export const ActionStatus: MessageFns<ActionStatus> = {
+  encode(message: ActionStatus, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.ok !== false) {
+      writer.uint32(8).bool(message.ok);
+    }
+    if (message.error !== undefined) {
+      writer.uint32(18).string(message.error);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ActionStatus {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseActionStatus();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 8) {
+            break;
+          }
+
+          message.ok = reader.bool();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.error = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ActionStatus {
+    return {
+      ok: isSet(object.ok) ? globalThis.Boolean(object.ok) : false,
+      error: isSet(object.error) ? globalThis.String(object.error) : undefined,
+    };
+  },
+
+  toJSON(message: ActionStatus): unknown {
+    const obj: any = {};
+    if (message.ok !== false) {
+      obj.ok = message.ok;
+    }
+    if (message.error !== undefined) {
+      obj.error = message.error;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<ActionStatus>): ActionStatus {
+    return ActionStatus.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<ActionStatus>): ActionStatus {
+    const message = createBaseActionStatus();
+    message.ok = object.ok ?? false;
+    message.error = object.error ?? undefined;
+    return message;
+  },
+};
+
+function createBaseWorldEntitiesResult(): WorldEntitiesResult {
+  return { world: undefined, entities: [] };
+}
+
+export const WorldEntitiesResult: MessageFns<WorldEntitiesResult> = {
+  encode(message: WorldEntitiesResult, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.world !== undefined) {
+      WorldRef.encode(message.world, writer.uint32(10).fork()).join();
+    }
+    for (const v of message.entities) {
+      EntityRef.encode(v!, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): WorldEntitiesResult {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseWorldEntitiesResult();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.world = WorldRef.decode(reader, reader.uint32());
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.entities.push(EntityRef.decode(reader, reader.uint32()));
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): WorldEntitiesResult {
+    return {
+      world: isSet(object.world) ? WorldRef.fromJSON(object.world) : undefined,
+      entities: globalThis.Array.isArray(object?.entities)
+        ? object.entities.map((e: any) => EntityRef.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: WorldEntitiesResult): unknown {
+    const obj: any = {};
+    if (message.world !== undefined) {
+      obj.world = WorldRef.toJSON(message.world);
+    }
+    if (message.entities?.length) {
+      obj.entities = message.entities.map((e) => EntityRef.toJSON(e));
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<WorldEntitiesResult>): WorldEntitiesResult {
+    return WorldEntitiesResult.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<WorldEntitiesResult>): WorldEntitiesResult {
+    const message = createBaseWorldEntitiesResult();
+    message.world = (object.world !== undefined && object.world !== null)
+      ? WorldRef.fromPartial(object.world)
+      : undefined;
+    message.entities = object.entities?.map((e) => EntityRef.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseWorldEntitiesWithinResult(): WorldEntitiesWithinResult {
+  return { world: undefined, box: undefined, entities: [] };
+}
+
+export const WorldEntitiesWithinResult: MessageFns<WorldEntitiesWithinResult> = {
+  encode(message: WorldEntitiesWithinResult, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.world !== undefined) {
+      WorldRef.encode(message.world, writer.uint32(10).fork()).join();
+    }
+    if (message.box !== undefined) {
+      BBox.encode(message.box, writer.uint32(18).fork()).join();
+    }
+    for (const v of message.entities) {
+      EntityRef.encode(v!, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): WorldEntitiesWithinResult {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseWorldEntitiesWithinResult();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.world = WorldRef.decode(reader, reader.uint32());
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.box = BBox.decode(reader, reader.uint32());
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.entities.push(EntityRef.decode(reader, reader.uint32()));
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): WorldEntitiesWithinResult {
+    return {
+      world: isSet(object.world) ? WorldRef.fromJSON(object.world) : undefined,
+      box: isSet(object.box) ? BBox.fromJSON(object.box) : undefined,
+      entities: globalThis.Array.isArray(object?.entities)
+        ? object.entities.map((e: any) => EntityRef.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: WorldEntitiesWithinResult): unknown {
+    const obj: any = {};
+    if (message.world !== undefined) {
+      obj.world = WorldRef.toJSON(message.world);
+    }
+    if (message.box !== undefined) {
+      obj.box = BBox.toJSON(message.box);
+    }
+    if (message.entities?.length) {
+      obj.entities = message.entities.map((e) => EntityRef.toJSON(e));
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<WorldEntitiesWithinResult>): WorldEntitiesWithinResult {
+    return WorldEntitiesWithinResult.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<WorldEntitiesWithinResult>): WorldEntitiesWithinResult {
+    const message = createBaseWorldEntitiesWithinResult();
+    message.world = (object.world !== undefined && object.world !== null)
+      ? WorldRef.fromPartial(object.world)
+      : undefined;
+    message.box = (object.box !== undefined && object.box !== null) ? BBox.fromPartial(object.box) : undefined;
+    message.entities = object.entities?.map((e) => EntityRef.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseWorldPlayersResult(): WorldPlayersResult {
+  return { world: undefined, players: [] };
+}
+
+export const WorldPlayersResult: MessageFns<WorldPlayersResult> = {
+  encode(message: WorldPlayersResult, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.world !== undefined) {
+      WorldRef.encode(message.world, writer.uint32(10).fork()).join();
+    }
+    for (const v of message.players) {
+      EntityRef.encode(v!, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): WorldPlayersResult {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseWorldPlayersResult();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.world = WorldRef.decode(reader, reader.uint32());
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.players.push(EntityRef.decode(reader, reader.uint32()));
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): WorldPlayersResult {
+    return {
+      world: isSet(object.world) ? WorldRef.fromJSON(object.world) : undefined,
+      players: globalThis.Array.isArray(object?.players) ? object.players.map((e: any) => EntityRef.fromJSON(e)) : [],
+    };
+  },
+
+  toJSON(message: WorldPlayersResult): unknown {
+    const obj: any = {};
+    if (message.world !== undefined) {
+      obj.world = WorldRef.toJSON(message.world);
+    }
+    if (message.players?.length) {
+      obj.players = message.players.map((e) => EntityRef.toJSON(e));
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<WorldPlayersResult>): WorldPlayersResult {
+    return WorldPlayersResult.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<WorldPlayersResult>): WorldPlayersResult {
+    const message = createBaseWorldPlayersResult();
+    message.world = (object.world !== undefined && object.world !== null)
+      ? WorldRef.fromPartial(object.world)
+      : undefined;
+    message.players = object.players?.map((e) => EntityRef.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseWorldViewersResult(): WorldViewersResult {
+  return { world: undefined, position: undefined, viewerUuids: [] };
+}
+
+export const WorldViewersResult: MessageFns<WorldViewersResult> = {
+  encode(message: WorldViewersResult, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.world !== undefined) {
+      WorldRef.encode(message.world, writer.uint32(10).fork()).join();
+    }
+    if (message.position !== undefined) {
+      Vec3.encode(message.position, writer.uint32(18).fork()).join();
+    }
+    for (const v of message.viewerUuids) {
+      writer.uint32(26).string(v!);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): WorldViewersResult {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseWorldViewersResult();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.world = WorldRef.decode(reader, reader.uint32());
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.position = Vec3.decode(reader, reader.uint32());
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.viewerUuids.push(reader.string());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): WorldViewersResult {
+    return {
+      world: isSet(object.world) ? WorldRef.fromJSON(object.world) : undefined,
+      position: isSet(object.position) ? Vec3.fromJSON(object.position) : undefined,
+      viewerUuids: globalThis.Array.isArray(object?.viewerUuids)
+        ? object.viewerUuids.map((e: any) => globalThis.String(e))
+        : [],
+    };
+  },
+
+  toJSON(message: WorldViewersResult): unknown {
+    const obj: any = {};
+    if (message.world !== undefined) {
+      obj.world = WorldRef.toJSON(message.world);
+    }
+    if (message.position !== undefined) {
+      obj.position = Vec3.toJSON(message.position);
+    }
+    if (message.viewerUuids?.length) {
+      obj.viewerUuids = message.viewerUuids;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<WorldViewersResult>): WorldViewersResult {
+    return WorldViewersResult.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<WorldViewersResult>): WorldViewersResult {
+    const message = createBaseWorldViewersResult();
+    message.world = (object.world !== undefined && object.world !== null)
+      ? WorldRef.fromPartial(object.world)
+      : undefined;
+    message.position = (object.position !== undefined && object.position !== null)
+      ? Vec3.fromPartial(object.position)
+      : undefined;
+    message.viewerUuids = object.viewerUuids?.map((e) => e) || [];
+    return message;
+  },
+};
+
+function createBaseActionResult(): ActionResult {
+  return {
+    correlationId: "",
+    status: undefined,
+    worldEntities: undefined,
+    worldPlayers: undefined,
+    worldEntitiesWithin: undefined,
+    worldViewers: undefined,
+  };
+}
+
+export const ActionResult: MessageFns<ActionResult> = {
+  encode(message: ActionResult, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.correlationId !== "") {
+      writer.uint32(10).string(message.correlationId);
+    }
+    if (message.status !== undefined) {
+      ActionStatus.encode(message.status, writer.uint32(18).fork()).join();
+    }
+    if (message.worldEntities !== undefined) {
+      WorldEntitiesResult.encode(message.worldEntities, writer.uint32(82).fork()).join();
+    }
+    if (message.worldPlayers !== undefined) {
+      WorldPlayersResult.encode(message.worldPlayers, writer.uint32(90).fork()).join();
+    }
+    if (message.worldEntitiesWithin !== undefined) {
+      WorldEntitiesWithinResult.encode(message.worldEntitiesWithin, writer.uint32(98).fork()).join();
+    }
+    if (message.worldViewers !== undefined) {
+      WorldViewersResult.encode(message.worldViewers, writer.uint32(106).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ActionResult {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseActionResult();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.correlationId = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.status = ActionStatus.decode(reader, reader.uint32());
+          continue;
+        }
+        case 10: {
+          if (tag !== 82) {
+            break;
+          }
+
+          message.worldEntities = WorldEntitiesResult.decode(reader, reader.uint32());
+          continue;
+        }
+        case 11: {
+          if (tag !== 90) {
+            break;
+          }
+
+          message.worldPlayers = WorldPlayersResult.decode(reader, reader.uint32());
+          continue;
+        }
+        case 12: {
+          if (tag !== 98) {
+            break;
+          }
+
+          message.worldEntitiesWithin = WorldEntitiesWithinResult.decode(reader, reader.uint32());
+          continue;
+        }
+        case 13: {
+          if (tag !== 106) {
+            break;
+          }
+
+          message.worldViewers = WorldViewersResult.decode(reader, reader.uint32());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ActionResult {
+    return {
+      correlationId: isSet(object.correlationId) ? globalThis.String(object.correlationId) : "",
+      status: isSet(object.status) ? ActionStatus.fromJSON(object.status) : undefined,
+      worldEntities: isSet(object.worldEntities) ? WorldEntitiesResult.fromJSON(object.worldEntities) : undefined,
+      worldPlayers: isSet(object.worldPlayers) ? WorldPlayersResult.fromJSON(object.worldPlayers) : undefined,
+      worldEntitiesWithin: isSet(object.worldEntitiesWithin)
+        ? WorldEntitiesWithinResult.fromJSON(object.worldEntitiesWithin)
+        : undefined,
+      worldViewers: isSet(object.worldViewers) ? WorldViewersResult.fromJSON(object.worldViewers) : undefined,
+    };
+  },
+
+  toJSON(message: ActionResult): unknown {
+    const obj: any = {};
+    if (message.correlationId !== "") {
+      obj.correlationId = message.correlationId;
+    }
+    if (message.status !== undefined) {
+      obj.status = ActionStatus.toJSON(message.status);
+    }
+    if (message.worldEntities !== undefined) {
+      obj.worldEntities = WorldEntitiesResult.toJSON(message.worldEntities);
+    }
+    if (message.worldPlayers !== undefined) {
+      obj.worldPlayers = WorldPlayersResult.toJSON(message.worldPlayers);
+    }
+    if (message.worldEntitiesWithin !== undefined) {
+      obj.worldEntitiesWithin = WorldEntitiesWithinResult.toJSON(message.worldEntitiesWithin);
+    }
+    if (message.worldViewers !== undefined) {
+      obj.worldViewers = WorldViewersResult.toJSON(message.worldViewers);
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<ActionResult>): ActionResult {
+    return ActionResult.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<ActionResult>): ActionResult {
+    const message = createBaseActionResult();
+    message.correlationId = object.correlationId ?? "";
+    message.status = (object.status !== undefined && object.status !== null)
+      ? ActionStatus.fromPartial(object.status)
+      : undefined;
+    message.worldEntities = (object.worldEntities !== undefined && object.worldEntities !== null)
+      ? WorldEntitiesResult.fromPartial(object.worldEntities)
+      : undefined;
+    message.worldPlayers = (object.worldPlayers !== undefined && object.worldPlayers !== null)
+      ? WorldPlayersResult.fromPartial(object.worldPlayers)
+      : undefined;
+    message.worldEntitiesWithin = (object.worldEntitiesWithin !== undefined && object.worldEntitiesWithin !== null)
+      ? WorldEntitiesWithinResult.fromPartial(object.worldEntitiesWithin)
+      : undefined;
+    message.worldViewers = (object.worldViewers !== undefined && object.worldViewers !== null)
+      ? WorldViewersResult.fromPartial(object.worldViewers)
+      : undefined;
     return message;
   },
 };
