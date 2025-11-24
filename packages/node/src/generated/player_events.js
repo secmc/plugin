@@ -8,7 +8,7 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { Address, BlockPos, BlockState, DamageSource, EntityRef, HealingSource, ItemStack, Rotation, Vec3, WorldRef, } from "./common.js";
 export const protobufPackage = "df.plugin";
 function createBasePlayerJoinEvent() {
-    return { playerUuid: "", name: "" };
+    return { playerUuid: "", name: "", world: undefined };
 }
 export const PlayerJoinEvent = {
     encode(message, writer = new BinaryWriter()) {
@@ -17,6 +17,9 @@ export const PlayerJoinEvent = {
         }
         if (message.name !== "") {
             writer.uint32(18).string(message.name);
+        }
+        if (message.world !== undefined) {
+            WorldRef.encode(message.world, writer.uint32(26).fork()).join();
         }
         return writer;
     },
@@ -41,6 +44,13 @@ export const PlayerJoinEvent = {
                     message.name = reader.string();
                     continue;
                 }
+                case 3: {
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.world = WorldRef.decode(reader, reader.uint32());
+                    continue;
+                }
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -53,6 +63,7 @@ export const PlayerJoinEvent = {
         return {
             playerUuid: isSet(object.playerUuid) ? globalThis.String(object.playerUuid) : "",
             name: isSet(object.name) ? globalThis.String(object.name) : "",
+            world: isSet(object.world) ? WorldRef.fromJSON(object.world) : undefined,
         };
     },
     toJSON(message) {
@@ -63,6 +74,9 @@ export const PlayerJoinEvent = {
         if (message.name !== "") {
             obj.name = message.name;
         }
+        if (message.world !== undefined) {
+            obj.world = WorldRef.toJSON(message.world);
+        }
         return obj;
     },
     create(base) {
@@ -72,6 +86,9 @@ export const PlayerJoinEvent = {
         const message = createBasePlayerJoinEvent();
         message.playerUuid = object.playerUuid ?? "";
         message.name = object.name ?? "";
+        message.world = (object.world !== undefined && object.world !== null)
+            ? WorldRef.fromPartial(object.world)
+            : undefined;
         return message;
     },
 };

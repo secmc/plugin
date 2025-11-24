@@ -1363,218 +1363,6 @@ class PlayerPunchAirEvent final : public ::google::protobuf::Message
 extern const ::google::protobuf::internal::ClassDataFull PlayerPunchAirEvent_class_data_;
 // -------------------------------------------------------------------
 
-class PlayerJoinEvent final : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:df.plugin.PlayerJoinEvent) */ {
- public:
-  inline PlayerJoinEvent() : PlayerJoinEvent(nullptr) {}
-  ~PlayerJoinEvent() PROTOBUF_FINAL;
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-  void operator delete(PlayerJoinEvent* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
-    SharedDtor(*msg);
-    ::google::protobuf::internal::SizedDelete(msg, sizeof(PlayerJoinEvent));
-  }
-#endif
-
-  template <typename = void>
-  explicit PROTOBUF_CONSTEXPR PlayerJoinEvent(::google::protobuf::internal::ConstantInitialized);
-
-  inline PlayerJoinEvent(const PlayerJoinEvent& from) : PlayerJoinEvent(nullptr, from) {}
-  inline PlayerJoinEvent(PlayerJoinEvent&& from) noexcept
-      : PlayerJoinEvent(nullptr, ::std::move(from)) {}
-  inline PlayerJoinEvent& operator=(const PlayerJoinEvent& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline PlayerJoinEvent& operator=(PlayerJoinEvent&& from) noexcept {
-    if (this == &from) return *this;
-    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
-  }
-  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-  }
-
-  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
-    return GetDescriptor();
-  }
-  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const PlayerJoinEvent& default_instance() {
-    return *reinterpret_cast<const PlayerJoinEvent*>(
-        &_PlayerJoinEvent_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages = 0;
-  friend void swap(PlayerJoinEvent& a, PlayerJoinEvent& b) { a.Swap(&b); }
-  inline void Swap(PlayerJoinEvent* PROTOBUF_NONNULL other) {
-    if (other == this) return;
-    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-      InternalSwap(other);
-    } else {
-      ::google::protobuf::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(PlayerJoinEvent* PROTOBUF_NONNULL other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  PlayerJoinEvent* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
-    return ::google::protobuf::Message::DefaultConstruct<PlayerJoinEvent>(arena);
-  }
-  using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const PlayerJoinEvent& from);
-  using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom(const PlayerJoinEvent& from) { PlayerJoinEvent::MergeImpl(*this, from); }
-
-  private:
-  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
-                        const ::google::protobuf::MessageLite& from_msg);
-
-  public:
-  bool IsInitialized() const {
-    return true;
-  }
-  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-  #if defined(PROTOBUF_CUSTOM_VTABLE)
-  private:
-  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
-      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
-      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
-
-  public:
-  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
-      ::uint8_t* PROTOBUF_NONNULL target,
-      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
-    return _InternalSerialize(*this, target, stream);
-  }
-  #else   // PROTOBUF_CUSTOM_VTABLE
-  ::size_t ByteSizeLong() const final;
-  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
-      ::uint8_t* PROTOBUF_NONNULL target,
-      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
-  #endif  // PROTOBUF_CUSTOM_VTABLE
-  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
-
-  private:
-  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
-  static void SharedDtor(MessageLite& self);
-  void InternalSwap(PlayerJoinEvent* PROTOBUF_NONNULL other);
- private:
-  template <typename T>
-  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "df.plugin.PlayerJoinEvent"; }
-
-  explicit PlayerJoinEvent(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
-  PlayerJoinEvent(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const PlayerJoinEvent& from);
-  PlayerJoinEvent(
-      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, PlayerJoinEvent&& from) noexcept
-      : PlayerJoinEvent(arena) {
-    *this = ::std::move(from);
-  }
-  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
-  static void* PROTOBUF_NONNULL PlacementNew_(
-      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
-      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
-  static constexpr auto InternalNewImpl_();
-
- public:
-  static constexpr auto InternalGenerateClassData_();
-
-  ::google::protobuf::Metadata GetMetadata() const;
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-  enum : int {
-    kPlayerUuidFieldNumber = 1,
-    kNameFieldNumber = 2,
-  };
-  // string player_uuid = 1 [json_name = "playerUuid"];
-  void clear_player_uuid() ;
-  const ::std::string& player_uuid() const;
-  template <typename Arg_ = const ::std::string&, typename... Args_>
-  void set_player_uuid(Arg_&& arg, Args_... args);
-  ::std::string* PROTOBUF_NONNULL mutable_player_uuid();
-  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_player_uuid();
-  void set_allocated_player_uuid(::std::string* PROTOBUF_NULLABLE value);
-
-  private:
-  const ::std::string& _internal_player_uuid() const;
-  PROTOBUF_ALWAYS_INLINE void _internal_set_player_uuid(const ::std::string& value);
-  ::std::string* PROTOBUF_NONNULL _internal_mutable_player_uuid();
-
-  public:
-  // string name = 2 [json_name = "name"];
-  void clear_name() ;
-  const ::std::string& name() const;
-  template <typename Arg_ = const ::std::string&, typename... Args_>
-  void set_name(Arg_&& arg, Args_... args);
-  ::std::string* PROTOBUF_NONNULL mutable_name();
-  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_name();
-  void set_allocated_name(::std::string* PROTOBUF_NULLABLE value);
-
-  private:
-  const ::std::string& _internal_name() const;
-  PROTOBUF_ALWAYS_INLINE void _internal_set_name(const ::std::string& value);
-  ::std::string* PROTOBUF_NONNULL _internal_mutable_name();
-
-  public:
-  // @@protoc_insertion_point(class_scope:df.plugin.PlayerJoinEvent)
- private:
-  class _Internal;
-  friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<1, 2,
-                                   0, 49,
-                                   2>
-      _table_;
-
-  friend class ::google::protobuf::MessageLite;
-  friend class ::google::protobuf::Arena;
-  template <typename T>
-  friend class ::google::protobuf::Arena::InternalHelper;
-  using InternalArenaConstructable_ = void;
-  using DestructorSkippable_ = void;
-  struct Impl_ {
-    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-    inline explicit Impl_(
-        ::google::protobuf::internal::InternalVisibility visibility,
-        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
-    inline explicit Impl_(
-        ::google::protobuf::internal::InternalVisibility visibility,
-        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
-        const PlayerJoinEvent& from_msg);
-    ::google::protobuf::internal::HasBits<1> _has_bits_;
-    ::google::protobuf::internal::CachedSize _cached_size_;
-    ::google::protobuf::internal::ArenaStringPtr player_uuid_;
-    ::google::protobuf::internal::ArenaStringPtr name_;
-    PROTOBUF_TSAN_DECLARE_MEMBER
-  };
-  union { Impl_ _impl_; };
-  friend struct ::TableStruct_player_5fevents_2eproto;
-};
-
-extern const ::google::protobuf::internal::ClassDataFull PlayerJoinEvent_class_data_;
-// -------------------------------------------------------------------
-
 class PlayerHeldSlotChangeEvent final : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:df.plugin.PlayerHeldSlotChangeEvent) */ {
  public:
@@ -4890,6 +4678,235 @@ class PlayerJumpEvent final : public ::google::protobuf::Message
 };
 
 extern const ::google::protobuf::internal::ClassDataFull PlayerJumpEvent_class_data_;
+// -------------------------------------------------------------------
+
+class PlayerJoinEvent final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:df.plugin.PlayerJoinEvent) */ {
+ public:
+  inline PlayerJoinEvent() : PlayerJoinEvent(nullptr) {}
+  ~PlayerJoinEvent() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(PlayerJoinEvent* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(PlayerJoinEvent));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR PlayerJoinEvent(::google::protobuf::internal::ConstantInitialized);
+
+  inline PlayerJoinEvent(const PlayerJoinEvent& from) : PlayerJoinEvent(nullptr, from) {}
+  inline PlayerJoinEvent(PlayerJoinEvent&& from) noexcept
+      : PlayerJoinEvent(nullptr, ::std::move(from)) {}
+  inline PlayerJoinEvent& operator=(const PlayerJoinEvent& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline PlayerJoinEvent& operator=(PlayerJoinEvent&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const PlayerJoinEvent& default_instance() {
+    return *reinterpret_cast<const PlayerJoinEvent*>(
+        &_PlayerJoinEvent_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 0;
+  friend void swap(PlayerJoinEvent& a, PlayerJoinEvent& b) { a.Swap(&b); }
+  inline void Swap(PlayerJoinEvent* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(PlayerJoinEvent* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  PlayerJoinEvent* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<PlayerJoinEvent>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const PlayerJoinEvent& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const PlayerJoinEvent& from) { PlayerJoinEvent::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(PlayerJoinEvent* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "df.plugin.PlayerJoinEvent"; }
+
+  explicit PlayerJoinEvent(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  PlayerJoinEvent(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const PlayerJoinEvent& from);
+  PlayerJoinEvent(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, PlayerJoinEvent&& from) noexcept
+      : PlayerJoinEvent(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kPlayerUuidFieldNumber = 1,
+    kNameFieldNumber = 2,
+    kWorldFieldNumber = 3,
+  };
+  // string player_uuid = 1 [json_name = "playerUuid"];
+  void clear_player_uuid() ;
+  const ::std::string& player_uuid() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_player_uuid(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_player_uuid();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_player_uuid();
+  void set_allocated_player_uuid(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_player_uuid() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_player_uuid(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_player_uuid();
+
+  public:
+  // string name = 2 [json_name = "name"];
+  void clear_name() ;
+  const ::std::string& name() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_name(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_name();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_name();
+  void set_allocated_name(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_name() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_name(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_name();
+
+  public:
+  // .df.plugin.WorldRef world = 3 [json_name = "world"];
+  bool has_world() const;
+  void clear_world() ;
+  const ::df::plugin::WorldRef& world() const;
+  [[nodiscard]] ::df::plugin::WorldRef* PROTOBUF_NULLABLE release_world();
+  ::df::plugin::WorldRef* PROTOBUF_NONNULL mutable_world();
+  void set_allocated_world(::df::plugin::WorldRef* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_world(::df::plugin::WorldRef* PROTOBUF_NULLABLE value);
+  ::df::plugin::WorldRef* PROTOBUF_NULLABLE unsafe_arena_release_world();
+
+  private:
+  const ::df::plugin::WorldRef& _internal_world() const;
+  ::df::plugin::WorldRef* PROTOBUF_NONNULL _internal_mutable_world();
+
+  public:
+  // @@protoc_insertion_point(class_scope:df.plugin.PlayerJoinEvent)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<2, 3,
+                                   1, 49,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const PlayerJoinEvent& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::internal::ArenaStringPtr player_uuid_;
+    ::google::protobuf::internal::ArenaStringPtr name_;
+    ::df::plugin::WorldRef* PROTOBUF_NULLABLE world_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_player_5fevents_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull PlayerJoinEvent_class_data_;
 // -------------------------------------------------------------------
 
 class PlayerItemUseEvent final : public ::google::protobuf::Message
@@ -9422,6 +9439,99 @@ inline void PlayerJoinEvent::set_allocated_name(::std::string* PROTOBUF_NULLABLE
     _impl_.name_.Set("", GetArena());
   }
   // @@protoc_insertion_point(field_set_allocated:df.plugin.PlayerJoinEvent.name)
+}
+
+// .df.plugin.WorldRef world = 3 [json_name = "world"];
+inline bool PlayerJoinEvent::has_world() const {
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000004U);
+  PROTOBUF_ASSUME(!value || _impl_.world_ != nullptr);
+  return value;
+}
+inline const ::df::plugin::WorldRef& PlayerJoinEvent::_internal_world() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::df::plugin::WorldRef* p = _impl_.world_;
+  return p != nullptr ? *p : reinterpret_cast<const ::df::plugin::WorldRef&>(::df::plugin::_WorldRef_default_instance_);
+}
+inline const ::df::plugin::WorldRef& PlayerJoinEvent::world() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:df.plugin.PlayerJoinEvent.world)
+  return _internal_world();
+}
+inline void PlayerJoinEvent::unsafe_arena_set_allocated_world(
+    ::df::plugin::WorldRef* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.world_);
+  }
+  _impl_.world_ = reinterpret_cast<::df::plugin::WorldRef*>(value);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:df.plugin.PlayerJoinEvent.world)
+}
+inline ::df::plugin::WorldRef* PROTOBUF_NULLABLE PlayerJoinEvent::release_world() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+  ::df::plugin::WorldRef* released = _impl_.world_;
+  _impl_.world_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::df::plugin::WorldRef* PROTOBUF_NULLABLE PlayerJoinEvent::unsafe_arena_release_world() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:df.plugin.PlayerJoinEvent.world)
+
+  ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+  ::df::plugin::WorldRef* temp = _impl_.world_;
+  _impl_.world_ = nullptr;
+  return temp;
+}
+inline ::df::plugin::WorldRef* PROTOBUF_NONNULL PlayerJoinEvent::_internal_mutable_world() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.world_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::df::plugin::WorldRef>(GetArena());
+    _impl_.world_ = reinterpret_cast<::df::plugin::WorldRef*>(p);
+  }
+  return _impl_.world_;
+}
+inline ::df::plugin::WorldRef* PROTOBUF_NONNULL PlayerJoinEvent::mutable_world()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  ::df::plugin::WorldRef* _msg = _internal_mutable_world();
+  // @@protoc_insertion_point(field_mutable:df.plugin.PlayerJoinEvent.world)
+  return _msg;
+}
+inline void PlayerJoinEvent::set_allocated_world(::df::plugin::WorldRef* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.world_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::google::protobuf::Message*>(value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+  }
+
+  _impl_.world_ = reinterpret_cast<::df::plugin::WorldRef*>(value);
+  // @@protoc_insertion_point(field_set_allocated:df.plugin.PlayerJoinEvent.world)
 }
 
 // -------------------------------------------------------------------

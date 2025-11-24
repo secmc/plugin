@@ -1169,6 +1169,8 @@ pub struct PlayerJoinEvent {
     pub player_uuid: ::prost::alloc::string::String,
     #[prost(string, tag="2")]
     pub name: ::prost::alloc::string::String,
+    #[prost(message, optional, tag="3")]
+    pub world: ::core::option::Option<WorldRef>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]

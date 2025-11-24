@@ -2,6 +2,7 @@
 
 namespace Dragonfly\PluginLib\Server;
 
+use Df\Plugin\WorldRef;
 use Dragonfly\PluginLib\Actions\Actions;
 use Dragonfly\PluginLib\Entity\Player;
 
@@ -12,7 +13,7 @@ use Dragonfly\PluginLib\Entity\Player;
  * when using PluginBase.
  */
 final class Server {
-    /** @var array<string, string> uuid => name */
+    /** @var array<string, Player> uuid => Player instance */
     private array $players = [];
 
     /** @var array<string, string> lowercase name => uuid */
@@ -25,9 +26,25 @@ final class Server {
     /**
      * Register a player as online. Called automatically on PlayerJoin.
      */
-    public function addPlayer(string $uuid, string $name): void {
-        $this->players[$uuid] = $name;
+    public function addPlayer(string $uuid, string $name, ?WorldRef $world = null): void {
+        $this->players[$uuid] = new Player($uuid, $name, $this->actions, $world);
         $this->nameIndex[strtolower($name)] = $uuid;
+    }
+
+    /**
+     * Update a player's world. Called on world change events.
+     */
+    public function setPlayerWorld(string $uuid, WorldRef $world): void {
+        if (isset($this->players[$uuid])) {
+            $this->players[$uuid]->setWorld($world);
+        }
+    }
+
+    /**
+     * Get a player's current world.
+     */
+    public function getPlayerWorld(string $uuid): ?WorldRef {
+        return $this->players[$uuid]?->getWorld();
     }
 
     /**
@@ -35,7 +52,7 @@ final class Server {
      */
     public function removePlayer(string $uuid): void {
         if (isset($this->players[$uuid])) {
-            $name = $this->players[$uuid];
+            $name = $this->players[$uuid]->getName();
             unset($this->nameIndex[strtolower($name)]);
             unset($this->players[$uuid]);
         }
@@ -45,10 +62,7 @@ final class Server {
      * Get a player by UUID. Returns null if not online.
      */
     public function getPlayer(string $uuid): ?Player {
-        if (!isset($this->players[$uuid])) {
-            return null;
-        }
-        return new Player($uuid, $this->players[$uuid], $this->actions);
+        return $this->players[$uuid] ?? null;
     }
 
     /**
@@ -59,8 +73,7 @@ final class Server {
         if (!isset($this->nameIndex[$lower])) {
             return null;
         }
-        $uuid = $this->nameIndex[$lower];
-        return new Player($uuid, $this->players[$uuid], $this->actions);
+        return $this->players[$this->nameIndex[$lower]] ?? null;
     }
 
     /**
@@ -69,11 +82,7 @@ final class Server {
      * @return Player[]
      */
     public function getOnlinePlayers(): array {
-        $result = [];
-        foreach ($this->players as $uuid => $name) {
-            $result[] = new Player($uuid, $name, $this->actions);
-        }
-        return $result;
+        return array_values($this->players);
     }
 
     /**
@@ -101,9 +110,8 @@ final class Server {
      * Broadcast a message to all online players.
      */
     public function broadcastMessage(string $message): void {
-        foreach ($this->players as $uuid => $_) {
-            $this->actions->chatToUuid($uuid, $message);
+        foreach ($this->players as $player) {
+            $player->sendMessage($message);
         }
     }
 }
-

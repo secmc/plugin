@@ -22,6 +22,10 @@ class PlayerJoinEvent extends \Google\Protobuf\Internal\Message
      * Generated from protobuf field <code>string name = 2 [json_name = "name"];</code>
      */
     protected $name = '';
+    /**
+     * Generated from protobuf field <code>.df.plugin.WorldRef world = 3 [json_name = "world"];</code>
+     */
+    protected $world = null;
 
     /**
      * Constructor.
@@ -31,6 +35,7 @@ class PlayerJoinEvent extends \Google\Protobuf\Internal\Message
      *
      *     @type string $player_uuid
      *     @type string $name
+     *     @type \Df\Plugin\WorldRef $world
      * }
      */
     public function __construct($data = NULL) {
@@ -78,6 +83,38 @@ class PlayerJoinEvent extends \Google\Protobuf\Internal\Message
     {
         GPBUtil::checkString($var, True);
         $this->name = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.WorldRef world = 3 [json_name = "world"];</code>
+     * @return \Df\Plugin\WorldRef|null
+     */
+    public function getWorld()
+    {
+        return $this->world;
+    }
+
+    public function hasWorld()
+    {
+        return isset($this->world);
+    }
+
+    public function clearWorld()
+    {
+        unset($this->world);
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.WorldRef world = 3 [json_name = "world"];</code>
+     * @param \Df\Plugin\WorldRef $var
+     * @return $this
+     */
+    public function setWorld($var)
+    {
+        GPBUtil::checkMessage($var, \Df\Plugin\WorldRef::class);
+        $this->world = $var;
 
         return $this;
     }

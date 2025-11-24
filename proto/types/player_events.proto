@@ -9,6 +9,7 @@ import "common.proto";
 message PlayerJoinEvent {
   string player_uuid = 1;
   string name = 2;
+  WorldRef world = 3;
 }
 
 message PlayerQuitEvent {

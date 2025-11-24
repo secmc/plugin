@@ -519,7 +519,8 @@ abstract class PluginBase {
         $this->addEventHandler(EventType::PLAYER_JOIN, function (string $eventId, EventEnvelope $event): void {
             $payload = $event->getPlayerJoin();
             if ($payload !== null) {
-                $this->server->addPlayer($payload->getPlayerUuid(), $payload->getName());
+                $world = method_exists($payload, 'getWorld') ? $payload->getWorld() : null;
+                $this->server->addPlayer($payload->getPlayerUuid(), $payload->getName(), $world);
             }
         });
 
@@ -528,6 +529,17 @@ abstract class PluginBase {
             $payload = $event->getPlayerQuit();
             if ($payload !== null) {
                 $this->server->removePlayer($payload->getPlayerUuid());
+            }
+        });
+
+        // Track world changes
+        $this->addEventHandler(EventType::PLAYER_CHANGE_WORLD, function (string $eventId, EventEnvelope $event): void {
+            $payload = $event->getPlayerChangeWorld();
+            if ($payload !== null && method_exists($payload, 'getAfter')) {
+                $world = $payload->getAfter();
+                if ($world !== null) {
+                    $this->server->setPlayerWorld($payload->getPlayerUuid(), $world);
+                }
             }
         });
     }

@@ -4,6 +4,7 @@ namespace Dragonfly\PluginLib\Entity;
 
 use Df\Plugin\ItemStack;
 use Df\Plugin\Vec3;
+use Df\Plugin\WorldRef;
 use Dragonfly\PluginLib\Actions\Actions;
 
 final class Player {
@@ -11,6 +12,7 @@ final class Player {
         private string $uuid,
         private string $name,
         private Actions $actions,
+        private ?WorldRef $world = null,
     ) {}
 
     public function getUuid(): string {
@@ -19,6 +21,14 @@ final class Player {
 
     public function getName(): string {
         return $this->name;
+    }
+
+    public function getWorld(): ?WorldRef {
+        return $this->world;
+    }
+
+    public function setWorld(?WorldRef $world): void {
+        $this->world = $world;
     }
 
     public function sendMessage(string $message): void {

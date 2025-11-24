@@ -25,6 +25,7 @@ type PlayerJoinEvent struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	PlayerUuid    string                 `protobuf:"bytes,1,opt,name=player_uuid,json=playerUuid,proto3" json:"player_uuid,omitempty"`
 	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	World         *WorldRef              `protobuf:"bytes,3,opt,name=world,proto3" json:"world,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -71,6 +72,13 @@ func (x *PlayerJoinEvent) GetName() string {
 		return x.Name
 	}
 	return ""
+}
+
+func (x *PlayerJoinEvent) GetWorld() *WorldRef {
+	if x != nil {
+		return x.World
+	}
+	return nil
 }
 
 type PlayerQuitEvent struct {
@@ -2641,11 +2649,12 @@ var File_player_events_proto protoreflect.FileDescriptor
 
 const file_player_events_proto_rawDesc = "" +
 	"\n" +
-	"\x13player_events.proto\x12\tdf.plugin\x1a\fcommon.proto\"F\n" +
+	"\x13player_events.proto\x12\tdf.plugin\x1a\fcommon.proto\"q\n" +
 	"\x0fPlayerJoinEvent\x12\x1f\n" +
 	"\vplayer_uuid\x18\x01 \x01(\tR\n" +
 	"playerUuid\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\"F\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12)\n" +
+	"\x05world\x18\x03 \x01(\v2\x13.df.plugin.WorldRefR\x05world\"F\n" +
 	"\x0fPlayerQuitEvent\x12\x1f\n" +
 	"\vplayer_uuid\x18\x01 \x01(\tR\n" +
 	"playerUuid\x12\x12\n" +
@@ -2956,9 +2965,9 @@ var file_player_events_proto_goTypes = []any{
 	(*PlayerItemDropEvent)(nil),        // 33: df.plugin.PlayerItemDropEvent
 	(*PlayerTransferEvent)(nil),        // 34: df.plugin.PlayerTransferEvent
 	(*PlayerDiagnosticsEvent)(nil),     // 35: df.plugin.PlayerDiagnosticsEvent
-	(*Vec3)(nil),                       // 36: df.plugin.Vec3
-	(*Rotation)(nil),                   // 37: df.plugin.Rotation
-	(*WorldRef)(nil),                   // 38: df.plugin.WorldRef
+	(*WorldRef)(nil),                   // 36: df.plugin.WorldRef
+	(*Vec3)(nil),                       // 37: df.plugin.Vec3
+	(*Rotation)(nil),                   // 38: df.plugin.Rotation
 	(*HealingSource)(nil),              // 39: df.plugin.HealingSource
 	(*DamageSource)(nil),               // 40: df.plugin.DamageSource
 	(*BlockPos)(nil),                   // 41: df.plugin.BlockPos
@@ -2968,46 +2977,47 @@ var file_player_events_proto_goTypes = []any{
 	(*Address)(nil),                    // 45: df.plugin.Address
 }
 var file_player_events_proto_depIdxs = []int32{
-	36, // 0: df.plugin.PlayerMoveEvent.position:type_name -> df.plugin.Vec3
-	37, // 1: df.plugin.PlayerMoveEvent.rotation:type_name -> df.plugin.Rotation
-	36, // 2: df.plugin.PlayerJumpEvent.position:type_name -> df.plugin.Vec3
-	36, // 3: df.plugin.PlayerTeleportEvent.position:type_name -> df.plugin.Vec3
-	38, // 4: df.plugin.PlayerChangeWorldEvent.before:type_name -> df.plugin.WorldRef
-	38, // 5: df.plugin.PlayerChangeWorldEvent.after:type_name -> df.plugin.WorldRef
-	39, // 6: df.plugin.PlayerHealEvent.source:type_name -> df.plugin.HealingSource
-	40, // 7: df.plugin.PlayerHurtEvent.source:type_name -> df.plugin.DamageSource
-	40, // 8: df.plugin.PlayerDeathEvent.source:type_name -> df.plugin.DamageSource
-	36, // 9: df.plugin.PlayerRespawnEvent.position:type_name -> df.plugin.Vec3
-	38, // 10: df.plugin.PlayerRespawnEvent.world:type_name -> df.plugin.WorldRef
-	41, // 11: df.plugin.PlayerFireExtinguishEvent.position:type_name -> df.plugin.BlockPos
-	41, // 12: df.plugin.PlayerStartBreakEvent.position:type_name -> df.plugin.BlockPos
-	41, // 13: df.plugin.BlockBreakEvent.position:type_name -> df.plugin.BlockPos
-	41, // 14: df.plugin.PlayerBlockPlaceEvent.position:type_name -> df.plugin.BlockPos
-	42, // 15: df.plugin.PlayerBlockPlaceEvent.block:type_name -> df.plugin.BlockState
-	41, // 16: df.plugin.PlayerBlockPickEvent.position:type_name -> df.plugin.BlockPos
-	42, // 17: df.plugin.PlayerBlockPickEvent.block:type_name -> df.plugin.BlockState
-	43, // 18: df.plugin.PlayerItemUseEvent.item:type_name -> df.plugin.ItemStack
-	41, // 19: df.plugin.PlayerItemUseOnBlockEvent.position:type_name -> df.plugin.BlockPos
-	36, // 20: df.plugin.PlayerItemUseOnBlockEvent.click_position:type_name -> df.plugin.Vec3
-	42, // 21: df.plugin.PlayerItemUseOnBlockEvent.block:type_name -> df.plugin.BlockState
-	43, // 22: df.plugin.PlayerItemUseOnBlockEvent.item:type_name -> df.plugin.ItemStack
-	44, // 23: df.plugin.PlayerItemUseOnEntityEvent.entity:type_name -> df.plugin.EntityRef
-	43, // 24: df.plugin.PlayerItemUseOnEntityEvent.item:type_name -> df.plugin.ItemStack
-	43, // 25: df.plugin.PlayerItemReleaseEvent.item:type_name -> df.plugin.ItemStack
-	43, // 26: df.plugin.PlayerItemConsumeEvent.item:type_name -> df.plugin.ItemStack
-	44, // 27: df.plugin.PlayerAttackEntityEvent.entity:type_name -> df.plugin.EntityRef
-	43, // 28: df.plugin.PlayerAttackEntityEvent.item:type_name -> df.plugin.ItemStack
-	41, // 29: df.plugin.PlayerSignEditEvent.position:type_name -> df.plugin.BlockPos
-	41, // 30: df.plugin.PlayerLecternPageTurnEvent.position:type_name -> df.plugin.BlockPos
-	43, // 31: df.plugin.PlayerItemDamageEvent.item:type_name -> df.plugin.ItemStack
-	43, // 32: df.plugin.PlayerItemPickupEvent.item:type_name -> df.plugin.ItemStack
-	43, // 33: df.plugin.PlayerItemDropEvent.item:type_name -> df.plugin.ItemStack
-	45, // 34: df.plugin.PlayerTransferEvent.address:type_name -> df.plugin.Address
-	35, // [35:35] is the sub-list for method output_type
-	35, // [35:35] is the sub-list for method input_type
-	35, // [35:35] is the sub-list for extension type_name
-	35, // [35:35] is the sub-list for extension extendee
-	0,  // [0:35] is the sub-list for field type_name
+	36, // 0: df.plugin.PlayerJoinEvent.world:type_name -> df.plugin.WorldRef
+	37, // 1: df.plugin.PlayerMoveEvent.position:type_name -> df.plugin.Vec3
+	38, // 2: df.plugin.PlayerMoveEvent.rotation:type_name -> df.plugin.Rotation
+	37, // 3: df.plugin.PlayerJumpEvent.position:type_name -> df.plugin.Vec3
+	37, // 4: df.plugin.PlayerTeleportEvent.position:type_name -> df.plugin.Vec3
+	36, // 5: df.plugin.PlayerChangeWorldEvent.before:type_name -> df.plugin.WorldRef
+	36, // 6: df.plugin.PlayerChangeWorldEvent.after:type_name -> df.plugin.WorldRef
+	39, // 7: df.plugin.PlayerHealEvent.source:type_name -> df.plugin.HealingSource
+	40, // 8: df.plugin.PlayerHurtEvent.source:type_name -> df.plugin.DamageSource
+	40, // 9: df.plugin.PlayerDeathEvent.source:type_name -> df.plugin.DamageSource
+	37, // 10: df.plugin.PlayerRespawnEvent.position:type_name -> df.plugin.Vec3
+	36, // 11: df.plugin.PlayerRespawnEvent.world:type_name -> df.plugin.WorldRef
+	41, // 12: df.plugin.PlayerFireExtinguishEvent.position:type_name -> df.plugin.BlockPos
+	41, // 13: df.plugin.PlayerStartBreakEvent.position:type_name -> df.plugin.BlockPos
+	41, // 14: df.plugin.BlockBreakEvent.position:type_name -> df.plugin.BlockPos
+	41, // 15: df.plugin.PlayerBlockPlaceEvent.position:type_name -> df.plugin.BlockPos
+	42, // 16: df.plugin.PlayerBlockPlaceEvent.block:type_name -> df.plugin.BlockState
+	41, // 17: df.plugin.PlayerBlockPickEvent.position:type_name -> df.plugin.BlockPos
+	42, // 18: df.plugin.PlayerBlockPickEvent.block:type_name -> df.plugin.BlockState
+	43, // 19: df.plugin.PlayerItemUseEvent.item:type_name -> df.plugin.ItemStack
+	41, // 20: df.plugin.PlayerItemUseOnBlockEvent.position:type_name -> df.plugin.BlockPos
+	37, // 21: df.plugin.PlayerItemUseOnBlockEvent.click_position:type_name -> df.plugin.Vec3
+	42, // 22: df.plugin.PlayerItemUseOnBlockEvent.block:type_name -> df.plugin.BlockState
+	43, // 23: df.plugin.PlayerItemUseOnBlockEvent.item:type_name -> df.plugin.ItemStack
+	44, // 24: df.plugin.PlayerItemUseOnEntityEvent.entity:type_name -> df.plugin.EntityRef
+	43, // 25: df.plugin.PlayerItemUseOnEntityEvent.item:type_name -> df.plugin.ItemStack
+	43, // 26: df.plugin.PlayerItemReleaseEvent.item:type_name -> df.plugin.ItemStack
+	43, // 27: df.plugin.PlayerItemConsumeEvent.item:type_name -> df.plugin.ItemStack
+	44, // 28: df.plugin.PlayerAttackEntityEvent.entity:type_name -> df.plugin.EntityRef
+	43, // 29: df.plugin.PlayerAttackEntityEvent.item:type_name -> df.plugin.ItemStack
+	41, // 30: df.plugin.PlayerSignEditEvent.position:type_name -> df.plugin.BlockPos
+	41, // 31: df.plugin.PlayerLecternPageTurnEvent.position:type_name -> df.plugin.BlockPos
+	43, // 32: df.plugin.PlayerItemDamageEvent.item:type_name -> df.plugin.ItemStack
+	43, // 33: df.plugin.PlayerItemPickupEvent.item:type_name -> df.plugin.ItemStack
+	43, // 34: df.plugin.PlayerItemDropEvent.item:type_name -> df.plugin.ItemStack
+	45, // 35: df.plugin.PlayerTransferEvent.address:type_name -> df.plugin.Address
+	36, // [36:36] is the sub-list for method output_type
+	36, // [36:36] is the sub-list for method input_type
+	36, // [36:36] is the sub-list for extension type_name
+	36, // [36:36] is the sub-list for extension extendee
+	0,  // [0:36] is the sub-list for field type_name
 }
 
 func init() { file_player_events_proto_init() }

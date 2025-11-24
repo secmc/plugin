@@ -189,36 +189,6 @@ struct PlayerPunchAirEventDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PlayerPunchAirEventDefaultTypeInternal _PlayerPunchAirEvent_default_instance_;
 
-inline constexpr PlayerJoinEvent::Impl_::Impl_(
-    ::_pbi::ConstantInitialized) noexcept
-      : _cached_size_{0},
-        player_uuid_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
-        name_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()) {}
-
-template <typename>
-PROTOBUF_CONSTEXPR PlayerJoinEvent::PlayerJoinEvent(::_pbi::ConstantInitialized)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(PlayerJoinEvent_class_data_.base()),
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(),
-#endif  // PROTOBUF_CUSTOM_VTABLE
-      _impl_(::_pbi::ConstantInitialized()) {
-}
-struct PlayerJoinEventDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR PlayerJoinEventDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~PlayerJoinEventDefaultTypeInternal() {}
-  union {
-    PlayerJoinEvent _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PlayerJoinEventDefaultTypeInternal _PlayerJoinEvent_default_instance_;
-
 inline constexpr PlayerHeldSlotChangeEvent::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : _cached_size_{0},
@@ -668,6 +638,37 @@ struct PlayerJumpEventDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PlayerJumpEventDefaultTypeInternal _PlayerJumpEvent_default_instance_;
+
+inline constexpr PlayerJoinEvent::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        player_uuid_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        name_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        world_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR PlayerJoinEvent::PlayerJoinEvent(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(PlayerJoinEvent_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct PlayerJoinEventDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR PlayerJoinEventDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~PlayerJoinEventDefaultTypeInternal() {}
+  union {
+    PlayerJoinEvent _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PlayerJoinEventDefaultTypeInternal _PlayerJoinEvent_default_instance_;
 
 inline constexpr PlayerItemUseEvent::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
@@ -1266,11 +1267,13 @@ const ::uint32_t
         protodesc_cold) = {
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::df::plugin::PlayerJoinEvent, _impl_._has_bits_),
-        5, // hasbit index offset
+        6, // hasbit index offset
         PROTOBUF_FIELD_OFFSET(::df::plugin::PlayerJoinEvent, _impl_.player_uuid_),
         PROTOBUF_FIELD_OFFSET(::df::plugin::PlayerJoinEvent, _impl_.name_),
+        PROTOBUF_FIELD_OFFSET(::df::plugin::PlayerJoinEvent, _impl_.world_),
         0,
         1,
+        2,
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::df::plugin::PlayerQuitEvent, _impl_._has_bits_),
         5, // hasbit index offset
@@ -1707,41 +1710,41 @@ const ::uint32_t
 static const ::_pbi::MigrationSchema
     schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
         {0, sizeof(::df::plugin::PlayerJoinEvent)},
-        {7, sizeof(::df::plugin::PlayerQuitEvent)},
-        {14, sizeof(::df::plugin::PlayerMoveEvent)},
-        {27, sizeof(::df::plugin::PlayerJumpEvent)},
-        {38, sizeof(::df::plugin::PlayerTeleportEvent)},
-        {49, sizeof(::df::plugin::PlayerChangeWorldEvent)},
-        {60, sizeof(::df::plugin::PlayerToggleSprintEvent)},
-        {69, sizeof(::df::plugin::PlayerToggleSneakEvent)},
-        {78, sizeof(::df::plugin::ChatEvent)},
-        {87, sizeof(::df::plugin::PlayerFoodLossEvent)},
-        {98, sizeof(::df::plugin::PlayerHealEvent)},
-        {109, sizeof(::df::plugin::PlayerHurtEvent)},
-        {124, sizeof(::df::plugin::PlayerDeathEvent)},
-        {135, sizeof(::df::plugin::PlayerRespawnEvent)},
-        {146, sizeof(::df::plugin::PlayerSkinChangeEvent)},
-        {159, sizeof(::df::plugin::PlayerFireExtinguishEvent)},
-        {170, sizeof(::df::plugin::PlayerStartBreakEvent)},
-        {181, sizeof(::df::plugin::BlockBreakEvent)},
-        {192, sizeof(::df::plugin::PlayerBlockPlaceEvent)},
-        {205, sizeof(::df::plugin::PlayerBlockPickEvent)},
-        {218, sizeof(::df::plugin::PlayerItemUseEvent)},
-        {229, sizeof(::df::plugin::PlayerItemUseOnBlockEvent)},
-        {248, sizeof(::df::plugin::PlayerItemUseOnEntityEvent)},
-        {261, sizeof(::df::plugin::PlayerItemReleaseEvent)},
-        {274, sizeof(::df::plugin::PlayerItemConsumeEvent)},
-        {285, sizeof(::df::plugin::PlayerAttackEntityEvent)},
-        {304, sizeof(::df::plugin::PlayerExperienceGainEvent)},
-        {315, sizeof(::df::plugin::PlayerPunchAirEvent)},
-        {324, sizeof(::df::plugin::PlayerSignEditEvent)},
-        {341, sizeof(::df::plugin::PlayerLecternPageTurnEvent)},
-        {356, sizeof(::df::plugin::PlayerItemDamageEvent)},
-        {369, sizeof(::df::plugin::PlayerItemPickupEvent)},
-        {380, sizeof(::df::plugin::PlayerHeldSlotChangeEvent)},
-        {393, sizeof(::df::plugin::PlayerItemDropEvent)},
-        {404, sizeof(::df::plugin::PlayerTransferEvent)},
-        {413, sizeof(::df::plugin::PlayerDiagnosticsEvent)},
+        {9, sizeof(::df::plugin::PlayerQuitEvent)},
+        {16, sizeof(::df::plugin::PlayerMoveEvent)},
+        {29, sizeof(::df::plugin::PlayerJumpEvent)},
+        {40, sizeof(::df::plugin::PlayerTeleportEvent)},
+        {51, sizeof(::df::plugin::PlayerChangeWorldEvent)},
+        {62, sizeof(::df::plugin::PlayerToggleSprintEvent)},
+        {71, sizeof(::df::plugin::PlayerToggleSneakEvent)},
+        {80, sizeof(::df::plugin::ChatEvent)},
+        {89, sizeof(::df::plugin::PlayerFoodLossEvent)},
+        {100, sizeof(::df::plugin::PlayerHealEvent)},
+        {111, sizeof(::df::plugin::PlayerHurtEvent)},
+        {126, sizeof(::df::plugin::PlayerDeathEvent)},
+        {137, sizeof(::df::plugin::PlayerRespawnEvent)},
+        {148, sizeof(::df::plugin::PlayerSkinChangeEvent)},
+        {161, sizeof(::df::plugin::PlayerFireExtinguishEvent)},
+        {172, sizeof(::df::plugin::PlayerStartBreakEvent)},
+        {183, sizeof(::df::plugin::BlockBreakEvent)},
+        {194, sizeof(::df::plugin::PlayerBlockPlaceEvent)},
+        {207, sizeof(::df::plugin::PlayerBlockPickEvent)},
+        {220, sizeof(::df::plugin::PlayerItemUseEvent)},
+        {231, sizeof(::df::plugin::PlayerItemUseOnBlockEvent)},
+        {250, sizeof(::df::plugin::PlayerItemUseOnEntityEvent)},
+        {263, sizeof(::df::plugin::PlayerItemReleaseEvent)},
+        {276, sizeof(::df::plugin::PlayerItemConsumeEvent)},
+        {287, sizeof(::df::plugin::PlayerAttackEntityEvent)},
+        {306, sizeof(::df::plugin::PlayerExperienceGainEvent)},
+        {317, sizeof(::df::plugin::PlayerPunchAirEvent)},
+        {326, sizeof(::df::plugin::PlayerSignEditEvent)},
+        {343, sizeof(::df::plugin::PlayerLecternPageTurnEvent)},
+        {358, sizeof(::df::plugin::PlayerItemDamageEvent)},
+        {371, sizeof(::df::plugin::PlayerItemPickupEvent)},
+        {382, sizeof(::df::plugin::PlayerHeldSlotChangeEvent)},
+        {395, sizeof(::df::plugin::PlayerItemDropEvent)},
+        {406, sizeof(::df::plugin::PlayerTransferEvent)},
+        {415, sizeof(::df::plugin::PlayerDiagnosticsEvent)},
 };
 static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::df::plugin::_PlayerJoinEvent_default_instance_._instance,
@@ -1784,171 +1787,172 @@ static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
 const char descriptor_table_protodef_player_5fevents_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
     "\n\023player_events.proto\022\tdf.plugin\032\014common"
-    ".proto\"F\n\017PlayerJoinEvent\022\037\n\013player_uuid"
-    "\030\001 \001(\tR\nplayerUuid\022\022\n\004name\030\002 \001(\tR\004name\"F"
-    "\n\017PlayerQuitEvent\022\037\n\013player_uuid\030\001 \001(\tR\n"
-    "playerUuid\022\022\n\004name\030\002 \001(\tR\004name\"\272\001\n\017Playe"
-    "rMoveEvent\022\037\n\013player_uuid\030\001 \001(\tR\nplayerU"
-    "uid\022\022\n\004name\030\002 \001(\tR\004name\022\024\n\005world\030\003 \001(\tR\005"
-    "world\022+\n\010position\030\004 \001(\0132\017.df.plugin.Vec3"
-    "R\010position\022/\n\010rotation\030\005 \001(\0132\023.df.plugin"
-    ".RotationR\010rotation\"\211\001\n\017PlayerJumpEvent\022"
-    "\037\n\013player_uuid\030\001 \001(\tR\nplayerUuid\022\022\n\004name"
-    "\030\002 \001(\tR\004name\022\024\n\005world\030\003 \001(\tR\005world\022+\n\010po"
-    "sition\030\004 \001(\0132\017.df.plugin.Vec3R\010position\""
-    "\215\001\n\023PlayerTeleportEvent\022\037\n\013player_uuid\030\001"
-    " \001(\tR\nplayerUuid\022\022\n\004name\030\002 \001(\tR\004name\022\024\n\005"
-    "world\030\003 \001(\tR\005world\022+\n\010position\030\004 \001(\0132\017.d"
-    "f.plugin.Vec3R\010position\"\304\001\n\026PlayerChange"
-    "WorldEvent\022\037\n\013player_uuid\030\001 \001(\tR\nplayerU"
-    "uid\022\022\n\004name\030\002 \001(\tR\004name\0220\n\006before\030\003 \001(\0132"
-    "\023.df.plugin.WorldRefH\000R\006before\210\001\001\022.\n\005aft"
-    "er\030\004 \001(\0132\023.df.plugin.WorldRefH\001R\005after\210\001"
-    "\001B\t\n\007_beforeB\010\n\006_after\"d\n\027PlayerToggleSp"
-    "rintEvent\022\037\n\013player_uuid\030\001 \001(\tR\nplayerUu"
-    "id\022\022\n\004name\030\002 \001(\tR\004name\022\024\n\005after\030\003 \001(\010R\005a"
-    "fter\"c\n\026PlayerToggleSneakEvent\022\037\n\013player"
-    "_uuid\030\001 \001(\tR\nplayerUuid\022\022\n\004name\030\002 \001(\tR\004n"
-    "ame\022\024\n\005after\030\003 \001(\010R\005after\"Z\n\tChatEvent\022\037"
-    "\n\013player_uuid\030\001 \001(\tR\nplayerUuid\022\022\n\004name\030"
-    "\002 \001(\tR\004name\022\030\n\007message\030\003 \001(\tR\007message\"n\n"
-    "\023PlayerFoodLossEvent\022\037\n\013player_uuid\030\001 \001("
-    "\tR\nplayerUuid\022\022\n\004name\030\002 \001(\tR\004name\022\022\n\004fro"
-    "m\030\003 \001(\005R\004from\022\016\n\002to\030\004 \001(\005R\002to\"\240\001\n\017Player"
-    "HealEvent\022\037\n\013player_uuid\030\001 \001(\tR\nplayerUu"
-    "id\022\022\n\004name\030\002 \001(\tR\004name\022\026\n\006amount\030\003 \001(\001R\006"
-    "amount\0225\n\006source\030\004 \001(\0132\030.df.plugin.Heali"
-    "ngSourceH\000R\006source\210\001\001B\t\n\007_source\"\345\001\n\017Pla"
-    "yerHurtEvent\022\037\n\013player_uuid\030\001 \001(\tR\nplaye"
-    "rUuid\022\022\n\004name\030\002 \001(\tR\004name\022\026\n\006damage\030\003 \001("
-    "\001R\006damage\022\026\n\006immune\030\004 \001(\010R\006immune\022,\n\022att"
-    "ack_immunity_ms\030\005 \001(\003R\020attackImmunityMs\022"
-    "4\n\006source\030\006 \001(\0132\027.df.plugin.DamageSource"
-    "H\000R\006source\210\001\001B\t\n\007_source\"\257\001\n\020PlayerDeath"
-    "Event\022\037\n\013player_uuid\030\001 \001(\tR\nplayerUuid\022\022"
-    "\n\004name\030\002 \001(\tR\004name\0224\n\006source\030\003 \001(\0132\027.df."
-    "plugin.DamageSourceH\000R\006source\210\001\001\022%\n\016keep"
-    "_inventory\030\004 \001(\010R\rkeepInventoryB\t\n\007_sour"
-    "ce\"\302\001\n\022PlayerRespawnEvent\022\037\n\013player_uuid"
-    "\030\001 \001(\tR\nplayerUuid\022\022\n\004name\030\002 \001(\tR\004name\0220"
-    "\n\010position\030\003 \001(\0132\017.df.plugin.Vec3H\000R\010pos"
-    "ition\210\001\001\022.\n\005world\030\004 \001(\0132\023.df.plugin.Worl"
-    "dRefH\001R\005world\210\001\001B\013\n\t_positionB\010\n\006_world\""
-    "\305\001\n\025PlayerSkinChangeEvent\022\037\n\013player_uuid"
-    "\030\001 \001(\tR\nplayerUuid\022\022\n\004name\030\002 \001(\tR\004name\022\034"
-    "\n\007full_id\030\003 \001(\tH\000R\006fullId\210\001\001\022#\n\013play_fab"
-    "_id\030\004 \001(\tH\001R\tplayFabId\210\001\001\022\030\n\007persona\030\005 \001"
-    "(\010R\007personaB\n\n\010_full_idB\016\n\014_play_fab_id\""
-    "\227\001\n\031PlayerFireExtinguishEvent\022\037\n\013player_"
-    "uuid\030\001 \001(\tR\nplayerUuid\022\022\n\004name\030\002 \001(\tR\004na"
-    "me\022\024\n\005world\030\003 \001(\tR\005world\022/\n\010position\030\004 \001"
-    "(\0132\023.df.plugin.BlockPosR\010position\"\223\001\n\025Pl"
-    "ayerStartBreakEvent\022\037\n\013player_uuid\030\001 \001(\t"
-    "R\nplayerUuid\022\022\n\004name\030\002 \001(\tR\004name\022\024\n\005worl"
-    "d\030\003 \001(\tR\005world\022/\n\010position\030\004 \001(\0132\023.df.pl"
-    "ugin.BlockPosR\010position\"\215\001\n\017BlockBreakEv"
-    "ent\022\037\n\013player_uuid\030\001 \001(\tR\nplayerUuid\022\022\n\004"
-    "name\030\002 \001(\tR\004name\022\024\n\005world\030\003 \001(\tR\005world\022/"
-    "\n\010position\030\004 \001(\0132\023.df.plugin.BlockPosR\010p"
-    "osition\"\300\001\n\025PlayerBlockPlaceEvent\022\037\n\013pla"
+    ".proto\"q\n\017PlayerJoinEvent\022\037\n\013player_uuid"
+    "\030\001 \001(\tR\nplayerUuid\022\022\n\004name\030\002 \001(\tR\004name\022)"
+    "\n\005world\030\003 \001(\0132\023.df.plugin.WorldRefR\005worl"
+    "d\"F\n\017PlayerQuitEvent\022\037\n\013player_uuid\030\001 \001("
+    "\tR\nplayerUuid\022\022\n\004name\030\002 \001(\tR\004name\"\272\001\n\017Pl"
+    "ayerMoveEvent\022\037\n\013player_uuid\030\001 \001(\tR\nplay"
+    "erUuid\022\022\n\004name\030\002 \001(\tR\004name\022\024\n\005world\030\003 \001("
+    "\tR\005world\022+\n\010position\030\004 \001(\0132\017.df.plugin.V"
+    "ec3R\010position\022/\n\010rotation\030\005 \001(\0132\023.df.plu"
+    "gin.RotationR\010rotation\"\211\001\n\017PlayerJumpEve"
+    "nt\022\037\n\013player_uuid\030\001 \001(\tR\nplayerUuid\022\022\n\004n"
+    "ame\030\002 \001(\tR\004name\022\024\n\005world\030\003 \001(\tR\005world\022+\n"
+    "\010position\030\004 \001(\0132\017.df.plugin.Vec3R\010positi"
+    "on\"\215\001\n\023PlayerTeleportEvent\022\037\n\013player_uui"
+    "d\030\001 \001(\tR\nplayerUuid\022\022\n\004name\030\002 \001(\tR\004name\022"
+    "\024\n\005world\030\003 \001(\tR\005world\022+\n\010position\030\004 \001(\0132"
+    "\017.df.plugin.Vec3R\010position\"\304\001\n\026PlayerCha"
+    "ngeWorldEvent\022\037\n\013player_uuid\030\001 \001(\tR\nplay"
+    "erUuid\022\022\n\004name\030\002 \001(\tR\004name\0220\n\006before\030\003 \001"
+    "(\0132\023.df.plugin.WorldRefH\000R\006before\210\001\001\022.\n\005"
+    "after\030\004 \001(\0132\023.df.plugin.WorldRefH\001R\005afte"
+    "r\210\001\001B\t\n\007_beforeB\010\n\006_after\"d\n\027PlayerToggl"
+    "eSprintEvent\022\037\n\013player_uuid\030\001 \001(\tR\nplaye"
+    "rUuid\022\022\n\004name\030\002 \001(\tR\004name\022\024\n\005after\030\003 \001(\010"
+    "R\005after\"c\n\026PlayerToggleSneakEvent\022\037\n\013pla"
     "yer_uuid\030\001 \001(\tR\nplayerUuid\022\022\n\004name\030\002 \001(\t"
-    "R\004name\022\024\n\005world\030\003 \001(\tR\005world\022/\n\010position"
-    "\030\004 \001(\0132\023.df.plugin.BlockPosR\010position\022+\n"
-    "\005block\030\005 \001(\0132\025.df.plugin.BlockStateR\005blo"
-    "ck\"\277\001\n\024PlayerBlockPickEvent\022\037\n\013player_uu"
-    "id\030\001 \001(\tR\nplayerUuid\022\022\n\004name\030\002 \001(\tR\004name"
-    "\022\024\n\005world\030\003 \001(\tR\005world\022/\n\010position\030\004 \001(\013"
-    "2\023.df.plugin.BlockPosR\010position\022+\n\005block"
-    "\030\005 \001(\0132\025.df.plugin.BlockStateR\005block\"\227\001\n"
-    "\022PlayerItemUseEvent\022\037\n\013player_uuid\030\001 \001(\t"
-    "R\nplayerUuid\022\022\n\004name\030\002 \001(\tR\004name\022\024\n\005worl"
-    "d\030\003 \001(\tR\005world\022-\n\004item\030\004 \001(\0132\024.df.plugin"
-    ".ItemStackH\000R\004item\210\001\001B\007\n\005_item\"\310\002\n\031Playe"
-    "rItemUseOnBlockEvent\022\037\n\013player_uuid\030\001 \001("
-    "\tR\nplayerUuid\022\022\n\004name\030\002 \001(\tR\004name\022\024\n\005wor"
-    "ld\030\003 \001(\tR\005world\022/\n\010position\030\004 \001(\0132\023.df.p"
-    "lugin.BlockPosR\010position\022\022\n\004face\030\005 \001(\tR\004"
-    "face\0226\n\016click_position\030\006 \001(\0132\017.df.plugin"
-    ".Vec3R\rclickPosition\022+\n\005block\030\007 \001(\0132\025.df"
-    ".plugin.BlockStateR\005block\022-\n\004item\030\010 \001(\0132"
-    "\024.df.plugin.ItemStackH\000R\004item\210\001\001B\007\n\005_ite"
-    "m\"\315\001\n\032PlayerItemUseOnEntityEvent\022\037\n\013play"
-    "er_uuid\030\001 \001(\tR\nplayerUuid\022\022\n\004name\030\002 \001(\tR"
-    "\004name\022\024\n\005world\030\003 \001(\tR\005world\022,\n\006entity\030\004 "
-    "\001(\0132\024.df.plugin.EntityRefR\006entity\022-\n\004ite"
-    "m\030\005 \001(\0132\024.df.plugin.ItemStackH\000R\004item\210\001\001"
-    "B\007\n\005_item\"\274\001\n\026PlayerItemReleaseEvent\022\037\n\013"
-    "player_uuid\030\001 \001(\tR\nplayerUuid\022\022\n\004name\030\002 "
-    "\001(\tR\004name\022\024\n\005world\030\003 \001(\tR\005world\022-\n\004item\030"
-    "\004 \001(\0132\024.df.plugin.ItemStackH\000R\004item\210\001\001\022\037"
-    "\n\013duration_ms\030\005 \001(\003R\ndurationMsB\007\n\005_item"
-    "\"\233\001\n\026PlayerItemConsumeEvent\022\037\n\013player_uu"
-    "id\030\001 \001(\tR\nplayerUuid\022\022\n\004name\030\002 \001(\tR\004name"
-    "\022\024\n\005world\030\003 \001(\tR\005world\022-\n\004item\030\004 \001(\0132\024.d"
-    "f.plugin.ItemStackH\000R\004item\210\001\001B\007\n\005_item\"\224"
-    "\002\n\027PlayerAttackEntityEvent\022\037\n\013player_uui"
-    "d\030\001 \001(\tR\nplayerUuid\022\022\n\004name\030\002 \001(\tR\004name\022"
-    "\024\n\005world\030\003 \001(\tR\005world\022,\n\006entity\030\004 \001(\0132\024."
-    "df.plugin.EntityRefR\006entity\022\024\n\005force\030\005 \001"
-    "(\001R\005force\022\026\n\006height\030\006 \001(\001R\006height\022\032\n\010cri"
-    "tical\030\007 \001(\010R\010critical\022-\n\004item\030\010 \001(\0132\024.df"
-    ".plugin.ItemStackH\000R\004item\210\001\001B\007\n\005_item\"~\n"
-    "\031PlayerExperienceGainEvent\022\037\n\013player_uui"
-    "d\030\001 \001(\tR\nplayerUuid\022\022\n\004name\030\002 \001(\tR\004name\022"
-    "\024\n\005world\030\003 \001(\tR\005world\022\026\n\006amount\030\004 \001(\005R\006a"
-    "mount\"`\n\023PlayerPunchAirEvent\022\037\n\013player_u"
+    "R\004name\022\024\n\005after\030\003 \001(\010R\005after\"Z\n\tChatEven"
+    "t\022\037\n\013player_uuid\030\001 \001(\tR\nplayerUuid\022\022\n\004na"
+    "me\030\002 \001(\tR\004name\022\030\n\007message\030\003 \001(\tR\007message"
+    "\"n\n\023PlayerFoodLossEvent\022\037\n\013player_uuid\030\001"
+    " \001(\tR\nplayerUuid\022\022\n\004name\030\002 \001(\tR\004name\022\022\n\004"
+    "from\030\003 \001(\005R\004from\022\016\n\002to\030\004 \001(\005R\002to\"\240\001\n\017Pla"
+    "yerHealEvent\022\037\n\013player_uuid\030\001 \001(\tR\nplaye"
+    "rUuid\022\022\n\004name\030\002 \001(\tR\004name\022\026\n\006amount\030\003 \001("
+    "\001R\006amount\0225\n\006source\030\004 \001(\0132\030.df.plugin.He"
+    "alingSourceH\000R\006source\210\001\001B\t\n\007_source\"\345\001\n\017"
+    "PlayerHurtEvent\022\037\n\013player_uuid\030\001 \001(\tR\npl"
+    "ayerUuid\022\022\n\004name\030\002 \001(\tR\004name\022\026\n\006damage\030\003"
+    " \001(\001R\006damage\022\026\n\006immune\030\004 \001(\010R\006immune\022,\n\022"
+    "attack_immunity_ms\030\005 \001(\003R\020attackImmunity"
+    "Ms\0224\n\006source\030\006 \001(\0132\027.df.plugin.DamageSou"
+    "rceH\000R\006source\210\001\001B\t\n\007_source\"\257\001\n\020PlayerDe"
+    "athEvent\022\037\n\013player_uuid\030\001 \001(\tR\nplayerUui"
+    "d\022\022\n\004name\030\002 \001(\tR\004name\0224\n\006source\030\003 \001(\0132\027."
+    "df.plugin.DamageSourceH\000R\006source\210\001\001\022%\n\016k"
+    "eep_inventory\030\004 \001(\010R\rkeepInventoryB\t\n\007_s"
+    "ource\"\302\001\n\022PlayerRespawnEvent\022\037\n\013player_u"
     "uid\030\001 \001(\tR\nplayerUuid\022\022\n\004name\030\002 \001(\tR\004nam"
-    "e\022\024\n\005world\030\003 \001(\tR\005world\"\346\001\n\023PlayerSignEd"
-    "itEvent\022\037\n\013player_uuid\030\001 \001(\tR\nplayerUuid"
-    "\022\022\n\004name\030\002 \001(\tR\004name\022\024\n\005world\030\003 \001(\tR\005wor"
-    "ld\022/\n\010position\030\004 \001(\0132\023.df.plugin.BlockPo"
-    "sR\010position\022\035\n\nfront_side\030\005 \001(\010R\tfrontSi"
-    "de\022\031\n\010old_text\030\006 \001(\tR\007oldText\022\031\n\010new_tex"
-    "t\030\007 \001(\tR\007newText\"\316\001\n\032PlayerLecternPageTu"
-    "rnEvent\022\037\n\013player_uuid\030\001 \001(\tR\nplayerUuid"
-    "\022\022\n\004name\030\002 \001(\tR\004name\022\024\n\005world\030\003 \001(\tR\005wor"
-    "ld\022/\n\010position\030\004 \001(\0132\023.df.plugin.BlockPo"
-    "sR\010position\022\031\n\010old_page\030\005 \001(\005R\007oldPage\022\031"
-    "\n\010new_page\030\006 \001(\005R\007newPage\"\262\001\n\025PlayerItem"
-    "DamageEvent\022\037\n\013player_uuid\030\001 \001(\tR\nplayer"
-    "Uuid\022\022\n\004name\030\002 \001(\tR\004name\022\024\n\005world\030\003 \001(\tR"
-    "\005world\022-\n\004item\030\004 \001(\0132\024.df.plugin.ItemSta"
-    "ckH\000R\004item\210\001\001\022\026\n\006damage\030\005 \001(\005R\006damageB\007\n"
-    "\005_item\"\232\001\n\025PlayerItemPickupEvent\022\037\n\013play"
+    "e\0220\n\010position\030\003 \001(\0132\017.df.plugin.Vec3H\000R\010"
+    "position\210\001\001\022.\n\005world\030\004 \001(\0132\023.df.plugin.W"
+    "orldRefH\001R\005world\210\001\001B\013\n\t_positionB\010\n\006_wor"
+    "ld\"\305\001\n\025PlayerSkinChangeEvent\022\037\n\013player_u"
+    "uid\030\001 \001(\tR\nplayerUuid\022\022\n\004name\030\002 \001(\tR\004nam"
+    "e\022\034\n\007full_id\030\003 \001(\tH\000R\006fullId\210\001\001\022#\n\013play_"
+    "fab_id\030\004 \001(\tH\001R\tplayFabId\210\001\001\022\030\n\007persona\030"
+    "\005 \001(\010R\007personaB\n\n\010_full_idB\016\n\014_play_fab_"
+    "id\"\227\001\n\031PlayerFireExtinguishEvent\022\037\n\013play"
     "er_uuid\030\001 \001(\tR\nplayerUuid\022\022\n\004name\030\002 \001(\tR"
-    "\004name\022\024\n\005world\030\003 \001(\tR\005world\022-\n\004item\030\004 \001("
-    "\0132\024.df.plugin.ItemStackH\000R\004item\210\001\001B\007\n\005_i"
-    "tem\"\234\001\n\031PlayerHeldSlotChangeEvent\022\037\n\013pla"
-    "yer_uuid\030\001 \001(\tR\nplayerUuid\022\022\n\004name\030\002 \001(\t"
-    "R\004name\022\024\n\005world\030\003 \001(\tR\005world\022\033\n\tfrom_slo"
-    "t\030\004 \001(\005R\010fromSlot\022\027\n\007to_slot\030\005 \001(\005R\006toSl"
-    "ot\"\230\001\n\023PlayerItemDropEvent\022\037\n\013player_uui"
-    "d\030\001 \001(\tR\nplayerUuid\022\022\n\004name\030\002 \001(\tR\004name\022"
-    "\024\n\005world\030\003 \001(\tR\005world\022-\n\004item\030\004 \001(\0132\024.df"
-    ".plugin.ItemStackH\000R\004item\210\001\001B\007\n\005_item\"\211\001"
-    "\n\023PlayerTransferEvent\022\037\n\013player_uuid\030\001 \001"
-    "(\tR\nplayerUuid\022\022\n\004name\030\002 \001(\tR\004name\0221\n\007ad"
-    "dress\030\003 \001(\0132\022.df.plugin.AddressH\000R\007addre"
-    "ss\210\001\001B\n\n\010_address\"\342\004\n\026PlayerDiagnosticsE"
-    "vent\022\037\n\013player_uuid\030\001 \001(\tR\nplayerUuid\022\022\n"
-    "\004name\030\002 \001(\tR\004name\0229\n\031average_frames_per_"
-    "second\030\003 \001(\001R\026averageFramesPerSecond\022>\n\034"
-    "average_server_sim_tick_time\030\004 \001(\001R\030aver"
-    "ageServerSimTickTime\022>\n\034average_client_s"
-    "im_tick_time\030\005 \001(\001R\030averageClientSimTick"
-    "Time\0227\n\030average_begin_frame_time\030\006 \001(\001R\025"
-    "averageBeginFrameTime\022,\n\022average_input_t"
-    "ime\030\007 \001(\001R\020averageInputTime\022.\n\023average_r"
-    "ender_time\030\010 \001(\001R\021averageRenderTime\0223\n\026a"
-    "verage_end_frame_time\030\t \001(\001R\023averageEndF"
-    "rameTime\022C\n\036average_remainder_time_perce"
-    "nt\030\n \001(\001R\033averageRemainderTimePercent\022G\n"
-    " average_unaccounted_time_percent\030\013 \001(\001R"
-    "\035averageUnaccountedTimePercentB\220\001\n\rcom.d"
-    "f.pluginB\021PlayerEventsProtoP\001Z\'github.co"
-    "m/secmc/plugin/proto/generated\242\002\003DPX\252\002\tD"
-    "f.Plugin\312\002\tDf\\Plugin\342\002\025Df\\Plugin\\GPBMeta"
-    "data\352\002\nDf::Pluginb\006proto3"
+    "\004name\022\024\n\005world\030\003 \001(\tR\005world\022/\n\010position\030"
+    "\004 \001(\0132\023.df.plugin.BlockPosR\010position\"\223\001\n"
+    "\025PlayerStartBreakEvent\022\037\n\013player_uuid\030\001 "
+    "\001(\tR\nplayerUuid\022\022\n\004name\030\002 \001(\tR\004name\022\024\n\005w"
+    "orld\030\003 \001(\tR\005world\022/\n\010position\030\004 \001(\0132\023.df"
+    ".plugin.BlockPosR\010position\"\215\001\n\017BlockBrea"
+    "kEvent\022\037\n\013player_uuid\030\001 \001(\tR\nplayerUuid\022"
+    "\022\n\004name\030\002 \001(\tR\004name\022\024\n\005world\030\003 \001(\tR\005worl"
+    "d\022/\n\010position\030\004 \001(\0132\023.df.plugin.BlockPos"
+    "R\010position\"\300\001\n\025PlayerBlockPlaceEvent\022\037\n\013"
+    "player_uuid\030\001 \001(\tR\nplayerUuid\022\022\n\004name\030\002 "
+    "\001(\tR\004name\022\024\n\005world\030\003 \001(\tR\005world\022/\n\010posit"
+    "ion\030\004 \001(\0132\023.df.plugin.BlockPosR\010position"
+    "\022+\n\005block\030\005 \001(\0132\025.df.plugin.BlockStateR\005"
+    "block\"\277\001\n\024PlayerBlockPickEvent\022\037\n\013player"
+    "_uuid\030\001 \001(\tR\nplayerUuid\022\022\n\004name\030\002 \001(\tR\004n"
+    "ame\022\024\n\005world\030\003 \001(\tR\005world\022/\n\010position\030\004 "
+    "\001(\0132\023.df.plugin.BlockPosR\010position\022+\n\005bl"
+    "ock\030\005 \001(\0132\025.df.plugin.BlockStateR\005block\""
+    "\227\001\n\022PlayerItemUseEvent\022\037\n\013player_uuid\030\001 "
+    "\001(\tR\nplayerUuid\022\022\n\004name\030\002 \001(\tR\004name\022\024\n\005w"
+    "orld\030\003 \001(\tR\005world\022-\n\004item\030\004 \001(\0132\024.df.plu"
+    "gin.ItemStackH\000R\004item\210\001\001B\007\n\005_item\"\310\002\n\031Pl"
+    "ayerItemUseOnBlockEvent\022\037\n\013player_uuid\030\001"
+    " \001(\tR\nplayerUuid\022\022\n\004name\030\002 \001(\tR\004name\022\024\n\005"
+    "world\030\003 \001(\tR\005world\022/\n\010position\030\004 \001(\0132\023.d"
+    "f.plugin.BlockPosR\010position\022\022\n\004face\030\005 \001("
+    "\tR\004face\0226\n\016click_position\030\006 \001(\0132\017.df.plu"
+    "gin.Vec3R\rclickPosition\022+\n\005block\030\007 \001(\0132\025"
+    ".df.plugin.BlockStateR\005block\022-\n\004item\030\010 \001"
+    "(\0132\024.df.plugin.ItemStackH\000R\004item\210\001\001B\007\n\005_"
+    "item\"\315\001\n\032PlayerItemUseOnEntityEvent\022\037\n\013p"
+    "layer_uuid\030\001 \001(\tR\nplayerUuid\022\022\n\004name\030\002 \001"
+    "(\tR\004name\022\024\n\005world\030\003 \001(\tR\005world\022,\n\006entity"
+    "\030\004 \001(\0132\024.df.plugin.EntityRefR\006entity\022-\n\004"
+    "item\030\005 \001(\0132\024.df.plugin.ItemStackH\000R\004item"
+    "\210\001\001B\007\n\005_item\"\274\001\n\026PlayerItemReleaseEvent\022"
+    "\037\n\013player_uuid\030\001 \001(\tR\nplayerUuid\022\022\n\004name"
+    "\030\002 \001(\tR\004name\022\024\n\005world\030\003 \001(\tR\005world\022-\n\004it"
+    "em\030\004 \001(\0132\024.df.plugin.ItemStackH\000R\004item\210\001"
+    "\001\022\037\n\013duration_ms\030\005 \001(\003R\ndurationMsB\007\n\005_i"
+    "tem\"\233\001\n\026PlayerItemConsumeEvent\022\037\n\013player"
+    "_uuid\030\001 \001(\tR\nplayerUuid\022\022\n\004name\030\002 \001(\tR\004n"
+    "ame\022\024\n\005world\030\003 \001(\tR\005world\022-\n\004item\030\004 \001(\0132"
+    "\024.df.plugin.ItemStackH\000R\004item\210\001\001B\007\n\005_ite"
+    "m\"\224\002\n\027PlayerAttackEntityEvent\022\037\n\013player_"
+    "uuid\030\001 \001(\tR\nplayerUuid\022\022\n\004name\030\002 \001(\tR\004na"
+    "me\022\024\n\005world\030\003 \001(\tR\005world\022,\n\006entity\030\004 \001(\013"
+    "2\024.df.plugin.EntityRefR\006entity\022\024\n\005force\030"
+    "\005 \001(\001R\005force\022\026\n\006height\030\006 \001(\001R\006height\022\032\n\010"
+    "critical\030\007 \001(\010R\010critical\022-\n\004item\030\010 \001(\0132\024"
+    ".df.plugin.ItemStackH\000R\004item\210\001\001B\007\n\005_item"
+    "\"~\n\031PlayerExperienceGainEvent\022\037\n\013player_"
+    "uuid\030\001 \001(\tR\nplayerUuid\022\022\n\004name\030\002 \001(\tR\004na"
+    "me\022\024\n\005world\030\003 \001(\tR\005world\022\026\n\006amount\030\004 \001(\005"
+    "R\006amount\"`\n\023PlayerPunchAirEvent\022\037\n\013playe"
+    "r_uuid\030\001 \001(\tR\nplayerUuid\022\022\n\004name\030\002 \001(\tR\004"
+    "name\022\024\n\005world\030\003 \001(\tR\005world\"\346\001\n\023PlayerSig"
+    "nEditEvent\022\037\n\013player_uuid\030\001 \001(\tR\nplayerU"
+    "uid\022\022\n\004name\030\002 \001(\tR\004name\022\024\n\005world\030\003 \001(\tR\005"
+    "world\022/\n\010position\030\004 \001(\0132\023.df.plugin.Bloc"
+    "kPosR\010position\022\035\n\nfront_side\030\005 \001(\010R\tfron"
+    "tSide\022\031\n\010old_text\030\006 \001(\tR\007oldText\022\031\n\010new_"
+    "text\030\007 \001(\tR\007newText\"\316\001\n\032PlayerLecternPag"
+    "eTurnEvent\022\037\n\013player_uuid\030\001 \001(\tR\nplayerU"
+    "uid\022\022\n\004name\030\002 \001(\tR\004name\022\024\n\005world\030\003 \001(\tR\005"
+    "world\022/\n\010position\030\004 \001(\0132\023.df.plugin.Bloc"
+    "kPosR\010position\022\031\n\010old_page\030\005 \001(\005R\007oldPag"
+    "e\022\031\n\010new_page\030\006 \001(\005R\007newPage\"\262\001\n\025PlayerI"
+    "temDamageEvent\022\037\n\013player_uuid\030\001 \001(\tR\npla"
+    "yerUuid\022\022\n\004name\030\002 \001(\tR\004name\022\024\n\005world\030\003 \001"
+    "(\tR\005world\022-\n\004item\030\004 \001(\0132\024.df.plugin.Item"
+    "StackH\000R\004item\210\001\001\022\026\n\006damage\030\005 \001(\005R\006damage"
+    "B\007\n\005_item\"\232\001\n\025PlayerItemPickupEvent\022\037\n\013p"
+    "layer_uuid\030\001 \001(\tR\nplayerUuid\022\022\n\004name\030\002 \001"
+    "(\tR\004name\022\024\n\005world\030\003 \001(\tR\005world\022-\n\004item\030\004"
+    " \001(\0132\024.df.plugin.ItemStackH\000R\004item\210\001\001B\007\n"
+    "\005_item\"\234\001\n\031PlayerHeldSlotChangeEvent\022\037\n\013"
+    "player_uuid\030\001 \001(\tR\nplayerUuid\022\022\n\004name\030\002 "
+    "\001(\tR\004name\022\024\n\005world\030\003 \001(\tR\005world\022\033\n\tfrom_"
+    "slot\030\004 \001(\005R\010fromSlot\022\027\n\007to_slot\030\005 \001(\005R\006t"
+    "oSlot\"\230\001\n\023PlayerItemDropEvent\022\037\n\013player_"
+    "uuid\030\001 \001(\tR\nplayerUuid\022\022\n\004name\030\002 \001(\tR\004na"
+    "me\022\024\n\005world\030\003 \001(\tR\005world\022-\n\004item\030\004 \001(\0132\024"
+    ".df.plugin.ItemStackH\000R\004item\210\001\001B\007\n\005_item"
+    "\"\211\001\n\023PlayerTransferEvent\022\037\n\013player_uuid\030"
+    "\001 \001(\tR\nplayerUuid\022\022\n\004name\030\002 \001(\tR\004name\0221\n"
+    "\007address\030\003 \001(\0132\022.df.plugin.AddressH\000R\007ad"
+    "dress\210\001\001B\n\n\010_address\"\342\004\n\026PlayerDiagnosti"
+    "csEvent\022\037\n\013player_uuid\030\001 \001(\tR\nplayerUuid"
+    "\022\022\n\004name\030\002 \001(\tR\004name\0229\n\031average_frames_p"
+    "er_second\030\003 \001(\001R\026averageFramesPerSecond\022"
+    ">\n\034average_server_sim_tick_time\030\004 \001(\001R\030a"
+    "verageServerSimTickTime\022>\n\034average_clien"
+    "t_sim_tick_time\030\005 \001(\001R\030averageClientSimT"
+    "ickTime\0227\n\030average_begin_frame_time\030\006 \001("
+    "\001R\025averageBeginFrameTime\022,\n\022average_inpu"
+    "t_time\030\007 \001(\001R\020averageInputTime\022.\n\023averag"
+    "e_render_time\030\010 \001(\001R\021averageRenderTime\0223"
+    "\n\026average_end_frame_time\030\t \001(\001R\023averageE"
+    "ndFrameTime\022C\n\036average_remainder_time_pe"
+    "rcent\030\n \001(\001R\033averageRemainderTimePercent"
+    "\022G\n average_unaccounted_time_percent\030\013 \001"
+    "(\001R\035averageUnaccountedTimePercentB\220\001\n\rco"
+    "m.df.pluginB\021PlayerEventsProtoP\001Z\'github"
+    ".com/secmc/plugin/proto/generated\242\002\003DPX\252"
+    "\002\tDf.Plugin\312\002\tDf\\Plugin\342\002\025Df\\Plugin\\GPBM"
+    "etadata\352\002\nDf::Pluginb\006proto3"
 };
 static const ::_pbi::DescriptorTable* PROTOBUF_NONNULL const
     descriptor_table_player_5fevents_2eproto_deps[1] = {
@@ -1958,7 +1962,7 @@ static ::absl::once_flag descriptor_table_player_5fevents_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_player_5fevents_2eproto = {
     false,
     false,
-    6625,
+    6668,
     descriptor_table_protodef_player_5fevents_2eproto,
     "player_events.proto",
     &descriptor_table_player_5fevents_2eproto_once,
@@ -1983,6 +1987,12 @@ class PlayerJoinEvent::_Internal {
       8 * PROTOBUF_FIELD_OFFSET(PlayerJoinEvent, _impl_._has_bits_);
 };
 
+void PlayerJoinEvent::clear_world() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.world_ != nullptr) _impl_.world_->Clear();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000004U);
+}
 PlayerJoinEvent::PlayerJoinEvent(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
     : ::google::protobuf::Message(arena, PlayerJoinEvent_class_data_.base()) {
@@ -2014,6 +2024,10 @@ PlayerJoinEvent::PlayerJoinEvent(
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
   new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.world_ = (CheckHasBit(cached_has_bits, 0x00000004U))
+                ? ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.world_)
+                : nullptr;
 
   // @@protoc_insertion_point(copy_constructor:df.plugin.PlayerJoinEvent)
 }
@@ -2026,6 +2040,7 @@ PROTOBUF_NDEBUG_INLINE PlayerJoinEvent::Impl_::Impl_(
 
 inline void PlayerJoinEvent::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.world_ = {};
 }
 PlayerJoinEvent::~PlayerJoinEvent() {
   // @@protoc_insertion_point(destructor:df.plugin.PlayerJoinEvent)
@@ -2040,6 +2055,7 @@ inline void PlayerJoinEvent::SharedDtor(MessageLite& self) {
   ABSL_DCHECK(this_.GetArena() == nullptr);
   this_._impl_.player_uuid_.Destroy();
   this_._impl_.name_.Destroy();
+  delete this_._impl_.world_;
   this_._impl_.~Impl_();
 }
 
@@ -2086,18 +2102,18 @@ PlayerJoinEvent::GetClassData() const {
   return PlayerJoinEvent_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<1, 2, 0, 49, 2>
+const ::_pbi::TcParseTable<2, 3, 1, 49, 2>
 PlayerJoinEvent::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(PlayerJoinEvent, _impl_._has_bits_),
     0, // no _extensions_
-    2, 8,  // max_field_number, fast_idx_mask
+    3, 24,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967292,  // skipmap
+    4294967288,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    2,  // num_field_entries
-    0,  // num_aux_entries
-    offsetof(decltype(_table_), field_names),  // no aux_entries
+    3,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
     PlayerJoinEvent_class_data_.base(),
     nullptr,  // post_loop_handler
     ::_pbi::TcParser::GenericFallback,  // fallback
@@ -2105,14 +2121,19 @@ PlayerJoinEvent::_table_ = {
     ::_pbi::TcParser::GetTable<::df::plugin::PlayerJoinEvent>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // string name = 2 [json_name = "name"];
-    {::_pbi::TcParser::FastUS1,
-     {18, 1, 0,
-      PROTOBUF_FIELD_OFFSET(PlayerJoinEvent, _impl_.name_)}},
+    {::_pbi::TcParser::MiniParse, {}},
     // string player_uuid = 1 [json_name = "playerUuid"];
     {::_pbi::TcParser::FastUS1,
      {10, 0, 0,
       PROTOBUF_FIELD_OFFSET(PlayerJoinEvent, _impl_.player_uuid_)}},
+    // string name = 2 [json_name = "name"];
+    {::_pbi::TcParser::FastUS1,
+     {18, 1, 0,
+      PROTOBUF_FIELD_OFFSET(PlayerJoinEvent, _impl_.name_)}},
+    // .df.plugin.WorldRef world = 3 [json_name = "world"];
+    {::_pbi::TcParser::FastMtS1,
+     {26, 2, 0,
+      PROTOBUF_FIELD_OFFSET(PlayerJoinEvent, _impl_.world_)}},
   }}, {{
     65535, 65535
   }}, {{
@@ -2120,8 +2141,12 @@ PlayerJoinEvent::_table_ = {
     {PROTOBUF_FIELD_OFFSET(PlayerJoinEvent, _impl_.player_uuid_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
     // string name = 2 [json_name = "name"];
     {PROTOBUF_FIELD_OFFSET(PlayerJoinEvent, _impl_.name_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // .df.plugin.WorldRef world = 3 [json_name = "world"];
+    {PROTOBUF_FIELD_OFFSET(PlayerJoinEvent, _impl_.world_), _Internal::kHasBitsOffset + 2, 0, (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
   }},
-  // no aux_entries
+  {{
+      {::_pbi::TcParser::GetTable<::df::plugin::WorldRef>()},
+  }},
   {{
     "\31\13\4\0\0\0\0\0"
     "df.plugin.PlayerJoinEvent"
@@ -2137,12 +2162,16 @@ PROTOBUF_NOINLINE void PlayerJoinEvent::Clear() {
   (void) cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
-  if (BatchCheckHasBit(cached_has_bits, 0x00000003U)) {
+  if (BatchCheckHasBit(cached_has_bits, 0x00000007U)) {
     if (CheckHasBit(cached_has_bits, 0x00000001U)) {
       _impl_.player_uuid_.ClearNonDefaultToEmpty();
     }
     if (CheckHasBit(cached_has_bits, 0x00000002U)) {
       _impl_.name_.ClearNonDefaultToEmpty();
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+      ABSL_DCHECK(_impl_.world_ != nullptr);
+      _impl_.world_->Clear();
     }
   }
   _impl_._has_bits_.Clear();
@@ -2188,6 +2217,13 @@ PROTOBUF_NOINLINE void PlayerJoinEvent::Clear() {
     }
   }
 
+  // .df.plugin.WorldRef world = 3 [json_name = "world"];
+  if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        3, *this_._impl_.world_, this_._impl_.world_->GetCachedSize(), target,
+        stream);
+  }
+
   if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
     target =
         ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
@@ -2213,7 +2249,7 @@ PROTOBUF_NOINLINE void PlayerJoinEvent::Clear() {
 
   ::_pbi::Prefetch5LinesFrom7Lines(&this_);
   cached_has_bits = this_._impl_._has_bits_[0];
-  if (BatchCheckHasBit(cached_has_bits, 0x00000003U)) {
+  if (BatchCheckHasBit(cached_has_bits, 0x00000007U)) {
     // string player_uuid = 1 [json_name = "playerUuid"];
     if (CheckHasBit(cached_has_bits, 0x00000001U)) {
       if (!this_._internal_player_uuid().empty()) {
@@ -2228,6 +2264,11 @@ PROTOBUF_NOINLINE void PlayerJoinEvent::Clear() {
                                         this_._internal_name());
       }
     }
+    // .df.plugin.WorldRef world = 3 [json_name = "world"];
+    if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+      total_size += 1 +
+                    ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.world_);
+    }
   }
   return this_.MaybeComputeUnknownFieldsSize(total_size,
                                              &this_._impl_._cached_size_);
@@ -2241,13 +2282,14 @@ void PlayerJoinEvent::MergeImpl(::google::protobuf::MessageLite& to_msg,
   if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
     from.CheckHasBitConsistency();
   }
+  ::google::protobuf::Arena* arena = _this->GetArena();
   // @@protoc_insertion_point(class_specific_merge_from_start:df.plugin.PlayerJoinEvent)
   ABSL_DCHECK_NE(&from, _this);
   ::uint32_t cached_has_bits = 0;
   (void)cached_has_bits;
 
   cached_has_bits = from._impl_._has_bits_[0];
-  if (BatchCheckHasBit(cached_has_bits, 0x00000003U)) {
+  if (BatchCheckHasBit(cached_has_bits, 0x00000007U)) {
     if (CheckHasBit(cached_has_bits, 0x00000001U)) {
       if (!from._internal_player_uuid().empty()) {
         _this->_internal_set_player_uuid(from._internal_player_uuid());
@@ -2264,6 +2306,14 @@ void PlayerJoinEvent::MergeImpl(::google::protobuf::MessageLite& to_msg,
         if (_this->_impl_.name_.IsDefault()) {
           _this->_internal_set_name("");
         }
+      }
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+      ABSL_DCHECK(from._impl_.world_ != nullptr);
+      if (_this->_impl_.world_ == nullptr) {
+        _this->_impl_.world_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.world_);
+      } else {
+        _this->_impl_.world_->MergeFrom(*from._impl_.world_);
       }
     }
   }
@@ -2288,6 +2338,7 @@ void PlayerJoinEvent::InternalSwap(PlayerJoinEvent* PROTOBUF_RESTRICT PROTOBUF_N
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.player_uuid_, &other->_impl_.player_uuid_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.name_, &other->_impl_.name_, arena);
+  swap(_impl_.world_, other->_impl_.world_);
 }
 
 ::google::protobuf::Metadata PlayerJoinEvent::GetMetadata() const {

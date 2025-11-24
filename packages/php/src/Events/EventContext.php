@@ -94,7 +94,8 @@ final class EventContext {
     }
 
     public function commandSender(string $uuid, string $name): CommandSender {
-        return new CommandSender($uuid, $name, $this->getActions());
+        $world = $this->server->getPlayerWorld($uuid);
+        return new CommandSender($uuid, $name, $this->getActions(), $world);
     }
 
     /**

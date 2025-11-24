@@ -25,6 +25,7 @@ func (m *Manager) EmitPlayerJoin(p *player.Player) {
 			PlayerJoin: &pb.PlayerJoinEvent{
 				PlayerUuid: p.UUID().String(),
 				Name:       p.Name(),
+				World:      playerWorldRef(p),
 			},
 		},
 	})

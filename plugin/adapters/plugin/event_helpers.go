@@ -35,6 +35,17 @@ func playerWorldDimension(p *player.Player) string {
 	return strings.ToLower(fmt.Sprint(w.Dimension()))
 }
 
+func playerWorldRef(p *player.Player) *pb.WorldRef {
+	if p == nil {
+		return nil
+	}
+	tx := p.Tx()
+	if tx == nil {
+		return nil
+	}
+	return protoWorldRef(tx.World())
+}
+
 func worldDimension(w *world.World) string {
 	if w == nil {
 		return ""
