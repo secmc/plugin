@@ -440,7 +440,7 @@ pub struct ActionBatch {
 pub struct Action {
     #[prost(string, optional, tag="1")]
     pub correlation_id: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(oneof="action::Kind", tags="10, 11, 12, 13, 14, 15, 16, 20, 21, 22, 23, 30, 31, 40, 41, 42, 43, 50, 60, 61, 62, 63, 64, 65, 70, 71, 72, 73")]
+    #[prost(oneof="action::Kind", tags="10, 11, 12, 13, 14, 15, 16, 20, 21, 22, 23, 30, 31, 40, 41, 42, 43, 50, 60, 61, 62, 63, 64, 65, 70, 71, 72")]
     pub kind: ::core::option::Option<action::Kind>,
 }
 /// Nested message and enum types in `Action`.
@@ -509,8 +509,6 @@ pub mod action {
         WorldQueryPlayers(super::WorldQueryPlayersAction),
         #[prost(message, tag="72")]
         WorldQueryEntitiesWithin(super::WorldQueryEntitiesWithinAction),
-        #[prost(message, tag="73")]
-        WorldQueryViewers(super::WorldQueryViewersAction),
     }
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -788,14 +786,6 @@ pub struct WorldQueryEntitiesWithinAction {
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct WorldQueryViewersAction {
-    #[prost(message, optional, tag="1")]
-    pub world: ::core::option::Option<WorldRef>,
-    #[prost(message, optional, tag="2")]
-    pub position: ::core::option::Option<Vec3>,
-}
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ActionStatus {
     #[prost(bool, tag="1")]
     pub ok: bool,
@@ -830,22 +820,12 @@ pub struct WorldPlayersResult {
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct WorldViewersResult {
-    #[prost(message, optional, tag="1")]
-    pub world: ::core::option::Option<WorldRef>,
-    #[prost(message, optional, tag="2")]
-    pub position: ::core::option::Option<Vec3>,
-    #[prost(string, repeated, tag="3")]
-    pub viewer_uuids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-}
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ActionResult {
     #[prost(string, tag="1")]
     pub correlation_id: ::prost::alloc::string::String,
     #[prost(message, optional, tag="2")]
     pub status: ::core::option::Option<ActionStatus>,
-    #[prost(oneof="action_result::Result", tags="10, 11, 12, 13")]
+    #[prost(oneof="action_result::Result", tags="10, 11, 12")]
     pub result: ::core::option::Option<action_result::Result>,
 }
 /// Nested message and enum types in `ActionResult`.
@@ -859,8 +839,6 @@ pub mod action_result {
         WorldPlayers(super::WorldPlayersResult),
         #[prost(message, tag="12")]
         WorldEntitiesWithin(super::WorldEntitiesWithinResult),
-        #[prost(message, tag="13")]
-        WorldViewers(super::WorldViewersResult),
     }
 }
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]

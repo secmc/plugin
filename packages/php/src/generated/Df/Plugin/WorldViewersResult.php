@@ -23,9 +23,9 @@ class WorldViewersResult extends \Google\Protobuf\Internal\Message
      */
     protected $position = null;
     /**
-     * Generated from protobuf field <code>repeated string viewer_uuids = 3 [json_name = "viewerUuids"];</code>
+     * Generated from protobuf field <code>repeated .df.plugin.EntityRef viewers = 3 [json_name = "viewers"];</code>
      */
-    private $viewer_uuids;
+    private $viewers;
 
     /**
      * Constructor.
@@ -35,7 +35,7 @@ class WorldViewersResult extends \Google\Protobuf\Internal\Message
      *
      *     @type \Df\Plugin\WorldRef $world
      *     @type \Df\Plugin\Vec3 $position
-     *     @type string[] $viewer_uuids
+     *     @type \Df\Plugin\EntityRef[] $viewers
      * }
      */
     public function __construct($data = NULL) {
@@ -108,23 +108,23 @@ class WorldViewersResult extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>repeated string viewer_uuids = 3 [json_name = "viewerUuids"];</code>
-     * @return RepeatedField<string>
+     * Generated from protobuf field <code>repeated .df.plugin.EntityRef viewers = 3 [json_name = "viewers"];</code>
+     * @return RepeatedField<\Df\Plugin\EntityRef>
      */
-    public function getViewerUuids()
+    public function getViewers()
     {
-        return $this->viewer_uuids;
+        return $this->viewers;
     }
 
     /**
-     * Generated from protobuf field <code>repeated string viewer_uuids = 3 [json_name = "viewerUuids"];</code>
-     * @param string[] $var
+     * Generated from protobuf field <code>repeated .df.plugin.EntityRef viewers = 3 [json_name = "viewers"];</code>
+     * @param \Df\Plugin\EntityRef[] $var
      * @return $this
      */
-    public function setViewerUuids($var)
+    public function setViewers($var)
     {
-        $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::STRING);
-        $this->viewer_uuids = $arr;
+        $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::MESSAGE, \Df\Plugin\EntityRef::class);
+        $this->viewers = $arr;
 
         return $this;
     }

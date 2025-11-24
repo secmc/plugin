@@ -178,10 +178,6 @@ class WorldQueryPlayersAction;
 struct WorldQueryPlayersActionDefaultTypeInternal;
 extern WorldQueryPlayersActionDefaultTypeInternal _WorldQueryPlayersAction_default_instance_;
 extern const ::google::protobuf::internal::ClassDataFull WorldQueryPlayersAction_class_data_;
-class WorldQueryViewersAction;
-struct WorldQueryViewersActionDefaultTypeInternal;
-extern WorldQueryViewersActionDefaultTypeInternal _WorldQueryViewersAction_default_instance_;
-extern const ::google::protobuf::internal::ClassDataFull WorldQueryViewersAction_class_data_;
 class WorldSetBlockAction;
 struct WorldSetBlockActionDefaultTypeInternal;
 extern WorldSetBlockActionDefaultTypeInternal _WorldSetBlockAction_default_instance_;
@@ -198,10 +194,6 @@ class WorldSetTickRangeAction;
 struct WorldSetTickRangeActionDefaultTypeInternal;
 extern WorldSetTickRangeActionDefaultTypeInternal _WorldSetTickRangeAction_default_instance_;
 extern const ::google::protobuf::internal::ClassDataFull WorldSetTickRangeAction_class_data_;
-class WorldViewersResult;
-struct WorldViewersResultDefaultTypeInternal;
-extern WorldViewersResultDefaultTypeInternal _WorldViewersResult_default_instance_;
-extern const ::google::protobuf::internal::ClassDataFull WorldViewersResult_class_data_;
 }  // namespace plugin
 }  // namespace df
 namespace google {
@@ -3170,7 +3162,7 @@ class ActionStatus final : public ::google::protobuf::Message
     return *reinterpret_cast<const ActionStatus*>(
         &_ActionStatus_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 30;
+  static constexpr int kIndexInFileMessages = 29;
   friend void swap(ActionStatus& a, ActionStatus& b) { a.Swap(&b); }
   inline void Swap(ActionStatus* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -3321,242 +3313,6 @@ class ActionStatus final : public ::google::protobuf::Message
 };
 
 extern const ::google::protobuf::internal::ClassDataFull ActionStatus_class_data_;
-// -------------------------------------------------------------------
-
-class WorldViewersResult final : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:df.plugin.WorldViewersResult) */ {
- public:
-  inline WorldViewersResult() : WorldViewersResult(nullptr) {}
-  ~WorldViewersResult() PROTOBUF_FINAL;
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-  void operator delete(WorldViewersResult* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
-    SharedDtor(*msg);
-    ::google::protobuf::internal::SizedDelete(msg, sizeof(WorldViewersResult));
-  }
-#endif
-
-  template <typename = void>
-  explicit PROTOBUF_CONSTEXPR WorldViewersResult(::google::protobuf::internal::ConstantInitialized);
-
-  inline WorldViewersResult(const WorldViewersResult& from) : WorldViewersResult(nullptr, from) {}
-  inline WorldViewersResult(WorldViewersResult&& from) noexcept
-      : WorldViewersResult(nullptr, ::std::move(from)) {}
-  inline WorldViewersResult& operator=(const WorldViewersResult& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline WorldViewersResult& operator=(WorldViewersResult&& from) noexcept {
-    if (this == &from) return *this;
-    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
-  }
-  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-  }
-
-  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
-    return GetDescriptor();
-  }
-  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const WorldViewersResult& default_instance() {
-    return *reinterpret_cast<const WorldViewersResult*>(
-        &_WorldViewersResult_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages = 34;
-  friend void swap(WorldViewersResult& a, WorldViewersResult& b) { a.Swap(&b); }
-  inline void Swap(WorldViewersResult* PROTOBUF_NONNULL other) {
-    if (other == this) return;
-    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-      InternalSwap(other);
-    } else {
-      ::google::protobuf::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(WorldViewersResult* PROTOBUF_NONNULL other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  WorldViewersResult* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
-    return ::google::protobuf::Message::DefaultConstruct<WorldViewersResult>(arena);
-  }
-  using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const WorldViewersResult& from);
-  using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom(const WorldViewersResult& from) { WorldViewersResult::MergeImpl(*this, from); }
-
-  private:
-  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
-                        const ::google::protobuf::MessageLite& from_msg);
-
-  public:
-  bool IsInitialized() const {
-    return true;
-  }
-  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-  #if defined(PROTOBUF_CUSTOM_VTABLE)
-  private:
-  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
-      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
-      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
-
-  public:
-  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
-      ::uint8_t* PROTOBUF_NONNULL target,
-      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
-    return _InternalSerialize(*this, target, stream);
-  }
-  #else   // PROTOBUF_CUSTOM_VTABLE
-  ::size_t ByteSizeLong() const final;
-  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
-      ::uint8_t* PROTOBUF_NONNULL target,
-      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
-  #endif  // PROTOBUF_CUSTOM_VTABLE
-  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
-
-  private:
-  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
-  static void SharedDtor(MessageLite& self);
-  void InternalSwap(WorldViewersResult* PROTOBUF_NONNULL other);
- private:
-  template <typename T>
-  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "df.plugin.WorldViewersResult"; }
-
-  explicit WorldViewersResult(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
-  WorldViewersResult(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const WorldViewersResult& from);
-  WorldViewersResult(
-      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, WorldViewersResult&& from) noexcept
-      : WorldViewersResult(arena) {
-    *this = ::std::move(from);
-  }
-  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
-  static void* PROTOBUF_NONNULL PlacementNew_(
-      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
-      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
-  static constexpr auto InternalNewImpl_();
-
- public:
-  static constexpr auto InternalGenerateClassData_();
-
-  ::google::protobuf::Metadata GetMetadata() const;
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-  enum : int {
-    kViewerUuidsFieldNumber = 3,
-    kWorldFieldNumber = 1,
-    kPositionFieldNumber = 2,
-  };
-  // repeated string viewer_uuids = 3 [json_name = "viewerUuids"];
-  int viewer_uuids_size() const;
-  private:
-  int _internal_viewer_uuids_size() const;
-
-  public:
-  void clear_viewer_uuids() ;
-  const ::std::string& viewer_uuids(int index) const;
-  ::std::string* PROTOBUF_NONNULL mutable_viewer_uuids(int index);
-  template <typename Arg_ = const ::std::string&, typename... Args_>
-  void set_viewer_uuids(int index, Arg_&& value, Args_... args);
-  ::std::string* PROTOBUF_NONNULL add_viewer_uuids();
-  template <typename Arg_ = const ::std::string&, typename... Args_>
-  void add_viewer_uuids(Arg_&& value, Args_... args);
-  const ::google::protobuf::RepeatedPtrField<::std::string>& viewer_uuids() const;
-  ::google::protobuf::RepeatedPtrField<::std::string>* PROTOBUF_NONNULL mutable_viewer_uuids();
-
-  private:
-  const ::google::protobuf::RepeatedPtrField<::std::string>& _internal_viewer_uuids() const;
-  ::google::protobuf::RepeatedPtrField<::std::string>* PROTOBUF_NONNULL _internal_mutable_viewer_uuids();
-
-  public:
-  // .df.plugin.WorldRef world = 1 [json_name = "world"];
-  bool has_world() const;
-  void clear_world() ;
-  const ::df::plugin::WorldRef& world() const;
-  [[nodiscard]] ::df::plugin::WorldRef* PROTOBUF_NULLABLE release_world();
-  ::df::plugin::WorldRef* PROTOBUF_NONNULL mutable_world();
-  void set_allocated_world(::df::plugin::WorldRef* PROTOBUF_NULLABLE value);
-  void unsafe_arena_set_allocated_world(::df::plugin::WorldRef* PROTOBUF_NULLABLE value);
-  ::df::plugin::WorldRef* PROTOBUF_NULLABLE unsafe_arena_release_world();
-
-  private:
-  const ::df::plugin::WorldRef& _internal_world() const;
-  ::df::plugin::WorldRef* PROTOBUF_NONNULL _internal_mutable_world();
-
-  public:
-  // .df.plugin.Vec3 position = 2 [json_name = "position"];
-  bool has_position() const;
-  void clear_position() ;
-  const ::df::plugin::Vec3& position() const;
-  [[nodiscard]] ::df::plugin::Vec3* PROTOBUF_NULLABLE release_position();
-  ::df::plugin::Vec3* PROTOBUF_NONNULL mutable_position();
-  void set_allocated_position(::df::plugin::Vec3* PROTOBUF_NULLABLE value);
-  void unsafe_arena_set_allocated_position(::df::plugin::Vec3* PROTOBUF_NULLABLE value);
-  ::df::plugin::Vec3* PROTOBUF_NULLABLE unsafe_arena_release_position();
-
-  private:
-  const ::df::plugin::Vec3& _internal_position() const;
-  ::df::plugin::Vec3* PROTOBUF_NONNULL _internal_mutable_position();
-
-  public:
-  // @@protoc_insertion_point(class_scope:df.plugin.WorldViewersResult)
- private:
-  class _Internal;
-  friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<2, 3,
-                                   2, 49,
-                                   2>
-      _table_;
-
-  friend class ::google::protobuf::MessageLite;
-  friend class ::google::protobuf::Arena;
-  template <typename T>
-  friend class ::google::protobuf::Arena::InternalHelper;
-  using InternalArenaConstructable_ = void;
-  using DestructorSkippable_ = void;
-  struct Impl_ {
-    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-    inline explicit Impl_(
-        ::google::protobuf::internal::InternalVisibility visibility,
-        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
-    inline explicit Impl_(
-        ::google::protobuf::internal::InternalVisibility visibility,
-        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
-        const WorldViewersResult& from_msg);
-    ::google::protobuf::internal::HasBits<1> _has_bits_;
-    ::google::protobuf::internal::CachedSize _cached_size_;
-    ::google::protobuf::RepeatedPtrField<::std::string> viewer_uuids_;
-    ::df::plugin::WorldRef* PROTOBUF_NULLABLE world_;
-    ::df::plugin::Vec3* PROTOBUF_NULLABLE position_;
-    PROTOBUF_TSAN_DECLARE_MEMBER
-  };
-  union { Impl_ _impl_; };
-  friend struct ::TableStruct_actions_2eproto;
-};
-
-extern const ::google::protobuf::internal::ClassDataFull WorldViewersResult_class_data_;
 // -------------------------------------------------------------------
 
 class WorldSetTickRangeAction final : public ::google::protobuf::Message
@@ -4178,218 +3934,6 @@ class WorldSetDefaultGameModeAction final : public ::google::protobuf::Message
 };
 
 extern const ::google::protobuf::internal::ClassDataFull WorldSetDefaultGameModeAction_class_data_;
-// -------------------------------------------------------------------
-
-class WorldQueryViewersAction final : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:df.plugin.WorldQueryViewersAction) */ {
- public:
-  inline WorldQueryViewersAction() : WorldQueryViewersAction(nullptr) {}
-  ~WorldQueryViewersAction() PROTOBUF_FINAL;
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-  void operator delete(WorldQueryViewersAction* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
-    SharedDtor(*msg);
-    ::google::protobuf::internal::SizedDelete(msg, sizeof(WorldQueryViewersAction));
-  }
-#endif
-
-  template <typename = void>
-  explicit PROTOBUF_CONSTEXPR WorldQueryViewersAction(::google::protobuf::internal::ConstantInitialized);
-
-  inline WorldQueryViewersAction(const WorldQueryViewersAction& from) : WorldQueryViewersAction(nullptr, from) {}
-  inline WorldQueryViewersAction(WorldQueryViewersAction&& from) noexcept
-      : WorldQueryViewersAction(nullptr, ::std::move(from)) {}
-  inline WorldQueryViewersAction& operator=(const WorldQueryViewersAction& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline WorldQueryViewersAction& operator=(WorldQueryViewersAction&& from) noexcept {
-    if (this == &from) return *this;
-    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
-  }
-  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-  }
-
-  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
-    return GetDescriptor();
-  }
-  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const WorldQueryViewersAction& default_instance() {
-    return *reinterpret_cast<const WorldQueryViewersAction*>(
-        &_WorldQueryViewersAction_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages = 29;
-  friend void swap(WorldQueryViewersAction& a, WorldQueryViewersAction& b) { a.Swap(&b); }
-  inline void Swap(WorldQueryViewersAction* PROTOBUF_NONNULL other) {
-    if (other == this) return;
-    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-      InternalSwap(other);
-    } else {
-      ::google::protobuf::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(WorldQueryViewersAction* PROTOBUF_NONNULL other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  WorldQueryViewersAction* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
-    return ::google::protobuf::Message::DefaultConstruct<WorldQueryViewersAction>(arena);
-  }
-  using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const WorldQueryViewersAction& from);
-  using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom(const WorldQueryViewersAction& from) { WorldQueryViewersAction::MergeImpl(*this, from); }
-
-  private:
-  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
-                        const ::google::protobuf::MessageLite& from_msg);
-
-  public:
-  bool IsInitialized() const {
-    return true;
-  }
-  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-  #if defined(PROTOBUF_CUSTOM_VTABLE)
-  private:
-  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
-      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
-      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
-
-  public:
-  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
-      ::uint8_t* PROTOBUF_NONNULL target,
-      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
-    return _InternalSerialize(*this, target, stream);
-  }
-  #else   // PROTOBUF_CUSTOM_VTABLE
-  ::size_t ByteSizeLong() const final;
-  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
-      ::uint8_t* PROTOBUF_NONNULL target,
-      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
-  #endif  // PROTOBUF_CUSTOM_VTABLE
-  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
-
-  private:
-  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
-  static void SharedDtor(MessageLite& self);
-  void InternalSwap(WorldQueryViewersAction* PROTOBUF_NONNULL other);
- private:
-  template <typename T>
-  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "df.plugin.WorldQueryViewersAction"; }
-
-  explicit WorldQueryViewersAction(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
-  WorldQueryViewersAction(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const WorldQueryViewersAction& from);
-  WorldQueryViewersAction(
-      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, WorldQueryViewersAction&& from) noexcept
-      : WorldQueryViewersAction(arena) {
-    *this = ::std::move(from);
-  }
-  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
-  static void* PROTOBUF_NONNULL PlacementNew_(
-      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
-      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
-  static constexpr auto InternalNewImpl_();
-
- public:
-  static constexpr auto InternalGenerateClassData_();
-
-  ::google::protobuf::Metadata GetMetadata() const;
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-  enum : int {
-    kWorldFieldNumber = 1,
-    kPositionFieldNumber = 2,
-  };
-  // .df.plugin.WorldRef world = 1 [json_name = "world"];
-  bool has_world() const;
-  void clear_world() ;
-  const ::df::plugin::WorldRef& world() const;
-  [[nodiscard]] ::df::plugin::WorldRef* PROTOBUF_NULLABLE release_world();
-  ::df::plugin::WorldRef* PROTOBUF_NONNULL mutable_world();
-  void set_allocated_world(::df::plugin::WorldRef* PROTOBUF_NULLABLE value);
-  void unsafe_arena_set_allocated_world(::df::plugin::WorldRef* PROTOBUF_NULLABLE value);
-  ::df::plugin::WorldRef* PROTOBUF_NULLABLE unsafe_arena_release_world();
-
-  private:
-  const ::df::plugin::WorldRef& _internal_world() const;
-  ::df::plugin::WorldRef* PROTOBUF_NONNULL _internal_mutable_world();
-
-  public:
-  // .df.plugin.Vec3 position = 2 [json_name = "position"];
-  bool has_position() const;
-  void clear_position() ;
-  const ::df::plugin::Vec3& position() const;
-  [[nodiscard]] ::df::plugin::Vec3* PROTOBUF_NULLABLE release_position();
-  ::df::plugin::Vec3* PROTOBUF_NONNULL mutable_position();
-  void set_allocated_position(::df::plugin::Vec3* PROTOBUF_NULLABLE value);
-  void unsafe_arena_set_allocated_position(::df::plugin::Vec3* PROTOBUF_NULLABLE value);
-  ::df::plugin::Vec3* PROTOBUF_NULLABLE unsafe_arena_release_position();
-
-  private:
-  const ::df::plugin::Vec3& _internal_position() const;
-  ::df::plugin::Vec3* PROTOBUF_NONNULL _internal_mutable_position();
-
-  public:
-  // @@protoc_insertion_point(class_scope:df.plugin.WorldQueryViewersAction)
- private:
-  class _Internal;
-  friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<1, 2,
-                                   2, 0,
-                                   2>
-      _table_;
-
-  friend class ::google::protobuf::MessageLite;
-  friend class ::google::protobuf::Arena;
-  template <typename T>
-  friend class ::google::protobuf::Arena::InternalHelper;
-  using InternalArenaConstructable_ = void;
-  using DestructorSkippable_ = void;
-  struct Impl_ {
-    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-    inline explicit Impl_(
-        ::google::protobuf::internal::InternalVisibility visibility,
-        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
-    inline explicit Impl_(
-        ::google::protobuf::internal::InternalVisibility visibility,
-        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
-        const WorldQueryViewersAction& from_msg);
-    ::google::protobuf::internal::HasBits<1> _has_bits_;
-    ::google::protobuf::internal::CachedSize _cached_size_;
-    ::df::plugin::WorldRef* PROTOBUF_NULLABLE world_;
-    ::df::plugin::Vec3* PROTOBUF_NULLABLE position_;
-    PROTOBUF_TSAN_DECLARE_MEMBER
-  };
-  union { Impl_ _impl_; };
-  friend struct ::TableStruct_actions_2eproto;
-};
-
-extern const ::google::protobuf::internal::ClassDataFull WorldQueryViewersAction_class_data_;
 // -------------------------------------------------------------------
 
 class WorldQueryPlayersAction final : public ::google::protobuf::Message
@@ -6634,7 +6178,7 @@ class WorldPlayersResult final : public ::google::protobuf::Message
     return *reinterpret_cast<const WorldPlayersResult*>(
         &_WorldPlayersResult_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 33;
+  static constexpr int kIndexInFileMessages = 32;
   friend void swap(WorldPlayersResult& a, WorldPlayersResult& b) { a.Swap(&b); }
   inline void Swap(WorldPlayersResult* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -6848,7 +6392,7 @@ class WorldEntitiesWithinResult final : public ::google::protobuf::Message
     return *reinterpret_cast<const WorldEntitiesWithinResult*>(
         &_WorldEntitiesWithinResult_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 32;
+  static constexpr int kIndexInFileMessages = 31;
   friend void swap(WorldEntitiesWithinResult& a, WorldEntitiesWithinResult& b) { a.Swap(&b); }
   inline void Swap(WorldEntitiesWithinResult* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -7079,7 +6623,7 @@ class WorldEntitiesResult final : public ::google::protobuf::Message
     return *reinterpret_cast<const WorldEntitiesResult*>(
         &_WorldEntitiesResult_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 31;
+  static constexpr int kIndexInFileMessages = 30;
   friend void swap(WorldEntitiesResult& a, WorldEntitiesResult& b) { a.Swap(&b); }
   inline void Swap(WorldEntitiesResult* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -7551,10 +7095,9 @@ class ActionResult final : public ::google::protobuf::Message
     kWorldEntities = 10,
     kWorldPlayers = 11,
     kWorldEntitiesWithin = 12,
-    kWorldViewers = 13,
     RESULT_NOT_SET = 0,
   };
-  static constexpr int kIndexInFileMessages = 35;
+  static constexpr int kIndexInFileMessages = 33;
   friend void swap(ActionResult& a, ActionResult& b) { a.Swap(&b); }
   inline void Swap(ActionResult* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -7646,7 +7189,6 @@ class ActionResult final : public ::google::protobuf::Message
     kWorldEntitiesFieldNumber = 10,
     kWorldPlayersFieldNumber = 11,
     kWorldEntitiesWithinFieldNumber = 12,
-    kWorldViewersFieldNumber = 13,
   };
   // string correlation_id = 1 [json_name = "correlationId"];
   void clear_correlation_id() ;
@@ -7735,25 +7277,6 @@ class ActionResult final : public ::google::protobuf::Message
   ::df::plugin::WorldEntitiesWithinResult* PROTOBUF_NONNULL _internal_mutable_world_entities_within();
 
   public:
-  // .df.plugin.WorldViewersResult world_viewers = 13 [json_name = "worldViewers"];
-  bool has_world_viewers() const;
-  private:
-  bool _internal_has_world_viewers() const;
-
-  public:
-  void clear_world_viewers() ;
-  const ::df::plugin::WorldViewersResult& world_viewers() const;
-  [[nodiscard]] ::df::plugin::WorldViewersResult* PROTOBUF_NULLABLE release_world_viewers();
-  ::df::plugin::WorldViewersResult* PROTOBUF_NONNULL mutable_world_viewers();
-  void set_allocated_world_viewers(::df::plugin::WorldViewersResult* PROTOBUF_NULLABLE value);
-  void unsafe_arena_set_allocated_world_viewers(::df::plugin::WorldViewersResult* PROTOBUF_NULLABLE value);
-  ::df::plugin::WorldViewersResult* PROTOBUF_NULLABLE unsafe_arena_release_world_viewers();
-
-  private:
-  const ::df::plugin::WorldViewersResult& _internal_world_viewers() const;
-  ::df::plugin::WorldViewersResult* PROTOBUF_NONNULL _internal_mutable_world_viewers();
-
-  public:
   void clear_result();
   ResultCase result_case() const;
   // @@protoc_insertion_point(class_scope:df.plugin.ActionResult)
@@ -7762,12 +7285,11 @@ class ActionResult final : public ::google::protobuf::Message
   void set_has_world_entities();
   void set_has_world_players();
   void set_has_world_entities_within();
-  void set_has_world_viewers();
   inline bool has_result() const;
   inline void clear_has_result();
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<1, 6,
-                                   5, 45,
+  static const ::google::protobuf::internal::TcParseTable<1, 5,
+                                   4, 45,
                                    2>
       _table_;
 
@@ -7796,7 +7318,6 @@ class ActionResult final : public ::google::protobuf::Message
       ::google::protobuf::Message* PROTOBUF_NULLABLE world_entities_;
       ::google::protobuf::Message* PROTOBUF_NULLABLE world_players_;
       ::google::protobuf::Message* PROTOBUF_NULLABLE world_entities_within_;
-      ::google::protobuf::Message* PROTOBUF_NULLABLE world_viewers_;
     } result_;
     ::uint32_t _oneof_case_[1];
     PROTOBUF_TSAN_DECLARE_MEMBER
@@ -7891,7 +7412,6 @@ class Action final : public ::google::protobuf::Message
     kWorldQueryEntities = 70,
     kWorldQueryPlayers = 71,
     kWorldQueryEntitiesWithin = 72,
-    kWorldQueryViewers = 73,
     KIND_NOT_SET = 0,
   };
   static constexpr int kIndexInFileMessages = 1;
@@ -8009,7 +7529,6 @@ class Action final : public ::google::protobuf::Message
     kWorldQueryEntitiesFieldNumber = 70,
     kWorldQueryPlayersFieldNumber = 71,
     kWorldQueryEntitiesWithinFieldNumber = 72,
-    kWorldQueryViewersFieldNumber = 73,
   };
   // optional string correlation_id = 1 [json_name = "correlationId"];
   bool has_correlation_id() const;
@@ -8540,25 +8059,6 @@ class Action final : public ::google::protobuf::Message
   ::df::plugin::WorldQueryEntitiesWithinAction* PROTOBUF_NONNULL _internal_mutable_world_query_entities_within();
 
   public:
-  // .df.plugin.WorldQueryViewersAction world_query_viewers = 73 [json_name = "worldQueryViewers"];
-  bool has_world_query_viewers() const;
-  private:
-  bool _internal_has_world_query_viewers() const;
-
-  public:
-  void clear_world_query_viewers() ;
-  const ::df::plugin::WorldQueryViewersAction& world_query_viewers() const;
-  [[nodiscard]] ::df::plugin::WorldQueryViewersAction* PROTOBUF_NULLABLE release_world_query_viewers();
-  ::df::plugin::WorldQueryViewersAction* PROTOBUF_NONNULL mutable_world_query_viewers();
-  void set_allocated_world_query_viewers(::df::plugin::WorldQueryViewersAction* PROTOBUF_NULLABLE value);
-  void unsafe_arena_set_allocated_world_query_viewers(::df::plugin::WorldQueryViewersAction* PROTOBUF_NULLABLE value);
-  ::df::plugin::WorldQueryViewersAction* PROTOBUF_NULLABLE unsafe_arena_release_world_query_viewers();
-
-  private:
-  const ::df::plugin::WorldQueryViewersAction& _internal_world_query_viewers() const;
-  ::df::plugin::WorldQueryViewersAction* PROTOBUF_NONNULL _internal_mutable_world_query_viewers();
-
-  public:
   void clear_kind();
   KindCase kind_case() const;
   // @@protoc_insertion_point(class_scope:df.plugin.Action)
@@ -8591,12 +8091,11 @@ class Action final : public ::google::protobuf::Message
   void set_has_world_query_entities();
   void set_has_world_query_players();
   void set_has_world_query_entities_within();
-  void set_has_world_query_viewers();
   inline bool has_kind() const;
   inline void clear_has_kind();
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<0, 29,
-                                   28, 63,
+  static const ::google::protobuf::internal::TcParseTable<0, 28,
+                                   27, 63,
                                    11>
       _table_;
 
@@ -8648,7 +8147,6 @@ class Action final : public ::google::protobuf::Message
       ::google::protobuf::Message* PROTOBUF_NULLABLE world_query_entities_;
       ::google::protobuf::Message* PROTOBUF_NULLABLE world_query_players_;
       ::google::protobuf::Message* PROTOBUF_NULLABLE world_query_entities_within_;
-      ::google::protobuf::Message* PROTOBUF_NULLABLE world_query_viewers_;
     } kind_;
     ::uint32_t _oneof_case_[1];
     PROTOBUF_TSAN_DECLARE_MEMBER
@@ -11212,88 +10710,6 @@ inline ::df::plugin::WorldQueryEntitiesWithinAction* PROTOBUF_NONNULL Action::mu
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
   ::df::plugin::WorldQueryEntitiesWithinAction* _msg = _internal_mutable_world_query_entities_within();
   // @@protoc_insertion_point(field_mutable:df.plugin.Action.world_query_entities_within)
-  return _msg;
-}
-
-// .df.plugin.WorldQueryViewersAction world_query_viewers = 73 [json_name = "worldQueryViewers"];
-inline bool Action::has_world_query_viewers() const {
-  return kind_case() == kWorldQueryViewers;
-}
-inline bool Action::_internal_has_world_query_viewers() const {
-  return kind_case() == kWorldQueryViewers;
-}
-inline void Action::set_has_world_query_viewers() {
-  _impl_._oneof_case_[0] = kWorldQueryViewers;
-}
-inline void Action::clear_world_query_viewers() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (kind_case() == kWorldQueryViewers) {
-    if (GetArena() == nullptr) {
-      delete _impl_.kind_.world_query_viewers_;
-    } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
-      ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.kind_.world_query_viewers_);
-    }
-    clear_has_kind();
-  }
-}
-inline ::df::plugin::WorldQueryViewersAction* PROTOBUF_NULLABLE Action::release_world_query_viewers() {
-  // @@protoc_insertion_point(field_release:df.plugin.Action.world_query_viewers)
-  if (kind_case() == kWorldQueryViewers) {
-    clear_has_kind();
-    auto* temp = reinterpret_cast<::df::plugin::WorldQueryViewersAction*>(_impl_.kind_.world_query_viewers_);
-    if (GetArena() != nullptr) {
-      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
-    }
-    _impl_.kind_.world_query_viewers_ = nullptr;
-    return temp;
-  } else {
-    return nullptr;
-  }
-}
-inline const ::df::plugin::WorldQueryViewersAction& Action::_internal_world_query_viewers() const {
-  return kind_case() == kWorldQueryViewers ? static_cast<const ::df::plugin::WorldQueryViewersAction&>(*reinterpret_cast<::df::plugin::WorldQueryViewersAction*>(_impl_.kind_.world_query_viewers_))
-                     : reinterpret_cast<const ::df::plugin::WorldQueryViewersAction&>(::df::plugin::_WorldQueryViewersAction_default_instance_);
-}
-inline const ::df::plugin::WorldQueryViewersAction& Action::world_query_viewers() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:df.plugin.Action.world_query_viewers)
-  return _internal_world_query_viewers();
-}
-inline ::df::plugin::WorldQueryViewersAction* PROTOBUF_NULLABLE Action::unsafe_arena_release_world_query_viewers() {
-  // @@protoc_insertion_point(field_unsafe_arena_release:df.plugin.Action.world_query_viewers)
-  if (kind_case() == kWorldQueryViewers) {
-    clear_has_kind();
-    auto* temp = reinterpret_cast<::df::plugin::WorldQueryViewersAction*>(_impl_.kind_.world_query_viewers_);
-    _impl_.kind_.world_query_viewers_ = nullptr;
-    return temp;
-  } else {
-    return nullptr;
-  }
-}
-inline void Action::unsafe_arena_set_allocated_world_query_viewers(
-    ::df::plugin::WorldQueryViewersAction* PROTOBUF_NULLABLE value) {
-  // We rely on the oneof clear method to free the earlier contents
-  // of this oneof. We can directly use the pointer we're given to
-  // set the new value.
-  clear_kind();
-  if (value) {
-    set_has_world_query_viewers();
-    _impl_.kind_.world_query_viewers_ = reinterpret_cast<::google::protobuf::Message*>(value);
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:df.plugin.Action.world_query_viewers)
-}
-inline ::df::plugin::WorldQueryViewersAction* PROTOBUF_NONNULL Action::_internal_mutable_world_query_viewers() {
-  if (kind_case() != kWorldQueryViewers) {
-    clear_kind();
-    set_has_world_query_viewers();
-    _impl_.kind_.world_query_viewers_ = reinterpret_cast<::google::protobuf::Message*>(
-        ::google::protobuf::Message::DefaultConstruct<::df::plugin::WorldQueryViewersAction>(GetArena()));
-  }
-  return reinterpret_cast<::df::plugin::WorldQueryViewersAction*>(_impl_.kind_.world_query_viewers_);
-}
-inline ::df::plugin::WorldQueryViewersAction* PROTOBUF_NONNULL Action::mutable_world_query_viewers()
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::df::plugin::WorldQueryViewersAction* _msg = _internal_mutable_world_query_viewers();
-  // @@protoc_insertion_point(field_mutable:df.plugin.Action.world_query_viewers)
   return _msg;
 }
 
@@ -15731,196 +15147,6 @@ inline void WorldQueryEntitiesWithinAction::set_allocated_box(::df::plugin::BBox
 
 // -------------------------------------------------------------------
 
-// WorldQueryViewersAction
-
-// .df.plugin.WorldRef world = 1 [json_name = "world"];
-inline bool WorldQueryViewersAction::has_world() const {
-  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000001U);
-  PROTOBUF_ASSUME(!value || _impl_.world_ != nullptr);
-  return value;
-}
-inline const ::df::plugin::WorldRef& WorldQueryViewersAction::_internal_world() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  const ::df::plugin::WorldRef* p = _impl_.world_;
-  return p != nullptr ? *p : reinterpret_cast<const ::df::plugin::WorldRef&>(::df::plugin::_WorldRef_default_instance_);
-}
-inline const ::df::plugin::WorldRef& WorldQueryViewersAction::world() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:df.plugin.WorldQueryViewersAction.world)
-  return _internal_world();
-}
-inline void WorldQueryViewersAction::unsafe_arena_set_allocated_world(
-    ::df::plugin::WorldRef* PROTOBUF_NULLABLE value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (GetArena() == nullptr) {
-    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.world_);
-  }
-  _impl_.world_ = reinterpret_cast<::df::plugin::WorldRef*>(value);
-  if (value != nullptr) {
-    SetHasBit(_impl_._has_bits_[0], 0x00000001U);
-  } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:df.plugin.WorldQueryViewersAction.world)
-}
-inline ::df::plugin::WorldRef* PROTOBUF_NULLABLE WorldQueryViewersAction::release_world() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-
-  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
-  ::df::plugin::WorldRef* released = _impl_.world_;
-  _impl_.world_ = nullptr;
-  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
-    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-    if (GetArena() == nullptr) {
-      delete old;
-    }
-  } else {
-    if (GetArena() != nullptr) {
-      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-    }
-  }
-  return released;
-}
-inline ::df::plugin::WorldRef* PROTOBUF_NULLABLE WorldQueryViewersAction::unsafe_arena_release_world() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:df.plugin.WorldQueryViewersAction.world)
-
-  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
-  ::df::plugin::WorldRef* temp = _impl_.world_;
-  _impl_.world_ = nullptr;
-  return temp;
-}
-inline ::df::plugin::WorldRef* PROTOBUF_NONNULL WorldQueryViewersAction::_internal_mutable_world() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (_impl_.world_ == nullptr) {
-    auto* p = ::google::protobuf::Message::DefaultConstruct<::df::plugin::WorldRef>(GetArena());
-    _impl_.world_ = reinterpret_cast<::df::plugin::WorldRef*>(p);
-  }
-  return _impl_.world_;
-}
-inline ::df::plugin::WorldRef* PROTOBUF_NONNULL WorldQueryViewersAction::mutable_world()
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
-  ::df::plugin::WorldRef* _msg = _internal_mutable_world();
-  // @@protoc_insertion_point(field_mutable:df.plugin.WorldQueryViewersAction.world)
-  return _msg;
-}
-inline void WorldQueryViewersAction::set_allocated_world(::df::plugin::WorldRef* PROTOBUF_NULLABLE value) {
-  ::google::protobuf::Arena* message_arena = GetArena();
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (message_arena == nullptr) {
-    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.world_);
-  }
-
-  if (value != nullptr) {
-    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::google::protobuf::Message*>(value)->GetArena();
-    if (message_arena != submessage_arena) {
-      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
-    }
-    SetHasBit(_impl_._has_bits_[0], 0x00000001U);
-  } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
-  }
-
-  _impl_.world_ = reinterpret_cast<::df::plugin::WorldRef*>(value);
-  // @@protoc_insertion_point(field_set_allocated:df.plugin.WorldQueryViewersAction.world)
-}
-
-// .df.plugin.Vec3 position = 2 [json_name = "position"];
-inline bool WorldQueryViewersAction::has_position() const {
-  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000002U);
-  PROTOBUF_ASSUME(!value || _impl_.position_ != nullptr);
-  return value;
-}
-inline const ::df::plugin::Vec3& WorldQueryViewersAction::_internal_position() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  const ::df::plugin::Vec3* p = _impl_.position_;
-  return p != nullptr ? *p : reinterpret_cast<const ::df::plugin::Vec3&>(::df::plugin::_Vec3_default_instance_);
-}
-inline const ::df::plugin::Vec3& WorldQueryViewersAction::position() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:df.plugin.WorldQueryViewersAction.position)
-  return _internal_position();
-}
-inline void WorldQueryViewersAction::unsafe_arena_set_allocated_position(
-    ::df::plugin::Vec3* PROTOBUF_NULLABLE value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (GetArena() == nullptr) {
-    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.position_);
-  }
-  _impl_.position_ = reinterpret_cast<::df::plugin::Vec3*>(value);
-  if (value != nullptr) {
-    SetHasBit(_impl_._has_bits_[0], 0x00000002U);
-  } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:df.plugin.WorldQueryViewersAction.position)
-}
-inline ::df::plugin::Vec3* PROTOBUF_NULLABLE WorldQueryViewersAction::release_position() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-
-  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
-  ::df::plugin::Vec3* released = _impl_.position_;
-  _impl_.position_ = nullptr;
-  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
-    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-    if (GetArena() == nullptr) {
-      delete old;
-    }
-  } else {
-    if (GetArena() != nullptr) {
-      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-    }
-  }
-  return released;
-}
-inline ::df::plugin::Vec3* PROTOBUF_NULLABLE WorldQueryViewersAction::unsafe_arena_release_position() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:df.plugin.WorldQueryViewersAction.position)
-
-  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
-  ::df::plugin::Vec3* temp = _impl_.position_;
-  _impl_.position_ = nullptr;
-  return temp;
-}
-inline ::df::plugin::Vec3* PROTOBUF_NONNULL WorldQueryViewersAction::_internal_mutable_position() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (_impl_.position_ == nullptr) {
-    auto* p = ::google::protobuf::Message::DefaultConstruct<::df::plugin::Vec3>(GetArena());
-    _impl_.position_ = reinterpret_cast<::df::plugin::Vec3*>(p);
-  }
-  return _impl_.position_;
-}
-inline ::df::plugin::Vec3* PROTOBUF_NONNULL WorldQueryViewersAction::mutable_position()
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
-  ::df::plugin::Vec3* _msg = _internal_mutable_position();
-  // @@protoc_insertion_point(field_mutable:df.plugin.WorldQueryViewersAction.position)
-  return _msg;
-}
-inline void WorldQueryViewersAction::set_allocated_position(::df::plugin::Vec3* PROTOBUF_NULLABLE value) {
-  ::google::protobuf::Arena* message_arena = GetArena();
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (message_arena == nullptr) {
-    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.position_);
-  }
-
-  if (value != nullptr) {
-    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::google::protobuf::Message*>(value)->GetArena();
-    if (message_arena != submessage_arena) {
-      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
-    }
-    SetHasBit(_impl_._has_bits_[0], 0x00000002U);
-  } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
-  }
-
-  _impl_.position_ = reinterpret_cast<::df::plugin::Vec3*>(value);
-  // @@protoc_insertion_point(field_set_allocated:df.plugin.WorldQueryViewersAction.position)
-}
-
-// -------------------------------------------------------------------
-
 // ActionStatus
 
 // bool ok = 1 [json_name = "ok"];
@@ -16553,268 +15779,6 @@ WorldPlayersResult::_internal_mutable_players() {
 
 // -------------------------------------------------------------------
 
-// WorldViewersResult
-
-// .df.plugin.WorldRef world = 1 [json_name = "world"];
-inline bool WorldViewersResult::has_world() const {
-  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000002U);
-  PROTOBUF_ASSUME(!value || _impl_.world_ != nullptr);
-  return value;
-}
-inline const ::df::plugin::WorldRef& WorldViewersResult::_internal_world() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  const ::df::plugin::WorldRef* p = _impl_.world_;
-  return p != nullptr ? *p : reinterpret_cast<const ::df::plugin::WorldRef&>(::df::plugin::_WorldRef_default_instance_);
-}
-inline const ::df::plugin::WorldRef& WorldViewersResult::world() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:df.plugin.WorldViewersResult.world)
-  return _internal_world();
-}
-inline void WorldViewersResult::unsafe_arena_set_allocated_world(
-    ::df::plugin::WorldRef* PROTOBUF_NULLABLE value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (GetArena() == nullptr) {
-    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.world_);
-  }
-  _impl_.world_ = reinterpret_cast<::df::plugin::WorldRef*>(value);
-  if (value != nullptr) {
-    SetHasBit(_impl_._has_bits_[0], 0x00000002U);
-  } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:df.plugin.WorldViewersResult.world)
-}
-inline ::df::plugin::WorldRef* PROTOBUF_NULLABLE WorldViewersResult::release_world() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-
-  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
-  ::df::plugin::WorldRef* released = _impl_.world_;
-  _impl_.world_ = nullptr;
-  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
-    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-    if (GetArena() == nullptr) {
-      delete old;
-    }
-  } else {
-    if (GetArena() != nullptr) {
-      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-    }
-  }
-  return released;
-}
-inline ::df::plugin::WorldRef* PROTOBUF_NULLABLE WorldViewersResult::unsafe_arena_release_world() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:df.plugin.WorldViewersResult.world)
-
-  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
-  ::df::plugin::WorldRef* temp = _impl_.world_;
-  _impl_.world_ = nullptr;
-  return temp;
-}
-inline ::df::plugin::WorldRef* PROTOBUF_NONNULL WorldViewersResult::_internal_mutable_world() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (_impl_.world_ == nullptr) {
-    auto* p = ::google::protobuf::Message::DefaultConstruct<::df::plugin::WorldRef>(GetArena());
-    _impl_.world_ = reinterpret_cast<::df::plugin::WorldRef*>(p);
-  }
-  return _impl_.world_;
-}
-inline ::df::plugin::WorldRef* PROTOBUF_NONNULL WorldViewersResult::mutable_world()
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
-  ::df::plugin::WorldRef* _msg = _internal_mutable_world();
-  // @@protoc_insertion_point(field_mutable:df.plugin.WorldViewersResult.world)
-  return _msg;
-}
-inline void WorldViewersResult::set_allocated_world(::df::plugin::WorldRef* PROTOBUF_NULLABLE value) {
-  ::google::protobuf::Arena* message_arena = GetArena();
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (message_arena == nullptr) {
-    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.world_);
-  }
-
-  if (value != nullptr) {
-    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::google::protobuf::Message*>(value)->GetArena();
-    if (message_arena != submessage_arena) {
-      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
-    }
-    SetHasBit(_impl_._has_bits_[0], 0x00000002U);
-  } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
-  }
-
-  _impl_.world_ = reinterpret_cast<::df::plugin::WorldRef*>(value);
-  // @@protoc_insertion_point(field_set_allocated:df.plugin.WorldViewersResult.world)
-}
-
-// .df.plugin.Vec3 position = 2 [json_name = "position"];
-inline bool WorldViewersResult::has_position() const {
-  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000004U);
-  PROTOBUF_ASSUME(!value || _impl_.position_ != nullptr);
-  return value;
-}
-inline const ::df::plugin::Vec3& WorldViewersResult::_internal_position() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  const ::df::plugin::Vec3* p = _impl_.position_;
-  return p != nullptr ? *p : reinterpret_cast<const ::df::plugin::Vec3&>(::df::plugin::_Vec3_default_instance_);
-}
-inline const ::df::plugin::Vec3& WorldViewersResult::position() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:df.plugin.WorldViewersResult.position)
-  return _internal_position();
-}
-inline void WorldViewersResult::unsafe_arena_set_allocated_position(
-    ::df::plugin::Vec3* PROTOBUF_NULLABLE value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (GetArena() == nullptr) {
-    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.position_);
-  }
-  _impl_.position_ = reinterpret_cast<::df::plugin::Vec3*>(value);
-  if (value != nullptr) {
-    SetHasBit(_impl_._has_bits_[0], 0x00000004U);
-  } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:df.plugin.WorldViewersResult.position)
-}
-inline ::df::plugin::Vec3* PROTOBUF_NULLABLE WorldViewersResult::release_position() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-
-  ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
-  ::df::plugin::Vec3* released = _impl_.position_;
-  _impl_.position_ = nullptr;
-  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
-    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-    if (GetArena() == nullptr) {
-      delete old;
-    }
-  } else {
-    if (GetArena() != nullptr) {
-      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-    }
-  }
-  return released;
-}
-inline ::df::plugin::Vec3* PROTOBUF_NULLABLE WorldViewersResult::unsafe_arena_release_position() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:df.plugin.WorldViewersResult.position)
-
-  ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
-  ::df::plugin::Vec3* temp = _impl_.position_;
-  _impl_.position_ = nullptr;
-  return temp;
-}
-inline ::df::plugin::Vec3* PROTOBUF_NONNULL WorldViewersResult::_internal_mutable_position() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (_impl_.position_ == nullptr) {
-    auto* p = ::google::protobuf::Message::DefaultConstruct<::df::plugin::Vec3>(GetArena());
-    _impl_.position_ = reinterpret_cast<::df::plugin::Vec3*>(p);
-  }
-  return _impl_.position_;
-}
-inline ::df::plugin::Vec3* PROTOBUF_NONNULL WorldViewersResult::mutable_position()
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
-  ::df::plugin::Vec3* _msg = _internal_mutable_position();
-  // @@protoc_insertion_point(field_mutable:df.plugin.WorldViewersResult.position)
-  return _msg;
-}
-inline void WorldViewersResult::set_allocated_position(::df::plugin::Vec3* PROTOBUF_NULLABLE value) {
-  ::google::protobuf::Arena* message_arena = GetArena();
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (message_arena == nullptr) {
-    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.position_);
-  }
-
-  if (value != nullptr) {
-    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::google::protobuf::Message*>(value)->GetArena();
-    if (message_arena != submessage_arena) {
-      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
-    }
-    SetHasBit(_impl_._has_bits_[0], 0x00000004U);
-  } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
-  }
-
-  _impl_.position_ = reinterpret_cast<::df::plugin::Vec3*>(value);
-  // @@protoc_insertion_point(field_set_allocated:df.plugin.WorldViewersResult.position)
-}
-
-// repeated string viewer_uuids = 3 [json_name = "viewerUuids"];
-inline int WorldViewersResult::_internal_viewer_uuids_size() const {
-  return _internal_viewer_uuids().size();
-}
-inline int WorldViewersResult::viewer_uuids_size() const {
-  return _internal_viewer_uuids_size();
-}
-inline void WorldViewersResult::clear_viewer_uuids() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.viewer_uuids_.Clear();
-  ClearHasBitForRepeated(_impl_._has_bits_[0],
-                  0x00000001U);
-}
-inline ::std::string* PROTOBUF_NONNULL WorldViewersResult::add_viewer_uuids()
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  ::std::string* _s =
-      _internal_mutable_viewer_uuids()->InternalAddWithArena(
-          ::google::protobuf::MessageLite::internal_visibility(), GetArena());
-  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000001U);
-  // @@protoc_insertion_point(field_add_mutable:df.plugin.WorldViewersResult.viewer_uuids)
-  return _s;
-}
-inline const ::std::string& WorldViewersResult::viewer_uuids(int index) const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:df.plugin.WorldViewersResult.viewer_uuids)
-  return _internal_viewer_uuids().Get(index);
-}
-inline ::std::string* PROTOBUF_NONNULL WorldViewersResult::mutable_viewer_uuids(int index)
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable:df.plugin.WorldViewersResult.viewer_uuids)
-  return _internal_mutable_viewer_uuids()->Mutable(index);
-}
-template <typename Arg_, typename... Args_>
-inline void WorldViewersResult::set_viewer_uuids(int index, Arg_&& value, Args_... args) {
-  ::google::protobuf::internal::AssignToString(*_internal_mutable_viewer_uuids()->Mutable(index), ::std::forward<Arg_>(value),
-                        args... );
-  // @@protoc_insertion_point(field_set:df.plugin.WorldViewersResult.viewer_uuids)
-}
-template <typename Arg_, typename... Args_>
-inline void WorldViewersResult::add_viewer_uuids(Arg_&& value, Args_... args) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  ::google::protobuf::internal::AddToRepeatedPtrField(
-      ::google::protobuf::MessageLite::internal_visibility(), GetArena(),
-      *_internal_mutable_viewer_uuids(), ::std::forward<Arg_>(value),
-      args... );
-  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000001U);
-  // @@protoc_insertion_point(field_add:df.plugin.WorldViewersResult.viewer_uuids)
-}
-inline const ::google::protobuf::RepeatedPtrField<::std::string>& WorldViewersResult::viewer_uuids()
-    const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_list:df.plugin.WorldViewersResult.viewer_uuids)
-  return _internal_viewer_uuids();
-}
-inline ::google::protobuf::RepeatedPtrField<::std::string>* PROTOBUF_NONNULL
-WorldViewersResult::mutable_viewer_uuids() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000001U);
-  // @@protoc_insertion_point(field_mutable_list:df.plugin.WorldViewersResult.viewer_uuids)
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _internal_mutable_viewer_uuids();
-}
-inline const ::google::protobuf::RepeatedPtrField<::std::string>&
-WorldViewersResult::_internal_viewer_uuids() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.viewer_uuids_;
-}
-inline ::google::protobuf::RepeatedPtrField<::std::string>* PROTOBUF_NONNULL
-WorldViewersResult::_internal_mutable_viewer_uuids() {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return &_impl_.viewer_uuids_;
-}
-
-// -------------------------------------------------------------------
-
 // ActionResult
 
 // string correlation_id = 1 [json_name = "correlationId"];
@@ -17224,88 +16188,6 @@ inline ::df::plugin::WorldEntitiesWithinResult* PROTOBUF_NONNULL ActionResult::m
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
   ::df::plugin::WorldEntitiesWithinResult* _msg = _internal_mutable_world_entities_within();
   // @@protoc_insertion_point(field_mutable:df.plugin.ActionResult.world_entities_within)
-  return _msg;
-}
-
-// .df.plugin.WorldViewersResult world_viewers = 13 [json_name = "worldViewers"];
-inline bool ActionResult::has_world_viewers() const {
-  return result_case() == kWorldViewers;
-}
-inline bool ActionResult::_internal_has_world_viewers() const {
-  return result_case() == kWorldViewers;
-}
-inline void ActionResult::set_has_world_viewers() {
-  _impl_._oneof_case_[0] = kWorldViewers;
-}
-inline void ActionResult::clear_world_viewers() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (result_case() == kWorldViewers) {
-    if (GetArena() == nullptr) {
-      delete _impl_.result_.world_viewers_;
-    } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
-      ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.result_.world_viewers_);
-    }
-    clear_has_result();
-  }
-}
-inline ::df::plugin::WorldViewersResult* PROTOBUF_NULLABLE ActionResult::release_world_viewers() {
-  // @@protoc_insertion_point(field_release:df.plugin.ActionResult.world_viewers)
-  if (result_case() == kWorldViewers) {
-    clear_has_result();
-    auto* temp = reinterpret_cast<::df::plugin::WorldViewersResult*>(_impl_.result_.world_viewers_);
-    if (GetArena() != nullptr) {
-      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
-    }
-    _impl_.result_.world_viewers_ = nullptr;
-    return temp;
-  } else {
-    return nullptr;
-  }
-}
-inline const ::df::plugin::WorldViewersResult& ActionResult::_internal_world_viewers() const {
-  return result_case() == kWorldViewers ? static_cast<const ::df::plugin::WorldViewersResult&>(*reinterpret_cast<::df::plugin::WorldViewersResult*>(_impl_.result_.world_viewers_))
-                     : reinterpret_cast<const ::df::plugin::WorldViewersResult&>(::df::plugin::_WorldViewersResult_default_instance_);
-}
-inline const ::df::plugin::WorldViewersResult& ActionResult::world_viewers() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:df.plugin.ActionResult.world_viewers)
-  return _internal_world_viewers();
-}
-inline ::df::plugin::WorldViewersResult* PROTOBUF_NULLABLE ActionResult::unsafe_arena_release_world_viewers() {
-  // @@protoc_insertion_point(field_unsafe_arena_release:df.plugin.ActionResult.world_viewers)
-  if (result_case() == kWorldViewers) {
-    clear_has_result();
-    auto* temp = reinterpret_cast<::df::plugin::WorldViewersResult*>(_impl_.result_.world_viewers_);
-    _impl_.result_.world_viewers_ = nullptr;
-    return temp;
-  } else {
-    return nullptr;
-  }
-}
-inline void ActionResult::unsafe_arena_set_allocated_world_viewers(
-    ::df::plugin::WorldViewersResult* PROTOBUF_NULLABLE value) {
-  // We rely on the oneof clear method to free the earlier contents
-  // of this oneof. We can directly use the pointer we're given to
-  // set the new value.
-  clear_result();
-  if (value) {
-    set_has_world_viewers();
-    _impl_.result_.world_viewers_ = reinterpret_cast<::google::protobuf::Message*>(value);
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:df.plugin.ActionResult.world_viewers)
-}
-inline ::df::plugin::WorldViewersResult* PROTOBUF_NONNULL ActionResult::_internal_mutable_world_viewers() {
-  if (result_case() != kWorldViewers) {
-    clear_result();
-    set_has_world_viewers();
-    _impl_.result_.world_viewers_ = reinterpret_cast<::google::protobuf::Message*>(
-        ::google::protobuf::Message::DefaultConstruct<::df::plugin::WorldViewersResult>(GetArena()));
-  }
-  return reinterpret_cast<::df::plugin::WorldViewersResult*>(_impl_.result_.world_viewers_);
-}
-inline ::df::plugin::WorldViewersResult* PROTOBUF_NONNULL ActionResult::mutable_world_viewers()
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::df::plugin::WorldViewersResult* _msg = _internal_mutable_world_viewers();
-  // @@protoc_insertion_point(field_mutable:df.plugin.ActionResult.world_viewers)
   return _msg;
 }
 

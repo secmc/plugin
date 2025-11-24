@@ -35,7 +35,6 @@ class ActionResult extends \Google\Protobuf\Internal\Message
      *     @type \Df\Plugin\WorldEntitiesResult $world_entities
      *     @type \Df\Plugin\WorldPlayersResult $world_players
      *     @type \Df\Plugin\WorldEntitiesWithinResult $world_entities_within
-     *     @type \Df\Plugin\WorldViewersResult $world_viewers
      * }
      */
     public function __construct($data = NULL) {
@@ -174,33 +173,6 @@ class ActionResult extends \Google\Protobuf\Internal\Message
     {
         GPBUtil::checkMessage($var, \Df\Plugin\WorldEntitiesWithinResult::class);
         $this->writeOneof(12, $var);
-
-        return $this;
-    }
-
-    /**
-     * Generated from protobuf field <code>.df.plugin.WorldViewersResult world_viewers = 13 [json_name = "worldViewers"];</code>
-     * @return \Df\Plugin\WorldViewersResult|null
-     */
-    public function getWorldViewers()
-    {
-        return $this->readOneof(13);
-    }
-
-    public function hasWorldViewers()
-    {
-        return $this->hasOneof(13);
-    }
-
-    /**
-     * Generated from protobuf field <code>.df.plugin.WorldViewersResult world_viewers = 13 [json_name = "worldViewers"];</code>
-     * @param \Df\Plugin\WorldViewersResult $var
-     * @return $this
-     */
-    public function setWorldViewers($var)
-    {
-        GPBUtil::checkMessage($var, \Df\Plugin\WorldViewersResult::class);
-        $this->writeOneof(13, $var);
 
         return $this;
     }

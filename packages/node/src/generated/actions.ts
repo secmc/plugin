@@ -219,7 +219,6 @@ export interface Action {
   worldQueryEntities?: WorldQueryEntitiesAction | undefined;
   worldQueryPlayers?: WorldQueryPlayersAction | undefined;
   worldQueryEntitiesWithin?: WorldQueryEntitiesWithinAction | undefined;
-  worldQueryViewers?: WorldQueryViewersAction | undefined;
 }
 
 export interface SendChatAction {
@@ -415,11 +414,6 @@ export interface WorldQueryEntitiesWithinAction {
   box: BBox | undefined;
 }
 
-export interface WorldQueryViewersAction {
-  world: WorldRef | undefined;
-  position: Vec3 | undefined;
-}
-
 export interface ActionStatus {
   ok: boolean;
   error?: string | undefined;
@@ -441,19 +435,12 @@ export interface WorldPlayersResult {
   players: EntityRef[];
 }
 
-export interface WorldViewersResult {
-  world: WorldRef | undefined;
-  position: Vec3 | undefined;
-  viewerUuids: string[];
-}
-
 export interface ActionResult {
   correlationId: string;
   status?: ActionStatus | undefined;
   worldEntities?: WorldEntitiesResult | undefined;
   worldPlayers?: WorldPlayersResult | undefined;
   worldEntitiesWithin?: WorldEntitiesWithinResult | undefined;
-  worldViewers?: WorldViewersResult | undefined;
 }
 
 function createBaseActionBatch(): ActionBatch {
@@ -546,7 +533,6 @@ function createBaseAction(): Action {
     worldQueryEntities: undefined,
     worldQueryPlayers: undefined,
     worldQueryEntitiesWithin: undefined,
-    worldQueryViewers: undefined,
   };
 }
 
@@ -635,9 +621,6 @@ export const Action: MessageFns<Action> = {
     }
     if (message.worldQueryEntitiesWithin !== undefined) {
       WorldQueryEntitiesWithinAction.encode(message.worldQueryEntitiesWithin, writer.uint32(578).fork()).join();
-    }
-    if (message.worldQueryViewers !== undefined) {
-      WorldQueryViewersAction.encode(message.worldQueryViewers, writer.uint32(586).fork()).join();
     }
     return writer;
   },
@@ -873,14 +856,6 @@ export const Action: MessageFns<Action> = {
           message.worldQueryEntitiesWithin = WorldQueryEntitiesWithinAction.decode(reader, reader.uint32());
           continue;
         }
-        case 73: {
-          if (tag !== 586) {
-            break;
-          }
-
-          message.worldQueryViewers = WorldQueryViewersAction.decode(reader, reader.uint32());
-          continue;
-        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -933,9 +908,6 @@ export const Action: MessageFns<Action> = {
         : undefined,
       worldQueryEntitiesWithin: isSet(object.worldQueryEntitiesWithin)
         ? WorldQueryEntitiesWithinAction.fromJSON(object.worldQueryEntitiesWithin)
-        : undefined,
-      worldQueryViewers: isSet(object.worldQueryViewers)
-        ? WorldQueryViewersAction.fromJSON(object.worldQueryViewers)
         : undefined,
     };
   },
@@ -1025,9 +997,6 @@ export const Action: MessageFns<Action> = {
     }
     if (message.worldQueryEntitiesWithin !== undefined) {
       obj.worldQueryEntitiesWithin = WorldQueryEntitiesWithinAction.toJSON(message.worldQueryEntitiesWithin);
-    }
-    if (message.worldQueryViewers !== undefined) {
-      obj.worldQueryViewers = WorldQueryViewersAction.toJSON(message.worldQueryViewers);
     }
     return obj;
   },
@@ -1121,9 +1090,6 @@ export const Action: MessageFns<Action> = {
       (object.worldQueryEntitiesWithin !== undefined && object.worldQueryEntitiesWithin !== null)
         ? WorldQueryEntitiesWithinAction.fromPartial(object.worldQueryEntitiesWithin)
         : undefined;
-    message.worldQueryViewers = (object.worldQueryViewers !== undefined && object.worldQueryViewers !== null)
-      ? WorldQueryViewersAction.fromPartial(object.worldQueryViewers)
-      : undefined;
     return message;
   },
 };
@@ -3491,86 +3457,6 @@ export const WorldQueryEntitiesWithinAction: MessageFns<WorldQueryEntitiesWithin
   },
 };
 
-function createBaseWorldQueryViewersAction(): WorldQueryViewersAction {
-  return { world: undefined, position: undefined };
-}
-
-export const WorldQueryViewersAction: MessageFns<WorldQueryViewersAction> = {
-  encode(message: WorldQueryViewersAction, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.world !== undefined) {
-      WorldRef.encode(message.world, writer.uint32(10).fork()).join();
-    }
-    if (message.position !== undefined) {
-      Vec3.encode(message.position, writer.uint32(18).fork()).join();
-    }
-    return writer;
-  },
-
-  decode(input: BinaryReader | Uint8Array, length?: number): WorldQueryViewersAction {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseWorldQueryViewersAction();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1: {
-          if (tag !== 10) {
-            break;
-          }
-
-          message.world = WorldRef.decode(reader, reader.uint32());
-          continue;
-        }
-        case 2: {
-          if (tag !== 18) {
-            break;
-          }
-
-          message.position = Vec3.decode(reader, reader.uint32());
-          continue;
-        }
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skip(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): WorldQueryViewersAction {
-    return {
-      world: isSet(object.world) ? WorldRef.fromJSON(object.world) : undefined,
-      position: isSet(object.position) ? Vec3.fromJSON(object.position) : undefined,
-    };
-  },
-
-  toJSON(message: WorldQueryViewersAction): unknown {
-    const obj: any = {};
-    if (message.world !== undefined) {
-      obj.world = WorldRef.toJSON(message.world);
-    }
-    if (message.position !== undefined) {
-      obj.position = Vec3.toJSON(message.position);
-    }
-    return obj;
-  },
-
-  create(base?: DeepPartial<WorldQueryViewersAction>): WorldQueryViewersAction {
-    return WorldQueryViewersAction.fromPartial(base ?? {});
-  },
-  fromPartial(object: DeepPartial<WorldQueryViewersAction>): WorldQueryViewersAction {
-    const message = createBaseWorldQueryViewersAction();
-    message.world = (object.world !== undefined && object.world !== null)
-      ? WorldRef.fromPartial(object.world)
-      : undefined;
-    message.position = (object.position !== undefined && object.position !== null)
-      ? Vec3.fromPartial(object.position)
-      : undefined;
-    return message;
-  },
-};
-
 function createBaseActionStatus(): ActionStatus {
   return { ok: false, error: undefined };
 }
@@ -3901,104 +3787,6 @@ export const WorldPlayersResult: MessageFns<WorldPlayersResult> = {
   },
 };
 
-function createBaseWorldViewersResult(): WorldViewersResult {
-  return { world: undefined, position: undefined, viewerUuids: [] };
-}
-
-export const WorldViewersResult: MessageFns<WorldViewersResult> = {
-  encode(message: WorldViewersResult, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.world !== undefined) {
-      WorldRef.encode(message.world, writer.uint32(10).fork()).join();
-    }
-    if (message.position !== undefined) {
-      Vec3.encode(message.position, writer.uint32(18).fork()).join();
-    }
-    for (const v of message.viewerUuids) {
-      writer.uint32(26).string(v!);
-    }
-    return writer;
-  },
-
-  decode(input: BinaryReader | Uint8Array, length?: number): WorldViewersResult {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseWorldViewersResult();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1: {
-          if (tag !== 10) {
-            break;
-          }
-
-          message.world = WorldRef.decode(reader, reader.uint32());
-          continue;
-        }
-        case 2: {
-          if (tag !== 18) {
-            break;
-          }
-
-          message.position = Vec3.decode(reader, reader.uint32());
-          continue;
-        }
-        case 3: {
-          if (tag !== 26) {
-            break;
-          }
-
-          message.viewerUuids.push(reader.string());
-          continue;
-        }
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skip(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): WorldViewersResult {
-    return {
-      world: isSet(object.world) ? WorldRef.fromJSON(object.world) : undefined,
-      position: isSet(object.position) ? Vec3.fromJSON(object.position) : undefined,
-      viewerUuids: globalThis.Array.isArray(object?.viewerUuids)
-        ? object.viewerUuids.map((e: any) => globalThis.String(e))
-        : [],
-    };
-  },
-
-  toJSON(message: WorldViewersResult): unknown {
-    const obj: any = {};
-    if (message.world !== undefined) {
-      obj.world = WorldRef.toJSON(message.world);
-    }
-    if (message.position !== undefined) {
-      obj.position = Vec3.toJSON(message.position);
-    }
-    if (message.viewerUuids?.length) {
-      obj.viewerUuids = message.viewerUuids;
-    }
-    return obj;
-  },
-
-  create(base?: DeepPartial<WorldViewersResult>): WorldViewersResult {
-    return WorldViewersResult.fromPartial(base ?? {});
-  },
-  fromPartial(object: DeepPartial<WorldViewersResult>): WorldViewersResult {
-    const message = createBaseWorldViewersResult();
-    message.world = (object.world !== undefined && object.world !== null)
-      ? WorldRef.fromPartial(object.world)
-      : undefined;
-    message.position = (object.position !== undefined && object.position !== null)
-      ? Vec3.fromPartial(object.position)
-      : undefined;
-    message.viewerUuids = object.viewerUuids?.map((e) => e) || [];
-    return message;
-  },
-};
-
 function createBaseActionResult(): ActionResult {
   return {
     correlationId: "",
@@ -4006,7 +3794,6 @@ function createBaseActionResult(): ActionResult {
     worldEntities: undefined,
     worldPlayers: undefined,
     worldEntitiesWithin: undefined,
-    worldViewers: undefined,
   };
 }
 
@@ -4026,9 +3813,6 @@ export const ActionResult: MessageFns<ActionResult> = {
     }
     if (message.worldEntitiesWithin !== undefined) {
       WorldEntitiesWithinResult.encode(message.worldEntitiesWithin, writer.uint32(98).fork()).join();
-    }
-    if (message.worldViewers !== undefined) {
-      WorldViewersResult.encode(message.worldViewers, writer.uint32(106).fork()).join();
     }
     return writer;
   },
@@ -4080,14 +3864,6 @@ export const ActionResult: MessageFns<ActionResult> = {
           message.worldEntitiesWithin = WorldEntitiesWithinResult.decode(reader, reader.uint32());
           continue;
         }
-        case 13: {
-          if (tag !== 106) {
-            break;
-          }
-
-          message.worldViewers = WorldViewersResult.decode(reader, reader.uint32());
-          continue;
-        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -4106,7 +3882,6 @@ export const ActionResult: MessageFns<ActionResult> = {
       worldEntitiesWithin: isSet(object.worldEntitiesWithin)
         ? WorldEntitiesWithinResult.fromJSON(object.worldEntitiesWithin)
         : undefined,
-      worldViewers: isSet(object.worldViewers) ? WorldViewersResult.fromJSON(object.worldViewers) : undefined,
     };
   },
 
@@ -4126,9 +3901,6 @@ export const ActionResult: MessageFns<ActionResult> = {
     }
     if (message.worldEntitiesWithin !== undefined) {
       obj.worldEntitiesWithin = WorldEntitiesWithinResult.toJSON(message.worldEntitiesWithin);
-    }
-    if (message.worldViewers !== undefined) {
-      obj.worldViewers = WorldViewersResult.toJSON(message.worldViewers);
     }
     return obj;
   },
@@ -4150,9 +3922,6 @@ export const ActionResult: MessageFns<ActionResult> = {
       : undefined;
     message.worldEntitiesWithin = (object.worldEntitiesWithin !== undefined && object.worldEntitiesWithin !== null)
       ? WorldEntitiesWithinResult.fromPartial(object.worldEntitiesWithin)
-      : undefined;
-    message.worldViewers = (object.worldViewers !== undefined && object.worldViewers !== null)
-      ? WorldViewersResult.fromPartial(object.worldViewers)
       : undefined;
     return message;
   },

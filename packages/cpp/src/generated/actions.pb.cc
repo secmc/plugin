@@ -442,33 +442,6 @@ struct ActionStatusDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ActionStatusDefaultTypeInternal _ActionStatus_default_instance_;
 
-inline constexpr WorldViewersResult::Impl_::Impl_(
-    ::_pbi::ConstantInitialized) noexcept
-      : _cached_size_{0},
-        viewer_uuids_{},
-        world_{nullptr},
-        position_{nullptr} {}
-
-template <typename>
-PROTOBUF_CONSTEXPR WorldViewersResult::WorldViewersResult(::_pbi::ConstantInitialized)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(WorldViewersResult_class_data_.base()),
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(),
-#endif  // PROTOBUF_CUSTOM_VTABLE
-      _impl_(::_pbi::ConstantInitialized()) {
-}
-struct WorldViewersResultDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR WorldViewersResultDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~WorldViewersResultDefaultTypeInternal() {}
-  union {
-    WorldViewersResult _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 WorldViewersResultDefaultTypeInternal _WorldViewersResult_default_instance_;
-
 inline constexpr WorldSetTickRangeAction::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : _cached_size_{0},
@@ -546,32 +519,6 @@ struct WorldSetDefaultGameModeActionDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 WorldSetDefaultGameModeActionDefaultTypeInternal _WorldSetDefaultGameModeAction_default_instance_;
-
-inline constexpr WorldQueryViewersAction::Impl_::Impl_(
-    ::_pbi::ConstantInitialized) noexcept
-      : _cached_size_{0},
-        world_{nullptr},
-        position_{nullptr} {}
-
-template <typename>
-PROTOBUF_CONSTEXPR WorldQueryViewersAction::WorldQueryViewersAction(::_pbi::ConstantInitialized)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(WorldQueryViewersAction_class_data_.base()),
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(),
-#endif  // PROTOBUF_CUSTOM_VTABLE
-      _impl_(::_pbi::ConstantInitialized()) {
-}
-struct WorldQueryViewersActionDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR WorldQueryViewersActionDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~WorldQueryViewersActionDefaultTypeInternal() {}
-  union {
-    WorldQueryViewersAction _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 WorldQueryViewersActionDefaultTypeInternal _WorldQueryViewersAction_default_instance_;
 
 inline constexpr WorldQueryPlayersAction::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
@@ -1056,7 +1003,7 @@ const ::uint32_t
         0x085, // bitmap
         PROTOBUF_FIELD_OFFSET(::df::plugin::Action, _impl_._has_bits_),
         PROTOBUF_FIELD_OFFSET(::df::plugin::Action, _impl_._oneof_case_[0]),
-        34, // hasbit index offset
+        33, // hasbit index offset
         PROTOBUF_FIELD_OFFSET(::df::plugin::Action, _impl_.correlation_id_),
         PROTOBUF_FIELD_OFFSET(::df::plugin::Action, _impl_.kind_),
         PROTOBUF_FIELD_OFFSET(::df::plugin::Action, _impl_.kind_),
@@ -1086,9 +1033,7 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::df::plugin::Action, _impl_.kind_),
         PROTOBUF_FIELD_OFFSET(::df::plugin::Action, _impl_.kind_),
         PROTOBUF_FIELD_OFFSET(::df::plugin::Action, _impl_.kind_),
-        PROTOBUF_FIELD_OFFSET(::df::plugin::Action, _impl_.kind_),
         0,
-        ~0u,
         ~0u,
         ~0u,
         ~0u,
@@ -1340,13 +1285,6 @@ const ::uint32_t
         0,
         1,
         0x081, // bitmap
-        PROTOBUF_FIELD_OFFSET(::df::plugin::WorldQueryViewersAction, _impl_._has_bits_),
-        5, // hasbit index offset
-        PROTOBUF_FIELD_OFFSET(::df::plugin::WorldQueryViewersAction, _impl_.world_),
-        PROTOBUF_FIELD_OFFSET(::df::plugin::WorldQueryViewersAction, _impl_.position_),
-        0,
-        1,
-        0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::df::plugin::ActionStatus, _impl_._has_bits_),
         5, // hasbit index offset
         PROTOBUF_FIELD_OFFSET(::df::plugin::ActionStatus, _impl_.ok_),
@@ -1376,29 +1314,18 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::df::plugin::WorldPlayersResult, _impl_.players_),
         1,
         0,
-        0x081, // bitmap
-        PROTOBUF_FIELD_OFFSET(::df::plugin::WorldViewersResult, _impl_._has_bits_),
-        6, // hasbit index offset
-        PROTOBUF_FIELD_OFFSET(::df::plugin::WorldViewersResult, _impl_.world_),
-        PROTOBUF_FIELD_OFFSET(::df::plugin::WorldViewersResult, _impl_.position_),
-        PROTOBUF_FIELD_OFFSET(::df::plugin::WorldViewersResult, _impl_.viewer_uuids_),
-        1,
-        2,
-        0,
         0x085, // bitmap
         PROTOBUF_FIELD_OFFSET(::df::plugin::ActionResult, _impl_._has_bits_),
         PROTOBUF_FIELD_OFFSET(::df::plugin::ActionResult, _impl_._oneof_case_[0]),
-        11, // hasbit index offset
+        10, // hasbit index offset
         PROTOBUF_FIELD_OFFSET(::df::plugin::ActionResult, _impl_.correlation_id_),
         PROTOBUF_FIELD_OFFSET(::df::plugin::ActionResult, _impl_.status_),
         PROTOBUF_FIELD_OFFSET(::df::plugin::ActionResult, _impl_.result_),
         PROTOBUF_FIELD_OFFSET(::df::plugin::ActionResult, _impl_.result_),
         PROTOBUF_FIELD_OFFSET(::df::plugin::ActionResult, _impl_.result_),
         PROTOBUF_FIELD_OFFSET(::df::plugin::ActionResult, _impl_.result_),
-        PROTOBUF_FIELD_OFFSET(::df::plugin::ActionResult, _impl_.result_),
         0,
         1,
-        ~0u,
         ~0u,
         ~0u,
         ~0u,
@@ -1408,40 +1335,38 @@ static const ::_pbi::MigrationSchema
     schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
         {0, sizeof(::df::plugin::ActionBatch)},
         {5, sizeof(::df::plugin::Action)},
-        {68, sizeof(::df::plugin::SendChatAction)},
-        {75, sizeof(::df::plugin::TeleportAction)},
-        {84, sizeof(::df::plugin::KickAction)},
-        {91, sizeof(::df::plugin::SetGameModeAction)},
-        {98, sizeof(::df::plugin::GiveItemAction)},
-        {105, sizeof(::df::plugin::ClearInventoryAction)},
-        {110, sizeof(::df::plugin::SetHeldItemAction)},
-        {119, sizeof(::df::plugin::SetHealthAction)},
-        {128, sizeof(::df::plugin::SetFoodAction)},
-        {135, sizeof(::df::plugin::SetExperienceAction)},
-        {146, sizeof(::df::plugin::SetVelocityAction)},
-        {153, sizeof(::df::plugin::AddEffectAction)},
-        {166, sizeof(::df::plugin::RemoveEffectAction)},
-        {173, sizeof(::df::plugin::SendTitleAction)},
-        {188, sizeof(::df::plugin::SendPopupAction)},
-        {195, sizeof(::df::plugin::SendTipAction)},
-        {202, sizeof(::df::plugin::PlaySoundAction)},
-        {215, sizeof(::df::plugin::ExecuteCommandAction)},
-        {222, sizeof(::df::plugin::WorldSetDefaultGameModeAction)},
-        {229, sizeof(::df::plugin::WorldSetDifficultyAction)},
-        {236, sizeof(::df::plugin::WorldSetTickRangeAction)},
-        {243, sizeof(::df::plugin::WorldSetBlockAction)},
-        {252, sizeof(::df::plugin::WorldPlaySoundAction)},
-        {261, sizeof(::df::plugin::WorldAddParticleAction)},
-        {274, sizeof(::df::plugin::WorldQueryEntitiesAction)},
-        {279, sizeof(::df::plugin::WorldQueryPlayersAction)},
-        {284, sizeof(::df::plugin::WorldQueryEntitiesWithinAction)},
-        {291, sizeof(::df::plugin::WorldQueryViewersAction)},
-        {298, sizeof(::df::plugin::ActionStatus)},
-        {305, sizeof(::df::plugin::WorldEntitiesResult)},
-        {312, sizeof(::df::plugin::WorldEntitiesWithinResult)},
-        {321, sizeof(::df::plugin::WorldPlayersResult)},
-        {328, sizeof(::df::plugin::WorldViewersResult)},
-        {337, sizeof(::df::plugin::ActionResult)},
+        {66, sizeof(::df::plugin::SendChatAction)},
+        {73, sizeof(::df::plugin::TeleportAction)},
+        {82, sizeof(::df::plugin::KickAction)},
+        {89, sizeof(::df::plugin::SetGameModeAction)},
+        {96, sizeof(::df::plugin::GiveItemAction)},
+        {103, sizeof(::df::plugin::ClearInventoryAction)},
+        {108, sizeof(::df::plugin::SetHeldItemAction)},
+        {117, sizeof(::df::plugin::SetHealthAction)},
+        {126, sizeof(::df::plugin::SetFoodAction)},
+        {133, sizeof(::df::plugin::SetExperienceAction)},
+        {144, sizeof(::df::plugin::SetVelocityAction)},
+        {151, sizeof(::df::plugin::AddEffectAction)},
+        {164, sizeof(::df::plugin::RemoveEffectAction)},
+        {171, sizeof(::df::plugin::SendTitleAction)},
+        {186, sizeof(::df::plugin::SendPopupAction)},
+        {193, sizeof(::df::plugin::SendTipAction)},
+        {200, sizeof(::df::plugin::PlaySoundAction)},
+        {213, sizeof(::df::plugin::ExecuteCommandAction)},
+        {220, sizeof(::df::plugin::WorldSetDefaultGameModeAction)},
+        {227, sizeof(::df::plugin::WorldSetDifficultyAction)},
+        {234, sizeof(::df::plugin::WorldSetTickRangeAction)},
+        {241, sizeof(::df::plugin::WorldSetBlockAction)},
+        {250, sizeof(::df::plugin::WorldPlaySoundAction)},
+        {259, sizeof(::df::plugin::WorldAddParticleAction)},
+        {272, sizeof(::df::plugin::WorldQueryEntitiesAction)},
+        {277, sizeof(::df::plugin::WorldQueryPlayersAction)},
+        {282, sizeof(::df::plugin::WorldQueryEntitiesWithinAction)},
+        {289, sizeof(::df::plugin::ActionStatus)},
+        {296, sizeof(::df::plugin::WorldEntitiesResult)},
+        {303, sizeof(::df::plugin::WorldEntitiesWithinResult)},
+        {312, sizeof(::df::plugin::WorldPlayersResult)},
+        {319, sizeof(::df::plugin::ActionResult)},
 };
 static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::df::plugin::_ActionBatch_default_instance_._instance,
@@ -1473,19 +1398,17 @@ static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::df::plugin::_WorldQueryEntitiesAction_default_instance_._instance,
     &::df::plugin::_WorldQueryPlayersAction_default_instance_._instance,
     &::df::plugin::_WorldQueryEntitiesWithinAction_default_instance_._instance,
-    &::df::plugin::_WorldQueryViewersAction_default_instance_._instance,
     &::df::plugin::_ActionStatus_default_instance_._instance,
     &::df::plugin::_WorldEntitiesResult_default_instance_._instance,
     &::df::plugin::_WorldEntitiesWithinResult_default_instance_._instance,
     &::df::plugin::_WorldPlayersResult_default_instance_._instance,
-    &::df::plugin::_WorldViewersResult_default_instance_._instance,
     &::df::plugin::_ActionResult_default_instance_._instance,
 };
 const char descriptor_table_protodef_actions_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
     "\n\ractions.proto\022\tdf.plugin\032\014common.proto"
     "\":\n\013ActionBatch\022+\n\007actions\030\001 \003(\0132\021.df.pl"
-    "ugin.ActionR\007actions\"\257\020\n\006Action\022*\n\016corre"
+    "ugin.ActionR\007actions\"\331\017\n\006Action\022*\n\016corre"
     "lation_id\030\001 \001(\tH\001R\rcorrelationId\210\001\001\0228\n\ts"
     "end_chat\030\n \001(\0132\031.df.plugin.SendChatActio"
     "nH\000R\010sendChat\0227\n\010teleport\030\013 \001(\0132\031.df.plu"
@@ -1535,141 +1458,130 @@ const char descriptor_table_protodef_actions_2eproto[] ABSL_ATTRIBUTE_SECTION_VA
     "worldQueryPlayers\022j\n\033world_query_entitie"
     "s_within\030H \001(\0132).df.plugin.WorldQueryEnt"
     "itiesWithinActionH\000R\030worldQueryEntitiesW"
-    "ithin\022T\n\023world_query_viewers\030I \001(\0132\".df."
-    "plugin.WorldQueryViewersActionH\000R\021worldQ"
-    "ueryViewersB\006\n\004kindB\021\n\017_correlation_id\"K"
-    "\n\016SendChatAction\022\037\n\013target_uuid\030\001 \001(\tR\nt"
-    "argetUuid\022\030\n\007message\030\002 \001(\tR\007message\"\213\001\n\016"
-    "TeleportAction\022\037\n\013player_uuid\030\001 \001(\tR\npla"
-    "yerUuid\022+\n\010position\030\002 \001(\0132\017.df.plugin.Ve"
-    "c3R\010position\022+\n\010rotation\030\003 \001(\0132\017.df.plug"
-    "in.Vec3R\010rotation\"E\n\nKickAction\022\037\n\013playe"
-    "r_uuid\030\001 \001(\tR\nplayerUuid\022\026\n\006reason\030\002 \001(\t"
-    "R\006reason\"f\n\021SetGameModeAction\022\037\n\013player_"
-    "uuid\030\001 \001(\tR\nplayerUuid\0220\n\tgame_mode\030\002 \001("
-    "\0162\023.df.plugin.GameModeR\010gameMode\"[\n\016Give"
-    "ItemAction\022\037\n\013player_uuid\030\001 \001(\tR\nplayerU"
-    "uid\022(\n\004item\030\002 \001(\0132\024.df.plugin.ItemStackR"
-    "\004item\"7\n\024ClearInventoryAction\022\037\n\013player_"
-    "uuid\030\001 \001(\tR\nplayerUuid\"\255\001\n\021SetHeldItemAc"
-    "tion\022\037\n\013player_uuid\030\001 \001(\tR\nplayerUuid\022-\n"
-    "\004main\030\002 \001(\0132\024.df.plugin.ItemStackH\000R\004mai"
-    "n\210\001\001\0223\n\007offhand\030\003 \001(\0132\024.df.plugin.ItemSt"
-    "ackH\001R\007offhand\210\001\001B\007\n\005_mainB\n\n\010_offhand\"}"
-    "\n\017SetHealthAction\022\037\n\013player_uuid\030\001 \001(\tR\n"
-    "playerUuid\022\026\n\006health\030\002 \001(\001R\006health\022\"\n\nma"
-    "x_health\030\003 \001(\001H\000R\tmaxHealth\210\001\001B\r\n\013_max_h"
-    "ealth\"D\n\rSetFoodAction\022\037\n\013player_uuid\030\001 "
-    "\001(\tR\nplayerUuid\022\022\n\004food\030\002 \001(\005R\004food\"\261\001\n\023"
-    "SetExperienceAction\022\037\n\013player_uuid\030\001 \001(\t"
-    "R\nplayerUuid\022\031\n\005level\030\002 \001(\005H\000R\005level\210\001\001\022"
-    "\037\n\010progress\030\003 \001(\002H\001R\010progress\210\001\001\022\033\n\006amou"
-    "nt\030\004 \001(\005H\002R\006amount\210\001\001B\010\n\006_levelB\013\n\t_prog"
-    "ressB\t\n\007_amount\"a\n\021SetVelocityAction\022\037\n\013"
-    "player_uuid\030\001 \001(\tR\nplayerUuid\022+\n\010velocit"
-    "y\030\002 \001(\0132\017.df.plugin.Vec3R\010velocity\"\310\001\n\017A"
-    "ddEffectAction\022\037\n\013player_uuid\030\001 \001(\tR\npla"
-    "yerUuid\0226\n\013effect_type\030\002 \001(\0162\025.df.plugin"
-    ".EffectTypeR\neffectType\022\024\n\005level\030\003 \001(\005R\005"
-    "level\022\037\n\013duration_ms\030\004 \001(\003R\ndurationMs\022%"
-    "\n\016show_particles\030\005 \001(\010R\rshowParticles\"m\n"
-    "\022RemoveEffectAction\022\037\n\013player_uuid\030\001 \001(\t"
-    "R\nplayerUuid\0226\n\013effect_type\030\002 \001(\0162\025.df.p"
-    "lugin.EffectTypeR\neffectType\"\223\002\n\017SendTit"
-    "leAction\022\037\n\013player_uuid\030\001 \001(\tR\nplayerUui"
-    "d\022\024\n\005title\030\002 \001(\tR\005title\022\037\n\010subtitle\030\003 \001("
-    "\tH\000R\010subtitle\210\001\001\022!\n\nfade_in_ms\030\004 \001(\003H\001R\010"
-    "fadeInMs\210\001\001\022$\n\013duration_ms\030\005 \001(\003H\002R\ndura"
-    "tionMs\210\001\001\022#\n\013fade_out_ms\030\006 \001(\003H\003R\tfadeOu"
-    "tMs\210\001\001B\013\n\t_subtitleB\r\n\013_fade_in_msB\016\n\014_d"
-    "uration_msB\016\n\014_fade_out_ms\"L\n\017SendPopupA"
-    "ction\022\037\n\013player_uuid\030\001 \001(\tR\nplayerUuid\022\030"
-    "\n\007message\030\002 \001(\tR\007message\"J\n\rSendTipActio"
-    "n\022\037\n\013player_uuid\030\001 \001(\tR\nplayerUuid\022\030\n\007me"
-    "ssage\030\002 \001(\tR\007message\"\346\001\n\017PlaySoundAction"
-    "\022\037\n\013player_uuid\030\001 \001(\tR\nplayerUuid\022&\n\005sou"
-    "nd\030\002 \001(\0162\020.df.plugin.SoundR\005sound\0220\n\010pos"
-    "ition\030\003 \001(\0132\017.df.plugin.Vec3H\000R\010position"
-    "\210\001\001\022\033\n\006volume\030\004 \001(\002H\001R\006volume\210\001\001\022\031\n\005pitc"
-    "h\030\005 \001(\002H\002R\005pitch\210\001\001B\013\n\t_positionB\t\n\007_vol"
-    "umeB\010\n\006_pitch\"Q\n\024ExecuteCommandAction\022\037\n"
-    "\013player_uuid\030\001 \001(\tR\nplayerUuid\022\030\n\007comman"
-    "d\030\002 \001(\tR\007command\"|\n\035WorldSetDefaultGameM"
-    "odeAction\022)\n\005world\030\001 \001(\0132\023.df.plugin.Wor"
-    "ldRefR\005world\0220\n\tgame_mode\030\002 \001(\0162\023.df.plu"
-    "gin.GameModeR\010gameMode\"|\n\030WorldSetDiffic"
-    "ultyAction\022)\n\005world\030\001 \001(\0132\023.df.plugin.Wo"
-    "rldRefR\005world\0225\n\ndifficulty\030\002 \001(\0162\025.df.p"
-    "lugin.DifficultyR\ndifficulty\"c\n\027WorldSet"
-    "TickRangeAction\022)\n\005world\030\001 \001(\0132\023.df.plug"
-    "in.WorldRefR\005world\022\035\n\ntick_range\030\002 \001(\005R\t"
-    "tickRange\"\255\001\n\023WorldSetBlockAction\022)\n\005wor"
-    "ld\030\001 \001(\0132\023.df.plugin.WorldRefR\005world\022/\n\010"
-    "position\030\002 \001(\0132\023.df.plugin.BlockPosR\010pos"
-    "ition\0220\n\005block\030\003 \001(\0132\025.df.plugin.BlockSt"
-    "ateH\000R\005block\210\001\001B\010\n\006_block\"\226\001\n\024WorldPlayS"
-    "oundAction\022)\n\005world\030\001 \001(\0132\023.df.plugin.Wo"
-    "rldRefR\005world\022&\n\005sound\030\002 \001(\0162\020.df.plugin"
-    ".SoundR\005sound\022+\n\010position\030\003 \001(\0132\017.df.plu"
-    "gin.Vec3R\010position\"\203\002\n\026WorldAddParticleA"
-    "ction\022)\n\005world\030\001 \001(\0132\023.df.plugin.WorldRe"
-    "fR\005world\022+\n\010position\030\002 \001(\0132\017.df.plugin.V"
-    "ec3R\010position\0223\n\010particle\030\003 \001(\0162\027.df.plu"
-    "gin.ParticleTypeR\010particle\0220\n\005block\030\004 \001("
-    "\0132\025.df.plugin.BlockStateH\000R\005block\210\001\001\022\027\n\004"
-    "face\030\005 \001(\005H\001R\004face\210\001\001B\010\n\006_blockB\007\n\005_face"
-    "\"E\n\030WorldQueryEntitiesAction\022)\n\005world\030\001 "
-    "\001(\0132\023.df.plugin.WorldRefR\005world\"D\n\027World"
-    "QueryPlayersAction\022)\n\005world\030\001 \001(\0132\023.df.p"
-    "lugin.WorldRefR\005world\"n\n\036WorldQueryEntit"
-    "iesWithinAction\022)\n\005world\030\001 \001(\0132\023.df.plug"
-    "in.WorldRefR\005world\022!\n\003box\030\002 \001(\0132\017.df.plu"
-    "gin.BBoxR\003box\"q\n\027WorldQueryViewersAction"
-    "\022)\n\005world\030\001 \001(\0132\023.df.plugin.WorldRefR\005wo"
-    "rld\022+\n\010position\030\002 \001(\0132\017.df.plugin.Vec3R\010"
-    "position\"C\n\014ActionStatus\022\016\n\002ok\030\001 \001(\010R\002ok"
-    "\022\031\n\005error\030\002 \001(\tH\000R\005error\210\001\001B\010\n\006_error\"r\n"
-    "\023WorldEntitiesResult\022)\n\005world\030\001 \001(\0132\023.df"
-    ".plugin.WorldRefR\005world\0220\n\010entities\030\002 \003("
-    "\0132\024.df.plugin.EntityRefR\010entities\"\233\001\n\031Wo"
-    "rldEntitiesWithinResult\022)\n\005world\030\001 \001(\0132\023"
-    ".df.plugin.WorldRefR\005world\022!\n\003box\030\002 \001(\0132"
-    "\017.df.plugin.BBoxR\003box\0220\n\010entities\030\003 \003(\0132"
-    "\024.df.plugin.EntityRefR\010entities\"o\n\022World"
-    "PlayersResult\022)\n\005world\030\001 \001(\0132\023.df.plugin"
-    ".WorldRefR\005world\022.\n\007players\030\002 \003(\0132\024.df.p"
-    "lugin.EntityRefR\007players\"\217\001\n\022WorldViewer"
-    "sResult\022)\n\005world\030\001 \001(\0132\023.df.plugin.World"
-    "RefR\005world\022+\n\010position\030\002 \001(\0132\017.df.plugin"
-    ".Vec3R\010position\022!\n\014viewer_uuids\030\003 \003(\tR\013v"
-    "iewerUuids\"\261\003\n\014ActionResult\022%\n\016correlati"
-    "on_id\030\001 \001(\tR\rcorrelationId\0224\n\006status\030\002 \001"
-    "(\0132\027.df.plugin.ActionStatusH\001R\006status\210\001\001"
-    "\022G\n\016world_entities\030\n \001(\0132\036.df.plugin.Wor"
-    "ldEntitiesResultH\000R\rworldEntities\022D\n\rwor"
-    "ld_players\030\013 \001(\0132\035.df.plugin.WorldPlayer"
-    "sResultH\000R\014worldPlayers\022Z\n\025world_entitie"
-    "s_within\030\014 \001(\0132$.df.plugin.WorldEntities"
-    "WithinResultH\000R\023worldEntitiesWithin\022D\n\rw"
-    "orld_viewers\030\r \001(\0132\035.df.plugin.WorldView"
-    "ersResultH\000R\014worldViewersB\010\n\006resultB\t\n\007_"
-    "status*\353\003\n\014ParticleType\022\035\n\031PARTICLE_TYPE"
-    "_UNSPECIFIED\020\000\022\033\n\027PARTICLE_HUGE_EXPLOSIO"
-    "N\020\001\022\036\n\032PARTICLE_ENDERMAN_TELEPORT\020\002\022\032\n\026P"
-    "ARTICLE_SNOWBALL_POOF\020\003\022\026\n\022PARTICLE_EGG_"
-    "SMASH\020\004\022\023\n\017PARTICLE_SPLASH\020\005\022\023\n\017PARTICLE"
-    "_EFFECT\020\006\022\031\n\025PARTICLE_ENTITY_FLAME\020\007\022\022\n\016"
-    "PARTICLE_FLAME\020\010\022\021\n\rPARTICLE_DUST\020\t\022\036\n\032P"
-    "ARTICLE_BLOCK_FORCE_FIELD\020\n\022\026\n\022PARTICLE_"
-    "BONE_MEAL\020\013\022\026\n\022PARTICLE_EVAPORATE\020\014\022\027\n\023P"
-    "ARTICLE_WATER_DRIP\020\r\022\026\n\022PARTICLE_LAVA_DR"
-    "IP\020\016\022\021\n\rPARTICLE_LAVA\020\017\022\027\n\023PARTICLE_DUST"
-    "_PLUME\020\020\022\030\n\024PARTICLE_BLOCK_BREAK\020\021\022\030\n\024PA"
-    "RTICLE_PUNCH_BLOCK\020\022B\213\001\n\rcom.df.pluginB\014"
-    "ActionsProtoP\001Z\'github.com/secmc/plugin/"
-    "proto/generated\242\002\003DPX\252\002\tDf.Plugin\312\002\tDf\\P"
-    "lugin\342\002\025Df\\Plugin\\GPBMetadata\352\002\nDf::Plug"
-    "inb\006proto3"
+    "ithinB\006\n\004kindB\021\n\017_correlation_id\"K\n\016Send"
+    "ChatAction\022\037\n\013target_uuid\030\001 \001(\tR\ntargetU"
+    "uid\022\030\n\007message\030\002 \001(\tR\007message\"\213\001\n\016Telepo"
+    "rtAction\022\037\n\013player_uuid\030\001 \001(\tR\nplayerUui"
+    "d\022+\n\010position\030\002 \001(\0132\017.df.plugin.Vec3R\010po"
+    "sition\022+\n\010rotation\030\003 \001(\0132\017.df.plugin.Vec"
+    "3R\010rotation\"E\n\nKickAction\022\037\n\013player_uuid"
+    "\030\001 \001(\tR\nplayerUuid\022\026\n\006reason\030\002 \001(\tR\006reas"
+    "on\"f\n\021SetGameModeAction\022\037\n\013player_uuid\030\001"
+    " \001(\tR\nplayerUuid\0220\n\tgame_mode\030\002 \001(\0162\023.df"
+    ".plugin.GameModeR\010gameMode\"[\n\016GiveItemAc"
+    "tion\022\037\n\013player_uuid\030\001 \001(\tR\nplayerUuid\022(\n"
+    "\004item\030\002 \001(\0132\024.df.plugin.ItemStackR\004item\""
+    "7\n\024ClearInventoryAction\022\037\n\013player_uuid\030\001"
+    " \001(\tR\nplayerUuid\"\255\001\n\021SetHeldItemAction\022\037"
+    "\n\013player_uuid\030\001 \001(\tR\nplayerUuid\022-\n\004main\030"
+    "\002 \001(\0132\024.df.plugin.ItemStackH\000R\004main\210\001\001\0223"
+    "\n\007offhand\030\003 \001(\0132\024.df.plugin.ItemStackH\001R"
+    "\007offhand\210\001\001B\007\n\005_mainB\n\n\010_offhand\"}\n\017SetH"
+    "ealthAction\022\037\n\013player_uuid\030\001 \001(\tR\nplayer"
+    "Uuid\022\026\n\006health\030\002 \001(\001R\006health\022\"\n\nmax_heal"
+    "th\030\003 \001(\001H\000R\tmaxHealth\210\001\001B\r\n\013_max_health\""
+    "D\n\rSetFoodAction\022\037\n\013player_uuid\030\001 \001(\tR\np"
+    "layerUuid\022\022\n\004food\030\002 \001(\005R\004food\"\261\001\n\023SetExp"
+    "erienceAction\022\037\n\013player_uuid\030\001 \001(\tR\nplay"
+    "erUuid\022\031\n\005level\030\002 \001(\005H\000R\005level\210\001\001\022\037\n\010pro"
+    "gress\030\003 \001(\002H\001R\010progress\210\001\001\022\033\n\006amount\030\004 \001"
+    "(\005H\002R\006amount\210\001\001B\010\n\006_levelB\013\n\t_progressB\t"
+    "\n\007_amount\"a\n\021SetVelocityAction\022\037\n\013player"
+    "_uuid\030\001 \001(\tR\nplayerUuid\022+\n\010velocity\030\002 \001("
+    "\0132\017.df.plugin.Vec3R\010velocity\"\310\001\n\017AddEffe"
+    "ctAction\022\037\n\013player_uuid\030\001 \001(\tR\nplayerUui"
+    "d\0226\n\013effect_type\030\002 \001(\0162\025.df.plugin.Effec"
+    "tTypeR\neffectType\022\024\n\005level\030\003 \001(\005R\005level\022"
+    "\037\n\013duration_ms\030\004 \001(\003R\ndurationMs\022%\n\016show"
+    "_particles\030\005 \001(\010R\rshowParticles\"m\n\022Remov"
+    "eEffectAction\022\037\n\013player_uuid\030\001 \001(\tR\nplay"
+    "erUuid\0226\n\013effect_type\030\002 \001(\0162\025.df.plugin."
+    "EffectTypeR\neffectType\"\223\002\n\017SendTitleActi"
+    "on\022\037\n\013player_uuid\030\001 \001(\tR\nplayerUuid\022\024\n\005t"
+    "itle\030\002 \001(\tR\005title\022\037\n\010subtitle\030\003 \001(\tH\000R\010s"
+    "ubtitle\210\001\001\022!\n\nfade_in_ms\030\004 \001(\003H\001R\010fadeIn"
+    "Ms\210\001\001\022$\n\013duration_ms\030\005 \001(\003H\002R\ndurationMs"
+    "\210\001\001\022#\n\013fade_out_ms\030\006 \001(\003H\003R\tfadeOutMs\210\001\001"
+    "B\013\n\t_subtitleB\r\n\013_fade_in_msB\016\n\014_duratio"
+    "n_msB\016\n\014_fade_out_ms\"L\n\017SendPopupAction\022"
+    "\037\n\013player_uuid\030\001 \001(\tR\nplayerUuid\022\030\n\007mess"
+    "age\030\002 \001(\tR\007message\"J\n\rSendTipAction\022\037\n\013p"
+    "layer_uuid\030\001 \001(\tR\nplayerUuid\022\030\n\007message\030"
+    "\002 \001(\tR\007message\"\346\001\n\017PlaySoundAction\022\037\n\013pl"
+    "ayer_uuid\030\001 \001(\tR\nplayerUuid\022&\n\005sound\030\002 \001"
+    "(\0162\020.df.plugin.SoundR\005sound\0220\n\010position\030"
+    "\003 \001(\0132\017.df.plugin.Vec3H\000R\010position\210\001\001\022\033\n"
+    "\006volume\030\004 \001(\002H\001R\006volume\210\001\001\022\031\n\005pitch\030\005 \001("
+    "\002H\002R\005pitch\210\001\001B\013\n\t_positionB\t\n\007_volumeB\010\n"
+    "\006_pitch\"Q\n\024ExecuteCommandAction\022\037\n\013playe"
+    "r_uuid\030\001 \001(\tR\nplayerUuid\022\030\n\007command\030\002 \001("
+    "\tR\007command\"|\n\035WorldSetDefaultGameModeAct"
+    "ion\022)\n\005world\030\001 \001(\0132\023.df.plugin.WorldRefR"
+    "\005world\0220\n\tgame_mode\030\002 \001(\0162\023.df.plugin.Ga"
+    "meModeR\010gameMode\"|\n\030WorldSetDifficultyAc"
+    "tion\022)\n\005world\030\001 \001(\0132\023.df.plugin.WorldRef"
+    "R\005world\0225\n\ndifficulty\030\002 \001(\0162\025.df.plugin."
+    "DifficultyR\ndifficulty\"c\n\027WorldSetTickRa"
+    "ngeAction\022)\n\005world\030\001 \001(\0132\023.df.plugin.Wor"
+    "ldRefR\005world\022\035\n\ntick_range\030\002 \001(\005R\ttickRa"
+    "nge\"\255\001\n\023WorldSetBlockAction\022)\n\005world\030\001 \001"
+    "(\0132\023.df.plugin.WorldRefR\005world\022/\n\010positi"
+    "on\030\002 \001(\0132\023.df.plugin.BlockPosR\010position\022"
+    "0\n\005block\030\003 \001(\0132\025.df.plugin.BlockStateH\000R"
+    "\005block\210\001\001B\010\n\006_block\"\226\001\n\024WorldPlaySoundAc"
+    "tion\022)\n\005world\030\001 \001(\0132\023.df.plugin.WorldRef"
+    "R\005world\022&\n\005sound\030\002 \001(\0162\020.df.plugin.Sound"
+    "R\005sound\022+\n\010position\030\003 \001(\0132\017.df.plugin.Ve"
+    "c3R\010position\"\203\002\n\026WorldAddParticleAction\022"
+    ")\n\005world\030\001 \001(\0132\023.df.plugin.WorldRefR\005wor"
+    "ld\022+\n\010position\030\002 \001(\0132\017.df.plugin.Vec3R\010p"
+    "osition\0223\n\010particle\030\003 \001(\0162\027.df.plugin.Pa"
+    "rticleTypeR\010particle\0220\n\005block\030\004 \001(\0132\025.df"
+    ".plugin.BlockStateH\000R\005block\210\001\001\022\027\n\004face\030\005"
+    " \001(\005H\001R\004face\210\001\001B\010\n\006_blockB\007\n\005_face\"E\n\030Wo"
+    "rldQueryEntitiesAction\022)\n\005world\030\001 \001(\0132\023."
+    "df.plugin.WorldRefR\005world\"D\n\027WorldQueryP"
+    "layersAction\022)\n\005world\030\001 \001(\0132\023.df.plugin."
+    "WorldRefR\005world\"n\n\036WorldQueryEntitiesWit"
+    "hinAction\022)\n\005world\030\001 \001(\0132\023.df.plugin.Wor"
+    "ldRefR\005world\022!\n\003box\030\002 \001(\0132\017.df.plugin.BB"
+    "oxR\003box\"C\n\014ActionStatus\022\016\n\002ok\030\001 \001(\010R\002ok\022"
+    "\031\n\005error\030\002 \001(\tH\000R\005error\210\001\001B\010\n\006_error\"r\n\023"
+    "WorldEntitiesResult\022)\n\005world\030\001 \001(\0132\023.df."
+    "plugin.WorldRefR\005world\0220\n\010entities\030\002 \003(\013"
+    "2\024.df.plugin.EntityRefR\010entities\"\233\001\n\031Wor"
+    "ldEntitiesWithinResult\022)\n\005world\030\001 \001(\0132\023."
+    "df.plugin.WorldRefR\005world\022!\n\003box\030\002 \001(\0132\017"
+    ".df.plugin.BBoxR\003box\0220\n\010entities\030\003 \003(\0132\024"
+    ".df.plugin.EntityRefR\010entities\"o\n\022WorldP"
+    "layersResult\022)\n\005world\030\001 \001(\0132\023.df.plugin."
+    "WorldRefR\005world\022.\n\007players\030\002 \003(\0132\024.df.pl"
+    "ugin.EntityRefR\007players\"\353\002\n\014ActionResult"
+    "\022%\n\016correlation_id\030\001 \001(\tR\rcorrelationId\022"
+    "4\n\006status\030\002 \001(\0132\027.df.plugin.ActionStatus"
+    "H\001R\006status\210\001\001\022G\n\016world_entities\030\n \001(\0132\036."
+    "df.plugin.WorldEntitiesResultH\000R\rworldEn"
+    "tities\022D\n\rworld_players\030\013 \001(\0132\035.df.plugi"
+    "n.WorldPlayersResultH\000R\014worldPlayers\022Z\n\025"
+    "world_entities_within\030\014 \001(\0132$.df.plugin."
+    "WorldEntitiesWithinResultH\000R\023worldEntiti"
+    "esWithinB\010\n\006resultB\t\n\007_status*\353\003\n\014Partic"
+    "leType\022\035\n\031PARTICLE_TYPE_UNSPECIFIED\020\000\022\033\n"
+    "\027PARTICLE_HUGE_EXPLOSION\020\001\022\036\n\032PARTICLE_E"
+    "NDERMAN_TELEPORT\020\002\022\032\n\026PARTICLE_SNOWBALL_"
+    "POOF\020\003\022\026\n\022PARTICLE_EGG_SMASH\020\004\022\023\n\017PARTIC"
+    "LE_SPLASH\020\005\022\023\n\017PARTICLE_EFFECT\020\006\022\031\n\025PART"
+    "ICLE_ENTITY_FLAME\020\007\022\022\n\016PARTICLE_FLAME\020\010\022"
+    "\021\n\rPARTICLE_DUST\020\t\022\036\n\032PARTICLE_BLOCK_FOR"
+    "CE_FIELD\020\n\022\026\n\022PARTICLE_BONE_MEAL\020\013\022\026\n\022PA"
+    "RTICLE_EVAPORATE\020\014\022\027\n\023PARTICLE_WATER_DRI"
+    "P\020\r\022\026\n\022PARTICLE_LAVA_DRIP\020\016\022\021\n\rPARTICLE_"
+    "LAVA\020\017\022\027\n\023PARTICLE_DUST_PLUME\020\020\022\030\n\024PARTI"
+    "CLE_BLOCK_BREAK\020\021\022\030\n\024PARTICLE_PUNCH_BLOC"
+    "K\020\022B\213\001\n\rcom.df.pluginB\014ActionsProtoP\001Z\'g"
+    "ithub.com/secmc/plugin/proto/generated\242\002"
+    "\003DPX\252\002\tDf.Plugin\312\002\tDf\\Plugin\342\002\025Df\\Plugin"
+    "\\GPBMetadata\352\002\nDf::Pluginb\006proto3"
 };
 static const ::_pbi::DescriptorTable* PROTOBUF_NONNULL const
     descriptor_table_actions_2eproto_deps[1] = {
@@ -1679,13 +1591,13 @@ static ::absl::once_flag descriptor_table_actions_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_actions_2eproto = {
     false,
     false,
-    7450,
+    7033,
     descriptor_table_protodef_actions_2eproto,
     "actions.proto",
     &descriptor_table_actions_2eproto_once,
     descriptor_table_actions_2eproto_deps,
     1,
-    36,
+    34,
     schemas,
     file_default_instances,
     TableStruct_actions_2eproto::offsets,
@@ -2347,19 +2259,6 @@ void Action::set_allocated_world_query_entities_within(::df::plugin::WorldQueryE
   }
   // @@protoc_insertion_point(field_set_allocated:df.plugin.Action.world_query_entities_within)
 }
-void Action::set_allocated_world_query_viewers(::df::plugin::WorldQueryViewersAction* PROTOBUF_NULLABLE world_query_viewers) {
-  ::google::protobuf::Arena* message_arena = GetArena();
-  clear_kind();
-  if (world_query_viewers) {
-    ::google::protobuf::Arena* submessage_arena = world_query_viewers->GetArena();
-    if (message_arena != submessage_arena) {
-      world_query_viewers = ::google::protobuf::internal::GetOwnedMessage(message_arena, world_query_viewers, submessage_arena);
-    }
-    set_has_world_query_viewers();
-    _impl_.kind_.world_query_viewers_ = world_query_viewers;
-  }
-  // @@protoc_insertion_point(field_set_allocated:df.plugin.Action.world_query_viewers)
-}
 Action::Action(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
     : ::google::protobuf::Message(arena, Action_class_data_.base()) {
@@ -2475,9 +2374,6 @@ Action::Action(
         break;
       case kWorldQueryEntitiesWithin:
         _impl_.kind_.world_query_entities_within_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.kind_.world_query_entities_within_);
-        break;
-      case kWorldQueryViewers:
-        _impl_.kind_.world_query_viewers_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.kind_.world_query_viewers_);
         break;
   }
 
@@ -2732,14 +2628,6 @@ void Action::clear_kind() {
       }
       break;
     }
-    case kWorldQueryViewers: {
-      if (GetArena() == nullptr) {
-        delete _impl_.kind_.world_query_viewers_;
-      } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
-        ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.kind_.world_query_viewers_);
-      }
-      break;
-    }
     case KIND_NOT_SET: {
       break;
     }
@@ -2791,17 +2679,17 @@ Action::GetClassData() const {
   return Action_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 29, 28, 63, 11>
+const ::_pbi::TcParseTable<0, 28, 27, 63, 11>
 Action::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(Action, _impl_._has_bits_),
     0, // no _extensions_
-    73, 0,  // max_field_number, fast_idx_mask
+    72, 0,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
     2676425214,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    29,  // num_field_entries
-    28,  // num_aux_entries
+    28,  // num_field_entries
+    27,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     Action_class_data_.base(),
     nullptr,  // post_loop_handler
@@ -2818,7 +2706,7 @@ Action::_table_ = {
     40, 0, 3,
     64496, 14,
     15375, 19,
-    65532, 27,
+    65534, 27,
     65535, 65535
   }}, {{
     // optional string correlation_id = 1 [json_name = "correlationId"];
@@ -2877,8 +2765,6 @@ Action::_table_ = {
     {PROTOBUF_FIELD_OFFSET(Action, _impl_.kind_.world_query_players_), _Internal::kOneofCaseOffset + 0, 25, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
     // .df.plugin.WorldQueryEntitiesWithinAction world_query_entities_within = 72 [json_name = "worldQueryEntitiesWithin"];
     {PROTOBUF_FIELD_OFFSET(Action, _impl_.kind_.world_query_entities_within_), _Internal::kOneofCaseOffset + 0, 26, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .df.plugin.WorldQueryViewersAction world_query_viewers = 73 [json_name = "worldQueryViewers"];
-    {PROTOBUF_FIELD_OFFSET(Action, _impl_.kind_.world_query_viewers_), _Internal::kOneofCaseOffset + 0, 27, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
   }},
   {{
       {::_pbi::TcParser::GetTable<::df::plugin::SendChatAction>()},
@@ -2908,7 +2794,6 @@ Action::_table_ = {
       {::_pbi::TcParser::GetTable<::df::plugin::WorldQueryEntitiesAction>()},
       {::_pbi::TcParser::GetTable<::df::plugin::WorldQueryPlayersAction>()},
       {::_pbi::TcParser::GetTable<::df::plugin::WorldQueryEntitiesWithinAction>()},
-      {::_pbi::TcParser::GetTable<::df::plugin::WorldQueryViewersAction>()},
   }},
   {{
     "\20\16\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"
@@ -3122,12 +3007,6 @@ PROTOBUF_NOINLINE void Action::Clear() {
           stream);
       break;
     }
-    case kWorldQueryViewers: {
-      target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-          73, *this_._impl_.kind_.world_query_viewers_, this_._impl_.kind_.world_query_viewers_->GetCachedSize(), target,
-          stream);
-      break;
-    }
     default:
       break;
   }
@@ -3323,12 +3202,6 @@ PROTOBUF_NOINLINE void Action::Clear() {
     case kWorldQueryEntitiesWithin: {
       total_size += 2 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.kind_.world_query_entities_within_);
-      break;
-    }
-    // .df.plugin.WorldQueryViewersAction world_query_viewers = 73 [json_name = "worldQueryViewers"];
-    case kWorldQueryViewers: {
-      total_size += 2 +
-                    ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.kind_.world_query_viewers_);
       break;
     }
     case KIND_NOT_SET: {
@@ -3583,14 +3456,6 @@ void Action::MergeImpl(::google::protobuf::MessageLite& to_msg,
           _this->_impl_.kind_.world_query_entities_within_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.kind_.world_query_entities_within_);
         } else {
           _this->_impl_.kind_.world_query_entities_within_->MergeFrom(*from._impl_.kind_.world_query_entities_within_);
-        }
-        break;
-      }
-      case kWorldQueryViewers: {
-        if (oneof_needs_init) {
-          _this->_impl_.kind_.world_query_viewers_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.kind_.world_query_viewers_);
-        } else {
-          _this->_impl_.kind_.world_query_viewers_->MergeFrom(*from._impl_.kind_.world_query_viewers_);
         }
         break;
       }
@@ -12824,339 +12689,6 @@ void WorldQueryEntitiesWithinAction::InternalSwap(WorldQueryEntitiesWithinAction
 }
 // ===================================================================
 
-class WorldQueryViewersAction::_Internal {
- public:
-  using HasBits =
-      decltype(::std::declval<WorldQueryViewersAction>()._impl_._has_bits_);
-  static constexpr ::int32_t kHasBitsOffset =
-      8 * PROTOBUF_FIELD_OFFSET(WorldQueryViewersAction, _impl_._has_bits_);
-};
-
-void WorldQueryViewersAction::clear_world() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (_impl_.world_ != nullptr) _impl_.world_->Clear();
-  ClearHasBit(_impl_._has_bits_[0],
-                  0x00000001U);
-}
-void WorldQueryViewersAction::clear_position() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (_impl_.position_ != nullptr) _impl_.position_->Clear();
-  ClearHasBit(_impl_._has_bits_[0],
-                  0x00000002U);
-}
-WorldQueryViewersAction::WorldQueryViewersAction(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, WorldQueryViewersAction_class_data_.base()) {
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena) {
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  SharedCtor(arena);
-  // @@protoc_insertion_point(arena_constructor:df.plugin.WorldQueryViewersAction)
-}
-PROTOBUF_NDEBUG_INLINE WorldQueryViewersAction::Impl_::Impl_(
-    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
-    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
-    [[maybe_unused]] const ::df::plugin::WorldQueryViewersAction& from_msg)
-      : _has_bits_{from._has_bits_},
-        _cached_size_{0} {}
-
-WorldQueryViewersAction::WorldQueryViewersAction(
-    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
-    const WorldQueryViewersAction& from)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, WorldQueryViewersAction_class_data_.base()) {
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena) {
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  WorldQueryViewersAction* const _this = this;
-  (void)_this;
-  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-      from._internal_metadata_);
-  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
-  _impl_.world_ = (CheckHasBit(cached_has_bits, 0x00000001U))
-                ? ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.world_)
-                : nullptr;
-  _impl_.position_ = (CheckHasBit(cached_has_bits, 0x00000002U))
-                ? ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.position_)
-                : nullptr;
-
-  // @@protoc_insertion_point(copy_constructor:df.plugin.WorldQueryViewersAction)
-}
-PROTOBUF_NDEBUG_INLINE WorldQueryViewersAction::Impl_::Impl_(
-    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
-    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
-      : _cached_size_{0} {}
-
-inline void WorldQueryViewersAction::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
-  new (&_impl_) Impl_(internal_visibility(), arena);
-  ::memset(reinterpret_cast<char*>(&_impl_) +
-               offsetof(Impl_, world_),
-           0,
-           offsetof(Impl_, position_) -
-               offsetof(Impl_, world_) +
-               sizeof(Impl_::position_));
-}
-WorldQueryViewersAction::~WorldQueryViewersAction() {
-  // @@protoc_insertion_point(destructor:df.plugin.WorldQueryViewersAction)
-  SharedDtor(*this);
-}
-inline void WorldQueryViewersAction::SharedDtor(MessageLite& self) {
-  WorldQueryViewersAction& this_ = static_cast<WorldQueryViewersAction&>(self);
-  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
-    this_.CheckHasBitConsistency();
-  }
-  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-  ABSL_DCHECK(this_.GetArena() == nullptr);
-  delete this_._impl_.world_;
-  delete this_._impl_.position_;
-  this_._impl_.~Impl_();
-}
-
-inline void* PROTOBUF_NONNULL WorldQueryViewersAction::PlacementNew_(
-    const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
-    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
-  return ::new (mem) WorldQueryViewersAction(arena);
-}
-constexpr auto WorldQueryViewersAction::InternalNewImpl_() {
-  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(WorldQueryViewersAction),
-                                            alignof(WorldQueryViewersAction));
-}
-constexpr auto WorldQueryViewersAction::InternalGenerateClassData_() {
-  return ::google::protobuf::internal::ClassDataFull{
-      ::google::protobuf::internal::ClassData{
-          &_WorldQueryViewersAction_default_instance_._instance,
-          &_table_.header,
-          nullptr,  // OnDemandRegisterArenaDtor
-          nullptr,  // IsInitialized
-          &WorldQueryViewersAction::MergeImpl,
-          ::google::protobuf::Message::GetNewImpl<WorldQueryViewersAction>(),
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-          &WorldQueryViewersAction::SharedDtor,
-          ::google::protobuf::Message::GetClearImpl<WorldQueryViewersAction>(), &WorldQueryViewersAction::ByteSizeLong,
-              &WorldQueryViewersAction::_InternalSerialize,
-#endif  // PROTOBUF_CUSTOM_VTABLE
-          PROTOBUF_FIELD_OFFSET(WorldQueryViewersAction, _impl_._cached_size_),
-          false,
-      },
-      &WorldQueryViewersAction::kDescriptorMethods,
-      &descriptor_table_actions_2eproto,
-      nullptr,  // tracker
-  };
-}
-
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
-    ::google::protobuf::internal::ClassDataFull WorldQueryViewersAction_class_data_ =
-        WorldQueryViewersAction::InternalGenerateClassData_();
-
-PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
-WorldQueryViewersAction::GetClassData() const {
-  ::google::protobuf::internal::PrefetchToLocalCache(&WorldQueryViewersAction_class_data_);
-  ::google::protobuf::internal::PrefetchToLocalCache(WorldQueryViewersAction_class_data_.tc_table);
-  return WorldQueryViewersAction_class_data_.base();
-}
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<1, 2, 2, 0, 2>
-WorldQueryViewersAction::_table_ = {
-  {
-    PROTOBUF_FIELD_OFFSET(WorldQueryViewersAction, _impl_._has_bits_),
-    0, // no _extensions_
-    2, 8,  // max_field_number, fast_idx_mask
-    offsetof(decltype(_table_), field_lookup_table),
-    4294967292,  // skipmap
-    offsetof(decltype(_table_), field_entries),
-    2,  // num_field_entries
-    2,  // num_aux_entries
-    offsetof(decltype(_table_), aux_entries),
-    WorldQueryViewersAction_class_data_.base(),
-    nullptr,  // post_loop_handler
-    ::_pbi::TcParser::GenericFallback,  // fallback
-    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-    ::_pbi::TcParser::GetTable<::df::plugin::WorldQueryViewersAction>(),  // to_prefetch
-    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
-  }, {{
-    // .df.plugin.Vec3 position = 2 [json_name = "position"];
-    {::_pbi::TcParser::FastMtS1,
-     {18, 1, 1,
-      PROTOBUF_FIELD_OFFSET(WorldQueryViewersAction, _impl_.position_)}},
-    // .df.plugin.WorldRef world = 1 [json_name = "world"];
-    {::_pbi::TcParser::FastMtS1,
-     {10, 0, 0,
-      PROTOBUF_FIELD_OFFSET(WorldQueryViewersAction, _impl_.world_)}},
-  }}, {{
-    65535, 65535
-  }}, {{
-    // .df.plugin.WorldRef world = 1 [json_name = "world"];
-    {PROTOBUF_FIELD_OFFSET(WorldQueryViewersAction, _impl_.world_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .df.plugin.Vec3 position = 2 [json_name = "position"];
-    {PROTOBUF_FIELD_OFFSET(WorldQueryViewersAction, _impl_.position_), _Internal::kHasBitsOffset + 1, 1, (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-  }},
-  {{
-      {::_pbi::TcParser::GetTable<::df::plugin::WorldRef>()},
-      {::_pbi::TcParser::GetTable<::df::plugin::Vec3>()},
-  }},
-  {{
-  }},
-};
-PROTOBUF_NOINLINE void WorldQueryViewersAction::Clear() {
-// @@protoc_insertion_point(message_clear_start:df.plugin.WorldQueryViewersAction)
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  ::uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  cached_has_bits = _impl_._has_bits_[0];
-  if (BatchCheckHasBit(cached_has_bits, 0x00000003U)) {
-    if (CheckHasBit(cached_has_bits, 0x00000001U)) {
-      ABSL_DCHECK(_impl_.world_ != nullptr);
-      _impl_.world_->Clear();
-    }
-    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
-      ABSL_DCHECK(_impl_.position_ != nullptr);
-      _impl_.position_->Clear();
-    }
-  }
-  _impl_._has_bits_.Clear();
-  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-::uint8_t* PROTOBUF_NONNULL WorldQueryViewersAction::_InternalSerialize(
-    const ::google::protobuf::MessageLite& base, ::uint8_t* PROTOBUF_NONNULL target,
-    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) {
-  const WorldQueryViewersAction& this_ = static_cast<const WorldQueryViewersAction&>(base);
-#else   // PROTOBUF_CUSTOM_VTABLE
-::uint8_t* PROTOBUF_NONNULL WorldQueryViewersAction::_InternalSerialize(
-    ::uint8_t* PROTOBUF_NONNULL target,
-    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
-  const WorldQueryViewersAction& this_ = *this;
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
-    this_.CheckHasBitConsistency();
-  }
-  // @@protoc_insertion_point(serialize_to_array_start:df.plugin.WorldQueryViewersAction)
-  ::uint32_t cached_has_bits = 0;
-  (void)cached_has_bits;
-
-  cached_has_bits = this_._impl_._has_bits_[0];
-  // .df.plugin.WorldRef world = 1 [json_name = "world"];
-  if (CheckHasBit(cached_has_bits, 0x00000001U)) {
-    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-        1, *this_._impl_.world_, this_._impl_.world_->GetCachedSize(), target,
-        stream);
-  }
-
-  // .df.plugin.Vec3 position = 2 [json_name = "position"];
-  if (CheckHasBit(cached_has_bits, 0x00000002U)) {
-    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-        2, *this_._impl_.position_, this_._impl_.position_->GetCachedSize(), target,
-        stream);
-  }
-
-  if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-    target =
-        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
-  }
-  // @@protoc_insertion_point(serialize_to_array_end:df.plugin.WorldQueryViewersAction)
-  return target;
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-::size_t WorldQueryViewersAction::ByteSizeLong(const MessageLite& base) {
-  const WorldQueryViewersAction& this_ = static_cast<const WorldQueryViewersAction&>(base);
-#else   // PROTOBUF_CUSTOM_VTABLE
-::size_t WorldQueryViewersAction::ByteSizeLong() const {
-  const WorldQueryViewersAction& this_ = *this;
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  // @@protoc_insertion_point(message_byte_size_start:df.plugin.WorldQueryViewersAction)
-  ::size_t total_size = 0;
-
-  ::uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void)cached_has_bits;
-
-  ::_pbi::Prefetch5LinesFrom7Lines(&this_);
-  cached_has_bits = this_._impl_._has_bits_[0];
-  if (BatchCheckHasBit(cached_has_bits, 0x00000003U)) {
-    // .df.plugin.WorldRef world = 1 [json_name = "world"];
-    if (CheckHasBit(cached_has_bits, 0x00000001U)) {
-      total_size += 1 +
-                    ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.world_);
-    }
-    // .df.plugin.Vec3 position = 2 [json_name = "position"];
-    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
-      total_size += 1 +
-                    ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.position_);
-    }
-  }
-  return this_.MaybeComputeUnknownFieldsSize(total_size,
-                                             &this_._impl_._cached_size_);
-}
-
-void WorldQueryViewersAction::MergeImpl(::google::protobuf::MessageLite& to_msg,
-                            const ::google::protobuf::MessageLite& from_msg) {
-   auto* const _this =
-      static_cast<WorldQueryViewersAction*>(&to_msg);
-  auto& from = static_cast<const WorldQueryViewersAction&>(from_msg);
-  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
-    from.CheckHasBitConsistency();
-  }
-  ::google::protobuf::Arena* arena = _this->GetArena();
-  // @@protoc_insertion_point(class_specific_merge_from_start:df.plugin.WorldQueryViewersAction)
-  ABSL_DCHECK_NE(&from, _this);
-  ::uint32_t cached_has_bits = 0;
-  (void)cached_has_bits;
-
-  cached_has_bits = from._impl_._has_bits_[0];
-  if (BatchCheckHasBit(cached_has_bits, 0x00000003U)) {
-    if (CheckHasBit(cached_has_bits, 0x00000001U)) {
-      ABSL_DCHECK(from._impl_.world_ != nullptr);
-      if (_this->_impl_.world_ == nullptr) {
-        _this->_impl_.world_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.world_);
-      } else {
-        _this->_impl_.world_->MergeFrom(*from._impl_.world_);
-      }
-    }
-    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
-      ABSL_DCHECK(from._impl_.position_ != nullptr);
-      if (_this->_impl_.position_ == nullptr) {
-        _this->_impl_.position_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.position_);
-      } else {
-        _this->_impl_.position_->MergeFrom(*from._impl_.position_);
-      }
-    }
-  }
-  _this->_impl_._has_bits_[0] |= cached_has_bits;
-  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-      from._internal_metadata_);
-}
-
-void WorldQueryViewersAction::CopyFrom(const WorldQueryViewersAction& from) {
-  // @@protoc_insertion_point(class_specific_copy_from_start:df.plugin.WorldQueryViewersAction)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-
-void WorldQueryViewersAction::InternalSwap(WorldQueryViewersAction* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
-  using ::std::swap;
-  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
-  ::google::protobuf::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(WorldQueryViewersAction, _impl_.position_)
-      + sizeof(WorldQueryViewersAction::_impl_.position_)
-      - PROTOBUF_FIELD_OFFSET(WorldQueryViewersAction, _impl_.world_)>(
-          reinterpret_cast<char*>(&_impl_.world_),
-          reinterpret_cast<char*>(&other->_impl_.world_));
-}
-
-::google::protobuf::Metadata WorldQueryViewersAction::GetMetadata() const {
-  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
-}
-// ===================================================================
-
 class ActionStatus::_Internal {
  public:
   using HasBits =
@@ -14521,391 +14053,6 @@ void WorldPlayersResult::InternalSwap(WorldPlayersResult* PROTOBUF_RESTRICT PROT
 }
 // ===================================================================
 
-class WorldViewersResult::_Internal {
- public:
-  using HasBits =
-      decltype(::std::declval<WorldViewersResult>()._impl_._has_bits_);
-  static constexpr ::int32_t kHasBitsOffset =
-      8 * PROTOBUF_FIELD_OFFSET(WorldViewersResult, _impl_._has_bits_);
-};
-
-void WorldViewersResult::clear_world() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (_impl_.world_ != nullptr) _impl_.world_->Clear();
-  ClearHasBit(_impl_._has_bits_[0],
-                  0x00000002U);
-}
-void WorldViewersResult::clear_position() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (_impl_.position_ != nullptr) _impl_.position_->Clear();
-  ClearHasBit(_impl_._has_bits_[0],
-                  0x00000004U);
-}
-WorldViewersResult::WorldViewersResult(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, WorldViewersResult_class_data_.base()) {
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena) {
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  SharedCtor(arena);
-  // @@protoc_insertion_point(arena_constructor:df.plugin.WorldViewersResult)
-}
-PROTOBUF_NDEBUG_INLINE WorldViewersResult::Impl_::Impl_(
-    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
-    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
-    [[maybe_unused]] const ::df::plugin::WorldViewersResult& from_msg)
-      : _has_bits_{from._has_bits_},
-        _cached_size_{0},
-        viewer_uuids_{visibility, arena, from.viewer_uuids_} {}
-
-WorldViewersResult::WorldViewersResult(
-    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
-    const WorldViewersResult& from)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, WorldViewersResult_class_data_.base()) {
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena) {
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  WorldViewersResult* const _this = this;
-  (void)_this;
-  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-      from._internal_metadata_);
-  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
-  _impl_.world_ = (CheckHasBit(cached_has_bits, 0x00000002U))
-                ? ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.world_)
-                : nullptr;
-  _impl_.position_ = (CheckHasBit(cached_has_bits, 0x00000004U))
-                ? ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.position_)
-                : nullptr;
-
-  // @@protoc_insertion_point(copy_constructor:df.plugin.WorldViewersResult)
-}
-PROTOBUF_NDEBUG_INLINE WorldViewersResult::Impl_::Impl_(
-    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
-    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
-      : _cached_size_{0},
-        viewer_uuids_{visibility, arena} {}
-
-inline void WorldViewersResult::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
-  new (&_impl_) Impl_(internal_visibility(), arena);
-  ::memset(reinterpret_cast<char*>(&_impl_) +
-               offsetof(Impl_, world_),
-           0,
-           offsetof(Impl_, position_) -
-               offsetof(Impl_, world_) +
-               sizeof(Impl_::position_));
-}
-WorldViewersResult::~WorldViewersResult() {
-  // @@protoc_insertion_point(destructor:df.plugin.WorldViewersResult)
-  SharedDtor(*this);
-}
-inline void WorldViewersResult::SharedDtor(MessageLite& self) {
-  WorldViewersResult& this_ = static_cast<WorldViewersResult&>(self);
-  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
-    this_.CheckHasBitConsistency();
-  }
-  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-  ABSL_DCHECK(this_.GetArena() == nullptr);
-  delete this_._impl_.world_;
-  delete this_._impl_.position_;
-  this_._impl_.~Impl_();
-}
-
-inline void* PROTOBUF_NONNULL WorldViewersResult::PlacementNew_(
-    const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
-    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
-  return ::new (mem) WorldViewersResult(arena);
-}
-constexpr auto WorldViewersResult::InternalNewImpl_() {
-  constexpr auto arena_bits = ::google::protobuf::internal::EncodePlacementArenaOffsets({
-      PROTOBUF_FIELD_OFFSET(WorldViewersResult, _impl_.viewer_uuids_) +
-          decltype(WorldViewersResult::_impl_.viewer_uuids_)::
-              InternalGetArenaOffset(
-                  ::google::protobuf::Message::internal_visibility()),
-  });
-  if (arena_bits.has_value()) {
-    return ::google::protobuf::internal::MessageCreator::ZeroInit(
-        sizeof(WorldViewersResult), alignof(WorldViewersResult), *arena_bits);
-  } else {
-    return ::google::protobuf::internal::MessageCreator(&WorldViewersResult::PlacementNew_,
-                                 sizeof(WorldViewersResult),
-                                 alignof(WorldViewersResult));
-  }
-}
-constexpr auto WorldViewersResult::InternalGenerateClassData_() {
-  return ::google::protobuf::internal::ClassDataFull{
-      ::google::protobuf::internal::ClassData{
-          &_WorldViewersResult_default_instance_._instance,
-          &_table_.header,
-          nullptr,  // OnDemandRegisterArenaDtor
-          nullptr,  // IsInitialized
-          &WorldViewersResult::MergeImpl,
-          ::google::protobuf::Message::GetNewImpl<WorldViewersResult>(),
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-          &WorldViewersResult::SharedDtor,
-          ::google::protobuf::Message::GetClearImpl<WorldViewersResult>(), &WorldViewersResult::ByteSizeLong,
-              &WorldViewersResult::_InternalSerialize,
-#endif  // PROTOBUF_CUSTOM_VTABLE
-          PROTOBUF_FIELD_OFFSET(WorldViewersResult, _impl_._cached_size_),
-          false,
-      },
-      &WorldViewersResult::kDescriptorMethods,
-      &descriptor_table_actions_2eproto,
-      nullptr,  // tracker
-  };
-}
-
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
-    ::google::protobuf::internal::ClassDataFull WorldViewersResult_class_data_ =
-        WorldViewersResult::InternalGenerateClassData_();
-
-PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
-WorldViewersResult::GetClassData() const {
-  ::google::protobuf::internal::PrefetchToLocalCache(&WorldViewersResult_class_data_);
-  ::google::protobuf::internal::PrefetchToLocalCache(WorldViewersResult_class_data_.tc_table);
-  return WorldViewersResult_class_data_.base();
-}
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<2, 3, 2, 49, 2>
-WorldViewersResult::_table_ = {
-  {
-    PROTOBUF_FIELD_OFFSET(WorldViewersResult, _impl_._has_bits_),
-    0, // no _extensions_
-    3, 24,  // max_field_number, fast_idx_mask
-    offsetof(decltype(_table_), field_lookup_table),
-    4294967288,  // skipmap
-    offsetof(decltype(_table_), field_entries),
-    3,  // num_field_entries
-    2,  // num_aux_entries
-    offsetof(decltype(_table_), aux_entries),
-    WorldViewersResult_class_data_.base(),
-    nullptr,  // post_loop_handler
-    ::_pbi::TcParser::GenericFallback,  // fallback
-    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-    ::_pbi::TcParser::GetTable<::df::plugin::WorldViewersResult>(),  // to_prefetch
-    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
-  }, {{
-    {::_pbi::TcParser::MiniParse, {}},
-    // .df.plugin.WorldRef world = 1 [json_name = "world"];
-    {::_pbi::TcParser::FastMtS1,
-     {10, 1, 0,
-      PROTOBUF_FIELD_OFFSET(WorldViewersResult, _impl_.world_)}},
-    // .df.plugin.Vec3 position = 2 [json_name = "position"];
-    {::_pbi::TcParser::FastMtS1,
-     {18, 2, 1,
-      PROTOBUF_FIELD_OFFSET(WorldViewersResult, _impl_.position_)}},
-    // repeated string viewer_uuids = 3 [json_name = "viewerUuids"];
-    {::_pbi::TcParser::FastUR1,
-     {26, 0, 0,
-      PROTOBUF_FIELD_OFFSET(WorldViewersResult, _impl_.viewer_uuids_)}},
-  }}, {{
-    65535, 65535
-  }}, {{
-    // .df.plugin.WorldRef world = 1 [json_name = "world"];
-    {PROTOBUF_FIELD_OFFSET(WorldViewersResult, _impl_.world_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .df.plugin.Vec3 position = 2 [json_name = "position"];
-    {PROTOBUF_FIELD_OFFSET(WorldViewersResult, _impl_.position_), _Internal::kHasBitsOffset + 2, 1, (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-    // repeated string viewer_uuids = 3 [json_name = "viewerUuids"];
-    {PROTOBUF_FIELD_OFFSET(WorldViewersResult, _impl_.viewer_uuids_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcRepeated | ::_fl::kUtf8String | ::_fl::kRepSString)},
-  }},
-  {{
-      {::_pbi::TcParser::GetTable<::df::plugin::WorldRef>()},
-      {::_pbi::TcParser::GetTable<::df::plugin::Vec3>()},
-  }},
-  {{
-    "\34\0\0\14\0\0\0\0"
-    "df.plugin.WorldViewersResult"
-    "viewer_uuids"
-  }},
-};
-PROTOBUF_NOINLINE void WorldViewersResult::Clear() {
-// @@protoc_insertion_point(message_clear_start:df.plugin.WorldViewersResult)
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  ::uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  cached_has_bits = _impl_._has_bits_[0];
-  if (BatchCheckHasBit(cached_has_bits, 0x00000007U)) {
-    if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
-      _impl_.viewer_uuids_.Clear();
-    }
-    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
-      ABSL_DCHECK(_impl_.world_ != nullptr);
-      _impl_.world_->Clear();
-    }
-    if (CheckHasBit(cached_has_bits, 0x00000004U)) {
-      ABSL_DCHECK(_impl_.position_ != nullptr);
-      _impl_.position_->Clear();
-    }
-  }
-  _impl_._has_bits_.Clear();
-  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-::uint8_t* PROTOBUF_NONNULL WorldViewersResult::_InternalSerialize(
-    const ::google::protobuf::MessageLite& base, ::uint8_t* PROTOBUF_NONNULL target,
-    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) {
-  const WorldViewersResult& this_ = static_cast<const WorldViewersResult&>(base);
-#else   // PROTOBUF_CUSTOM_VTABLE
-::uint8_t* PROTOBUF_NONNULL WorldViewersResult::_InternalSerialize(
-    ::uint8_t* PROTOBUF_NONNULL target,
-    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
-  const WorldViewersResult& this_ = *this;
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
-    this_.CheckHasBitConsistency();
-  }
-  // @@protoc_insertion_point(serialize_to_array_start:df.plugin.WorldViewersResult)
-  ::uint32_t cached_has_bits = 0;
-  (void)cached_has_bits;
-
-  cached_has_bits = this_._impl_._has_bits_[0];
-  // .df.plugin.WorldRef world = 1 [json_name = "world"];
-  if (CheckHasBit(cached_has_bits, 0x00000002U)) {
-    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-        1, *this_._impl_.world_, this_._impl_.world_->GetCachedSize(), target,
-        stream);
-  }
-
-  // .df.plugin.Vec3 position = 2 [json_name = "position"];
-  if (CheckHasBit(cached_has_bits, 0x00000004U)) {
-    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-        2, *this_._impl_.position_, this_._impl_.position_->GetCachedSize(), target,
-        stream);
-  }
-
-  // repeated string viewer_uuids = 3 [json_name = "viewerUuids"];
-  if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
-    for (int i = 0, n = this_._internal_viewer_uuids_size(); i < n; ++i) {
-      const auto& s = this_._internal_viewer_uuids().Get(i);
-      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-          s.data(), static_cast<int>(s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "df.plugin.WorldViewersResult.viewer_uuids");
-      target = stream->WriteString(3, s, target);
-    }
-  }
-
-  if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-    target =
-        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
-  }
-  // @@protoc_insertion_point(serialize_to_array_end:df.plugin.WorldViewersResult)
-  return target;
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-::size_t WorldViewersResult::ByteSizeLong(const MessageLite& base) {
-  const WorldViewersResult& this_ = static_cast<const WorldViewersResult&>(base);
-#else   // PROTOBUF_CUSTOM_VTABLE
-::size_t WorldViewersResult::ByteSizeLong() const {
-  const WorldViewersResult& this_ = *this;
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  // @@protoc_insertion_point(message_byte_size_start:df.plugin.WorldViewersResult)
-  ::size_t total_size = 0;
-
-  ::uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void)cached_has_bits;
-
-  ::_pbi::Prefetch5LinesFrom7Lines(&this_);
-  cached_has_bits = this_._impl_._has_bits_[0];
-  if (BatchCheckHasBit(cached_has_bits, 0x00000007U)) {
-    // repeated string viewer_uuids = 3 [json_name = "viewerUuids"];
-    if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
-      total_size +=
-          1 * ::google::protobuf::internal::FromIntSize(this_._internal_viewer_uuids().size());
-      for (int i = 0, n = this_._internal_viewer_uuids().size(); i < n; ++i) {
-        total_size += ::google::protobuf::internal::WireFormatLite::StringSize(
-            this_._internal_viewer_uuids().Get(i));
-      }
-    }
-    // .df.plugin.WorldRef world = 1 [json_name = "world"];
-    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
-      total_size += 1 +
-                    ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.world_);
-    }
-    // .df.plugin.Vec3 position = 2 [json_name = "position"];
-    if (CheckHasBit(cached_has_bits, 0x00000004U)) {
-      total_size += 1 +
-                    ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.position_);
-    }
-  }
-  return this_.MaybeComputeUnknownFieldsSize(total_size,
-                                             &this_._impl_._cached_size_);
-}
-
-void WorldViewersResult::MergeImpl(::google::protobuf::MessageLite& to_msg,
-                            const ::google::protobuf::MessageLite& from_msg) {
-   auto* const _this =
-      static_cast<WorldViewersResult*>(&to_msg);
-  auto& from = static_cast<const WorldViewersResult&>(from_msg);
-  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
-    from.CheckHasBitConsistency();
-  }
-  ::google::protobuf::Arena* arena = _this->GetArena();
-  // @@protoc_insertion_point(class_specific_merge_from_start:df.plugin.WorldViewersResult)
-  ABSL_DCHECK_NE(&from, _this);
-  ::uint32_t cached_has_bits = 0;
-  (void)cached_has_bits;
-
-  cached_has_bits = from._impl_._has_bits_[0];
-  if (BatchCheckHasBit(cached_has_bits, 0x00000007U)) {
-    if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
-      _this->_internal_mutable_viewer_uuids()->InternalMergeFromWithArena(
-          ::google::protobuf::MessageLite::internal_visibility(), arena,
-          from._internal_viewer_uuids());
-    }
-    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
-      ABSL_DCHECK(from._impl_.world_ != nullptr);
-      if (_this->_impl_.world_ == nullptr) {
-        _this->_impl_.world_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.world_);
-      } else {
-        _this->_impl_.world_->MergeFrom(*from._impl_.world_);
-      }
-    }
-    if (CheckHasBit(cached_has_bits, 0x00000004U)) {
-      ABSL_DCHECK(from._impl_.position_ != nullptr);
-      if (_this->_impl_.position_ == nullptr) {
-        _this->_impl_.position_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.position_);
-      } else {
-        _this->_impl_.position_->MergeFrom(*from._impl_.position_);
-      }
-    }
-  }
-  _this->_impl_._has_bits_[0] |= cached_has_bits;
-  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-      from._internal_metadata_);
-}
-
-void WorldViewersResult::CopyFrom(const WorldViewersResult& from) {
-  // @@protoc_insertion_point(class_specific_copy_from_start:df.plugin.WorldViewersResult)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-
-void WorldViewersResult::InternalSwap(WorldViewersResult* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
-  using ::std::swap;
-  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
-  _impl_.viewer_uuids_.InternalSwap(&other->_impl_.viewer_uuids_);
-  ::google::protobuf::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(WorldViewersResult, _impl_.position_)
-      + sizeof(WorldViewersResult::_impl_.position_)
-      - PROTOBUF_FIELD_OFFSET(WorldViewersResult, _impl_.world_)>(
-          reinterpret_cast<char*>(&_impl_.world_),
-          reinterpret_cast<char*>(&other->_impl_.world_));
-}
-
-::google::protobuf::Metadata WorldViewersResult::GetMetadata() const {
-  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
-}
-// ===================================================================
-
 class ActionResult::_Internal {
  public:
   using HasBits =
@@ -14955,19 +14102,6 @@ void ActionResult::set_allocated_world_entities_within(::df::plugin::WorldEntiti
   }
   // @@protoc_insertion_point(field_set_allocated:df.plugin.ActionResult.world_entities_within)
 }
-void ActionResult::set_allocated_world_viewers(::df::plugin::WorldViewersResult* PROTOBUF_NULLABLE world_viewers) {
-  ::google::protobuf::Arena* message_arena = GetArena();
-  clear_result();
-  if (world_viewers) {
-    ::google::protobuf::Arena* submessage_arena = world_viewers->GetArena();
-    if (message_arena != submessage_arena) {
-      world_viewers = ::google::protobuf::internal::GetOwnedMessage(message_arena, world_viewers, submessage_arena);
-    }
-    set_has_world_viewers();
-    _impl_.result_.world_viewers_ = world_viewers;
-  }
-  // @@protoc_insertion_point(field_set_allocated:df.plugin.ActionResult.world_viewers)
-}
 ActionResult::ActionResult(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
     : ::google::protobuf::Message(arena, ActionResult_class_data_.base()) {
@@ -15015,9 +14149,6 @@ ActionResult::ActionResult(
         break;
       case kWorldEntitiesWithin:
         _impl_.result_.world_entities_within_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.result_.world_entities_within_);
-        break;
-      case kWorldViewers:
-        _impl_.result_.world_viewers_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.result_.world_viewers_);
         break;
   }
 
@@ -15082,14 +14213,6 @@ void ActionResult::clear_result() {
       }
       break;
     }
-    case kWorldViewers: {
-      if (GetArena() == nullptr) {
-        delete _impl_.result_.world_viewers_;
-      } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
-        ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.result_.world_viewers_);
-      }
-      break;
-    }
     case RESULT_NOT_SET: {
       break;
     }
@@ -15141,17 +14264,17 @@ ActionResult::GetClassData() const {
   return ActionResult_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<1, 6, 5, 45, 2>
+const ::_pbi::TcParseTable<1, 5, 4, 45, 2>
 ActionResult::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(ActionResult, _impl_._has_bits_),
     0, // no _extensions_
-    13, 8,  // max_field_number, fast_idx_mask
+    12, 8,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294959612,  // skipmap
+    4294963708,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    6,  // num_field_entries
-    5,  // num_aux_entries
+    5,  // num_field_entries
+    4,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     ActionResult_class_data_.base(),
     nullptr,  // post_loop_handler
@@ -15181,15 +14304,12 @@ ActionResult::_table_ = {
     {PROTOBUF_FIELD_OFFSET(ActionResult, _impl_.result_.world_players_), _Internal::kOneofCaseOffset + 0, 2, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
     // .df.plugin.WorldEntitiesWithinResult world_entities_within = 12 [json_name = "worldEntitiesWithin"];
     {PROTOBUF_FIELD_OFFSET(ActionResult, _impl_.result_.world_entities_within_), _Internal::kOneofCaseOffset + 0, 3, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .df.plugin.WorldViewersResult world_viewers = 13 [json_name = "worldViewers"];
-    {PROTOBUF_FIELD_OFFSET(ActionResult, _impl_.result_.world_viewers_), _Internal::kOneofCaseOffset + 0, 4, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
   }},
   {{
       {::_pbi::TcParser::GetTable<::df::plugin::ActionStatus>()},
       {::_pbi::TcParser::GetTable<::df::plugin::WorldEntitiesResult>()},
       {::_pbi::TcParser::GetTable<::df::plugin::WorldPlayersResult>()},
       {::_pbi::TcParser::GetTable<::df::plugin::WorldEntitiesWithinResult>()},
-      {::_pbi::TcParser::GetTable<::df::plugin::WorldViewersResult>()},
   }},
   {{
     "\26\16\0\0\0\0\0\0"
@@ -15274,12 +14394,6 @@ PROTOBUF_NOINLINE void ActionResult::Clear() {
           stream);
       break;
     }
-    case kWorldViewers: {
-      target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-          13, *this_._impl_.result_.world_viewers_, this_._impl_.result_.world_viewers_->GetCachedSize(), target,
-          stream);
-      break;
-    }
     default:
       break;
   }
@@ -15339,12 +14453,6 @@ PROTOBUF_NOINLINE void ActionResult::Clear() {
     case kWorldEntitiesWithin: {
       total_size += 1 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.result_.world_entities_within_);
-      break;
-    }
-    // .df.plugin.WorldViewersResult world_viewers = 13 [json_name = "worldViewers"];
-    case kWorldViewers: {
-      total_size += 1 +
-                    ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.result_.world_viewers_);
       break;
     }
     case RESULT_NOT_SET: {
@@ -15423,14 +14531,6 @@ void ActionResult::MergeImpl(::google::protobuf::MessageLite& to_msg,
           _this->_impl_.result_.world_entities_within_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.result_.world_entities_within_);
         } else {
           _this->_impl_.result_.world_entities_within_->MergeFrom(*from._impl_.result_.world_entities_within_);
-        }
-        break;
-      }
-      case kWorldViewers: {
-        if (oneof_needs_init) {
-          _this->_impl_.result_.world_viewers_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.result_.world_viewers_);
-        } else {
-          _this->_impl_.result_.world_viewers_->MergeFrom(*from._impl_.result_.world_viewers_);
         }
         break;
       }

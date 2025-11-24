@@ -1,6 +1,7 @@
 package plugin
 
 import (
+	"strings"
 	"time"
 
 	"github.com/df-mc/dragonfly/server/block/cube"
@@ -82,8 +83,6 @@ func (m *Manager) applyActions(p *pluginProcess, batch *pb.ActionBatch) {
 			m.handleWorldQueryPlayers(p, correlationID, kind.WorldQueryPlayers)
 		case *pb.Action_WorldQueryEntitiesWithin:
 			m.handleWorldQueryEntitiesWithin(p, correlationID, kind.WorldQueryEntitiesWithin)
-		case *pb.Action_WorldQueryViewers:
-			m.handleWorldQueryViewers(p, correlationID, kind.WorldQueryViewers)
 		}
 	}
 }
@@ -538,36 +537,6 @@ func (m *Manager) handleWorldQueryEntitiesWithin(p *pluginProcess, correlationID
 			World:    protoWorldRef(w),
 			Box:      protoBBox(box),
 			Entities: protoEntityRefs(entities),
-		}},
-	})
-}
-
-func (m *Manager) handleWorldQueryViewers(p *pluginProcess, correlationID string, act *pb.WorldQueryViewersAction) {
-	w := m.worldFromRef(act.GetWorld())
-	if w == nil {
-		m.sendActionError(p, correlationID, "world not found")
-		return
-	}
-	pos, ok := vec3FromProto(act.Position)
-	if !ok {
-		m.sendActionError(p, correlationID, "invalid position")
-		return
-	}
-	viewers := make([]string, 0)
-	<-w.Exec(func(tx *world.Tx) {
-		for _, v := range tx.Viewers(pos) {
-			if pl, ok := v.(*player.Player); ok {
-				viewers = append(viewers, pl.UUID().String())
-			}
-		}
-	})
-	m.sendActionResult(p, &pb.ActionResult{
-		CorrelationId: correlationID,
-		Status:        &pb.ActionStatus{Ok: true},
-		Result: &pb.ActionResult_WorldViewers{WorldViewers: &pb.WorldViewersResult{
-			World:       protoWorldRef(w),
-			Position:    protoVec3(pos),
-			ViewerUuids: viewers,
 		}},
 	})
 }

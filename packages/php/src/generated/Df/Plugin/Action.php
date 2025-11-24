@@ -61,7 +61,6 @@ class Action extends \Google\Protobuf\Internal\Message
      *           World queries
      *     @type \Df\Plugin\WorldQueryPlayersAction $world_query_players
      *     @type \Df\Plugin\WorldQueryEntitiesWithinAction $world_query_entities_within
-     *     @type \Df\Plugin\WorldQueryViewersAction $world_query_viewers
      * }
      */
     public function __construct($data = NULL) {
@@ -854,33 +853,6 @@ class Action extends \Google\Protobuf\Internal\Message
     {
         GPBUtil::checkMessage($var, \Df\Plugin\WorldQueryEntitiesWithinAction::class);
         $this->writeOneof(72, $var);
-
-        return $this;
-    }
-
-    /**
-     * Generated from protobuf field <code>.df.plugin.WorldQueryViewersAction world_query_viewers = 73 [json_name = "worldQueryViewers"];</code>
-     * @return \Df\Plugin\WorldQueryViewersAction|null
-     */
-    public function getWorldQueryViewers()
-    {
-        return $this->readOneof(73);
-    }
-
-    public function hasWorldQueryViewers()
-    {
-        return $this->hasOneof(73);
-    }
-
-    /**
-     * Generated from protobuf field <code>.df.plugin.WorldQueryViewersAction world_query_viewers = 73 [json_name = "worldQueryViewers"];</code>
-     * @param \Df\Plugin\WorldQueryViewersAction $var
-     * @return $this
-     */
-    public function setWorldQueryViewers($var)
-    {
-        GPBUtil::checkMessage($var, \Df\Plugin\WorldQueryViewersAction::class);
-        $this->writeOneof(73, $var);
 
         return $this;
     }

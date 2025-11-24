@@ -46,7 +46,6 @@ message Action {
         WorldQueryEntitiesAction world_query_entities = 70;
         WorldQueryPlayersAction world_query_players = 71;
         WorldQueryEntitiesWithinAction world_query_entities_within = 72;
-        WorldQueryViewersAction world_query_viewers = 73;
     }
 }
 
@@ -234,11 +233,6 @@ message WorldQueryEntitiesWithinAction {
     BBox box = 2;
 }
 
-message WorldQueryViewersAction {
-    WorldRef world = 1;
-    Vec3 position = 2;
-}
-
 message ActionStatus {
     bool ok = 1;
     optional string error = 2;
@@ -260,12 +254,6 @@ message WorldPlayersResult {
     repeated EntityRef players = 2;
 }
 
-message WorldViewersResult {
-    WorldRef world = 1;
-    Vec3 position = 2;
-    repeated string viewer_uuids = 3;
-}
-
 message ActionResult {
     string correlation_id = 1;
     optional ActionStatus status = 2;
@@ -273,6 +261,5 @@ message ActionResult {
         WorldEntitiesResult world_entities = 10;
         WorldPlayersResult world_players = 11;
         WorldEntitiesWithinResult world_entities_within = 12;
-        WorldViewersResult world_viewers = 13;
     }
 }
