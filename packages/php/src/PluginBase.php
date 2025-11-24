@@ -481,6 +481,8 @@ abstract class PluginBase {
             $ctx = new EventContext($this->pluginId, $eventId, $this->sender, $this->server, $event->getExpectsResponse());
             $sender = $ctx->commandSender($senderUuid);
             if ($sender === null) {
+                // Can't resolve sender; let server handle normally
+                $ctx->ackIfUnhandled();
                 return;
             }
 
