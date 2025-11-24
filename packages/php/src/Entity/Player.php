@@ -6,8 +6,9 @@ use Df\Plugin\ItemStack;
 use Df\Plugin\Vec3;
 use Df\Plugin\WorldRef;
 use Dragonfly\PluginLib\Actions\Actions;
+use Dragonfly\PluginLib\Commands\CommandSender;
 
-final class Player {
+final class Player implements CommandSender {
     public function __construct(
         private string $uuid,
         private string $name,

@@ -478,9 +478,11 @@ abstract class PluginBase {
             $cmd = clone $template;
 
             $senderUuid = $cmdEvt->getPlayerUuid();
-            $senderName = $cmdEvt->getName();
             $ctx = new EventContext($this->pluginId, $eventId, $this->sender, $this->server, $event->getExpectsResponse());
-            $sender = $ctx->commandSender($senderUuid, $senderName);
+            $sender = $ctx->commandSender($senderUuid);
+            if ($sender === null) {
+                return;
+            }
 
             try {
                 $argsField = $cmdEvt->getArgs();

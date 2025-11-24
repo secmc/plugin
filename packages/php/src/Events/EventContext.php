@@ -5,7 +5,6 @@ namespace Dragonfly\PluginLib\Events;
 use Df\Plugin\EventResult;
 use Dragonfly\PluginLib\Actions\Actions;
 use Dragonfly\PluginLib\Actions\ActionsTrait;
-use Dragonfly\PluginLib\Commands\CommandSender;
 use Dragonfly\PluginLib\Entity\Player;
 use Dragonfly\PluginLib\Server\Server;
 use Dragonfly\PluginLib\StreamSender;
@@ -93,9 +92,8 @@ final class EventContext {
         return new Player($uuid, $name, $this->getActions());
     }
 
-    public function commandSender(string $uuid, string $name): CommandSender {
-        $world = $this->server->getPlayerWorld($uuid);
-        return new CommandSender($uuid, $name, $this->getActions(), $world);
+    public function commandSender(string $uuid): ?Player {
+        return $this->server->getPlayer($uuid);
     }
 
     /**
