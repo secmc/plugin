@@ -8,15 +8,15 @@ namespace Dragonfly\PluginLib\Commands;
  */
 class Optional {
     private mixed $value = null;
-    private bool $present = false;
+    private bool $hasValue = false;
 
     public function set(mixed $value): void {
         $this->value = $value;
-        $this->present = true;
+        $this->hasValue = true;
     }
 
-    public function isPresent(): bool {
-        return $this->present;
+    public function hasValue(): bool {
+        return $this->hasValue;
     }
 
     public function get(): mixed {
@@ -24,6 +24,6 @@ class Optional {
     }
 
     public function getOr(mixed $default): mixed {
-        return $this->present ? $this->value : $default;
+        return $this->hasValue ? $this->value : $default;
     }
 }

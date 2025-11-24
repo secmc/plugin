@@ -22,6 +22,7 @@ use Dragonfly\PluginLib\PluginBase;
 use Dragonfly\PluginLib\Events\EventContext;
 use Dragonfly\PluginLib\Events\Listener;
 use ExamplePhp\EffectCommand;
+use ExamplePhp\CircleCommand;
 
 class HelloPlugin extends PluginBase implements Listener {
 
@@ -30,6 +31,7 @@ class HelloPlugin extends PluginBase implements Listener {
 
     public function onEnable(): void {
         $this->registerCommandClass(new EffectCommand());
+        $this->registerCommandClass(new CircleCommand());
         $this->registerCommand('/cheers', 'Send a toast from PHP');
         $this->registerCommand('/pokemon', 'Give a Pokemon item');
         // Register custom items
