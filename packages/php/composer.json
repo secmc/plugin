@@ -19,8 +19,7 @@
   "autoload": {
     "psr-4": {
       "Dragonfly\\PluginLib\\": "src/",
-      "Df\\": "src/generated/",
-      "GPBMetadata\\": "src/generated/GPBMetadata/"
+      "Df\\": "src/generated/Df/"
     }
   },
   "autoload-dev": {
