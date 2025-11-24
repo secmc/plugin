@@ -19,16 +19,16 @@ plugins:
   #   args: ["../examples/plugins/node/hello.js"]
   #   env:
   #     NODE_ENV: development
-  - id: example-typescript
-    name: Example TypeScript Plugin
-    #command: "node"
-    #args: ["../examples/plugins/typescript/dist/index.js"]
-    command: "npm"
-    args: ["run", "dev"]
-    work_dir:
-      path: "../examples/plugins/typescript"
-    env:
-      NODE_ENV: production
+  # - id: example-typescript
+  #   name: Example TypeScript Plugin
+  #   #command: "node"
+  #   #args: ["../examples/plugins/typescript/dist/index.js"]
+  #   command: "npm"
+  #   args: ["run", "dev"]
+  #   work_dir:
+  #     path: "../examples/plugins/typescript"
+  #   env:
+  #     NODE_ENV: production
   - id: example-php
     name: Example PHP Plugin
     command: "../examples/plugins/php/bin/php7/bin/php"
@@ -43,14 +43,14 @@ plugins:
     env:
       PHP_ENV: production
 
-  - id: example-go
-    name: Example Go Plugin
-    command: "go"
-    args: ["run", "cmd/main.go"]
-    work_dir:
-      git:
-        enabled: true
-        #persistent: true # persistent can be set to true if you don't
-        # want the plugin to be cloned at every startup
-        #version: tags/v0.0.1 # can also specify commit hashes
-      path: https://github.com/secmc/plugin-go
+  # - id: example-go
+  #   name: Example Go Plugin
+  #   command: "go"
+  #   args: ["run", "cmd/main.go"]
+  #   work_dir:
+  #     git:
+  #       enabled: true
+  #       #persistent: true # persistent can be set to true if you don't
+  #       # want the plugin to be cloned at every startup
+  #       #version: tags/v0.0.1 # can also specify commit hashes
+  #     path: https://github.com/secmc/plugin-go
