@@ -5,5 +5,4 @@ edition = "2024"
 
 [dependencies]
 dragonfly-plugin = { path = "../"}
-rust-plugin-macro = { path = "../rust-plugin-macro"}
 tokio = { version = "1", features = ["full"] }

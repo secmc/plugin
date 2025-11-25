@@ -22,3 +22,4 @@ tokio-stream = "0.1.17"
 tonic = { version = "0.12", features = ["transport"] }
 tower = "0.5"
 hyper-util = { version = "0.1", features = ["tokio"] }
+rust-plugin-macro = { path = "rust-plugin-macro" }

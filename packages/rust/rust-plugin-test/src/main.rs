@@ -1,10 +1,10 @@
 use dragonfly_plugin::{
+    Handler,
     Plugin,
     Server,
     event::{EventContext, PluginEventHandler},
     types, // All the raw prost/tonic types
 };
-use rust_plugin_macro::Handler;
 
 // --- 2. Define a struct for your plugin's state ---
 // It can be empty, or it can hold databases, configs, etc.
@@ -62,7 +62,6 @@ impl PluginEventHandler for MyExamplePlugin {
     }
 
     // We don't implement `on_player_hurt`, `on_block_break`, etc.,
-    // so the `#[bedrock_plugin]` macro will not subscribe to them.
 }
 
 // --- 4. The main function to run the plugin ---
@@ -77,7 +76,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     );
 
     // 2. Connect to the server and run the plugin
-    println!("Connecting to Bedrock server...");
+    println!("Connecting to df-mc server...");
 
     plugin
         .run(

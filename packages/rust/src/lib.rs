@@ -23,9 +23,9 @@ pub use server::*;
 
 // main usage stuff for plugin devs:
 pub use event::PluginEventHandler;
+pub use rust_plugin_macro::Handler;
 use tokio::sync::mpsc;
 use tokio_stream::{wrappers::ReceiverStream, StreamExt};
-// TODO: pub use rust_plugin_macro::bedrock_plugin;
 
 #[cfg(unix)]
 use hyper_util::rt::TokioIo;
