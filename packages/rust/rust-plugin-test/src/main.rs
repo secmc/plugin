@@ -20,7 +20,6 @@ struct MyExamplePlugin;
 //   This macro will scan for every `on_...` function we implement
 //   and automatically generate the `impl PluginSubscriptions` for us.
 //
-// * We add `#[async_trait]` because the trait uses async functions.
 
 #[async_trait]
 #[bedrock_plugin]
