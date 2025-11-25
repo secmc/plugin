@@ -9,3 +9,5 @@ config.toml
 .vscode/
 
 dragonfly/
+
+.env

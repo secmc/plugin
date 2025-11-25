@@ -273,6 +273,7 @@ func (m *Manager) dispatchEvent(envelope *pb.EventEnvelope, expectResult bool) [
 		if expectResult {
 			waitCh = proc.expectEventResult(envelope.EventId)
 		}
+
 		msg := &pb.HostToPlugin{
 			PluginId: proc.id,
 			Payload: &pb.HostToPlugin_Event{
@@ -280,19 +281,36 @@ func (m *Manager) dispatchEvent(envelope *pb.EventEnvelope, expectResult bool) [
 			},
 		}
 		proc.queue(msg)
+
 		if !expectResult {
 			continue
 		}
+
+		waitStart := time.Now()
 		res, err := proc.waitEventResult(waitCh, eventResponseTimeout)
+		pluginResponseTime := time.Since(waitStart)
+
 		if err != nil {
 			if errors.Is(err, context.DeadlineExceeded) {
-				proc.log.Warn("plugin did not respond to event", "event_id", envelope.EventId, "type", envelope.Type.String())
+				proc.log.Warn("plugin did not respond to event",
+					"event_id", envelope.EventId,
+					"type", envelope.Type.String(),
+					"wait_ms", pluginResponseTime.Milliseconds())
 			}
 			proc.discardEventResult(envelope.EventId)
 			continue
 		}
 		if res != nil {
 			results = append(results, res)
+
+			// Log timing for command events
+			if envelope.Type == pb.EventType_COMMAND {
+				proc.log.Debug("plugin command response received",
+					"event_id", envelope.EventId,
+					"plugin_response_ms", pluginResponseTime.Milliseconds(),
+					"plugin_response_us", pluginResponseTime.Microseconds())
+			}
+
 			if envelope.Type == pb.EventType_CHAT {
 				if chatEvt := envelope.GetChat(); chatEvt != nil {
 					if chatMut := res.GetChat(); chatMut != nil && chatMut.Message != nil {

@@ -22,7 +22,12 @@ import (
 )
 
 func main() {
-	slog.SetLogLoggerLevel(slog.LevelDebug)
+	logLevel := slog.LevelInfo
+	if os.Getenv("DEBUG") != "" {
+		logLevel = slog.LevelDebug
+	}
+	slog.SetLogLoggerLevel(logLevel)
+
 	chat.Global.Subscribe(chat.StdoutSubscriber{})
 	conf, err := readConfig(slog.Default())
 	if err != nil {

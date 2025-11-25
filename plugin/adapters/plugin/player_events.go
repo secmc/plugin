@@ -71,6 +71,8 @@ func (m *Manager) EmitCommand(ctx *player.Context, p *player.Player, cmdName str
 	if p == nil {
 		return
 	}
+	startTime := time.Now()
+
 	// Normalize arguments: trim spaces and drop empties to avoid usage errors on trailing/multiple spaces.
 	norm := normalizeArgs(args)
 	raw := "/" + cmdName
@@ -89,6 +91,14 @@ func (m *Manager) EmitCommand(ctx *player.Context, p *player.Player, cmdName str
 			},
 		},
 	})
+
+	totalDuration := time.Since(startTime)
+	m.log.Debug("command execution completed",
+		"player", p.Name(),
+		"command", cmdName,
+		"total_ms", totalDuration.Milliseconds(),
+		"total_us", totalDuration.Microseconds(),
+	)
 }
 
 // normalizeArgs trims each argument and removes empty entries.
