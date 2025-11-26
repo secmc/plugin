@@ -48,12 +48,8 @@ type propertiesModel struct {
 }
 
 func (m propertiesModel) BBox(cube.Pos, world.BlockSource) []cube.BBox {
-	if !m.hasCollision {
+	if !m.hasCollision || m.box == (cube.BBox{}) {
 		// No collision box provided: no collision.
-		return nil
-	}
-	// Present but zero: treat as no collision.
-	if m.box == (cube.BBox{}) {
 		return nil
 	}
 	return []cube.BBox{m.box}
