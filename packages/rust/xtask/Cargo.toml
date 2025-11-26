@@ -12,3 +12,6 @@ heck = "0.5" # For to_snake_case
 anyhow = "1.0"
 prettyplease = "0.2.37"
 proc-macro2 = "1.0.103"
+
+[dev-dependencies]
+insta = { version = "1.44.1" }

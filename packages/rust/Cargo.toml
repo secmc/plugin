@@ -2,12 +2,16 @@
 resolver = "3"
 members = [".", "macro", "example", "xtask"]
 
+[profile.dev.package]
+insta.opt-level = 3
+similar.opt-level = 3
+
 [workspace.dependencies]
-dragonfly-plugin-macro = { path = "macro", version = "0.1" }
+dragonfly-plugin-macro = { path = "macro", version = "0.2" }
 
 [package]
 name = "dragonfly-plugin"
-version = "1.0.0"
+version = "0.2.0"
 edition = "2021"
 license = "MIT"
 repository = "https://github.com/secmc/dragonfly-plugins"
@@ -27,7 +31,7 @@ tokio-stream = "0.1.17"
 tonic = { version = "0.12", features = ["transport"] }
 tower = "0.5"
 hyper-util = { version = "0.1", features = ["tokio"] }
-dragonfly-plugin-macro = { workspace = true, version = "0.1", optional = true }
+dragonfly-plugin-macro = { workspace = true, optional = true }
 
 [dev-dependencies]
 tokio = { version = "1", features = ["rt-multi-thread", "macros"] }

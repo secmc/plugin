@@ -8,29 +8,25 @@ impl Server {
         target_uuid: String,
         message: String,
     ) -> Result<(), mpsc::error::SendError<types::PluginToHost>> {
-        self.send_action(
-                types::action::Kind::SendChat(types::SendChatAction {
-                    target_uuid,
-                    message,
-                }),
-            )
-            .await
+        self.send_action(types::action::Kind::SendChat(types::SendChatAction {
+            target_uuid,
+            message,
+        }))
+        .await
     }
     ///Sends a `Teleport` action to the server.
     pub async fn teleport(
         &self,
         player_uuid: String,
-        position: Option<types::Vec3>,
-        rotation: Option<types::Vec3>,
+        position: impl Into<Option<types::Vec3>>,
+        rotation: impl Into<Option<types::Vec3>>,
     ) -> Result<(), mpsc::error::SendError<types::PluginToHost>> {
-        self.send_action(
-                types::action::Kind::Teleport(types::TeleportAction {
-                    player_uuid,
-                    position,
-                    rotation,
-                }),
-            )
-            .await
+        self.send_action(types::action::Kind::Teleport(types::TeleportAction {
+            player_uuid,
+            position: position.into(),
+            rotation: rotation.into(),
+        }))
+        .await
     }
     ///Sends a `Kick` action to the server.
     pub async fn kick(
@@ -38,85 +34,73 @@ impl Server {
         player_uuid: String,
         reason: String,
     ) -> Result<(), mpsc::error::SendError<types::PluginToHost>> {
-        self.send_action(
-                types::action::Kind::Kick(types::KickAction {
-                    player_uuid,
-                    reason,
-                }),
-            )
-            .await
+        self.send_action(types::action::Kind::Kick(types::KickAction {
+            player_uuid,
+            reason,
+        }))
+        .await
     }
     ///Sends a `SetGameMode` action to the server.
     pub async fn set_game_mode(
         &self,
         player_uuid: String,
-        game_mode: i32,
+        game_mode: types::GameMode,
     ) -> Result<(), mpsc::error::SendError<types::PluginToHost>> {
-        self.send_action(
-                types::action::Kind::SetGameMode(types::SetGameModeAction {
-                    player_uuid,
-                    game_mode,
-                }),
-            )
-            .await
+        self.send_action(types::action::Kind::SetGameMode(types::SetGameModeAction {
+            player_uuid,
+            game_mode: game_mode.into(),
+        }))
+        .await
     }
     ///Sends a `GiveItem` action to the server.
     pub async fn give_item(
         &self,
         player_uuid: String,
-        item: Option<types::ItemStack>,
+        item: impl Into<Option<types::ItemStack>>,
     ) -> Result<(), mpsc::error::SendError<types::PluginToHost>> {
-        self.send_action(
-                types::action::Kind::GiveItem(types::GiveItemAction {
-                    player_uuid,
-                    item,
-                }),
-            )
-            .await
+        self.send_action(types::action::Kind::GiveItem(types::GiveItemAction {
+            player_uuid,
+            item: item.into(),
+        }))
+        .await
     }
     ///Sends a `ClearInventory` action to the server.
     pub async fn clear_inventory(
         &self,
         player_uuid: String,
     ) -> Result<(), mpsc::error::SendError<types::PluginToHost>> {
-        self.send_action(
-                types::action::Kind::ClearInventory(types::ClearInventoryAction {
-                    player_uuid,
-                }),
-            )
-            .await
+        self.send_action(types::action::Kind::ClearInventory(
+            types::ClearInventoryAction { player_uuid },
+        ))
+        .await
     }
     ///Sends a `SetHeldItem` action to the server.
     pub async fn set_held_item(
         &self,
         player_uuid: String,
-        main: Option<types::ItemStack>,
-        offhand: Option<types::ItemStack>,
+        main: impl Into<Option<types::ItemStack>>,
+        offhand: impl Into<Option<types::ItemStack>>,
     ) -> Result<(), mpsc::error::SendError<types::PluginToHost>> {
-        self.send_action(
-                types::action::Kind::SetHeldItem(types::SetHeldItemAction {
-                    player_uuid,
-                    main,
-                    offhand,
-                }),
-            )
-            .await
+        self.send_action(types::action::Kind::SetHeldItem(types::SetHeldItemAction {
+            player_uuid,
+            main: main.into(),
+            offhand: offhand.into(),
+        }))
+        .await
     }
     ///Sends a `SetHealth` action to the server.
     pub async fn set_health(
         &self,
         player_uuid: String,
         health: f64,
-        max_health: Option<f64>,
+        max_health: impl Into<Option<f64>>,
     ) -> Result<(), mpsc::error::SendError<types::PluginToHost>> {
-        self.send_action(
-                types::action::Kind::SetHealth(types::SetHealthAction {
-                    player_uuid,
-                    health,
-                    max_health,
-                }),
-            )
-            .await
+        self.send_action(types::action::Kind::SetHealth(types::SetHealthAction {
+            player_uuid,
+            health,
+            max_health: max_health.into(),
+        }))
+        .await
     }
     ///Sends a `SetFood` action to the server.
     pub async fn set_food(
@@ -124,101 +108,93 @@ impl Server {
         player_uuid: String,
         food: i32,
     ) -> Result<(), mpsc::error::SendError<types::PluginToHost>> {
-        self.send_action(
-                types::action::Kind::SetFood(types::SetFoodAction {
-                    player_uuid,
-                    food,
-                }),
-            )
-            .await
+        self.send_action(types::action::Kind::SetFood(types::SetFoodAction {
+            player_uuid,
+            food,
+        }))
+        .await
     }
     ///Sends a `SetExperience` action to the server.
     pub async fn set_experience(
         &self,
         player_uuid: String,
-        level: Option<i32>,
-        progress: Option<f32>,
-        amount: Option<i32>,
+        level: impl Into<Option<i32>>,
+        progress: impl Into<Option<f32>>,
+        amount: impl Into<Option<i32>>,
     ) -> Result<(), mpsc::error::SendError<types::PluginToHost>> {
-        self.send_action(
-                types::action::Kind::SetExperience(types::SetExperienceAction {
-                    player_uuid,
-                    level,
-                    progress,
-                    amount,
-                }),
-            )
-            .await
+        self.send_action(types::action::Kind::SetExperience(
+            types::SetExperienceAction {
+                player_uuid,
+                level: level.into(),
+                progress: progress.into(),
+                amount: amount.into(),
+            },
+        ))
+        .await
     }
     ///Sends a `SetVelocity` action to the server.
     pub async fn set_velocity(
         &self,
         player_uuid: String,
-        velocity: Option<types::Vec3>,
+        velocity: impl Into<Option<types::Vec3>>,
     ) -> Result<(), mpsc::error::SendError<types::PluginToHost>> {
-        self.send_action(
-                types::action::Kind::SetVelocity(types::SetVelocityAction {
-                    player_uuid,
-                    velocity,
-                }),
-            )
-            .await
+        self.send_action(types::action::Kind::SetVelocity(types::SetVelocityAction {
+            player_uuid,
+            velocity: velocity.into(),
+        }))
+        .await
     }
     ///Sends a `AddEffect` action to the server.
     pub async fn add_effect(
         &self,
         player_uuid: String,
-        effect_type: i32,
+        effect_type: types::EffectType,
         level: i32,
         duration_ms: i64,
         show_particles: bool,
     ) -> Result<(), mpsc::error::SendError<types::PluginToHost>> {
-        self.send_action(
-                types::action::Kind::AddEffect(types::AddEffectAction {
-                    player_uuid,
-                    effect_type,
-                    level,
-                    duration_ms,
-                    show_particles,
-                }),
-            )
-            .await
+        self.send_action(types::action::Kind::AddEffect(types::AddEffectAction {
+            player_uuid,
+            effect_type: effect_type.into(),
+            level,
+            duration_ms,
+            show_particles,
+        }))
+        .await
     }
     ///Sends a `RemoveEffect` action to the server.
     pub async fn remove_effect(
         &self,
         player_uuid: String,
-        effect_type: i32,
+        effect_type: types::EffectType,
     ) -> Result<(), mpsc::error::SendError<types::PluginToHost>> {
-        self.send_action(
-                types::action::Kind::RemoveEffect(types::RemoveEffectAction {
-                    player_uuid,
-                    effect_type,
-                }),
-            )
-            .await
+        self.send_action(types::action::Kind::RemoveEffect(
+            types::RemoveEffectAction {
+                player_uuid,
+                effect_type: effect_type.into(),
+            },
+        ))
+        .await
     }
     ///Sends a `SendTitle` action to the server.
     pub async fn send_title(
         &self,
         player_uuid: String,
         title: String,
-        subtitle: Option<String>,
-        fade_in_ms: Option<i64>,
-        duration_ms: Option<i64>,
-        fade_out_ms: Option<i64>,
+        subtitle: impl Into<Option<String>>,
+        fade_in_ms: impl Into<Option<i64>>,
+        duration_ms: impl Into<Option<i64>>,
+        fade_out_ms: impl Into<Option<i64>>,
     ) -> Result<(), mpsc::error::SendError<types::PluginToHost>> {
-        self.send_action(
-                types::action::Kind::SendTitle(types::SendTitleAction {
-                    player_uuid,
-                    title,
-                    subtitle,
-                    fade_in_ms,
-                    duration_ms,
-                    fade_out_ms,
-                }),
-            )
-            .await
+        self.send_action(types::action::Kind::SendTitle(types::SendTitleAction {
+            player_uuid,
+            title,
+            subtitle: subtitle.into(),
+            fade_in_ms: fade_in_ms.into(),
+            duration_ms: duration_ms.into(),
+            fade_out_ms: fade_out_ms.into(),
+        }))
+        .await
     }
     ///Sends a `SendPopup` action to the server.
     pub async fn send_popup(
@@ -226,13 +202,11 @@ impl Server {
         player_uuid: String,
         message: String,
     ) -> Result<(), mpsc::error::SendError<types::PluginToHost>> {
-        self.send_action(
-                types::action::Kind::SendPopup(types::SendPopupAction {
-                    player_uuid,
-                    message,
-                }),
-            )
-            .await
+        self.send_action(types::action::Kind::SendPopup(types::SendPopupAction {
+            player_uuid,
+            message,
+        }))
+        .await
     }
     ///Sends a `SendTip` action to the server.
     pub async fn send_tip(
@@ -240,33 +214,29 @@ impl Server {
         player_uuid: String,
         message: String,
     ) -> Result<(), mpsc::error::SendError<types::PluginToHost>> {
-        self.send_action(
-                types::action::Kind::SendTip(types::SendTipAction {
-                    player_uuid,
-                    message,
-                }),
-            )
-            .await
+        self.send_action(types::action::Kind::SendTip(types::SendTipAction {
+            player_uuid,
+            message,
+        }))
+        .await
     }
     ///Sends a `PlaySound` action to the server.
     pub async fn play_sound(
         &self,
         player_uuid: String,
-        sound: i32,
-        position: Option<types::Vec3>,
-        volume: Option<f32>,
-        pitch: Option<f32>,
+        sound: types::Sound,
+        position: impl Into<Option<types::Vec3>>,
+        volume: impl Into<Option<f32>>,
+        pitch: impl Into<Option<f32>>,
     ) -> Result<(), mpsc::error::SendError<types::PluginToHost>> {
-        self.send_action(
-                types::action::Kind::PlaySound(types::PlaySoundAction {
-                    player_uuid,
-                    sound,
-                    position,
-                    volume,
-                    pitch,
-                }),
-            )
-            .await
+        self.send_action(types::action::Kind::PlaySound(types::PlaySoundAction {
+            player_uuid,
+            sound: sound.into(),
+            position: position.into(),
+            volume: volume.into(),
+            pitch: pitch.into(),
+        }))
+        .await
     }
     ///Sends a `ExecuteCommand` action to the server.
     pub async fn execute_command(
@@ -274,144 +244,144 @@ impl Server {
         player_uuid: String,
         command: String,
     ) -> Result<(), mpsc::error::SendError<types::PluginToHost>> {
-        self.send_action(
-                types::action::Kind::ExecuteCommand(types::ExecuteCommandAction {
-                    player_uuid,
-                    command,
-                }),
-            )
-            .await
+        self.send_action(types::action::Kind::ExecuteCommand(
+            types::ExecuteCommandAction {
+                player_uuid,
+                command,
+            },
+        ))
+        .await
     }
     ///Sends a `WorldSetDefaultGameMode` action to the server.
     pub async fn world_set_default_game_mode(
         &self,
-        world: Option<types::WorldRef>,
-        game_mode: i32,
+        world: impl Into<Option<types::WorldRef>>,
+        game_mode: types::GameMode,
     ) -> Result<(), mpsc::error::SendError<types::PluginToHost>> {
-        self.send_action(
-                types::action::Kind::WorldSetDefaultGameMode(types::WorldSetDefaultGameModeAction {
-                    world,
-                    game_mode,
-                }),
-            )
-            .await
+        self.send_action(types::action::Kind::WorldSetDefaultGameMode(
+            types::WorldSetDefaultGameModeAction {
+                world: world.into(),
+                game_mode: game_mode.into(),
+            },
+        ))
+        .await
     }
     ///Sends a `WorldSetDifficulty` action to the server.
     pub async fn world_set_difficulty(
         &self,
-        world: Option<types::WorldRef>,
-        difficulty: i32,
+        world: impl Into<Option<types::WorldRef>>,
+        difficulty: types::Difficulty,
     ) -> Result<(), mpsc::error::SendError<types::PluginToHost>> {
-        self.send_action(
-                types::action::Kind::WorldSetDifficulty(types::WorldSetDifficultyAction {
-                    world,
-                    difficulty,
-                }),
-            )
-            .await
+        self.send_action(types::action::Kind::WorldSetDifficulty(
+            types::WorldSetDifficultyAction {
+                world: world.into(),
+                difficulty: difficulty.into(),
+            },
+        ))
+        .await
     }
     ///Sends a `WorldSetTickRange` action to the server.
     pub async fn world_set_tick_range(
         &self,
-        world: Option<types::WorldRef>,
+        world: impl Into<Option<types::WorldRef>>,
         tick_range: i32,
     ) -> Result<(), mpsc::error::SendError<types::PluginToHost>> {
-        self.send_action(
-                types::action::Kind::WorldSetTickRange(types::WorldSetTickRangeAction {
-                    world,
-                    tick_range,
-                }),
-            )
-            .await
+        self.send_action(types::action::Kind::WorldSetTickRange(
+            types::WorldSetTickRangeAction {
+                world: world.into(),
+                tick_range,
+            },
+        ))
+        .await
     }
     ///Sends a `WorldSetBlock` action to the server.
     pub async fn world_set_block(
         &self,
-        world: Option<types::WorldRef>,
-        position: Option<types::BlockPos>,
-        block: Option<types::BlockState>,
+        world: impl Into<Option<types::WorldRef>>,
+        position: impl Into<Option<types::BlockPos>>,
+        block: impl Into<Option<types::BlockState>>,
     ) -> Result<(), mpsc::error::SendError<types::PluginToHost>> {
-        self.send_action(
-                types::action::Kind::WorldSetBlock(types::WorldSetBlockAction {
-                    world,
-                    position,
-                    block,
-                }),
-            )
-            .await
+        self.send_action(types::action::Kind::WorldSetBlock(
+            types::WorldSetBlockAction {
+                world: world.into(),
+                position: position.into(),
+                block: block.into(),
+            },
+        ))
+        .await
     }
     ///Sends a `WorldPlaySound` action to the server.
     pub async fn world_play_sound(
         &self,
-        world: Option<types::WorldRef>,
-        sound: i32,
-        position: Option<types::Vec3>,
+        world: impl Into<Option<types::WorldRef>>,
+        sound: types::Sound,
+        position: impl Into<Option<types::Vec3>>,
     ) -> Result<(), mpsc::error::SendError<types::PluginToHost>> {
-        self.send_action(
-                types::action::Kind::WorldPlaySound(types::WorldPlaySoundAction {
-                    world,
-                    sound,
-                    position,
-                }),
-            )
-            .await
+        self.send_action(types::action::Kind::WorldPlaySound(
+            types::WorldPlaySoundAction {
+                world: world.into(),
+                sound: sound.into(),
+                position: position.into(),
+            },
+        ))
+        .await
     }
     ///Sends a `WorldAddParticle` action to the server.
     pub async fn world_add_particle(
         &self,
-        world: Option<types::WorldRef>,
-        position: Option<types::Vec3>,
-        particle: i32,
-        block: Option<types::BlockState>,
-        face: Option<i32>,
+        world: impl Into<Option<types::WorldRef>>,
+        position: impl Into<Option<types::Vec3>>,
+        particle: types::ParticleType,
+        block: impl Into<Option<types::BlockState>>,
+        face: impl Into<Option<i32>>,
     ) -> Result<(), mpsc::error::SendError<types::PluginToHost>> {
-        self.send_action(
-                types::action::Kind::WorldAddParticle(types::WorldAddParticleAction {
-                    world,
-                    position,
-                    particle,
-                    block,
-                    face,
-                }),
-            )
-            .await
+        self.send_action(types::action::Kind::WorldAddParticle(
+            types::WorldAddParticleAction {
+                world: world.into(),
+                position: position.into(),
+                particle: particle.into(),
+                block: block.into(),
+                face: face.into(),
+            },
+        ))
+        .await
     }
     ///Sends a `WorldQueryEntities` action to the server.
     pub async fn world_query_entities(
         &self,
-        world: Option<types::WorldRef>,
+        world: impl Into<Option<types::WorldRef>>,
     ) -> Result<(), mpsc::error::SendError<types::PluginToHost>> {
-        self.send_action(
-                types::action::Kind::WorldQueryEntities(types::WorldQueryEntitiesAction {
-                    world,
-                }),
-            )
-            .await
+        self.send_action(types::action::Kind::WorldQueryEntities(
+            types::WorldQueryEntitiesAction {
+                world: world.into(),
+            },
+        ))
+        .await
     }
     ///Sends a `WorldQueryPlayers` action to the server.
     pub async fn world_query_players(
         &self,
-        world: Option<types::WorldRef>,
+        world: impl Into<Option<types::WorldRef>>,
     ) -> Result<(), mpsc::error::SendError<types::PluginToHost>> {
-        self.send_action(
-                types::action::Kind::WorldQueryPlayers(types::WorldQueryPlayersAction {
-                    world,
-                }),
-            )
-            .await
+        self.send_action(types::action::Kind::WorldQueryPlayers(
+            types::WorldQueryPlayersAction {
+                world: world.into(),
+            },
+        ))
+        .await
     }
     ///Sends a `WorldQueryEntitiesWithin` action to the server.
     pub async fn world_query_entities_within(
         &self,
-        world: Option<types::WorldRef>,
-        r#box: Option<types::BBox>,
+        world: impl Into<Option<types::WorldRef>>,
+        r#box: impl Into<Option<types::BBox>>,
     ) -> Result<(), mpsc::error::SendError<types::PluginToHost>> {
-        self.send_action(
-                types::action::Kind::WorldQueryEntitiesWithin(types::WorldQueryEntitiesWithinAction {
-                    world,
-                    r#box,
-                }),
-            )
-            .await
+        self.send_action(types::action::Kind::WorldQueryEntitiesWithin(
+            types::WorldQueryEntitiesWithinAction {
+                world: world.into(),
+                r#box: r#box.into(),
+            },
+        ))
+        .await
     }
 }

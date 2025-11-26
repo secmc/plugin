@@ -21,10 +21,10 @@ use std::error::Error;
 pub use server::*;
 
 // main usage stuff for plugin devs:
-pub use dragonfly_plugin_macro::{Plugin, event_handler};
+pub use dragonfly_plugin_macro::{event_handler, Plugin};
 pub use event::EventHandler;
 use tokio::sync::mpsc;
-use tokio_stream::{StreamExt, wrappers::ReceiverStream};
+use tokio_stream::{wrappers::ReceiverStream, StreamExt};
 
 #[cfg(unix)]
 use hyper_util::rt::TokioIo;
