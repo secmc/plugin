@@ -379,6 +379,7 @@ func (p *pluginProcess) expectEventResult(eventID string) chan *pb.EventResult {
 	p.pendingMu.Lock()
 	p.pending[eventID] = ch
 	p.pendingMu.Unlock()
+	p.log.Debug("waiting for event result", "event_id", eventID)
 	return ch
 }
 
@@ -401,6 +402,7 @@ func (p *pluginProcess) discardEventResult(eventID string) {
 		close(ch)
 	}
 	p.pendingMu.Unlock()
+	p.log.Debug("discarded event result waiter", "event_id", eventID)
 }
 
 func (p *pluginProcess) deliverEventResult(res *pb.EventResult) {
@@ -422,4 +424,5 @@ func (p *pluginProcess) deliverEventResult(res *pb.EventResult) {
 	default:
 	}
 	close(ch)
+	p.log.Debug("delivered event result", "event_id", res.EventId)
 }
