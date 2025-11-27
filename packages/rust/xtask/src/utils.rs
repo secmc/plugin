@@ -1,3 +1,15 @@
+//! Shared AST helpers used by the Rust SDK `xtask` generators.
+//!
+//! This module wraps common syn-based utilities for:
+//! - Formatting generated Rust code (`prettify_code`).
+//! - Scanning the prost-generated AST for structs and nested enums.
+//! - Mapping prost field/attribute shapes into public-facing SDK types.
+//! - Deciding how to convert helper method arguments into wire types.
+//!
+//! The functions here are internal to `xtask`, but the behavior they encode
+//! (e.g. how `GameMode` enums or `Option<T>` fields are surfaced) is part of
+//! the stable shape of the generated SDK API.
+
 use anyhow::Result;
 use quote::quote;
 use std::collections::HashMap;
@@ -6,6 +18,9 @@ use syn::{
     ItemMod, ItemStruct, Meta, Path, PathArguments, Type, TypePath,
 };
 
+/// Pretty-print a Rust source string using `prettyplease`.
+///
+/// This is applied to all generated files to keep diffs readable.
 pub(crate) fn prettify_code(content: String) -> Result<String> {
     let ast = parse_file(&content)?;
     Ok(prettyplease::unparse(&ast))

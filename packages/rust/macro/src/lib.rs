@@ -1,3 +1,17 @@
+//! Procedural macros for the `dragonfly-plugin` Rust SDK.
+//!
+//! This crate exposes three main macros:
+//! - `#[derive(Plugin)]` with a `#[plugin(...)]` attribute to describe
+//!   the plugin metadata and registered commands.
+//! - `#[event_handler]` to generate an `EventSubscriptions` implementation
+//!   based on the `on_*` methods you override in an `impl EventHandler`.
+//! - `#[derive(Command)]` together with `#[command(...)]` /
+//!   `#[subcommand(...)]` to generate strongly-typed command parsers and
+//!   handler traits.
+//!
+//! These macros are re-exported by the `dragonfly-plugin` crate, so plugin
+//! authors should depend on that crate directly.
+
 mod command;
 mod plugin;
 

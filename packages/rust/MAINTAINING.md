@@ -39,17 +39,20 @@ Our architecture is a 3-phase pipeline. Understanding this flow is critical to m
 ### Phase 3: The Friendly API (The `xtask` Generator)
 
 - **What it is:** This is the **public-facing, idiomatic Rust API** that our users love. It includes:
-  - The `PluginEventHandler` trait.
+  - The `EventHandler` trait and its `async fn on_*` methods.
   - The `Server` struct with its friendly helper methods (e.g., `server.send_chat(...)`).
-  - The `EventContext` struct and its helpers (`.cancel()`, `.set_message()`).
+  - The `EventContext` struct and its helpers (`.cancel()`, mutation helpers like `.set_message()`).
   - The `types::EventType` enum.
-- **How it's made:** The `xtask` crate is a custom Rust program that **parses the output of Phase 2** and generates this beautiful API.
+- **How it's made:** The `xtask` crate is a custom Rust program that **parses the output of Phase 2** (the prost Rust code in `src/generated/df.plugin.rs`) and generates this API via:
+  - `generate_actions.rs` → `server/helpers.rs`
+  - `generate_handlers.rs` → `event/handler.rs`
+  - `generate_mutations.rs` → `event/mutations.rs`
 - **How to update:** You run the `xtask` crate from the terminal.
 - **Warning:** **NEVER EDIT THESE FILES BY HAND.**
 
 ---
 
-## How to Add a New Event
+## How to add a new event
 
 This is the most common maintenance task. Here is the complete workflow.
 
@@ -71,7 +74,7 @@ This is the most common maintenance task. Here is the complete workflow.
       - Add `async fn on_player_sleep(...)` to the `PluginEventHandler` trait.
       - Add the `case PlayerSleep` arm to the `dispatch_event` function.
 
-4.  **Review and Commit**
+4.  **Review and commit**
     - You are done. Review the changes in `git`.
     - You should see changes in:
       1.  The `.proto` file you edited.
@@ -79,9 +82,46 @@ This is the most common maintenance task. Here is the complete workflow.
       3.  The Phase 3 friendly API files (e.g., `event_handler.rs`, `types.rs`).
     - Commit all of them.
 
-## The `Handler` Proc-Macro
+- **What xtask generates for events**
+  - Adds `async fn on_player_sleep(...)` (and similar) to the `EventHandler` trait in `event/handler.rs`.
+  - Adds the `PlayerSleep` arm to the `dispatch_event` function.
+  - Adds any required mutation helpers in `event/mutations.rs`.
 
-- **Crate:** `dragonfly-plugin-macros`
-- **Purpose:** Provides `#[derive(Handler)]` and its helper attribute `#[subscriptions(...)]`.
-- **How it works:** This macro generates the `impl PluginSubscriptions` block for the user, turning their `#[subscriptions(Chat, PlayerSleep)]` list into a `Vec<types::EventType>`.
-- **Maintenance:** You do not need to touch this crate during the normal "add an event" workflow. The macro doesn't need to know _what_ events exist; it just converts the identifiers the user provides (e.g., `PlayerSleep`) into the corresponding enum variant (`types::EventType::PlayerSleep`). If the user makes a typo, the Rust compiler throws the error for us, which is the intended design.
+## The `event_handler`, `Plugin`, and `Command` proc-macros
+
+- **Crate:** `dragonfly-plugin-macro`
+
+### `#[event_handler]`
+
+- **Purpose:** Attached to an `impl EventHandler for MyPlugin` block.
+- **How it works:** Scans the methods you define (`on_player_join`, `on_chat`, etc.) and generates an `impl EventSubscriptions for MyPlugin` that returns a `Vec<types::EventType>` with the corresponding variants.
+- **Maintenance:** This macro is intentionally simple: it only cares about method names and does not need to change when new events are added. If a user types a non-existent event method, the trait mismatch causes a normal Rust compiler error.
+
+### `#[derive(Plugin)]` + `#[plugin(...)]`
+
+- **Purpose:** Implements the `Plugin` trait and wires the plugin metadata into the runtime.
+- **Attributes:** `#[plugin(id = \"...\", name = \"...\", version = \"...\", api = \"...\", commands(Foo, Bar))]`.
+- **How it works:**
+  - Generates `Plugin` trait methods based on the literals.
+  - Generates a `CommandRegistry` implementation that:
+    - Collects command specs from the listed command types.
+    - Dispatches `types::CommandEvent` into those command types.
+
+### `#[derive(Command)]` + `#[subcommand(...)]`
+
+- **Purpose:** Generates a strongly-typed command parser and handler trait for a struct/enum.
+- **How it works:**
+  - Produces a `spec()` function returning `types::CommandSpec`.
+  - Implements `TryFrom<&types::CommandEvent>` using the SDK’s `parse_required_arg` / `parse_optional_arg` helpers.
+  - Generates an `XxxHandler` trait and an `__execute` method that calls into the appropriate handler method on the plugin.
+- **Maintenance:** When adding new `ParamType` support (e.g., enums) or changing how arguments map from `String` → Rust types, update the command macro implementation in `macro/src/command/` (parse/model/codegen) to keep codegen consistent with the runtime helpers in `src/command.rs`.
+
+## Testing xtask and macros
+
+- **xtask tests:** The `xtask` crate has:
+  - Unit tests in `utils.rs` for AST helpers.
+  - Snapshot tests in the generator modules (`generate_actions.rs`, `generate_handlers.rs`, `generate_mutations.rs`) using `insta`, with snapshots under `xtask/src/snapshots/`.
+  - Edge-case tests that verify generators fail with clear error messages when prost structures are inconsistent (e.g., missing structs or payloads).
+- **Macro tests:** The macro crate uses `trybuild` fixtures under `macro/tests/fixtures` to ensure:
+  - Basic usage of `#[derive(Plugin)]`, `#[event_handler]`, and `#[derive(Command)]` compiles against the public SDK.
+  - Any breaking change to macro signatures or expectations shows up as a compile error in these tests.

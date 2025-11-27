@@ -133,10 +133,24 @@ pub(crate) fn generate_plugin_impl(
 
         let dispatch_arms = commands.iter().map(|cmd| {
             quote! {
-                if let Ok(cmd) = #cmd::try_from(event.data) {
-                    event.cancel().await;
-                    cmd.__execute(self, ctx).await;
-                    return true;
+                match #cmd::try_from(event.data) {
+                    Ok(cmd) => {
+                        event.cancel().await;
+                        cmd.__execute(self, ctx).await;
+                        return true;
+                    }
+                    Err(dragonfly_plugin::command::CommandParseError::NoMatch) => {
+                        // Try the next registered command.
+                    }
+                    Err(
+                        err @ dragonfly_plugin::command::CommandParseError::Missing(_)
+                        | err @ dragonfly_plugin::command::CommandParseError::Invalid(_)
+                        | err @ dragonfly_plugin::command::CommandParseError::UnknownSubcommand,
+                    ) => {
+                        // Surface parse errors to the player as a friendly message.
+                        let _ = ctx.reply(err.to_string()).await;
+                        return true;
+                    }
                 }
             }
         });

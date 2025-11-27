@@ -1,3 +1,11 @@
+//! Generate mutation helpers on `EventContext` for event updates.
+//!
+//! This module inspects the prost-generated `event_result::Update` enum and
+//! corresponding mutation structs and generates setter-style helper methods
+//! on `EventContext<T>` (e.g. `set_message`, `set_damage`). The resulting
+//! code is written to `src/event/mutations.rs` and used directly by plugin
+//! authors when mutating events.
+
 use anyhow::Result;
 use quote::{format_ident, quote};
 use std::{collections::HashMap, path::PathBuf};
@@ -5,6 +13,8 @@ use syn::{File, Ident, ItemStruct};
 
 use crate::utils::{find_nested_enum, get_api_type, get_variant_type_path, prettify_code};
 
+/// Generate mutation helper methods on `EventContext` for each
+/// `event_result::Update` variant in the prost-generated API.
 pub(crate) fn generate_event_mutations(
     ast: &File,
     all_structs: &HashMap<Ident, &ItemStruct>,
@@ -120,5 +130,31 @@ mod tests {
         let prettified_code = prettify_code(generated_code).expect("Invalid code being produced.");
 
         insta::assert_snapshot!("event_mutations", prettified_code);
+    }
+
+    #[test]
+    fn generate_event_mutations_errors_when_payload_missing() {
+        // Mutation has a variant with no corresponding payload variant.
+        let code = r#"
+            mod event_result {
+                pub enum Update {
+                    Chat(ChatMutation),
+                }
+            }
+            mod event_envelope {
+                pub enum Payload {
+                    // Intentionally do not include Chat here.
+                }
+            }
+            pub struct ChatMutation {
+                pub message: ::prost::alloc::string::String,
+            }
+        "#;
+        let ast: File = parse_file(code).expect("Failed to parse test AST");
+        let all_structs = find_all_structs(&ast);
+
+        let err = generate_event_mutations_tokens(&ast, &all_structs).unwrap_err();
+        let msg = err.to_string();
+        assert!(msg.contains("No event payload for mutation Chat"));
     }
 }

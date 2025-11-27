@@ -1,3 +1,15 @@
+//! Code generation entrypoint for the Rust `dragonfly-plugin` SDK.
+//!
+//! This `xtask` binary:
+//! - Parses the prost-generated `src/generated/df.plugin.rs` file.
+//! - Builds an in-memory AST of all events, actions, and result types.
+//! - Regenerates three helper files in the main SDK crate:
+//!   - `src/event/handler.rs` (`generate_handlers`)
+//!   - `src/event/mutations.rs` (`generate_mutations`)
+//!   - `src/server/helpers.rs` (`generate_actions`)
+//! The public API of the SDK is considered stable; this task should only
+//! be changed in ways that preserve the shape of the generated code.
+
 pub mod generate_actions;
 pub mod generate_handlers;
 pub mod generate_mutations;

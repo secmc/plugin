@@ -1,3 +1,15 @@
+//! Generate the `EventHandler` trait and `dispatch_event` function.
+//!
+//! This module walks the prost-generated `event_envelope::Payload` enum and
+//! produces:
+//! - A trait method per event (e.g. `async fn on_chat(...)`).
+//! - A single `dispatch_event` function that decodes envelopes and forwards
+//!   them into the correct handler method.
+//!
+//! The generated code lives in `src/event/handler.rs` and is considered
+//! part of the public SDK surface, so changes here must keep the trait
+//! shape and dispatch semantics stable.
+
 use anyhow::Result;
 use heck::ToSnakeCase;
 use quote::{format_ident, quote};
@@ -6,6 +18,8 @@ use syn::File;
 
 use crate::utils::{find_nested_enum, get_variant_type_path, prettify_code};
 
+/// Generate the `EventHandler` trait and the central `dispatch_event`
+/// function from the prost-generated `EventEnvelope::Payload` enum.
 pub fn generate_handler_trait(ast: &File, output_path: &PathBuf) -> Result<()> {
     println!(
         "Generating Event Handler trait in: {}...",

@@ -1,3 +1,11 @@
+//! Generate `Server` helper methods for each `action::Kind` variant.
+//!
+//! This module inspects the prost-generated `action::Kind` enum from
+//! `df.plugin.rs` and produces a single `impl Server { ... }` block in
+//! `src/server/helpers.rs`. Each action variant gets a corresponding async
+//! helper method that takes ergonomic parameters and forwards them into the
+//! raw `types::Action` wire format.
+
 use anyhow::Result;
 use heck::ToSnakeCase;
 use quote::{format_ident, quote};
@@ -9,6 +17,8 @@ use crate::utils::{
     prettify_code, ConversionLogic,
 };
 
+/// Generate the `impl Server { .. }` block with one helper per `action::Kind`
+/// variant in the prost-generated API.
 pub(crate) fn generate_server_helpers(
     ast: &File,
     all_structs: &HashMap<Ident, &ItemStruct>,
@@ -119,5 +129,23 @@ mod tests {
         let prettified_code = prettify_code(generated_code).expect("Invalid code being produced.");
 
         insta::assert_snapshot!("server_actions", prettified_code);
+    }
+
+    #[test]
+    fn generate_server_helpers_fails_when_struct_missing() {
+        // Create a tiny AST with an action::Kind enum referring to a non-existent struct.
+        let code = r#"
+            mod action {
+                pub enum Kind {
+                    Missing(MissingAction),
+                }
+            }
+        "#;
+        let ast: File = parse_file(code).expect("Failed to parse test AST");
+        let all_structs = find_all_structs(&ast);
+
+        let err = generate_server_helpers_tokens(&ast, &all_structs).unwrap_err();
+        let msg = err.to_string();
+        assert!(msg.contains("Struct definition not found for MissingAction"));
     }
 }

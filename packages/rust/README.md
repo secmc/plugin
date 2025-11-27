@@ -1,32 +1,49 @@
-# Dragonfly Rust Plugin API
+## Dragonfly Rust Plugin SDK
 
-Welcome to the Rust Plugin API for Dragonfly server software. This library provides the tools to build high-performance, safe, and asynchronous plugins using native Rust.
+The `dragonfly-plugin` crate is the **Rust SDK for Dragonfly gRPC plugins**. It gives you:
 
-The API is designed to be simple and explicit. You define your plugin's logic by implementing the `PluginEventHandler` trait and register your event subscriptions using the `#[derive(Handler)]` macro.
+- **Derive macros** to describe your plugin (`#[derive(Plugin)]`) and commands (`#[derive(Command)]`).
+- A simple **event system** based on an `EventHandler` trait and an `#[event_handler]` macro.
+- A `Server` handle with high‑level helpers (like `send_chat`, `teleport`, `world_set_block`, …).
+- A `PluginRunner` that connects your process to the Dragonfly host and runs the event loop.
 
-## Features
+### Crate and directory layout
 
-- **Asynchronous by Default:** Built on `tokio` and native Rust `async/await`.
-- **Type-Safe:** All events and actions are strongly typed, catching bugs at compile time.
-- **Simple Subscriptions:** A clean `#[derive(Handler)]` macro handles all event subscription logic.
+The Rust SDK lives under `packages/rust` as a small workspace:
+
+- **`dragonfly-plugin` (this crate)**: Public SDK surface used by plugin authors.
+  - `src/lib.rs`: Re-exports core modules and pulls in this README as crate-level docs.
+  - `src/command.rs`: Command context (`Ctx`), parsing helpers, and `CommandRegistry` trait.
+  - `src/event/`: Event system (`EventContext`, `EventHandler`, mutation helpers).
+  - `src/server/`: `Server` handle and generated helpers for sending actions to the host.
+  - `src/generated/df.plugin.rs`: Prost/tonic types generated from `proto/types/*.proto` (do not edit).
+- **`macro/` (`dragonfly-plugin-macro`)**: Procedural macros for `#[derive(Plugin)]`, `#[derive(Command)]`,
+  and `#[event_handler]`. This crate is re-exported by `dragonfly-plugin` and is not used directly by plugins.
+- **`xtask/`**: Internal code generation tooling that reads `df.plugin.rs` and regenerates
+  `event/handler.rs`, `event/mutations.rs`, and `server/helpers.rs`. It is not published.
+- **`example/`**: A minimal example plugin crate showing recommended usage patterns for the SDK.
+- **`tests/`**: Integration tests covering command derivation, event dispatch, server helpers,
+  and the interaction between the runtime and macros.
+
+All APIs in this README reflect the **0.3.x line**. Within 0.3.x we intend to keep:
+
+- The `Plugin`, `EventHandler`, `EventSubscriptions`, and `CommandRegistry` trait shapes.
+- The `event_handler`, `Plugin`, and `Command` macros and their attribute syntax.
+- The `Server` helpers and `event::EventContext` semantics (including `cancel` and mutation helpers).
+
+Breaking changes may still happen in a future 0.4.0, but not within 0.3.x.
 
 ---
 
-## Quick Start Guide
+## Quick start
 
-Here is the complete process for creating a "Hello, World\!" plugin.
-
-### 1\. Create a New Plugin
-
-First, create a new binary crate for your plugin:
+### 1. Create a new plugin crate
 
 ```sh
 cargo new my_plugin --bin
 ```
 
-### 2\. Update `Cargo.toml`
-
-Next, add `dragonfly-plugin` and `tokio` to your dependencies.
+### 2. Add dependencies
 
 ```toml
 [package]
@@ -35,53 +52,36 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-# This is the main API library
-dragonfly-plugin = "0.1" # Or use a version number
-
-# Tokio is required for the async runtime
-tokio = { version = "1", features = ["full"] }
+dragonfly-plugin = "0.3"
+tokio = { version = "1", features = ["rt-multi-thread", "macros"] }
+sqlx = { version = "0.8", features = ["runtime-tokio", "sqlite"] } # optional, for DB-backed examples
 ```
 
-### 3\. Write Your Plugin (`src/main.rs`)
+Only `dragonfly-plugin` and `tokio` are required; other crates (like `sqlx`) are up to your plugin.
 
-This is the complete code for a simple plugin that greets players on join and adds a prefix to their chat messages.
+### 3. Define your plugin
 
 ```rust,no_run
-// --- Import all the necessary items ---
 use dragonfly_plugin::{
     event::{EventContext, EventHandler},
-    types, // Contains all event data structs
-    Plugin, // The derive macro
     event_handler,
-    PluginRunner,  // The runner struct.
+    types,
+    Plugin,
+    PluginRunner,
     Server,
 };
 
-// make sure to derive Plugin, (Default isn't required but is used in this example code only.)
-// when deriving Plugin you must include plugin attribute:
 #[derive(Plugin, Default)]
 #[plugin(
-    id = "example-rust",        // A unique ID for your plugin (matches plugins.yaml)
-    name = "Example Rust Plugin", // A human-readable name
-    version = "1.0.0",               // Your plugin's version
-    api = "1.0.0",               // The API version you're built against
+    id = "example-rust",            // must match plugins.yaml
+    name = "Example Rust Plugin",
+    version = "0.3.0",
+    api = "1.0.0"
 )]
 struct MyPlugin;
 
-// --- 2. Implement the Event Handlers ---
-//
-// This is where all your plugin's logic lives.
-// You only need to implement the `async fn` handlers
-// for the events you subscribed to.
-// note your LSP will probably fill them in as fn on_xx() -> Future<()>
-// just delete the Future<()> + ... and put the keyword async before fn.
-//
-// #[event_handler] is a proc macro that detects which ever events you
-// are overriding and thus setups a list of events to compile to
-// as soon as your plugin is ran then it subscribes to them.
 #[event_handler]
 impl EventHandler for MyPlugin {
-    /// This handler runs when a player joins the server.
     async fn on_player_join(
         &self,
         server: &Server,
@@ -90,85 +90,163 @@ impl EventHandler for MyPlugin {
         let player_name = &event.data.name;
         println!("Player '{}' has joined.", player_name);
 
-        let welcome_message = format!(
+        let welcome = format!(
             "Welcome, {}! This server is running a Rust plugin.",
             player_name
         );
 
-        // Use the `server` handle to send actions
-        server.send_chat(event.data.player_uuid.clone(), welcome_message).await.ok();
+        // Ignore send errors; they usually mean the host shut down.
+        let _ = server
+            .send_chat(event.data.player_uuid.clone(), welcome)
+            .await;
     }
 
-    /// This handler runs when a player sends a chat message.
     async fn on_chat(
         &self,
-        _server: &Server, // We don't need the server for this
+        _server: &Server,
         event: &mut EventContext<'_, types::ChatEvent>,
     ) {
         let new_message = format!("[Plugin] {}", event.data.message);
-
-        // Use helper methods on the `event` to mutate it
         event.set_message(new_message);
     }
 }
 
-// --- 3. Start the Plugin ---
-//
-// This is the entry point that connects to the server.
 #[tokio::main]
-async fn main() {
-    println!("Starting my-plugin...");
-
-    // Here we default construct our Plugin.
-    // note you can use it almost like a Context variable as long
-    // as its Send / Sync.
-    // so you can not impl default and have it hold like a PgPool or etc.
-    PluginRunner::run(MyPlugin, "127.0.0.1:50051")
-        .await
-        .expect("Plugin failed to run");
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    println!("Starting example-rust plugin...");
+    PluginRunner::run(MyPlugin, "tcp://127.0.0.1:50050").await
 }
 ```
 
+The `#[event_handler]` macro:
+
+- Detects which `on_*` methods you implement.
+- Generates an `EventSubscriptions` impl that subscribes to the corresponding `types::EventType` variants.
+- Wires those events into `event::dispatch_event`.
+
 ---
 
-## Writing Event Handlers
+## Commands
 
-All plugin logic is built by implementing functions from the `PluginEventHandler` trait.
+The 0.3.x series introduces a **first‑class command system**.
 
-### `async fn` and Lifetimes
+### Declaring a command
 
-Because this API uses native `async fn` in traits, you **must** include the anonymous lifetime (`'_`) annotation in the `EventContext` type:
+```rust,no_run
+use dragonfly_plugin::{command::Ctx, Command};
 
-- **Correct:** `event: &mut EventContext<'_, types::ChatEvent>`
-- **Incorrect:** `event: &mut EventContext<types::ChatEvent>`
+#[derive(Command)]
+#[command(
+    name = "eco",
+    description = "Economy commands.",
+    aliases("economy", "rustic_eco")
+)]
+pub enum Eco {
+    #[subcommand(aliases("donate"))]
+    Pay { amount: f64 },
 
-### Reading Event Data
-
-You can read immutable data directly from the event:
-
-```rust,ignore
-let player_name = &event.data.name;
-println!("Player name: {}", player_name);
+    #[subcommand(aliases("balance", "money"))]
+    Bal,
+}
 ```
 
-### Mutating Events
+This generates:
 
-Some events are mutable. The `EventContext` provides helper methods (like `set_message`) to modify the event before the server processes it:
+- A static `Eco::spec() -> types::CommandSpec`.
+- A `TryFrom<&types::CommandEvent>` impl that parses args into `Eco`.
+- An `EcoHandler` trait with async methods (`pay`, `bal`) and an `__execute` helper.
 
-```rust,ignore
-event.set_message(format!("New message: {}", event.data.message));
-```
+### Handling commands in your plugin
 
-### Cancelling Events
-
-You can also cancel compatible events to stop them from happening:
+Add the command type to your plugin’s `#[plugin]` attribute, and implement the generated handler trait for your plugin type:
 
 ```rust,ignore
-event.cancel();
+use dragonfly_plugin::{command::Ctx, Command, Plugin};
+
+#[derive(Plugin)]
+#[plugin(
+    id = "rustic-economy",
+    name = "Rustic Economy",
+    version = "0.1.0",
+    api = "1.0.0",
+    commands(Eco)
+)]
+struct RusticEconomy {
+    // your state here, e.g. DB pools
+}
+
+impl EcoHandler for RusticEconomy {
+    async fn pay(&self, ctx: Ctx<'_>, amount: f64) {
+        // ...
+        let _ = ctx
+            .reply(format!("You paid yourself ${:.2}.", amount))
+            .await;
+    }
+
+    async fn bal(&self, ctx: Ctx<'_>) {
+        // ...
+        let _ = ctx.reply("Your balance is $0.00".to_string()).await;
+    }
+}
 ```
 
-## Available Events
+The `#[derive(Plugin)]` macro then:
 
-The `#[subscriptions(...)]` macro accepts any variant from the `types::EventType` enum.
+- Reports the command specs in the initial hello handshake.
+- Generates a `CommandRegistry` impl that:
+  - Parses `CommandEvent`s into your command types.
+  - Cancels the event if a command matches.
+  - Dispatches into your `EcoHandler` implementation.
 
-You can find a complete list of all available event names (e.g., `PlayerJoin`, `Chat`, `BlockBreak`) and their corresponding data structs (e.g., `types::PlayerJoinEvent`) by looking in the `./src/types.rs` file or by consulting the API documentation.
+Within 0.3.x the **shape of the command API** (`Ctx`, `CommandRegistry`, `CommandParseError`, and the `Command` derive attributes) is considered stable.
+
+---
+
+## Events, context, and mutations
+
+- `event::EventContext<'_, T>` wraps each incoming event:
+  - `data: &T` gives read‑only access.
+  - `cancel().await` marks the event as cancelled and immediately sends a response.
+  - Event‑specific methods (like `set_message` for `ChatEvent`) live in generated extensions.
+- `event::EventHandler` is a trait with an async method per event type; you usually never write `impl EventHandler` by hand except inside an `#[event_handler]` block.
+
+You generally do not construct `EventContext` yourself; the runtime does it for you.
+
+---
+
+## Connection and runtime
+
+Use `PluginRunner::run(plugin, addr)` from your `main` function:
+
+- For TCP, pass e.g. `"tcp://127.0.0.1:50050"` or `"127.0.0.1:50050"`.
+- On Unix hosts you may also pass:
+  - `"unix:///tmp/dragonfly_plugin.sock"` or
+  - an absolute path (`"/tmp/dragonfly_plugin.sock"`).
+
+On non‑Unix platforms, Unix socket addresses will return an error.
+
+`PluginRunner`:
+
+- Connects to the host.
+- Sends an initial hello (`PluginHello`) with your plugin ID, name, version, API version and commands.
+- Subscribes to your `EventSubscriptions`.
+- Drives the main event loop until the host sends a shutdown message or closes the stream.
+
+---
+
+## Stability policy for 0.3.x
+
+Within the 0.3.x series we aim to keep:
+
+- Trait surfaces for `Plugin`, `EventHandler`, `EventSubscriptions`, `CommandRegistry`.
+- Macro names and high‑level attribute syntax (`#[plugin(...)]`, `#[event_handler]`, `#[derive(Command)]`, `#[subcommand(...)]`).
+- `Server` helper method names and argument shapes.
+- `EventContext` behavior for `cancel`, mutation helpers, and double‑send (panic in debug, log in release).
+
+We may still:
+
+- Add new events and actions.
+- Add new helpers or mutation methods.
+- Improve error messages and diagnostics.
+
+For details on how the code is generated and how to maintain it, see `MAINTAINING.md`.

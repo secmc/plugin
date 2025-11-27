@@ -1,3 +1,9 @@
+//! Lightweight handle for sending actions and subscriptions to the host.
+//!
+//! Plugin authors receive a [`Server`] reference in every event handler.
+//! It can be cloned freely and used to send actions like `send_chat`,
+//! `teleport`, or `world_set_block` back to the Dragonfly host.
+
 use tokio::sync::mpsc;
 
 use crate::types::{self, PluginToHost};

@@ -1,8 +1,12 @@
-/// This is a semi advanced example of a simple economy plugin.
-/// we are gonna use sqlite, to store user money.
-/// two commands:
-/// pay: pay yourself money
-/// bal: view your balance / money
+/// Rustic Economy: a small example plugin backed by SQLite.
+///
+/// This example demonstrates how to:
+/// - Use `#[derive(Plugin)]` to declare plugin metadata and register commands.
+/// - Use `#[derive(Command)]` to define a typed command enum.
+/// - Hold state (a `SqlitePool`) inside your plugin struct.
+/// - Use `Ctx` to reply to the invoking player.
+/// - Use `#[event_handler]` for event subscriptions (even when you don't
+///   implement any event methods yet).
 use dragonfly_plugin::{
     Command, Plugin, PluginRunner, command::Ctx, event::EventHandler, event_handler, types,
 };
@@ -12,7 +16,7 @@ use sqlx::{SqlitePool, sqlite::SqlitePoolOptions};
 #[plugin(
     id = "rustic-economy",
     name = "Rustic Economy",
-    version = "0.1.0",
+    version = "0.3.0",
     api = "1.0.0",
     commands(Eco)
 )]
@@ -20,7 +24,7 @@ struct RusticEconomy {
     db: SqlitePool,
 }
 
-/// This impl is just a helper for dealing with our SQL stuff.
+/// Database helpers for the Rustic Economy example.
 impl RusticEconomy {
     async fn new() -> Result<Self, Box<dyn std::error::Error>> {
         // Create database connection
@@ -29,7 +33,11 @@ impl RusticEconomy {
             .connect("sqlite:economy.db")
             .await?;
 
-        // Create table if it doesn't exist
+        // Create table if it doesn't exist.
+        //
+        // NOTE: This example stores balances as REAL/f64 for simplicity.
+        // For real-world money you should use an integer representation
+        // (e.g. cents as i64) to avoid floating point rounding issues.
         sqlx::query(
             "CREATE TABLE IF NOT EXISTS users (
                 uuid TEXT PRIMARY KEY,
@@ -83,33 +91,47 @@ pub enum Eco {
 impl EcoHandler for RusticEconomy {
     async fn pay(&self, ctx: Ctx<'_>, amount: f64) {
         match self.add_money(&ctx.sender, amount).await {
-            Ok(new_balance) => ctx
-                .reply(format!(
-                    "Added ${:.2}! New balance: ${:.2}",
-                    amount, new_balance
-                ))
-                .await
-                .unwrap(),
+            Ok(new_balance) => {
+                if let Err(e) = ctx
+                    .reply(format!(
+                        "Added ${:.2}! New balance: ${:.2}",
+                        amount, new_balance
+                    ))
+                    .await
+                {
+                    eprintln!("Failed to send payment reply: {}", e);
+                }
+            }
             Err(e) => {
                 eprintln!("Database error: {}", e);
-                ctx.reply("Error processing payment!".to_string())
+                if let Err(send_err) = ctx
+                    .reply("Error processing payment!".to_string())
                     .await
-                    .unwrap()
+                {
+                    eprintln!("Failed to send error reply: {}", send_err);
+                }
             }
         }
     }
 
     async fn bal(&self, ctx: Ctx<'_>) {
         match self.get_balance(&ctx.sender).await {
-            Ok(balance) => ctx
-                .reply(format!("Your balance: ${:.2}", balance))
-                .await
-                .unwrap(),
+            Ok(balance) => {
+                if let Err(e) = ctx
+                    .reply(format!("Your balance: ${:.2}", balance))
+                    .await
+                {
+                    eprintln!("Failed to send balance reply: {}", e);
+                }
+            }
             Err(e) => {
                 eprintln!("Database error: {}", e);
-                ctx.reply("Error checking balance!".to_string())
+                if let Err(send_err) = ctx
+                    .reply("Error checking balance!".to_string())
                     .await
-                    .unwrap()
+                {
+                    eprintln!("Failed to send error reply: {}", send_err);
+                }
             }
         }
     }

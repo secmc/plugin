@@ -48,12 +48,13 @@ impl EventHandler for MyExamplePlugin {
         );
 
         // We call the auto-generated `server.send_chat` helper.
-        // `.await.ok()` sends the message and ignores any potential
-        // (but rare) connection errors.
-        server
+        // On failure we log the error, but otherwise keep behavior unchanged.
+        if let Err(e) = server
             .send_chat(event.data.player_uuid.clone(), welcome_message)
             .await
-            .ok();
+        {
+            eprintln!("Failed to send welcome message: {}", e);
+        }
     }
 
     /// This handler runs every time a player sends a chat message.
@@ -84,7 +85,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     PluginRunner::run(
         MyExamplePlugin,         // Pass in an instance of our plugin
-        "tcp://127.0.0.1:50050", // The server address (Unix socket)
+        "tcp://127.0.0.1:50050", // The server address (e.g., TCP or Unix socket)
     )
     .await
 }
