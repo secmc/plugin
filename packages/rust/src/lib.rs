@@ -12,6 +12,7 @@ pub mod types {
     };
 }
 
+pub mod command;
 pub mod event;
 #[path = "server/server.rs"]
 pub mod server;
@@ -30,6 +31,8 @@ use tokio_stream::{wrappers::ReceiverStream, StreamExt};
 use hyper_util::rt::TokioIo;
 #[cfg(unix)]
 use tokio::net::UnixStream;
+
+use crate::command::CommandRegistry;
 
 /// Helper function to connect to the server, supporting both Unix sockets and TCP.
 async fn connect_to_server(
@@ -89,8 +92,9 @@ impl PluginRunner {
                 name: plugin.get_name().to_owned(),
                 version: plugin.get_version().to_owned(),
                 api_version: plugin.get_api_version().to_owned(),
-                commands: vec![],
+                commands: plugin.get_commands(),
                 custom_items: vec![],
+                custom_blocks: vec![],
             })),
         };
         tx.send(hello_msg).await?;
@@ -103,7 +107,13 @@ impl PluginRunner {
             sender: tx.clone(),
         };
 
-        let events = plugin.get_subscriptions();
+        let mut events = plugin.get_subscriptions();
+
+        // Auto-subscribe to Command if plugin has registered commands
+        if !plugin.get_commands().is_empty() && !events.contains(&types::EventType::Command) {
+            events.push(types::EventType::Command);
+        }
+
         if !events.is_empty() {
             println!("Subscribing to {} event types...", events.len());
             server.subscribe(events).await?;
@@ -181,7 +191,7 @@ pub struct PluginInfo<'a> {
 ///    ) { }
 /// }
 /// ```
-pub trait Plugin: EventHandler + EventSubscriptions {
+pub trait Plugin: EventHandler + EventSubscriptions + CommandRegistry {
     fn get_info(&self) -> PluginInfo<'_>;
 
     fn get_id(&self) -> &str;

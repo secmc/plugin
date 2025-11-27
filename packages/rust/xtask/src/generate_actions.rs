@@ -58,6 +58,9 @@ fn generate_server_helpers_tokens(
                 ConversionLogic::Into => {
                     quote! { #field_name: #field_name.into() }
                 }
+                ConversionLogic::OptionInnerInto => {
+                    quote! { #field_name: #field_name.into().map(|x| x.into()) }
+                }
             };
 
             fn_args.push(quote! { #field_name: #arg_type });

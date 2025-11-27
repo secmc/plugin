@@ -191,15 +191,24 @@ pub(crate) fn get_prost_enumeration(field: &Field) -> Option<Ident> {
 }
 
 pub(crate) fn get_api_type(field: &Field) -> proc_macro2::TokenStream {
-    if let Some(enum_ident) = get_prost_enumeration(field) {
-        // We found #[prost(enumeration="GameMode")]
-        // The type is `prost_gen::GameMode`
-        // (We assume prost_gen is imported in the generated file)
-        return quote! { types::#enum_ident };
-    }
+    let enum_ident = get_prost_enumeration(field);
 
-    // 2. Not an enum, so resolve the type normally
-    resolve_recursive_api_type(&field.ty)
+    match (enum_ident, classify_prost_type(&field.ty)) {
+        // Enum field (prost represents as i32)
+        (Some(ident), ProstTypeInfo::Primitive(_)) => {
+            quote! { types::#ident }
+        }
+        // Option<Enum> field (prost represents as Option<i32>)
+        (Some(ident), ProstTypeInfo::Option(_)) => {
+            quote! { impl Into<Option<types::#ident>> }
+        }
+        // Enum with unexpected wrapper - just use the enum type
+        (Some(ident), _) => {
+            quote! { types::#ident }
+        }
+        // Not an enum, resolve normally
+        (None, _) => resolve_recursive_api_type(&field.ty),
+    }
 }
 
 /// Recursive helper for get_api_type.
@@ -233,17 +242,21 @@ pub(crate) enum ConversionLogic {
     Direct,
     /// Needs `.into()`.
     Into,
+    /// Option<Enum>: needs `.into().map(|x| x.into())`
+    OptionInnerInto,
 }
 
 pub(crate) fn get_action_conversion_logic(field: &Field) -> ConversionLogic {
-    if get_prost_enumeration(field).is_some() {
-        return ConversionLogic::Into;
-    }
+    let is_enum = get_prost_enumeration(field).is_some();
+    let is_option = matches!(classify_prost_type(&field.ty), ProstTypeInfo::Option(_));
 
-    match classify_prost_type(&field.ty) {
-        ProstTypeInfo::Option(_) => ConversionLogic::Into,
-
-        _ => ConversionLogic::Direct,
+    match (is_enum, is_option) {
+        // Option<Enum> needs: .into().map(|x| x.into())
+        (true, true) => ConversionLogic::OptionInnerInto,
+        // Plain enum or plain Option needs: .into()
+        (true, false) | (false, true) => ConversionLogic::Into,
+        // Everything else: direct
+        (false, false) => ConversionLogic::Direct,
     }
 }
 

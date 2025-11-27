@@ -64,7 +64,6 @@ impl<'a, T> EventContext<'a, T> {
         if self.sent {
             return;
         }
-        self.sent = true;
         // result is still EventResultUpdate::None, which sends ack
         self.send().await;
     }

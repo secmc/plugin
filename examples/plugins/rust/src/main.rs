@@ -4,8 +4,9 @@
 /// pay: pay yourself money
 /// bal: view your balance / money
 use dragonfly_plugin::{
-    Plugin, PluginRunner, Server,
-    event::{EventContext, EventHandler},
+    Plugin, PluginRunner,
+    command::{Command, Ctx, command_handlers},
+    event::EventHandler,
     event_handler, types,
 };
 use sqlx::{SqlitePool, sqlite::SqlitePoolOptions};
@@ -15,7 +16,8 @@ use sqlx::{SqlitePool, sqlite::SqlitePoolOptions};
     id = "rustic-economy",
     name = "Rustic Economy",
     version = "0.1.0",
-    api = "1.0.0"
+    api = "1.0.0",
+    commands(Eco)
 )]
 struct RusticEconomy {
     db: SqlitePool,
@@ -68,85 +70,51 @@ impl RusticEconomy {
     }
 }
 
-#[event_handler]
-impl EventHandler for RusticEconomy {
-    async fn on_chat(&self, server: &Server, event: &mut EventContext<'_, types::ChatEvent>) {
-        let message = &event.data.message;
-        let player_uuid = &event.data.player_uuid;
+#[derive(Command)]
+#[command(name = "eco", description = "Rustic Economy commands.")]
+pub enum Eco {
+    Pay { amount: f64 },
+    Bal,
+}
 
-        // Handle commands
-        if message.starts_with("!pay") {
-            // ALWAYS RESPOND TO THE SERVER ASAP.
-            // THEN DO SIDE WORK THAT MIGHT TAKE A GOOD BIT.
-            let parts: Vec<&str> = message.split_whitespace().collect();
-            if parts.len() != 2 {
-                server
-                    .send_chat(player_uuid.clone(), "Usage: !pay <amount>".to_string())
+#[command_handlers]
+impl Eco {
+    async fn pay(state: &RusticEconomy, ctx: Ctx<'_>, amount: f64) {
+        match state.add_money(&ctx.sender, amount).await {
+            Ok(new_balance) => ctx
+                .reply(format!(
+                    "Added ${:.2}! New balance: ${:.2}",
+                    amount, new_balance
+                ))
+                .await
+                .unwrap(),
+            Err(e) => {
+                eprintln!("Database error: {}", e);
+                ctx.reply("Error processing payment!".to_string())
                     .await
-                    .expect("Bad error handling womp.");
-                return;
+                    .unwrap()
             }
+        }
+    }
 
-            let amount: f64 = match parts[1].parse() {
-                Ok(amt) if amt > 0.0 => amt,
-                _ => {
-                    server
-                        .send_chat(
-                            player_uuid.clone(),
-                            "Please provide a valid positive amount!".to_string(),
-                        )
-                        .await
-                        .expect("Bad error handling sad.");
-                    return;
-                }
-            };
-
-            match self.add_money(player_uuid, amount).await {
-                Ok(new_balance) => {
-                    server
-                        .send_chat(
-                            player_uuid.clone(),
-                            format!("Added ${:.2}! New balance: ${:.2}", amount, new_balance),
-                        )
-                        .await
-                        .expect("again error handling is bad");
-                }
-                Err(e) => {
-                    eprintln!("Database error: {}", e);
-                    server
-                        .send_chat(player_uuid.clone(), "Error processing payment!".to_string())
-                        .await
-                        .expect("Bad error handling");
-                }
-            }
-            event.cancel().await;
-            println!("I HAVE SENT THE CANCEL FULLY");
-        } else if message.starts_with("!bal") {
-            // YET AGAIN RESPOND ASAP TO SERVER.
-            event.cancel().await;
-            match self.get_balance(player_uuid).await {
-                Ok(balance) => {
-                    // These are fine to happen later.
-                    // as they aren't bounded by the timout of server responses.
-                    server
-                        .send_chat(
-                            player_uuid.clone(),
-                            format!("Your balance: ${:.2}", balance),
-                        )
-                        .await
-                        .expect("oh shit i need to handle this better.");
-                }
-                Err(e) => {
-                    eprintln!("Database error: {}", e);
-                    server
-                        .send_chat(player_uuid.clone(), "Error checking balance!".to_string())
-                        .await
-                        .expect("again bad error handling");
-                }
+    async fn bal(state: &RusticEconomy, ctx: Ctx<'_>) {
+        match state.get_balance(&ctx.sender).await {
+            Ok(balance) => ctx
+                .reply(format!("Your balance: ${:.2}", balance))
+                .await
+                .unwrap(),
+            Err(e) => {
+                eprintln!("Database error: {}", e);
+                ctx.reply("Error checking balance!".to_string())
+                    .await
+                    .unwrap()
             }
         }
     }
 }
+
+#[event_handler]
+impl EventHandler for RusticEconomy {}
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {

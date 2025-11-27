@@ -10,6 +10,7 @@ struct PluginInfoParser {
     pub name: LitStr,
     pub version: LitStr,
     pub api: LitStr,
+    pub commands: Vec<Ident>,
 }
 
 impl Parse for PluginInfoParser {
@@ -20,6 +21,7 @@ impl Parse for PluginInfoParser {
         let mut name = None;
         let mut version = None;
         let mut api = None;
+        let mut commands = Vec::new();
 
         for meta in metas {
             match meta {
@@ -64,10 +66,17 @@ impl Parse for PluginInfoParser {
                         ));
                     }
                 }
+                Meta::List(list) if list.path.is_ident("commands") => {
+                    // Parse commands(Ident, Ident, ...)
+                    commands = list
+                        .parse_args_with(Punctuated::<Ident, Token![,]>::parse_terminated)?
+                        .into_iter()
+                        .collect();
+                }
                 _ => {
                     return Err(syn::Error::new_spanned(
                         meta,
-                        "Expected `key = \"value\"` format",
+                        "Expected `key = \"value\"` or `commands(...)` format",
                     ));
                 }
             };
@@ -89,6 +98,7 @@ impl Parse for PluginInfoParser {
             name,
             version,
             api,
+            commands,
         })
     }
 }
@@ -108,6 +118,51 @@ pub(crate) fn generate_plugin_impl(
     let version_lit = &plugin_info.version;
     let api_lit = &plugin_info.api;
 
+    let commands = &plugin_info.commands;
+
+    let command_registry_impl = if commands.is_empty() {
+        // No commands: empty impl uses default (returns empty vec)
+        quote! {
+            impl dragonfly_plugin::command::CommandRegistry for #derive_name {}
+        }
+    } else {
+        // Has commands: generate get_commands() and __dispatch_commands()
+        let spec_calls = commands.iter().map(|cmd| {
+            quote! { #cmd::spec() }
+        });
+
+        let dispatch_arms = commands.iter().map(|cmd| {
+            quote! {
+                if let Ok(cmd) = #cmd::try_from(event.data) {
+                    event.cancel().await;
+                    cmd.__execute(self, ctx).await;
+                    return true;
+                }
+            }
+        });
+
+        quote! {
+            impl dragonfly_plugin::command::CommandRegistry for #derive_name {
+                fn get_commands(&self) -> Vec<dragonfly_plugin::types::CommandSpec> {
+                    vec![ #( #spec_calls ),* ]
+                }
+
+                async fn dispatch_commands(
+                    &self,
+                    server: &dragonfly_plugin::Server,
+                    event: &mut dragonfly_plugin::event::EventContext<'_, dragonfly_plugin::types::CommandEvent>,
+                ) -> bool {
+                    use ::core::convert::TryFrom;
+                    let ctx = dragonfly_plugin::command::Ctx::new(server, event.data.player_uuid.clone());
+
+                    #( #dispatch_arms )*
+
+                    false
+                }
+            }
+        }
+    };
+
     quote! {
         impl dragonfly_plugin::Plugin for #derive_name {
             fn get_info(&self) -> dragonfly_plugin::PluginInfo<'static> {
@@ -123,5 +178,7 @@ pub(crate) fn generate_plugin_impl(
             fn get_version(&self) -> &'static str { #version_lit }
             fn get_api_version(&self) -> &'static str { #api_lit }
         }
+
+        #command_registry_impl
     }
 }
