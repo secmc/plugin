@@ -239,9 +239,25 @@ func (m *Manager) detachPlayer(p *player.Player) {
 
 // broadcastEvent sends an event which does not expect a response.
 // This is for events which cannot be canceled or mutated.
+// broadcastEvent sends an event which does not expect a response.
+// This is for events which cannot be canceled or mutated.
 func (m *Manager) broadcastEvent(envelope *pb.EventEnvelope) {
-	envelope.ExpectsResponse = false
-	_ = m.dispatchEvent(envelope, false)
+	if envelope == nil {
+		return
+	}
+	if envelope.EventId == "" {
+		envelope.EventId = m.generateEventID()
+	}
+
+	eventType := envelope.Type
+	m.mu.RLock()
+	defer m.mu.RUnlock()
+
+	for _, proc := range m.plugins {
+		if proc.HasSubscription(eventType) {
+			proc.queueEvent(envelope)
+		}
+	}
 }
 
 func (m *Manager) dispatchEvent(envelope *pb.EventEnvelope, expectResult bool) []*pb.EventResult {
@@ -264,6 +280,13 @@ func (m *Manager) dispatchEvent(envelope *pb.EventEnvelope, expectResult bool) [
 	m.mu.RUnlock()
 
 	if len(procs) == 0 {
+		return nil
+	}
+
+	if !expectResult {
+		for _, proc := range procs {
+			proc.queueEvent(envelope)
+		}
 		return nil
 	}
 
@@ -657,3 +680,4 @@ func (m *Manager) WaitForPlugins(requiredIDs []string, timeout time.Duration) bo
 	}
 	return false
 }
+

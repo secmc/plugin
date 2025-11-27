@@ -382,6 +382,7 @@ const helloMessage: PluginToHost = {
             { name: '/gamemode', description: 'Change game mode (survival, creative, adventure, spectator)', aliases: ['gm'], params: [] },
         ],
         customItems: [],
+        customBlocks: [],
     },
 };
 call.write(helloMessage);
@@ -411,9 +412,19 @@ call.on('data', (message: HostToPlugin) => {
         return;
     }
 
-    // Handle events
+            // Handle events
     if (message.event) {
         handleEvent(call, message.event);
+    }
+    if (message.events) {
+        for (const event of message.events.events) {
+            handleEvent(call, event);
+        }
+    }
+    if (message.events) {
+        for (const event of message.events.events) {
+            handleEvent(call, event);
+        }
     }
 
     // Handle shutdown
@@ -438,4 +449,6 @@ process.on('SIGINT', () => {
     console.log('[ts] shutting down...');
     call.end();
 });
+
+
 

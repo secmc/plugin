@@ -2143,8 +2143,7 @@ type TeleportAction struct {
 	PlayerUuid string                 `protobuf:"bytes,1,opt,name=player_uuid,json=playerUuid,proto3" json:"player_uuid,omitempty"`
 	Position   *Vec3                  `protobuf:"bytes,2,opt,name=position,proto3" json:"position,omitempty"`
 	// rotation vector mapping:
-	//
-	//	x = pitch, y = yaw, z = head_yaw
+	//  x = pitch, y = yaw, z = head_yaw
 	Rotation      *Vec3 `protobuf:"bytes,3,opt,name=rotation,proto3" json:"rotation,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache

@@ -56,6 +56,9 @@ type pluginProcess struct {
 
 	pendingMu sync.Mutex
 	pending   map[string]chan *pb.EventResult
+
+	eventBufferMu sync.Mutex
+	eventBuffer   []*pb.EventEnvelope
 }
 
 func newPluginProcess(m *Manager, cfg config.PluginConfig) *pluginProcess {
@@ -102,9 +105,10 @@ func (p *pluginProcess) attachStream(stream *grpc.GrpcStream) error {
 		return err
 	}
 
-	p.wg.Add(2)
+		p.wg.Add(3)
 	go p.sendLoop()
 	go p.recvLoop()
+	go p.batchSendLoop()
 	return nil
 }
 
@@ -423,3 +427,44 @@ func (p *pluginProcess) deliverEventResult(res *pb.EventResult) {
 	}
 	close(ch)
 }
+
+func (p *pluginProcess) queueEvent(event *pb.EventEnvelope) {
+	if p.closed.Load() || !p.connected.Load() {
+		return
+	}
+	p.eventBufferMu.Lock()
+	p.eventBuffer = append(p.eventBuffer, event)
+	p.eventBufferMu.Unlock()
+}
+
+func (p *pluginProcess) batchSendLoop() {
+	defer p.wg.Done()
+	ticker := time.NewTicker(5 * time.Millisecond)
+	defer ticker.Stop()
+
+	for {
+		select {
+		case <-p.done:
+			return
+		case <-ticker.C:
+			p.eventBufferMu.Lock()
+			if len(p.eventBuffer) == 0 {
+				p.eventBufferMu.Unlock()
+				continue
+			}
+			batch := &pb.EventBatch{Events: p.eventBuffer}
+			p.eventBuffer = make([]*pb.EventEnvelope, 0)
+			p.eventBufferMu.Unlock()
+
+			p.queue(&pb.HostToPlugin{
+				PluginId: p.id,
+				Payload: &pb.HostToPlugin_Events{
+					Events: batch,
+				},
+			})
+		}
+	}
+}
+
+
+

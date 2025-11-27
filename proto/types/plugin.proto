@@ -24,7 +24,12 @@ message HostToPlugin {
     ServerInformationResponse server_info = 12;
     EventEnvelope event = 20;
     ActionResult action_result = 21;
+    EventBatch events = 22;
   }
+}
+
+message EventBatch {
+  repeated EventEnvelope events = 1;
 }
 
 message ServerInformationRequest {}

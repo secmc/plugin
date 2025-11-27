@@ -32,6 +32,7 @@ class HostToPlugin extends \Google\Protobuf\Internal\Message
      *     @type \Df\Plugin\ServerInformationResponse $server_info
      *     @type \Df\Plugin\EventEnvelope $event
      *     @type \Df\Plugin\ActionResult $action_result
+     *     @type \Df\Plugin\EventBatch $events
      * }
      */
     public function __construct($data = NULL) {
@@ -192,6 +193,33 @@ class HostToPlugin extends \Google\Protobuf\Internal\Message
     {
         GPBUtil::checkMessage($var, \Df\Plugin\ActionResult::class);
         $this->writeOneof(21, $var);
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.EventBatch events = 22 [json_name = "events"];</code>
+     * @return \Df\Plugin\EventBatch|null
+     */
+    public function getEvents()
+    {
+        return $this->readOneof(22);
+    }
+
+    public function hasEvents()
+    {
+        return $this->hasOneof(22);
+    }
+
+    /**
+     * Generated from protobuf field <code>.df.plugin.EventBatch events = 22 [json_name = "events"];</code>
+     * @param \Df\Plugin\EventBatch $var
+     * @return $this
+     */
+    public function setEvents($var)
+    {
+        GPBUtil::checkMessage($var, \Df\Plugin\EventBatch::class);
+        $this->writeOneof(22, $var);
 
         return $this;
     }

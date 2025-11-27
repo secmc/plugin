@@ -7,7 +7,7 @@
     "prebuild": "cd ../../../packages/node && npm install",
     "build": "tsc",
     "predev": "cd ../../../packages/node && npm install",
-    "dev": "tsx src/index.ts",
+    "dev": "bun run src/index.ts",
     "start": "node dist/index.js"
   },
   "dependencies": {

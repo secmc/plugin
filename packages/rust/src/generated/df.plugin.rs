@@ -3026,7 +3026,7 @@ pub struct WorldCloseEvent {
 pub struct HostToPlugin {
     #[prost(string, tag="1")]
     pub plugin_id: ::prost::alloc::string::String,
-    #[prost(oneof="host_to_plugin::Payload", tags="10, 11, 12, 20, 21")]
+    #[prost(oneof="host_to_plugin::Payload", tags="10, 11, 12, 20, 21, 22")]
     pub payload: ::core::option::Option<host_to_plugin::Payload>,
 }
 /// Nested message and enum types in `HostToPlugin`.
@@ -3044,7 +3044,15 @@ pub mod host_to_plugin {
         Event(super::EventEnvelope),
         #[prost(message, tag="21")]
         ActionResult(super::ActionResult),
+        #[prost(message, tag="22")]
+        Events(super::EventBatch),
     }
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EventBatch {
+    #[prost(message, repeated, tag="1")]
+    pub events: ::prost::alloc::vec::Vec<EventEnvelope>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]

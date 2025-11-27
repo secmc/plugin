@@ -400,6 +400,11 @@ export interface HostToPlugin {
   serverInfo?: ServerInformationResponse | undefined;
   event?: EventEnvelope | undefined;
   actionResult?: ActionResult | undefined;
+  events?: EventBatch | undefined;
+}
+
+export interface EventBatch {
+  events: EventEnvelope[];
 }
 
 export interface ServerInformationRequest {
@@ -511,6 +516,7 @@ function createBaseHostToPlugin(): HostToPlugin {
     serverInfo: undefined,
     event: undefined,
     actionResult: undefined,
+    events: undefined,
   };
 }
 
@@ -533,6 +539,9 @@ export const HostToPlugin: MessageFns<HostToPlugin> = {
     }
     if (message.actionResult !== undefined) {
       ActionResult.encode(message.actionResult, writer.uint32(170).fork()).join();
+    }
+    if (message.events !== undefined) {
+      EventBatch.encode(message.events, writer.uint32(178).fork()).join();
     }
     return writer;
   },
@@ -592,6 +601,14 @@ export const HostToPlugin: MessageFns<HostToPlugin> = {
           message.actionResult = ActionResult.decode(reader, reader.uint32());
           continue;
         }
+        case 22: {
+          if (tag !== 178) {
+            break;
+          }
+
+          message.events = EventBatch.decode(reader, reader.uint32());
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -609,6 +626,7 @@ export const HostToPlugin: MessageFns<HostToPlugin> = {
       serverInfo: isSet(object.serverInfo) ? ServerInformationResponse.fromJSON(object.serverInfo) : undefined,
       event: isSet(object.event) ? EventEnvelope.fromJSON(object.event) : undefined,
       actionResult: isSet(object.actionResult) ? ActionResult.fromJSON(object.actionResult) : undefined,
+      events: isSet(object.events) ? EventBatch.fromJSON(object.events) : undefined,
     };
   },
 
@@ -631,6 +649,9 @@ export const HostToPlugin: MessageFns<HostToPlugin> = {
     }
     if (message.actionResult !== undefined) {
       obj.actionResult = ActionResult.toJSON(message.actionResult);
+    }
+    if (message.events !== undefined) {
+      obj.events = EventBatch.toJSON(message.events);
     }
     return obj;
   },
@@ -656,6 +677,69 @@ export const HostToPlugin: MessageFns<HostToPlugin> = {
     message.actionResult = (object.actionResult !== undefined && object.actionResult !== null)
       ? ActionResult.fromPartial(object.actionResult)
       : undefined;
+    message.events = (object.events !== undefined && object.events !== null)
+      ? EventBatch.fromPartial(object.events)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseEventBatch(): EventBatch {
+  return { events: [] };
+}
+
+export const EventBatch: MessageFns<EventBatch> = {
+  encode(message: EventBatch, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.events) {
+      EventEnvelope.encode(v!, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): EventBatch {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseEventBatch();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.events.push(EventEnvelope.decode(reader, reader.uint32()));
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): EventBatch {
+    return {
+      events: globalThis.Array.isArray(object?.events) ? object.events.map((e: any) => EventEnvelope.fromJSON(e)) : [],
+    };
+  },
+
+  toJSON(message: EventBatch): unknown {
+    const obj: any = {};
+    if (message.events?.length) {
+      obj.events = message.events.map((e) => EventEnvelope.toJSON(e));
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<EventBatch>): EventBatch {
+    return EventBatch.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<EventBatch>): EventBatch {
+    const message = createBaseEventBatch();
+    message.events = object.events?.map((e) => EventEnvelope.fromPartial(e)) || [];
     return message;
   },
 };
