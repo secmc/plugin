@@ -1,0 +1,12 @@
+[package]
+name = "rustic-economy"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+# required for any base plugin.
+dragonfly-plugin = { path = "../../../packages/rust/"}
+tokio = { version = "1.48.0", features = ["full"] }
+
+# used in this plugin specifically but isn't required for all plugins.
+sqlx = { version = "0.8", features = ["runtime-tokio", "sqlite"] }

@@ -1,0 +1,11 @@
+[package]
+name = "dragonfly-plugin-example"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+# for your own plugins change this to be like:
+# dragonfly-plugin = version or
+# use cargo add dragonfly-plugin to get the latest one.
+dragonfly-plugin = { path = "../" }
+tokio = { version = "1", features = ["full"] }

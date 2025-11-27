@@ -1,14 +1,41 @@
+[workspace]
+resolver = "3"
+members = [".", "macro", "example", "xtask"]
+
+[profile.dev.package]
+insta.opt-level = 3
+similar.opt-level = 3
+
+[workspace.dependencies]
+dragonfly-plugin-macro = { path = "macro", version = "0.3" }
+
 [package]
 name = "dragonfly-plugin"
-version = "0.1.0"
+version = "0.3.0"
 edition = "2021"
-license = "MIT OR Apache-2.0"
+license = "MIT"
 repository = "https://github.com/secmc/dragonfly-plugins"
 description = "Dragonfly gRPC plugin SDK for Rust"
+homepage = "https://github.com/secmc/dragonfly-plugins"
+keywords = ["dragonfly", "plugin", "grpc", "macro"]
 
 [lib]
 path = "src/lib.rs"
 
 [dependencies]
+async-trait = "0.1.89"
+prettyplease = "0.2.37"
 prost = "0.13"
+tokio = { version = "1.48.0", features = ["net"] }
+tokio-stream = "0.1.17"
 tonic = { version = "0.12", features = ["transport"] }
+tower = "0.5"
+hyper-util = { version = "0.1", features = ["tokio"] }
+dragonfly-plugin-macro = { workspace = true, optional = true }
+
+[dev-dependencies]
+tokio = { version = "1", features = ["rt-multi-thread", "macros"] }
+
+[features]
+default = ["macros"]
+macros = ["dep:dragonfly-plugin-macro"]

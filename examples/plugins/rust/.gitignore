@@ -1,0 +1,16 @@
+# Cargo build artifacts
+target/
+
+# Cargo.lock for libraries (keep for applications)
+# See: https://doc.rust-lang.org/cargo/guide/cargo-toml-vs-cargo-lock.html
+Cargo.lock
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db

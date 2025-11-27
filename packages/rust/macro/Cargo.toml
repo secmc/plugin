@@ -1,0 +1,23 @@
+[package]
+name = "dragonfly-plugin-macro"
+version = "0.3.0"
+edition = "2021"
+license = "MIT"
+repository = "https://github.com/secmc/dragonfly-plugins"
+documentation = "https://docs.rs/rust-plugin-macro"
+description = "Procedural macros for the Dragonfly gRPC plugin SDK"
+homepage = "https://github.com/secmc/dragonfly-plugins"
+keywords = ["dragonfly", "plugin", "grpc", "macro"]
+categories = ["development-tools::procedural-macro-helpers"]
+
+[lib]
+proc-macro = true
+
+[dependencies]
+heck = "0.5.0"
+proc-macro2 = "1.0.103"
+quote = "1.0"
+syn = { version = "2.0", features = ["full", "parsing", "visit"] }
+
+[dev-dependencies]
+trybuild = "1.0"

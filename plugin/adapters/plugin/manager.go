@@ -303,6 +303,7 @@ func (m *Manager) dispatchEvent(envelope *pb.EventEnvelope, expectResult bool) [
 				Event: envelope,
 			},
 		}
+		proc.log.Debug("sending event", "event_id", envelope.EventId, "type", envelope.Type.String())
 		proc.queue(msg)
 
 		if !expectResult {
@@ -330,6 +331,13 @@ func (m *Manager) dispatchEvent(envelope *pb.EventEnvelope, expectResult bool) [
 			if envelope.Type == pb.EventType_COMMAND {
 				proc.log.Debug("plugin command response received",
 					"event_id", envelope.EventId,
+					"plugin_response_ms", pluginResponseTime.Milliseconds(),
+					"plugin_response_us", pluginResponseTime.Microseconds())
+			} else {
+				// General timing for non-command events
+				proc.log.Debug("plugin event response received",
+					"event_id", envelope.EventId,
+					"type", envelope.Type.String(),
 					"plugin_response_ms", pluginResponseTime.Milliseconds(),
 					"plugin_response_us", pluginResponseTime.Microseconds())
 			}
@@ -370,6 +378,7 @@ func (m *Manager) dispatchEventParallel(envelope *pb.EventEnvelope, expectResult
 			if expectResult {
 				waitCh = proc.expectEventResult(envelope.EventId)
 			}
+			proc.log.Debug("sending event", "event_id", envelope.EventId, "type", envelope.Type.String())
 			proc.queue(&pb.HostToPlugin{
 				PluginId: proc.id,
 				Payload: &pb.HostToPlugin_Event{
@@ -379,6 +388,7 @@ func (m *Manager) dispatchEventParallel(envelope *pb.EventEnvelope, expectResult
 			if !expectResult {
 				return
 			}
+			waitStart := time.Now()
 			res, err := proc.waitEventResult(waitCh, eventResponseTimeout)
 			if err != nil {
 				if errors.Is(err, context.DeadlineExceeded) {
@@ -386,6 +396,14 @@ func (m *Manager) dispatchEventParallel(envelope *pb.EventEnvelope, expectResult
 				}
 				proc.discardEventResult(envelope.EventId)
 				return
+			}
+			pluginResponseTime := time.Since(waitStart)
+			if envelope.Type != pb.EventType_COMMAND {
+				proc.log.Debug("plugin event response received",
+					"event_id", envelope.EventId,
+					"type", envelope.Type.String(),
+					"plugin_response_ms", pluginResponseTime.Milliseconds(),
+					"plugin_response_us", pluginResponseTime.Microseconds())
 			}
 			results[idx] = res
 		})
@@ -409,8 +427,10 @@ func (m *Manager) emitCancellable(ctx cancelContext, envelope *pb.EventEnvelope)
 	}
 	// If any plugin cancelled, do not apply any mutations.
 	if cancelled {
+		m.log.Debug("event cancelled by plugin", "event_id", envelope.EventId, "type", envelope.Type.String())
 		return nil
 	}
+	m.log.Debug("event completed", "event_id", envelope.EventId, "type", envelope.Type.String(), "responses", len(results))
 	return results
 }
 

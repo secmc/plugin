@@ -1,0 +1,17 @@
+[package]
+name = "xtask"
+version = "0.1.0"
+edition = "2021"
+
+publish = false
+
+[dependencies]
+syn = { version = "2.0", features = ["full", "parsing", "visit"] }
+quote = "1.0"
+heck = "0.5" # For to_snake_case
+anyhow = "1.0"
+prettyplease = "0.2.37"
+proc-macro2 = "1.0.103"
+
+[dev-dependencies]
+insta = { version = "1.44.1" }
