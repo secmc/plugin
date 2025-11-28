@@ -27,8 +27,9 @@ import (
 const (
 	apiVersion = "v1"
 
-	sendChannelBuffer = 64
-	shutdownTimeout   = 5 * time.Second
+	sendChannelBuffer    = 256
+	actionsChannelBuffer = 1024
+	shutdownTimeout      = 5 * time.Second
 )
 
 type pluginProcess struct {
@@ -41,9 +42,10 @@ type pluginProcess struct {
 	stream   *grpc.GrpcStream
 	streamMu sync.RWMutex
 
-	sendCh chan *pb.HostToPlugin
-	done   chan struct{}
-	wg     sync.WaitGroup
+	sendCh    chan *pb.HostToPlugin
+	actionsCh chan *pb.ActionBatch
+	done      chan struct{}
+	wg        sync.WaitGroup
 
 	subscriptions sync.Map
 	connected     atomic.Bool
@@ -64,13 +66,14 @@ func newPluginProcess(m *Manager, cfg config.PluginConfig) *pluginProcess {
 		logger = logger.With("name", cfg.Name)
 	}
 	return &pluginProcess{
-		id:      cfg.ID,
-		cfg:     cfg,
-		manager: m,
-		log:     logger,
-		sendCh:  make(chan *pb.HostToPlugin, sendChannelBuffer),
-		done:    make(chan struct{}),
-		pending: make(map[string]chan *pb.EventResult),
+		id:        cfg.ID,
+		cfg:       cfg,
+		manager:   m,
+		log:       logger,
+		sendCh:    make(chan *pb.HostToPlugin, sendChannelBuffer),
+		actionsCh: make(chan *pb.ActionBatch, actionsChannelBuffer),
+		done:      make(chan struct{}),
+		pending:   make(map[string]chan *pb.EventResult),
 	}
 }
 
@@ -81,6 +84,8 @@ func (p *pluginProcess) start(ctx context.Context, serverAddress string) {
 			return
 		}
 	}
+	p.wg.Add(1)
+	go p.actionsWorker()
 }
 
 // attachStream attaches an incoming stream to this plugin process
@@ -222,6 +227,21 @@ func (p *pluginProcess) sendHello() error {
 	return p.stream.Send(payload)
 }
 
+func (p *pluginProcess) actionsWorker() {
+	defer p.wg.Done()
+	for {
+		select {
+		case <-p.done:
+			return
+		case batch := <-p.actionsCh:
+			if batch == nil {
+				continue
+			}
+			p.manager.applyActions(p, batch)
+		}
+	}
+}
+
 func (p *pluginProcess) sendLoop() {
 	defer p.wg.Done()
 	for {
@@ -321,10 +341,6 @@ func (p *pluginProcess) queue(msg *pb.HostToPlugin) {
 	default:
 		p.log.Warn("dropping message", "reason", "queue full")
 	}
-}
-
-func (p *pluginProcess) isConnected() bool {
-	return p.connected.Load()
 }
 
 func (p *pluginProcess) Stop() {
