@@ -7,6 +7,7 @@
 //!   - `src/event/handler.rs` (`generate_handlers`)
 //!   - `src/event/mutations.rs` (`generate_mutations`)
 //!   - `src/server/helpers.rs` (`generate_actions`)
+//!
 //! The public API of the SDK is considered stable; this task should only
 //! be changed in ways that preserve the shape of the generated code.
 
