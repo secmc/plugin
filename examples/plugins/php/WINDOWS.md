@@ -20,7 +20,7 @@ The script will:
 Windows uses a different directory structure. After running `./setup.sh`, edit `plugins/plugins.yaml`:
 
 ```yaml
-server_port: 50050
+server_addr: "tcp://127.0.0.1:50050"
 
 plugins:
   - id: example-php

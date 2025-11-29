@@ -87,7 +87,7 @@ ls bin/php7/bin/php
 ```
 
 ### Plugin cannot connect
-- Ensure Dragonfly is running and `server_port` in `plugins.yaml` matches `DF_PLUGIN_SERVER_ADDRESS`
+- Ensure Dragonfly is running and `server_addr` in `plugins.yaml` matches `DF_PLUGIN_SERVER_ADDRESS`
 - Verify `bin/php7/bin/php` exists and has the gRPC extension enabled
 
 ### PHP version issues

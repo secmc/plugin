@@ -1,7 +1,10 @@
 # Plugin Server Configuration
 # Dragonfly runs a gRPC server that plugins connect to
 # Use Unix socket for best performance
-server_port: "unix:///tmp/dragonfly_plugin.sock"
+server_addr: "unix:///tmp/dragonfly_plugin.sock"
+
+# Use this for Windows
+#server_addr: "unix:///C:/temp/dragonfly_plugin.sock"
 # Or use TCP for remote: "127.0.0.1:50050"
 
 # List of plugin IDs that must connect before server starts

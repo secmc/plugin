@@ -62,7 +62,7 @@ php src/HelloPlugin.php
 Edit `plugins/plugins.yaml` to enable/configure plugins:
 
 ```yaml
-server_port: 50050
+server_addr: "tcp://127.0.0.1:50050"
 
 plugins:
   # Node.js example

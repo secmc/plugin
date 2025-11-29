@@ -144,6 +144,10 @@ func (p *pluginProcess) launchProcess(ctx context.Context, serverAddress string)
 	passAddress := serverAddress
 	if strings.HasPrefix(serverAddress, "/") {
 		passAddress = "unix:" + serverAddress
+	} else if len(serverAddress) >= 3 &&
+		(serverAddress[1] == ':' && (serverAddress[2] == '/' || serverAddress[2] == '\\')) {
+		// Windows absolute path like C:/temp/dragonfly_plugin.sock -> unix://C:/...
+		passAddress = "unix://" + strings.ReplaceAll(serverAddress, "\\", "/")
 	}
 	env = append(env, fmt.Sprintf("DF_PLUGIN_SERVER_ADDRESS=%s", passAddress))
 	env = append(env, fmt.Sprintf("DF_HOST_BOOT_ID=%s", p.manager.bootID))

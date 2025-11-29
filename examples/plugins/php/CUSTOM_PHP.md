@@ -69,7 +69,7 @@ bin/php7/bin/php src/HelloPlugin.php
 Update `/plugins/plugins.yaml` to use your custom PHP:
 
 ```yaml
-server_port: 50050
+server_addr: "tcp://127.0.0.1:50050"
 
 plugins:
   - id: example-php
@@ -83,7 +83,7 @@ plugins:
 Or use the wrapper script:
 
 ```yaml
-server_port: 50050
+server_addr: "tcp://127.0.0.1:50050"
 
 plugins:
   - id: example-php

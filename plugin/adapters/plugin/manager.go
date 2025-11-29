@@ -106,7 +106,7 @@ func (m *Manager) Start(configPath string) error {
 // StartWithConfig starts the plugin adapter using a pre-loaded plugin config.
 func (m *Manager) StartWithConfig(cfg config.Config) error {
 	// Start gRPC server to accept plugin connections
-	address := cfg.ServerPort
+	address := cfg.ServerAddr
 	grpcServer, err := grpc.NewServer(address, m.handlePluginConnection)
 	if err != nil {
 		return fmt.Errorf("start plugin server: %w", err)

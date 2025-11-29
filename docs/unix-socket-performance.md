@@ -21,7 +21,7 @@ Edit `cmd/plugins/plugins.yaml`:
 
 ```yaml
 # Unix socket - faster for local plugins
-server_port: "unix:///tmp/dragonfly_plugin.sock"
+server_addr: "unix:///tmp/dragonfly_plugin.sock"
 
 plugins:
   - id: example-php
@@ -30,14 +30,11 @@ plugins:
     args: ["../examples/plugins/php/src/HelloPlugin.php"]
 ```
 
-### Traditional TCP (Backward Compatible)
+### TCP (Cross-platform)
 
 ```yaml
-# TCP on localhost - default behavior
-server_port: 50050
-
-# Or explicitly:
-server_port: "127.0.0.1:50050"
+# TCP on localhost 
+server_addr: "tcp://127.0.0.1:50050"
 ```
 
 ## Platform Support
@@ -45,15 +42,13 @@ server_port: "127.0.0.1:50050"
 ### Linux / macOS
 
 ```yaml
-server_port: "unix:///tmp/dragonfly_plugin.sock"
+server_addr: "unix:///tmp/dragonfly_plugin.sock"
 ```
 
 ### Windows 10+ / Windows 11
 
-Windows supports Unix sockets natively:
-
 ```yaml
-server_port: "unix://C:/temp/dragonfly_plugin.sock"
+server_addr: "tcp://127.0.0.1:50050"
 ```
 
 ### Older Windows (< Win 10 build 17063)
@@ -61,7 +56,7 @@ server_port: "unix://C:/temp/dragonfly_plugin.sock"
 Use TCP mode:
 
 ```yaml
-server_port: 50050
+server_addr: "tcp://127.0.0.1:50050"
 ```
 
 ## Performance Impact by Event Type
@@ -102,12 +97,12 @@ No code changes needed in your plugin! Just update the configuration:
 
 **Before:**
 ```yaml
-server_port: 50050
+server_addr: "tcp://127.0.0.1:50050"
 ```
 
 **After:**
 ```yaml
-server_port: "unix:///tmp/dragonfly_plugin.sock"
+server_addr: "unix:///tmp/dragonfly_plugin.sock"
 ```
 
 The PHP/TypeScript/Node plugins automatically use the `DF_PLUGIN_SERVER_ADDRESS` environment variable, which will be updated by Dragonfly.
@@ -153,10 +148,10 @@ You can use any socket path:
 
 ```yaml
 # Project-specific socket
-server_port: "unix:///var/run/dragonfly/plugin.sock"
+server_addr: "unix:///var/run/dragonfly/plugin.sock"
 
 # User-specific socket
-server_port: "unix://~/.dragonfly/plugin.sock"
+server_addr: "unix://~/.dragonfly/plugin.sock"
 ```
 
 Make sure the directory exists and has proper permissions.

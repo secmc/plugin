@@ -69,7 +69,7 @@ You should see responses from the PHP plugin! 🎉
 ### Plugin not connecting?
 
 Check that:
-1. Dragonfly's plugin server (`server_port` in `plugins.yaml`) is running
+1. Dragonfly's plugin server (`server_addr` in `plugins.yaml`) is running
 2. PHP binary exists: `ls bin/php7/bin/php`
 3. Dragonfly config has the plugin enabled in `plugins/plugins.yaml`
 

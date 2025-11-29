@@ -49,7 +49,7 @@ The host side implementation resides in the [`plugin`](../plugin) package and re
 ### Manager responsibilities
 
 * Load plugin definitions from `plugins/plugins.yaml`.
-* Start a gRPC server on a configurable port (default: 50050).
+* Start a gRPC server on a configurable address (for example, `unix:///tmp/dragonfly_plugin.sock` or `tcp://127.0.0.1:50050`).
 * Launch plugin processes (optional) and set standard environment variables:
   * `DF_PLUGIN_ID`
   * `DF_PLUGIN_SERVER_ADDRESS`
@@ -71,7 +71,7 @@ handlers. Player handlers surface join/quit/chat/command/block-break events. Wor
 Example configuration:
 
 ```yaml
-server_port: 50050  # Port for Dragonfly's plugin gRPC server
+server_addr: "tcp://127.0.0.1:50050"  # Address for Dragonfly's plugin gRPC server
 
 plugins:
   - id: example-node
@@ -87,7 +87,7 @@ plugins:
     args: ["examples/plugins/php/src/HelloPlugin.php"]
 ```
 
-* `server_port`: Port where Dragonfly's gRPC server listens for plugin connections (default: 50050).
+* `server_addr`: Address where Dragonfly's gRPC server listens for plugin connections.
 * `id`: Unique identifier; defaults to a generated slug if omitted.
 * `name`: Friendly display name (logged only).
 * `command`: Optional executable to launch. If omitted, Dragonfly assumes the plugin is already running.

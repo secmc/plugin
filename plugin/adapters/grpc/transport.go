@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"net"
+	"net/url"
 	"os"
 	"runtime"
 	"strings"
@@ -71,22 +72,45 @@ func (s *pluginService) EventStream(stream grpc.ServerStream) error {
 
 // NewServer creates a new gRPC server that plugins will connect to
 func NewServer(address string, handler StreamHandler) (*GrpcServer, error) {
-	// Auto-detect Unix socket vs TCP based on address format
 	network := "tcp"
-	if strings.HasPrefix(address, "/") || strings.HasPrefix(address, "unix://") {
-		network = "unix"
-		address = strings.TrimPrefix(address, "unix://")
-		os.Remove(address) // Clean up old socket file
+	addr := address
+	if strings.Contains(address, "://") {
+		u, err := url.Parse(address)
+		if err != nil {
+			return nil, fmt.Errorf("invalid server address %q: %w", address, err)
+		}
+		switch u.Scheme {
+		case "unix":
+			network = "unix"
+			addr = u.Path
+		case "tcp":
+			network = "tcp"
+			addr = u.Host
+		default:
+			return nil, fmt.Errorf("unsupported address scheme %q", u.Scheme)
+		}
+	} else {
+		if strings.HasPrefix(address, "/") {
+			network = "unix"
+		} else {
+			network = "tcp"
+		}
+		addr = address
 	}
 
-	listener, err := net.Listen(network, address)
+	if network == "unix" {
+		// Clean up old socket file
+		_ = os.Remove(addr)
+	}
+
+	listener, err := net.Listen(network, addr)
 	if err != nil {
 		return nil, fmt.Errorf("listen failed: %w", err)
 	}
 
 	// Set permissions on unix for sockets
 	if network == "unix" && runtime.GOOS != "windows" {
-		os.Chmod(address, 0666)
+		_ = os.Chmod(addr, 0666)
 	}
 
 	server := grpc.NewServer(

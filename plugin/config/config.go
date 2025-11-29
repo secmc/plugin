@@ -14,7 +14,7 @@ import (
 const ConfigFile = "plugins/plugins.yaml"
 
 type Config struct {
-	ServerPort      string         `yaml:"server_port"`
+	ServerAddr      string         `yaml:"server_addr"`
 	RequiredPlugins []string       `yaml:"required_plugins"`
 	HelloTimeoutMs  int            `yaml:"hello_timeout_ms"`
 	Plugins         []PluginConfig `yaml:"plugins"`
@@ -53,8 +53,8 @@ func LoadConfig(path string) (Config, error) {
 		return Config{}, fmt.Errorf("decode plugin config: %w", err)
 	}
 
-	if cfg.ServerPort == "" {
-		return Config{}, errors.New("server_port is required")
+	if cfg.ServerAddr == "" {
+		return Config{}, errors.New("server_addr is required")
 	}
 	// Default hello wait timeout to 2000ms if not set or invalid.
 	if cfg.HelloTimeoutMs <= 0 {
