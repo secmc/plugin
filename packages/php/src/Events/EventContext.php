@@ -27,7 +27,7 @@ final class EventContext {
     ) {}
 
     protected function getActions(): Actions {
-        return $this->actions ??= new Actions($this->sender, $this->pluginId);
+        return $this->actions ??= new Actions($this->sender);
     }
 
     public function respond(callable $mutator): void {

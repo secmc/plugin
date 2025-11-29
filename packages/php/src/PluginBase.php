@@ -312,8 +312,8 @@ abstract class PluginBase {
         }
         $this->client = new PluginClient($this->serverAddress, $options);
         $this->call = $this->client->EventStream();
-        $this->sender = new StreamSender($this->call);
-        $this->server = new Server(new Actions($this->sender, $this->pluginId));
+        $this->sender = new StreamSender($this->call, $this->pluginId);
+        $this->server = new Server(new Actions($this->sender));
         $this->running = true;
 
         // Register internal handlers to track online players
@@ -414,10 +414,7 @@ abstract class PluginBase {
                     if ($hostHello->getApiVersion() !== $this->apiVersion) {
                         fwrite(STDOUT, "[php] WARNING: API version mismatch (host={$hostHello->getApiVersion()}, plugin=" . $this->apiVersion . ")\n");
                     }
-                    continue;
-                }
-
-                if ($message->hasEvent()) {
+                } elseif ($message->hasEvent()) {
                     $event = $message->getEvent();
                     $eventId = $event->getEventId();
                     $type = $event->getType();
@@ -430,25 +427,18 @@ abstract class PluginBase {
                                 fwrite(STDERR, "[php] handler error: {$e->getMessage()}\n");
                             }
                         }
-                        continue;
+                    } else {
+                        // Default ack when unhandled
+                        (new EventContext($this->pluginId, $eventId, $this->sender, $this->server, $event->getExpectsResponse()))->ackIfUnhandled();
                     }
-
-                    // Default ack when unhandled
-                    (new EventContext($this->pluginId, $eventId, $this->sender, $this->server, $event->getExpectsResponse()))->ackIfUnhandled();
-                    continue;
-                }
-
-                if ($message->hasActionResult()) {
+                } elseif ($message->hasActionResult()) {
                     $result = $message->getActionResult();
                     $this->sender->dispatchActionResult($result);
-                    continue;
-                }
-
-                if ($message->hasShutdown()) {
+                } elseif ($message->hasShutdown()) {
                     fwrite(STDOUT, "[php] shutdown received\n");
                     $this->running = false;
-                    continue;
                 }
+                $this->sender->tick();
             }
         } finally {
             try {
@@ -456,6 +446,8 @@ abstract class PluginBase {
             } catch (\Throwable $e) {
                 fwrite(STDERR, "[php] onDisable error: {$e->getMessage()}\n");
             }
+            // Ensure any buffered actions are sent before closing the write side.
+            $this->sender->flushPendingActions();
             $this->call->writesDone();
             fwrite(STDOUT, "[php] client completed\n");
             fwrite(STDOUT, "[php] connection closing\n");

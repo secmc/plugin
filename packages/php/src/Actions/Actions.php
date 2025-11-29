@@ -3,9 +3,7 @@
 namespace Dragonfly\PluginLib\Actions;
 
 use Df\Plugin\Action;
-use Df\Plugin\ActionBatch;
 use Df\Plugin\AddEffectAction;
-use Df\Plugin\PluginToHost;
 use Df\Plugin\ClearInventoryAction;
 use Df\Plugin\ExecuteCommandAction;
 use Df\Plugin\GiveItemAction;
@@ -43,17 +41,17 @@ use Dragonfly\PluginLib\StreamSender;
 final class Actions {
     public function __construct(
         private StreamSender $sender,
-        private string $pluginId,
     ) {}
 
     public function sendAction(Action $action): void {
-        $batch = new ActionBatch();
-        $batch->setActions([$action]);
+        $this->sender->queueAction($action);
+    }
 
-        $resp = new PluginToHost();
-        $resp->setPluginId($this->pluginId);
-        $resp->setActions($batch);
-        $this->sender->enqueue($resp);
+    /**
+     * Flush any queued actions immediately.
+     */
+    public function flush(): void {
+        $this->sender->flushPendingActions();
     }
 
     public function chatToUuid(string $targetUuid, string $message): void {
