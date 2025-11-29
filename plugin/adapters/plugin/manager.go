@@ -586,14 +586,7 @@ func (m *Manager) handlePluginMessage(p *pluginProcess, msg *pb.PluginToHost) {
 		m.log.Info(fmt.Sprintf("  %s subscribed to %d events", pluginName, len(eventNames)), "events", eventNames)
 		p.updateSubscriptions(subscribe.Events)
 	case *pb.PluginToHost_Actions:
-		if payload.Actions != nil {
-			select {
-			case p.actionsCh <- payload.Actions:
-			default:
-				// TODO: drop actions should never happen. we need to come back to this.
-				p.log.Warn("dropping actions", "reason", "queue full")
-			}
-		}
+		p.enqueueActions(payload.Actions)
 	case *pb.PluginToHost_Log:
 		logMsg := payload.Log
 		level := strings.ToLower(logMsg.Level)

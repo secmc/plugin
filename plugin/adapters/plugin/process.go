@@ -27,9 +27,8 @@ import (
 const (
 	apiVersion = "v1"
 
-	sendChannelBuffer    = 256
-	actionsChannelBuffer = 1024
-	shutdownTimeout      = 5 * time.Second
+	sendChannelBuffer = 256
+	shutdownTimeout   = 5 * time.Second
 )
 
 type pluginProcess struct {
@@ -42,10 +41,14 @@ type pluginProcess struct {
 	stream   *grpc.GrpcStream
 	streamMu sync.RWMutex
 
-	sendCh    chan *pb.HostToPlugin
-	actionsCh chan *pb.ActionBatch
-	done      chan struct{}
-	wg        sync.WaitGroup
+	sendCh chan *pb.HostToPlugin
+	done   chan struct{}
+	wg     sync.WaitGroup
+
+	// unbounded actions queue and a 1-slot notify channel.
+	actionsMu     sync.Mutex
+	actionsQueue  []*pb.ActionBatch
+	actionsNotify chan struct{}
 
 	subscriptions sync.Map
 	connected     atomic.Bool
@@ -66,14 +69,14 @@ func newPluginProcess(m *Manager, cfg config.PluginConfig) *pluginProcess {
 		logger = logger.With("name", cfg.Name)
 	}
 	return &pluginProcess{
-		id:        cfg.ID,
-		cfg:       cfg,
-		manager:   m,
-		log:       logger,
-		sendCh:    make(chan *pb.HostToPlugin, sendChannelBuffer),
-		actionsCh: make(chan *pb.ActionBatch, actionsChannelBuffer),
-		done:      make(chan struct{}),
-		pending:   make(map[string]chan *pb.EventResult),
+		id:            cfg.ID,
+		cfg:           cfg,
+		manager:       m,
+		log:           logger,
+		sendCh:        make(chan *pb.HostToPlugin, sendChannelBuffer),
+		done:          make(chan struct{}),
+		pending:       make(map[string]chan *pb.EventResult),
+		actionsNotify: make(chan struct{}, 1),
 	}
 }
 
@@ -227,17 +230,44 @@ func (p *pluginProcess) sendHello() error {
 	return p.stream.Send(payload)
 }
 
+// enqueueActions appends a batch to the unbounded queue and signals the worker.
+func (p *pluginProcess) enqueueActions(batch *pb.ActionBatch) {
+	if batch == nil {
+		return
+	}
+	p.actionsMu.Lock()
+	p.actionsQueue = append(p.actionsQueue, batch)
+	queueLen := len(p.actionsQueue)
+	p.actionsMu.Unlock()
+	if queueLen%1024 == 0 && queueLen >= 1024 {
+		p.log.Warn("actions queue growing", "size", queueLen)
+	}
+	select {
+	case p.actionsNotify <- struct{}{}: // Notify the worker to process actions.
+	default:
+	}
+}
+
 func (p *pluginProcess) actionsWorker() {
 	defer p.wg.Done()
 	for {
 		select {
 		case <-p.done:
 			return
-		case batch := <-p.actionsCh:
-			if batch == nil {
-				continue
+		case <-p.actionsNotify:
+			for {
+				p.actionsMu.Lock()
+				if len(p.actionsQueue) == 0 {
+					p.actionsMu.Unlock()
+					break
+				}
+				batch := p.actionsQueue[0]
+				p.actionsQueue = p.actionsQueue[1:]
+				p.actionsMu.Unlock()
+				if batch != nil {
+					p.manager.applyActions(p, batch)
+				}
 			}
-			p.manager.applyActions(p, batch)
 		}
 	}
 }
