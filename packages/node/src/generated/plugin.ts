@@ -400,6 +400,32 @@ export interface HostToPlugin {
   serverInfo?: ServerInformationResponse | undefined;
   event?: EventEnvelope | undefined;
   actionResult?: ActionResult | undefined;
+  events?: EventBatch | undefined;
+  compressedEvents?: CompressedEventBatch | undefined;
+  playerMovementsPacked?: PlayerMovementsPacked | undefined;
+}
+
+export interface CompressedEventBatch {
+  data: Uint8Array;
+  originalSize: number;
+}
+
+export interface PlayerMovementsPacked {
+  moves: PackedPlayerMove[];
+}
+
+export interface PackedPlayerMove {
+  /** 16-byte UUID */
+  playerUuidBytes: Uint8Array;
+  x: number;
+  y: number;
+  z: number;
+  yaw: number;
+  pitch: number;
+}
+
+export interface EventBatch {
+  events: EventEnvelope[];
 }
 
 export interface ServerInformationRequest {
@@ -424,6 +450,8 @@ export interface EventEnvelope {
   type: EventType;
   /** If an event can be cancelled or mutated it expects an acknowledgement. */
   expectsResponse: boolean;
+  /** If true, the event is sent immediately, bypassing any batching. */
+  immediate: boolean;
   playerJoin?: PlayerJoinEvent | undefined;
   playerQuit?: PlayerQuitEvent | undefined;
   playerMove?: PlayerMoveEvent | undefined;
@@ -511,6 +539,9 @@ function createBaseHostToPlugin(): HostToPlugin {
     serverInfo: undefined,
     event: undefined,
     actionResult: undefined,
+    events: undefined,
+    compressedEvents: undefined,
+    playerMovementsPacked: undefined,
   };
 }
 
@@ -533,6 +564,15 @@ export const HostToPlugin: MessageFns<HostToPlugin> = {
     }
     if (message.actionResult !== undefined) {
       ActionResult.encode(message.actionResult, writer.uint32(170).fork()).join();
+    }
+    if (message.events !== undefined) {
+      EventBatch.encode(message.events, writer.uint32(178).fork()).join();
+    }
+    if (message.compressedEvents !== undefined) {
+      CompressedEventBatch.encode(message.compressedEvents, writer.uint32(186).fork()).join();
+    }
+    if (message.playerMovementsPacked !== undefined) {
+      PlayerMovementsPacked.encode(message.playerMovementsPacked, writer.uint32(194).fork()).join();
     }
     return writer;
   },
@@ -592,6 +632,30 @@ export const HostToPlugin: MessageFns<HostToPlugin> = {
           message.actionResult = ActionResult.decode(reader, reader.uint32());
           continue;
         }
+        case 22: {
+          if (tag !== 178) {
+            break;
+          }
+
+          message.events = EventBatch.decode(reader, reader.uint32());
+          continue;
+        }
+        case 23: {
+          if (tag !== 186) {
+            break;
+          }
+
+          message.compressedEvents = CompressedEventBatch.decode(reader, reader.uint32());
+          continue;
+        }
+        case 24: {
+          if (tag !== 194) {
+            break;
+          }
+
+          message.playerMovementsPacked = PlayerMovementsPacked.decode(reader, reader.uint32());
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -609,6 +673,13 @@ export const HostToPlugin: MessageFns<HostToPlugin> = {
       serverInfo: isSet(object.serverInfo) ? ServerInformationResponse.fromJSON(object.serverInfo) : undefined,
       event: isSet(object.event) ? EventEnvelope.fromJSON(object.event) : undefined,
       actionResult: isSet(object.actionResult) ? ActionResult.fromJSON(object.actionResult) : undefined,
+      events: isSet(object.events) ? EventBatch.fromJSON(object.events) : undefined,
+      compressedEvents: isSet(object.compressedEvents)
+        ? CompressedEventBatch.fromJSON(object.compressedEvents)
+        : undefined,
+      playerMovementsPacked: isSet(object.playerMovementsPacked)
+        ? PlayerMovementsPacked.fromJSON(object.playerMovementsPacked)
+        : undefined,
     };
   },
 
@@ -631,6 +702,15 @@ export const HostToPlugin: MessageFns<HostToPlugin> = {
     }
     if (message.actionResult !== undefined) {
       obj.actionResult = ActionResult.toJSON(message.actionResult);
+    }
+    if (message.events !== undefined) {
+      obj.events = EventBatch.toJSON(message.events);
+    }
+    if (message.compressedEvents !== undefined) {
+      obj.compressedEvents = CompressedEventBatch.toJSON(message.compressedEvents);
+    }
+    if (message.playerMovementsPacked !== undefined) {
+      obj.playerMovementsPacked = PlayerMovementsPacked.toJSON(message.playerMovementsPacked);
     }
     return obj;
   },
@@ -656,6 +736,352 @@ export const HostToPlugin: MessageFns<HostToPlugin> = {
     message.actionResult = (object.actionResult !== undefined && object.actionResult !== null)
       ? ActionResult.fromPartial(object.actionResult)
       : undefined;
+    message.events = (object.events !== undefined && object.events !== null)
+      ? EventBatch.fromPartial(object.events)
+      : undefined;
+    message.compressedEvents = (object.compressedEvents !== undefined && object.compressedEvents !== null)
+      ? CompressedEventBatch.fromPartial(object.compressedEvents)
+      : undefined;
+    message.playerMovementsPacked =
+      (object.playerMovementsPacked !== undefined && object.playerMovementsPacked !== null)
+        ? PlayerMovementsPacked.fromPartial(object.playerMovementsPacked)
+        : undefined;
+    return message;
+  },
+};
+
+function createBaseCompressedEventBatch(): CompressedEventBatch {
+  return { data: new Uint8Array(0), originalSize: 0 };
+}
+
+export const CompressedEventBatch: MessageFns<CompressedEventBatch> = {
+  encode(message: CompressedEventBatch, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.data.length !== 0) {
+      writer.uint32(10).bytes(message.data);
+    }
+    if (message.originalSize !== 0) {
+      writer.uint32(16).int32(message.originalSize);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): CompressedEventBatch {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCompressedEventBatch();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.data = reader.bytes();
+          continue;
+        }
+        case 2: {
+          if (tag !== 16) {
+            break;
+          }
+
+          message.originalSize = reader.int32();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CompressedEventBatch {
+    return {
+      data: isSet(object.data) ? bytesFromBase64(object.data) : new Uint8Array(0),
+      originalSize: isSet(object.originalSize) ? globalThis.Number(object.originalSize) : 0,
+    };
+  },
+
+  toJSON(message: CompressedEventBatch): unknown {
+    const obj: any = {};
+    if (message.data.length !== 0) {
+      obj.data = base64FromBytes(message.data);
+    }
+    if (message.originalSize !== 0) {
+      obj.originalSize = Math.round(message.originalSize);
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<CompressedEventBatch>): CompressedEventBatch {
+    return CompressedEventBatch.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<CompressedEventBatch>): CompressedEventBatch {
+    const message = createBaseCompressedEventBatch();
+    message.data = object.data ?? new Uint8Array(0);
+    message.originalSize = object.originalSize ?? 0;
+    return message;
+  },
+};
+
+function createBasePlayerMovementsPacked(): PlayerMovementsPacked {
+  return { moves: [] };
+}
+
+export const PlayerMovementsPacked: MessageFns<PlayerMovementsPacked> = {
+  encode(message: PlayerMovementsPacked, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.moves) {
+      PackedPlayerMove.encode(v!, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): PlayerMovementsPacked {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePlayerMovementsPacked();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.moves.push(PackedPlayerMove.decode(reader, reader.uint32()));
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PlayerMovementsPacked {
+    return {
+      moves: globalThis.Array.isArray(object?.moves) ? object.moves.map((e: any) => PackedPlayerMove.fromJSON(e)) : [],
+    };
+  },
+
+  toJSON(message: PlayerMovementsPacked): unknown {
+    const obj: any = {};
+    if (message.moves?.length) {
+      obj.moves = message.moves.map((e) => PackedPlayerMove.toJSON(e));
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<PlayerMovementsPacked>): PlayerMovementsPacked {
+    return PlayerMovementsPacked.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<PlayerMovementsPacked>): PlayerMovementsPacked {
+    const message = createBasePlayerMovementsPacked();
+    message.moves = object.moves?.map((e) => PackedPlayerMove.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBasePackedPlayerMove(): PackedPlayerMove {
+  return { playerUuidBytes: new Uint8Array(0), x: 0, y: 0, z: 0, yaw: 0, pitch: 0 };
+}
+
+export const PackedPlayerMove: MessageFns<PackedPlayerMove> = {
+  encode(message: PackedPlayerMove, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.playerUuidBytes.length !== 0) {
+      writer.uint32(10).bytes(message.playerUuidBytes);
+    }
+    if (message.x !== 0) {
+      writer.uint32(21).float(message.x);
+    }
+    if (message.y !== 0) {
+      writer.uint32(29).float(message.y);
+    }
+    if (message.z !== 0) {
+      writer.uint32(37).float(message.z);
+    }
+    if (message.yaw !== 0) {
+      writer.uint32(45).float(message.yaw);
+    }
+    if (message.pitch !== 0) {
+      writer.uint32(53).float(message.pitch);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): PackedPlayerMove {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePackedPlayerMove();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.playerUuidBytes = reader.bytes();
+          continue;
+        }
+        case 2: {
+          if (tag !== 21) {
+            break;
+          }
+
+          message.x = reader.float();
+          continue;
+        }
+        case 3: {
+          if (tag !== 29) {
+            break;
+          }
+
+          message.y = reader.float();
+          continue;
+        }
+        case 4: {
+          if (tag !== 37) {
+            break;
+          }
+
+          message.z = reader.float();
+          continue;
+        }
+        case 5: {
+          if (tag !== 45) {
+            break;
+          }
+
+          message.yaw = reader.float();
+          continue;
+        }
+        case 6: {
+          if (tag !== 53) {
+            break;
+          }
+
+          message.pitch = reader.float();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PackedPlayerMove {
+    return {
+      playerUuidBytes: isSet(object.playerUuidBytes) ? bytesFromBase64(object.playerUuidBytes) : new Uint8Array(0),
+      x: isSet(object.x) ? globalThis.Number(object.x) : 0,
+      y: isSet(object.y) ? globalThis.Number(object.y) : 0,
+      z: isSet(object.z) ? globalThis.Number(object.z) : 0,
+      yaw: isSet(object.yaw) ? globalThis.Number(object.yaw) : 0,
+      pitch: isSet(object.pitch) ? globalThis.Number(object.pitch) : 0,
+    };
+  },
+
+  toJSON(message: PackedPlayerMove): unknown {
+    const obj: any = {};
+    if (message.playerUuidBytes.length !== 0) {
+      obj.playerUuidBytes = base64FromBytes(message.playerUuidBytes);
+    }
+    if (message.x !== 0) {
+      obj.x = message.x;
+    }
+    if (message.y !== 0) {
+      obj.y = message.y;
+    }
+    if (message.z !== 0) {
+      obj.z = message.z;
+    }
+    if (message.yaw !== 0) {
+      obj.yaw = message.yaw;
+    }
+    if (message.pitch !== 0) {
+      obj.pitch = message.pitch;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<PackedPlayerMove>): PackedPlayerMove {
+    return PackedPlayerMove.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<PackedPlayerMove>): PackedPlayerMove {
+    const message = createBasePackedPlayerMove();
+    message.playerUuidBytes = object.playerUuidBytes ?? new Uint8Array(0);
+    message.x = object.x ?? 0;
+    message.y = object.y ?? 0;
+    message.z = object.z ?? 0;
+    message.yaw = object.yaw ?? 0;
+    message.pitch = object.pitch ?? 0;
+    return message;
+  },
+};
+
+function createBaseEventBatch(): EventBatch {
+  return { events: [] };
+}
+
+export const EventBatch: MessageFns<EventBatch> = {
+  encode(message: EventBatch, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.events) {
+      EventEnvelope.encode(v!, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): EventBatch {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseEventBatch();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.events.push(EventEnvelope.decode(reader, reader.uint32()));
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): EventBatch {
+    return {
+      events: globalThis.Array.isArray(object?.events) ? object.events.map((e: any) => EventEnvelope.fromJSON(e)) : [],
+    };
+  },
+
+  toJSON(message: EventBatch): unknown {
+    const obj: any = {};
+    if (message.events?.length) {
+      obj.events = message.events.map((e) => EventEnvelope.toJSON(e));
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<EventBatch>): EventBatch {
+    return EventBatch.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<EventBatch>): EventBatch {
+    const message = createBaseEventBatch();
+    message.events = object.events?.map((e) => EventEnvelope.fromPartial(e)) || [];
     return message;
   },
 };
@@ -902,6 +1328,7 @@ function createBaseEventEnvelope(): EventEnvelope {
     eventId: "",
     type: 0,
     expectsResponse: false,
+    immediate: false,
     playerJoin: undefined,
     playerQuit: undefined,
     playerMove: undefined,
@@ -964,6 +1391,9 @@ export const EventEnvelope: MessageFns<EventEnvelope> = {
     }
     if (message.expectsResponse !== false) {
       writer.uint32(24).bool(message.expectsResponse);
+    }
+    if (message.immediate !== false) {
+      writer.uint32(32).bool(message.immediate);
     }
     if (message.playerJoin !== undefined) {
       PlayerJoinEvent.encode(message.playerJoin, writer.uint32(82).fork()).join();
@@ -1144,6 +1574,14 @@ export const EventEnvelope: MessageFns<EventEnvelope> = {
           }
 
           message.expectsResponse = reader.bool();
+          continue;
+        }
+        case 4: {
+          if (tag !== 32) {
+            break;
+          }
+
+          message.immediate = reader.bool();
           continue;
         }
         case 10: {
@@ -1552,6 +1990,7 @@ export const EventEnvelope: MessageFns<EventEnvelope> = {
       eventId: isSet(object.eventId) ? globalThis.String(object.eventId) : "",
       type: isSet(object.type) ? eventTypeFromJSON(object.type) : 0,
       expectsResponse: isSet(object.expectsResponse) ? globalThis.Boolean(object.expectsResponse) : false,
+      immediate: isSet(object.immediate) ? globalThis.Boolean(object.immediate) : false,
       playerJoin: isSet(object.playerJoin) ? PlayerJoinEvent.fromJSON(object.playerJoin) : undefined,
       playerQuit: isSet(object.playerQuit) ? PlayerQuitEvent.fromJSON(object.playerQuit) : undefined,
       playerMove: isSet(object.playerMove) ? PlayerMoveEvent.fromJSON(object.playerMove) : undefined,
@@ -1668,6 +2107,9 @@ export const EventEnvelope: MessageFns<EventEnvelope> = {
     }
     if (message.expectsResponse !== false) {
       obj.expectsResponse = message.expectsResponse;
+    }
+    if (message.immediate !== false) {
+      obj.immediate = message.immediate;
     }
     if (message.playerJoin !== undefined) {
       obj.playerJoin = PlayerJoinEvent.toJSON(message.playerJoin);
@@ -1827,6 +2269,7 @@ export const EventEnvelope: MessageFns<EventEnvelope> = {
     message.eventId = object.eventId ?? "";
     message.type = object.type ?? 0;
     message.expectsResponse = object.expectsResponse ?? false;
+    message.immediate = object.immediate ?? false;
     message.playerJoin = (object.playerJoin !== undefined && object.playerJoin !== null)
       ? PlayerJoinEvent.fromPartial(object.playerJoin)
       : undefined;
@@ -2461,6 +2904,31 @@ export const PluginDefinition = {
     },
   },
 } as const;
+
+function bytesFromBase64(b64: string): Uint8Array {
+  if ((globalThis as any).Buffer) {
+    return Uint8Array.from(globalThis.Buffer.from(b64, "base64"));
+  } else {
+    const bin = globalThis.atob(b64);
+    const arr = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; ++i) {
+      arr[i] = bin.charCodeAt(i);
+    }
+    return arr;
+  }
+}
+
+function base64FromBytes(arr: Uint8Array): string {
+  if ((globalThis as any).Buffer) {
+    return globalThis.Buffer.from(arr).toString("base64");
+  } else {
+    const bin: string[] = [];
+    arr.forEach((byte) => {
+      bin.push(globalThis.String.fromCharCode(byte));
+    });
+    return globalThis.btoa(bin.join(""));
+  }
+}
 
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 

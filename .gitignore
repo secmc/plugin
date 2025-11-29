@@ -2,6 +2,8 @@
 world/
 players/
 resources/
+
+cmd/plugins/plugins.yaml
 config.toml
 
 # IDE configuration
@@ -11,3 +13,4 @@ config.toml
 dragonfly/
 
 .env
+
