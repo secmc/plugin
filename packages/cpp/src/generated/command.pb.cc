@@ -200,20 +200,21 @@ const char descriptor_table_protodef_command_2eproto[] ABSL_ATTRIBUTE_SECTION_VA
     "cR\006params\"\203\001\n\014CommandEvent\022\037\n\013player_uui"
     "d\030\001 \001(\tR\nplayerUuid\022\022\n\004name\030\002 \001(\tR\004name\022"
     "\020\n\003raw\030\003 \001(\tR\003raw\022\030\n\007command\030\004 \001(\tR\007comm"
-    "and\022\022\n\004args\030\005 \003(\tR\004args*p\n\tParamType\022\020\n\014"
-    "PARAM_STRING\020\000\022\r\n\tPARAM_INT\020\001\022\017\n\013PARAM_F"
-    "LOAT\020\002\022\016\n\nPARAM_BOOL\020\003\022\021\n\rPARAM_VARARGS\020"
-    "\004\022\016\n\nPARAM_ENUM\020\005B\213\001\n\rcom.df.pluginB\014Com"
-    "mandProtoP\001Z\'github.com/secmc/plugin/pro"
-    "to/generated\242\002\003DPX\252\002\tDf.Plugin\312\002\tDf\\Plug"
-    "in\342\002\025Df\\Plugin\\GPBMetadata\352\002\nDf::Pluginb"
-    "\006proto3"
+    "and\022\022\n\004args\030\005 \003(\tR\004args*\225\001\n\tParamType\022\020\n"
+    "\014PARAM_STRING\020\000\022\r\n\tPARAM_INT\020\001\022\017\n\013PARAM_"
+    "FLOAT\020\002\022\016\n\nPARAM_BOOL\020\003\022\021\n\rPARAM_VARARGS"
+    "\020\004\022\016\n\nPARAM_ENUM\020\005\022\020\n\014PARAM_TARGET\020\006\022\021\n\r"
+    "PARAM_TARGETS\020\007B\213\001\n\rcom.df.pluginB\014Comma"
+    "ndProtoP\001Z\'github.com/secmc/plugin/proto"
+    "/generated\242\002\003DPX\252\002\tDf.Plugin\312\002\tDf\\Plugin"
+    "\342\002\025Df\\Plugin\\GPBMetadata\352\002\nDf::Pluginb\006p"
+    "roto3"
 };
 static ::absl::once_flag descriptor_table_command_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_command_2eproto = {
     false,
     false,
-    727,
+    765,
     descriptor_table_protodef_command_2eproto,
     "command.proto",
     &descriptor_table_command_2eproto_once,
@@ -233,7 +234,7 @@ const ::google::protobuf::EnumDescriptor* PROTOBUF_NONNULL ParamType_descriptor(
   return file_level_enum_descriptors_command_2eproto[0];
 }
 PROTOBUF_CONSTINIT const uint32_t ParamType_internal_data_[] = {
-    393216u, 0u, };
+    524288u, 0u, };
 // ===================================================================
 
 class ParamSpec::_Internal {

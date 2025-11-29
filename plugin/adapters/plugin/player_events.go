@@ -79,6 +79,41 @@ func (m *Manager) EmitCommand(ctx *player.Context, p *player.Player, cmdName str
 	if len(norm) > 0 {
 		raw += " " + strings.Join(norm, " ")
 	}
+
+	// Resolve target parameters based on ParamType.
+	m.mu.RLock()
+	binding, ok := m.commands[cmdName]
+	m.mu.RUnlock()
+	if ok && binding.descriptor != nil && len(binding.descriptor.Params) > 0 && len(norm) > 0 {
+		resolved := make([]string, len(norm))
+		copy(resolved, norm)
+		argIdx := 0
+		for _, pinfo := range binding.descriptor.Params {
+			if argIdx >= len(norm) {
+				break
+			}
+			if pinfo == nil {
+				argIdx++
+				continue
+			}
+			// Stop at varargs: remaining args are free-form.
+			if pinfo.Type == pb.ParamType_PARAM_VARARGS {
+				break
+			}
+			switch pinfo.Type {
+			case pb.ParamType_PARAM_TARGET:
+				if uuid, ok := m.resolveTargetArg(p, resolved[argIdx]); ok {
+					resolved[argIdx] = uuid
+				}
+			case pb.ParamType_PARAM_TARGETS:
+				if uuids := m.resolveTargetsArg(p, resolved[argIdx]); len(uuids) > 0 {
+					resolved[argIdx] = strings.Join(uuids, ",")
+				}
+			}
+			argIdx++
+		}
+		norm = resolved
+	}
 	m.emitCancellable(ctx, &pb.EventEnvelope{
 		Type: pb.EventType_COMMAND,
 		Payload: &pb.EventEnvelope_Command{

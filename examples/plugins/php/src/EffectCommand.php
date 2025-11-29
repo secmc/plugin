@@ -5,6 +5,7 @@ namespace ExamplePhp;
 use Dragonfly\PluginLib\Commands\Command;
 use Dragonfly\PluginLib\Commands\CommandSender;
 use Dragonfly\PluginLib\Commands\Optional;
+use Dragonfly\PluginLib\Commands\Target;
 use Dragonfly\PluginLib\Entity\Player;
 use Dragonfly\PluginLib\Events\EventContext;
 use Df\Plugin\EffectType;
@@ -12,8 +13,9 @@ use Dragonfly\PluginLib\Util\EnumResolver;
 
 class EffectCommand extends Command {
     protected string $name = 'effect';
-    protected string $description = 'Apply an effect to yourself';
+    protected string $description = 'Apply an effect to a player';
 
+    public Target $target;
     public string $effect;
     /** @var Optional<int> */
     public Optional $level;
@@ -23,8 +25,9 @@ class EffectCommand extends Command {
     public Optional $showParticles;
 
     public function execute(CommandSender $sender, EventContext $ctx): void {
-        if (!$sender instanceof Player) {
-            $sender->sendMessage("§cThis command can only be run by a player.");
+        $target = $ctx->getServer()->getPlayer($this->target->uuid);
+        if ($target === null) {
+            $sender->sendMessage("§cPlayer not found or offline.");
             return;
         }
 
@@ -39,7 +42,7 @@ class EffectCommand extends Command {
         $show = $this->showParticles->getOr(true);
         $durationMs = $seconds * 1000;
 
-        $sender->addEffect($effectId, $level, $durationMs, $show);
+        $target->addEffect($effectId, $level, $durationMs, $show);
         $sender->sendMessage("Applied effect " . $this->enumName($effectId) . " (id {$effectId}) level {$level} for {$seconds}s" . ($show ? '' : ' (hidden)'));
     }
 

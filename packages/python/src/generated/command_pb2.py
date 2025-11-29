@@ -24,7 +24,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\rcommand.proto\x12\tdf.plugin\"\x9e\x01\n\tParamSpec\x12\x12\n\x04name\x18\x01 \x01(\tR\x04name\x12(\n\x04type\x18\x02 \x01(\x0e\x32\x14.df.plugin.ParamTypeR\x04type\x12\x1a\n\x08optional\x18\x03 \x01(\x08R\x08optional\x12\x16\n\x06suffix\x18\x04 \x01(\tR\x06suffix\x12\x1f\n\x0b\x65num_values\x18\x05 \x03(\tR\nenumValues\"\x8b\x01\n\x0b\x43ommandSpec\x12\x12\n\x04name\x18\x01 \x01(\tR\x04name\x12 \n\x0b\x64\x65scription\x18\x02 \x01(\tR\x0b\x64\x65scription\x12\x18\n\x07\x61liases\x18\x03 \x03(\tR\x07\x61liases\x12,\n\x06params\x18\x04 \x03(\x0b\x32\x14.df.plugin.ParamSpecR\x06params\"\x83\x01\n\x0c\x43ommandEvent\x12\x1f\n\x0bplayer_uuid\x18\x01 \x01(\tR\nplayerUuid\x12\x12\n\x04name\x18\x02 \x01(\tR\x04name\x12\x10\n\x03raw\x18\x03 \x01(\tR\x03raw\x12\x18\n\x07\x63ommand\x18\x04 \x01(\tR\x07\x63ommand\x12\x12\n\x04\x61rgs\x18\x05 \x03(\tR\x04\x61rgs*p\n\tParamType\x12\x10\n\x0cPARAM_STRING\x10\x00\x12\r\n\tPARAM_INT\x10\x01\x12\x0f\n\x0bPARAM_FLOAT\x10\x02\x12\x0e\n\nPARAM_BOOL\x10\x03\x12\x11\n\rPARAM_VARARGS\x10\x04\x12\x0e\n\nPARAM_ENUM\x10\x05\x42\x8b\x01\n\rcom.df.pluginB\x0c\x43ommandProtoP\x01Z\'github.com/secmc/plugin/proto/generated\xa2\x02\x03\x44PX\xaa\x02\tDf.Plugin\xca\x02\tDf\\Plugin\xe2\x02\x15\x44\x66\\Plugin\\GPBMetadata\xea\x02\nDf::Pluginb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\rcommand.proto\x12\tdf.plugin\"\x9e\x01\n\tParamSpec\x12\x12\n\x04name\x18\x01 \x01(\tR\x04name\x12(\n\x04type\x18\x02 \x01(\x0e\x32\x14.df.plugin.ParamTypeR\x04type\x12\x1a\n\x08optional\x18\x03 \x01(\x08R\x08optional\x12\x16\n\x06suffix\x18\x04 \x01(\tR\x06suffix\x12\x1f\n\x0b\x65num_values\x18\x05 \x03(\tR\nenumValues\"\x8b\x01\n\x0b\x43ommandSpec\x12\x12\n\x04name\x18\x01 \x01(\tR\x04name\x12 \n\x0b\x64\x65scription\x18\x02 \x01(\tR\x0b\x64\x65scription\x12\x18\n\x07\x61liases\x18\x03 \x03(\tR\x07\x61liases\x12,\n\x06params\x18\x04 \x03(\x0b\x32\x14.df.plugin.ParamSpecR\x06params\"\x83\x01\n\x0c\x43ommandEvent\x12\x1f\n\x0bplayer_uuid\x18\x01 \x01(\tR\nplayerUuid\x12\x12\n\x04name\x18\x02 \x01(\tR\x04name\x12\x10\n\x03raw\x18\x03 \x01(\tR\x03raw\x12\x18\n\x07\x63ommand\x18\x04 \x01(\tR\x07\x63ommand\x12\x12\n\x04\x61rgs\x18\x05 \x03(\tR\x04\x61rgs*\x95\x01\n\tParamType\x12\x10\n\x0cPARAM_STRING\x10\x00\x12\r\n\tPARAM_INT\x10\x01\x12\x0f\n\x0bPARAM_FLOAT\x10\x02\x12\x0e\n\nPARAM_BOOL\x10\x03\x12\x11\n\rPARAM_VARARGS\x10\x04\x12\x0e\n\nPARAM_ENUM\x10\x05\x12\x10\n\x0cPARAM_TARGET\x10\x06\x12\x11\n\rPARAM_TARGETS\x10\x07\x42\x8b\x01\n\rcom.df.pluginB\x0c\x43ommandProtoP\x01Z\'github.com/secmc/plugin/proto/generated\xa2\x02\x03\x44PX\xaa\x02\tDf.Plugin\xca\x02\tDf\\Plugin\xe2\x02\x15\x44\x66\\Plugin\\GPBMetadata\xea\x02\nDf::Pluginb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -32,8 +32,8 @@ _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'command_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   _globals['DESCRIPTOR']._loaded_options = None
   _globals['DESCRIPTOR']._serialized_options = b'\n\rcom.df.pluginB\014CommandProtoP\001Z\'github.com/secmc/plugin/proto/generated\242\002\003DPX\252\002\tDf.Plugin\312\002\tDf\\Plugin\342\002\025Df\\Plugin\\GPBMetadata\352\002\nDf::Plugin'
-  _globals['_PARAMTYPE']._serialized_start=465
-  _globals['_PARAMTYPE']._serialized_end=577
+  _globals['_PARAMTYPE']._serialized_start=466
+  _globals['_PARAMTYPE']._serialized_end=615
   _globals['_PARAMSPEC']._serialized_start=29
   _globals['_PARAMSPEC']._serialized_end=187
   _globals['_COMMANDSPEC']._serialized_start=190

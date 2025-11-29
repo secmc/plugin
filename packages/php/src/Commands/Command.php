@@ -214,9 +214,25 @@ abstract class Command {
             'int' => filter_var($arg, FILTER_VALIDATE_INT),
             'float' => filter_var($arg, FILTER_VALIDATE_FLOAT),
             'bool' => $this->parseBool($arg),
+            'target' => $this->parseTarget($arg),
+            'targets' => $this->parseTargetsList($arg),
             null, 'string' => $arg,
             default => null,
         };
+    }
+
+    private function parseTarget(string $arg): ?Target {
+        $val = trim($arg);
+        if ($val === '') {
+            return null;
+        }
+        // Prefer UUID when present; otherwise keep the raw name for caller-side resolution if needed.
+        // TODO: remove this when we support entity targets
+        $isUuid = (bool)preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i', $val);
+        if ($isUuid) {
+            return new Target(strtolower($val));
+        }
+        return new Target('', $val);
     }
 
     private function parseBool(string $arg): ?bool {
@@ -248,10 +264,15 @@ abstract class Command {
                 $out[] = ['name' => $name, 'type' => $t, 'optional' => true];
                 continue;
             }
+            if ($typeName === 'array' && $this->isTargetsArray($prop)) {
+                $out[] = ['name' => $name, 'type' => 'targets'];
+                continue;
+            }
             $mapped = match ($typeName) {
                 'int' => 'int',
                 'float', 'double' => 'float',
                 'bool' => 'bool',
+                Target::class => 'target',
                 default => 'string',
             };
             $out[] = ['name' => $name, 'type' => $mapped];
@@ -305,10 +326,39 @@ abstract class Command {
                 'float', 'double' => 'float',
                 'bool', 'boolean' => 'bool',
                 'string' => 'string',
+                'target' => 'target',
                 default => 'string',
             };
         }
         // Default to string if not annotated.
         return 'string';
+    }
+
+    /**
+     * Detect @var Target[] arrays for multi-target parameters.
+     */
+    private function isTargetsArray(ReflectionProperty $prop): bool {
+        $doc = $prop->getDocComment() ?: '';
+        return (bool)preg_match('/@var\s+Target\[\]/i', $doc);
+    }
+
+    /**
+     * Parse a comma-separated list of targets into Target[].
+     *
+     * @return Target[]
+     */
+    private function parseTargetsList(string $arg): array {
+        $parts = preg_split('/\s*,\s*/', trim($arg)) ?: [];
+        $out = [];
+        foreach ($parts as $p) {
+            if ($p === '') {
+                continue;
+            }
+            $t = $this->parseTarget($p);
+            if ($t !== null) {
+                $out[] = $t;
+            }
+        }
+        return $out;
     }
 }

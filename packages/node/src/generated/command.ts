@@ -17,6 +17,8 @@ export enum ParamType {
   PARAM_BOOL = 3,
   PARAM_VARARGS = 4,
   PARAM_ENUM = 5,
+  PARAM_TARGET = 6,
+  PARAM_TARGETS = 7,
   UNRECOGNIZED = -1,
 }
 
@@ -40,6 +42,12 @@ export function paramTypeFromJSON(object: any): ParamType {
     case 5:
     case "PARAM_ENUM":
       return ParamType.PARAM_ENUM;
+    case 6:
+    case "PARAM_TARGET":
+      return ParamType.PARAM_TARGET;
+    case 7:
+    case "PARAM_TARGETS":
+      return ParamType.PARAM_TARGETS;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -61,6 +69,10 @@ export function paramTypeToJSON(object: ParamType): string {
       return "PARAM_VARARGS";
     case ParamType.PARAM_ENUM:
       return "PARAM_ENUM";
+    case ParamType.PARAM_TARGET:
+      return "PARAM_TARGET";
+    case ParamType.PARAM_TARGETS:
+      return "PARAM_TARGETS";
     case ParamType.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";

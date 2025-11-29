@@ -305,8 +305,6 @@ abstract class PluginBase {
         return ['type' => $type, 'getter' => $getter];
     }
 
-    // Action helpers moved to StreamSender and HandlerContext
-
     // Runner
     public function run(): void {
         if (!\extension_loaded('grpc')) {
@@ -378,6 +376,8 @@ abstract class PluginBase {
                             'bool' => PbParamType::PARAM_BOOL,
                             'enum' => PbParamType::PARAM_ENUM,
                             'varargs' => PbParamType::PARAM_VARARGS,
+                            'target' => PbParamType::PARAM_TARGET,
+                            'targets' => PbParamType::PARAM_TARGETS,
                             default => PbParamType::PARAM_STRING,
                         });
                         if (!empty($p['optional'])) {

@@ -1,6 +1,8 @@
 package plugin
 
 import (
+	"slices"
+	"sort"
 	"strings"
 
 	"github.com/df-mc/dragonfly/server/cmd"
@@ -102,6 +104,8 @@ func buildParamInfo(spec *pb.CommandSpec) []cmd.ParamInfo {
 				// No values provided; fall back to plain string.
 				value = ""
 			}
+		case pb.ParamType_PARAM_TARGET, pb.ParamType_PARAM_TARGETS:
+			value = []cmd.Target{}
 		default: // PARAM_STRING and fallback
 			// If enum values provided for a string param, treat as enum.
 			if len(p.EnumValues) > 0 {
@@ -118,4 +122,106 @@ func buildParamInfo(spec *pb.CommandSpec) []cmd.ParamInfo {
 		})
 	}
 	return params
+}
+
+// resolveTargetArg resolves a single selector or name to a player UUID string.
+// Only player targets are supported in this initial implementation.
+// TODO: support entity targets.
+func (m *Manager) resolveTargetArg(src *player.Player, arg string) (string, bool) {
+	uuids := m.resolveSelectorUUIDs(src, arg)
+	if len(uuids) == 0 {
+		return "", false
+	}
+	return uuids[0], true
+}
+
+// resolveTargetsArg resolves a selector or name to a list of player UUIDs.
+func (m *Manager) resolveTargetsArg(src *player.Player, arg string) []string {
+	return m.resolveSelectorUUIDs(src, arg)
+}
+
+// resolveSelectorUUIDs normalizes a selector/name and returns UUIDs per selector semantics:
+// - direct UUID returns that UUID
+// - @s -> self
+// - @a -> all players (self first)
+// - @p -> nearest single (returned as single-item list)
+// - @r -> deterministic single (sorted by name, first)
+// - @e -> approximated as all players (self first)
+// - name -> matching player (single)
+func (m *Manager) resolveSelectorUUIDs(src *player.Player, arg string) []string {
+	if src == nil {
+		return nil
+	}
+	a := strings.ToLower(strings.TrimSpace(arg))
+	if a == "" {
+		return nil
+	}
+	// Direct UUID pass-through if already resolved.
+	if len(a) == 36 && strings.Count(a, "-") == 4 {
+		return []string{a}
+	}
+	// Gather players in the same world as the source.
+	tx := src.Tx()
+	var players []*player.Player
+	for pl := range tx.Players() {
+		if pp, ok := pl.(*player.Player); ok {
+			players = append(players, pp)
+		}
+	}
+	if len(players) == 0 {
+		return nil
+	}
+	switch a {
+	case "@s":
+		return []string{src.UUID().String()}
+	case "@a":
+		out := make([]string, 0, len(players))
+		// Ensure self is first for downstream single-target callers.
+		out = append(out, src.UUID().String())
+		for _, pl := range players {
+			if pl == nil || pl.UUID() == src.UUID() {
+				continue
+			}
+			out = append(out, pl.UUID().String())
+		}
+		return out
+	case "@p":
+		// Nearest player to the source.
+		pos := src.Position()
+		type distPl struct {
+			d float64
+			p *player.Player
+		}
+		ds := make([]distPl, 0, len(players))
+		for _, pl := range players {
+			ds = append(ds, distPl{d: pl.Position().Sub(pos).Len(), p: pl})
+		}
+		sort.Slice(ds, func(i, j int) bool { return ds[i].d < ds[j].d })
+		return []string{ds[0].p.UUID().String()}
+	case "@r":
+		// Random player: deterministic fallback — sort by name and take first.
+		slices.SortFunc(players, func(a, b *player.Player) int {
+			return strings.Compare(strings.ToLower(a.Name()), strings.ToLower(b.Name()))
+		})
+		return []string{players[0].UUID().String()}
+	case "@e":
+		// Entities not supported; approximate with all players, self first.
+		out := make([]string, 0, len(players))
+		out = append(out, src.UUID().String())
+		for _, pl := range players {
+			if pl == nil || pl.UUID() == src.UUID() {
+				continue
+			}
+			out = append(out, pl.UUID().String())
+		}
+		return out
+	default:
+		// Try by exact or case-insensitive name.
+		for _, pl := range players {
+			if strings.EqualFold(pl.Name(), arg) {
+				return []string{pl.UUID().String()}
+			}
+		}
+		return nil
+	}
 }

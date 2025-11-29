@@ -38,6 +38,14 @@ class ParamType
      * Generated from protobuf enum <code>PARAM_ENUM = 5;</code>
      */
     const PARAM_ENUM = 5;
+    /**
+     * Generated from protobuf enum <code>PARAM_TARGET = 6;</code>
+     */
+    const PARAM_TARGET = 6;
+    /**
+     * Generated from protobuf enum <code>PARAM_TARGETS = 7;</code>
+     */
+    const PARAM_TARGETS = 7;
 
     private static $valueToName = [
         self::PARAM_STRING => 'PARAM_STRING',
@@ -46,6 +54,8 @@ class ParamType
         self::PARAM_BOOL => 'PARAM_BOOL',
         self::PARAM_VARARGS => 'PARAM_VARARGS',
         self::PARAM_ENUM => 'PARAM_ENUM',
+        self::PARAM_TARGET => 'PARAM_TARGET',
+        self::PARAM_TARGETS => 'PARAM_TARGETS',
     ];
 
     public static function name($value)

@@ -31,6 +31,8 @@ const (
 	ParamType_PARAM_BOOL    ParamType = 3
 	ParamType_PARAM_VARARGS ParamType = 4
 	ParamType_PARAM_ENUM    ParamType = 5
+	ParamType_PARAM_TARGET  ParamType = 6
+	ParamType_PARAM_TARGETS ParamType = 7
 )
 
 // Enum value maps for ParamType.
@@ -42,6 +44,8 @@ var (
 		3: "PARAM_BOOL",
 		4: "PARAM_VARARGS",
 		5: "PARAM_ENUM",
+		6: "PARAM_TARGET",
+		7: "PARAM_TARGETS",
 	}
 	ParamType_value = map[string]int32{
 		"PARAM_STRING":  0,
@@ -50,6 +54,8 @@ var (
 		"PARAM_BOOL":    3,
 		"PARAM_VARARGS": 4,
 		"PARAM_ENUM":    5,
+		"PARAM_TARGET":  6,
+		"PARAM_TARGETS": 7,
 	}
 )
 
@@ -329,7 +335,7 @@ const file_command_proto_rawDesc = "" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x10\n" +
 	"\x03raw\x18\x03 \x01(\tR\x03raw\x12\x18\n" +
 	"\acommand\x18\x04 \x01(\tR\acommand\x12\x12\n" +
-	"\x04args\x18\x05 \x03(\tR\x04args*p\n" +
+	"\x04args\x18\x05 \x03(\tR\x04args*\x95\x01\n" +
 	"\tParamType\x12\x10\n" +
 	"\fPARAM_STRING\x10\x00\x12\r\n" +
 	"\tPARAM_INT\x10\x01\x12\x0f\n" +
@@ -338,7 +344,9 @@ const file_command_proto_rawDesc = "" +
 	"PARAM_BOOL\x10\x03\x12\x11\n" +
 	"\rPARAM_VARARGS\x10\x04\x12\x0e\n" +
 	"\n" +
-	"PARAM_ENUM\x10\x05B\x8b\x01\n" +
+	"PARAM_ENUM\x10\x05\x12\x10\n" +
+	"\fPARAM_TARGET\x10\x06\x12\x11\n" +
+	"\rPARAM_TARGETS\x10\aB\x8b\x01\n" +
 	"\rcom.df.pluginB\fCommandProtoP\x01Z'github.com/secmc/plugin/proto/generated\xa2\x02\x03DPX\xaa\x02\tDf.Plugin\xca\x02\tDf\\Plugin\xe2\x02\x15Df\\Plugin\\GPBMetadata\xea\x02\n" +
 	"Df::Pluginb\x06proto3"
 

@@ -88,6 +88,8 @@ enum ParamType : int {
   PARAM_BOOL = 3,
   PARAM_VARARGS = 4,
   PARAM_ENUM = 5,
+  PARAM_TARGET = 6,
+  PARAM_TARGETS = 7,
   ParamType_INT_MIN_SENTINEL_DO_NOT_USE_ =
       ::std::numeric_limits<::int32_t>::min(),
   ParamType_INT_MAX_SENTINEL_DO_NOT_USE_ =
@@ -98,11 +100,11 @@ extern const uint32_t ParamType_internal_data_[];
 inline constexpr ParamType ParamType_MIN =
     static_cast<ParamType>(0);
 inline constexpr ParamType ParamType_MAX =
-    static_cast<ParamType>(5);
+    static_cast<ParamType>(7);
 inline bool ParamType_IsValid(int value) {
-  return 0 <= value && value <= 5;
+  return 0 <= value && value <= 7;
 }
-inline constexpr int ParamType_ARRAYSIZE = 5 + 1;
+inline constexpr int ParamType_ARRAYSIZE = 7 + 1;
 const ::google::protobuf::EnumDescriptor* PROTOBUF_NONNULL ParamType_descriptor();
 template <typename T>
 const ::std::string& ParamType_Name(T value) {
@@ -113,7 +115,7 @@ const ::std::string& ParamType_Name(T value) {
 }
 template <>
 inline const ::std::string& ParamType_Name(ParamType value) {
-  return ::google::protobuf::internal::NameOfDenseEnum<ParamType_descriptor, 0, 5>(
+  return ::google::protobuf::internal::NameOfDenseEnum<ParamType_descriptor, 0, 7>(
       static_cast<int>(value));
 }
 inline bool ParamType_Parse(

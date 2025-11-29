@@ -2238,6 +2238,8 @@ pub enum ParamType {
     ParamBool = 3,
     ParamVarargs = 4,
     ParamEnum = 5,
+    ParamTarget = 6,
+    ParamTargets = 7,
 }
 impl ParamType {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -2252,6 +2254,8 @@ impl ParamType {
             ParamType::ParamBool => "PARAM_BOOL",
             ParamType::ParamVarargs => "PARAM_VARARGS",
             ParamType::ParamEnum => "PARAM_ENUM",
+            ParamType::ParamTarget => "PARAM_TARGET",
+            ParamType::ParamTargets => "PARAM_TARGETS",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2263,6 +2267,8 @@ impl ParamType {
             "PARAM_BOOL" => Some(Self::ParamBool),
             "PARAM_VARARGS" => Some(Self::ParamVarargs),
             "PARAM_ENUM" => Some(Self::ParamEnum),
+            "PARAM_TARGET" => Some(Self::ParamTarget),
+            "PARAM_TARGETS" => Some(Self::ParamTargets),
             _ => None,
         }
     }

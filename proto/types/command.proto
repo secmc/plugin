@@ -12,6 +12,8 @@ enum ParamType {
   PARAM_BOOL = 3;
   PARAM_VARARGS = 4;
   PARAM_ENUM = 5;
+  PARAM_TARGET = 6;
+  PARAM_TARGETS = 7;
 }
 
 // Parameter specification for a command.
@@ -42,4 +44,3 @@ message CommandEvent {
   string command = 4; // Just the command name like "tp"
   repeated string args = 5; // Parsed arguments like ["100", "64", "200"]
 }
-

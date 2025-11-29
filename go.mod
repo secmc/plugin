@@ -7,6 +7,7 @@ require (
 	github.com/didntpot/pregdk v0.0.0-20251104095621-63cf2e4d7716
 	github.com/go-gl/mathgl v1.2.0
 	github.com/google/uuid v1.6.0
+	github.com/joho/godotenv v1.5.1
 	github.com/pelletier/go-toml v1.9.5
 	github.com/sandertv/gophertunnel v1.51.0
 	google.golang.org/grpc v1.76.0
@@ -23,7 +24,6 @@ require (
 	github.com/didntpot/multiversion v0.0.0-20251103204415-8a06d981676a // indirect
 	github.com/go-jose/go-jose/v4 v4.1.3 // indirect
 	github.com/golang/snappy v1.0.0 // indirect
-	github.com/joho/godotenv v1.5.1 // indirect
 	github.com/klauspost/compress v1.18.1 // indirect
 	github.com/samber/lo v1.38.1 // indirect
 	github.com/sandertv/go-raknet v1.14.3-0.20250525005230-991ee492a907 // indirect
