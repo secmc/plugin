@@ -13,6 +13,7 @@ import (
 	"github.com/df-mc/dragonfly/server/player/chat"
 	"github.com/df-mc/dragonfly/server/world"
 	"github.com/didntpot/pregdk"
+	_ "github.com/joho/godotenv/autoload"
 	"github.com/pelletier/go-toml"
 	"github.com/sandertv/gophertunnel/minecraft"
 	"github.com/secmc/plugin/plugin/adapters/handlers"
