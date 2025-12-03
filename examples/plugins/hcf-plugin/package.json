@@ -1,0 +1,26 @@
+{
+  "name": "ts-df-hcf",
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "postinstall": "cd ../../../packages/node && npm install",
+    "prebuild": "cd ../../../packages/node && npm install",
+    "build": "tsc",
+    "predev": "cd ../../../packages/node && npm install",
+    "dev": "bun run --hot src/index.ts",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@grpc/grpc-js": "^1.14.1",
+    "@bufbuild/protobuf": "^2.2.2",
+    "@dragonfly/proto": "file:../../../packages/node"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.2"
+  },
+  "trustedDependencies": [
+    "protobufjs"
+  ]
+}
