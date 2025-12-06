@@ -1,19 +1,19 @@
 # Dragonfly Plugin System
 
-A powerful, language-agnostic plugin system for [Dragonfly](https://github.com/df-mc/dragonfly) Minecraft Bedrock servers using gRPC and Protocol Buffers.
+Write plugins for your Minecraft Bedrock server in whatever language you love. This gRPC bridge sits on top of the [Dragonfly](https://github.com/df-mc/dragonfly) server and lets external processes stream protobuf events and actions without touching the core runtime.
 
-## Why Dragonfly's Plugin System?
+## Why Dragonfly Plugins?
 
-| Benefit | Description | Use Case |
-|---------|-------------|----------|
-| 🌍 **Any Language** | Write plugins in JavaScript, TypeScript, PHP, Python, Rust, C++, or any language with gRPC support | Use the language your team knows best |
-| 💰 **Sell Plugins** | Compile to binary (Rust, Go, C++) and distribute without source code | Create commercial plugins |
-| 🔥 **Hot Reload** | Edit JS/TS/PHP plugins and see changes instantly - no server restart needed | Develop and debug plugins in real-time |
-| 📱 **Remote Control** | Plugins connect over gRPC - run them anywhere (phone app, cloud service, discord bot) | Build mobile admin apps |
-| 📦 **Use Any Library** | Import npm packages on a Go server, use Python ML libraries, etc. | Leverage entire ecosystems |
-| ⚡ **Zero Performance Impact** | Plugins run in separate processes - slow/heavy plugin code doesn't affect server TPS | Run intensive tasks without lag |
-| 🚀 **High Performance (COMING SOON)** | Optimized protobuf protocol with optional batching for low latency | Handle 100+ players with movement events |
-| 🔒 **Sandboxing** | Control what plugins can access via gRPC permissions | Host untrusted plugins safely |
+| Benefit | Description |
+| --- | --- |
+| 🌍 **Any Language** | JavaScript, TypeScript, PHP, Python, Rust, C++, Go—if it can speak gRPC, it can be a plugin. |
+| 💰 **Sell Plugins** | Compile to a binary (Rust, Go, C++) and ship closed-source builds. |
+| 🔥 **Hot Reload** | Edit JS/TS/PHP plugins while the server runs; changes apply immediately. |
+| 📱 **Remote Control** | Plugins connect over gRPC, so you can run them on your phone, a web app, or a remote service. |
+| 📦 **Use Any Library** | Mix npm packages, Python ML libs, or anything else your runtime supports. |
+| ⚡ **Zero Performance Impact** | Plugins live in separate processes, so heavy work never blocks Dragonfly’s TPS. |
+| 🚀 **High Performance (SOON)** | The protocol is optimized protobuf with room for batching. |
+| 🔒 **Sandboxing** | Grant only the permissions each plugin needs over the gRPC interface. |
 
 ### Real-World Examples
 
@@ -31,242 +31,73 @@ rustc plugin.rs --release   # Compile to binary
 # Distribute the binary - customers can't see your code
 ```
 
-## Features
+## Key Features
 
-- **Multi-Language Support**: Write plugins in JavaScript, TypeScript, PHP, Python, Rust, C++, or any language with gRPC support
-- **Event-Driven Architecture**: Subscribe to specific events (player join, chat, block break, etc.)
-- **Type Safety**: Generated types for TypeScript and other statically typed languages
+- **Event-driven API**: Subscribe to joins, chat, commands, block events, and more.
+- **Generated types**: Proto definitions live in `proto/types/` with generated Go + TypeScript stubs under `proto/generated/`.
+- **Language samples**: TypeScript, Node, PHP, and more under `examples/plugins/` to kick-start new plugins.
+- **Automation ready**: `make proto` (buf + scripts) and `make run` wire up the host for you.
 
 ## Quick Start
 
-### 1. Clone the Repository
-
-```bash
-git clone https://github.com/secmc/plugin.git
-cd plugin
-```
-
-### 2. Install Dependencies
-
-```bash
-go mod download
-```
-
-### 3. Configure Plugins
-
-Edit `plugins/plugins.yaml`:
-
-```yaml
-plugins:
-  - id: my-plugin
-    name: My First Plugin
-    command: "node"
-    args: ["examples/plugins/node/hello.js"]
-    address: "127.0.0.1:50051"
-```
-
-### 4. Run the Server
-
-```bash
-go run main.go
-```
-
-Your plugin will automatically connect and start receiving events!
-
-## Example Plugins
-
-We provide complete working examples in multiple languages:
-
-- **[TypeScript](examples/plugins/typescript/)** - Type-safe plugin with generated types (recommended for production)
-- **[Node.js](examples/plugins/node/)** - Simple JavaScript plugin
-- **[PHP](examples/plugins/php/)** - PHP plugin using gRPC extension
-
-See [examples/plugins/README.md](examples/plugins/README.md) for detailed documentation and more examples.
-
-## Creating Your First Plugin
-
-### Minimal Example (PHP)
-
-```php
-<?php
-// Example plugin showing command handling and block break event modification
-require_once __DIR__ . '/vendor/autoload.php';
-
-use Grpc\ChannelCredentials;
-
-$pluginId = 'my-plugin';
-$address = '127.0.0.1:50051';
-
-$client = new \Df\Plugin\PluginClient($address, [
-    'credentials' => ChannelCredentials::createInsecure(),
-]);
-
-$stream = $client->EventStream();
-
-try {
-    foreach ($stream->responses() as $message) {
-        // Handle handshake
-        if ($message->hasHello()) {
-            $hello = new \DF\Plugin\PluginToHost();
-            $hello->setPluginId($pluginId);
-            $pluginHello = new \DF\Plugin\PluginHello();
-            $pluginHello->setName('My Plugin');
-            $pluginHello->setVersion('1.0.0');
-            $pluginHello->setApiVersion($message->getHello()->getApiVersion());
-            
-            // Register /mine command
-            $command = new \DF\Plugin\CommandSpec();
-            $command->setName('/mine');
-            $command->setDescription('Get mining boost');
-            $pluginHello->setCommands([$command]);
-            $hello->setHello($pluginHello);
-            $stream->write($hello);
-
-            // Subscribe to events
-            $sub = new \DF\Plugin\PluginToHost();
-            $sub->setPluginId($pluginId);
-            $subscribe = new \DF\Plugin\EventSubscribe();
-            $subscribe->setEvents([
-                \DF\Plugin\EventType::PLAYER_JOIN,
-                \DF\Plugin\EventType::COMMAND,
-                \DF\Plugin\EventType::PLAYER_BLOCK_BREAK,
-            ]);
-            $sub->setSubscribe($subscribe);
-            $stream->write($sub);
-            continue;
-        }
-
-        if ($message->hasEvent()) {
-            $event = $message->getEvent();
-            
-            // Handle /mine command
-            if ($event->getType() === \DF\Plugin\EventType::COMMAND && $event->hasCommand()) {
-                $cmd = $event->getCommand();
-                if ($cmd->getCommand() === 'mine') {
-                    // Send message to player
-                    $action = new \DF\Plugin\Action();
-                    $send = new \DF\Plugin\SendChatAction();
-                    $send->setTargetUuid($cmd->getPlayerUuid());
-                    $send->setMessage('§6⛏️ Mining boost activated! Break blocks for double drops!');
-                    $action->setSendChat($send);
-                    $batch = new \DF\Plugin\ActionBatch();
-                    $batch->setActions([$action]);
-                    $resp = new \DF\Plugin\PluginToHost();
-                    $resp->setPluginId($pluginId);
-                    $resp->setActions($batch);
-                    $stream->write($resp);
-                }
-                
-                // Acknowledge event
-                $result = new \DF\Plugin\EventResult();
-                $result->setEventId($event->getEventId());
-                $result->setCancel(false);
-                $resp = new \DF\Plugin\PluginToHost();
-                $resp->setPluginId($pluginId);
-                $resp->setEventResult($result);
-                $stream->write($resp);
-            }
-            
-            // Handle block break with double drops
-            if ($event->getType() === 'BLOCK_BREAK' && $event->hasBlockBreak()) {
-                $blockBreak = $event->getBlockBreak();
-                echo "[php] {$blockBreak->getName()} broke block at ";
-                echo "{$blockBreak->getX()},{$blockBreak->getY()},{$blockBreak->getZ()}\n";
-                
-                // Give double drops for every 10th block (X coordinate % 10 == 0)
-                if ($blockBreak->getX() % 10 === 0) {
-                    $drop = new \DF\Plugin\ItemStack();
-                    $drop->setName('minecraft:diamond');
-                    $drop->setCount(2);
-                    $drop->setMeta(0);
-                    
-                    $mutation = new \DF\Plugin\BlockBreakMutation();
-                    $mutation->setDrops([$drop]);
-                    $mutation->setXp(10);
-                    
-                    $result = new \DF\Plugin\EventResult();
-                    $result->setEventId($event->getEventId());
-                    $result->setBlockBreak($mutation);
-                    $resp = new \DF\Plugin\PluginToHost();
-                    $resp->setPluginId($pluginId);
-                    $resp->setEventResult($result);
-                    $stream->write($resp);
-                } else {
-                    // Acknowledge normally
-                    $result = new \DF\Plugin\EventResult();
-                    $result->setEventId($event->getEventId());
-                    $result->setCancel(false);
-                    $resp = new \DF\Plugin\PluginToHost();
-                    $resp->setPluginId($pluginId);
-                    $resp->setEventResult($result);
-                    $stream->write($resp);
-                }
-            }
-        }
-    }
-} catch (Exception $e) {
-    echo "[php] Error: " . $e->getMessage() . "\n";
-} finally {
-    $stream->writesDone();
-}
-
-echo "[php] plugin connected to {$address}\n";
-```
-
-## Project Structure
-
-```
-dragonfly-plugins/
-├── dragonfly/              # Modified Dragonfly server with plugin support
-├── plugin/                 # Plugin system core
-│   ├── proto/             # Protocol Buffer definitions
-│   ├── manager.go         # Plugin lifecycle management
-│   └── README.md          # Plugin system documentation
-├── examples/
-│   └── plugins/           # Example plugins in various languages
-├── plugins/
-│   └── plugins.yaml       # Plugin configuration
-└── main.go                # Server entry point
-```
+1. **Clone & bootstrap**
+   ```bash
+   git clone https://github.com/secmc/plugin.git
+   cd plugin
+   go mod download
+   make proto
+   ```
+2. **Configure a plugin** in `cmd/plugins/plugins.yaml`:
+   ```yaml
+   plugins:
+     - id: example-typescript
+       name: Example TypeScript Plugin
+       command: "npm"
+       args: ["run", "dev", "--prefix", "examples/plugins/typescript"]
+       address: "unix:///tmp/dragonfly_plugin.sock"
+   ```
+3. **Run the host**
+   ```bash
+   make run
+   ```
+4. **Iterate in your language** – edit the example plugin, or point the config at your own command/binary.
 
 ## How It Works
 
 ```
 ┌─────────────────┐         gRPC Stream          ┌──────────────────┐
-│                 │ ←──────────────────────────→  │                  │
+│                 │ ←──────────────────────────→ │                  │
 │  Dragonfly      │   Events: JOIN, CHAT, etc.   │  Your Plugin     │
-│  Server         │   Actions: TELEPORT, etc.    │  (Any Language)  │
-│  (Go)           │                               │                  │
-└─────────────────┘                               └──────────────────┘
+│  Server (Go)    │   Actions: TELEPORT, etc.    │  (Any Language)  │
+└─────────────────┘                              └──────────────────┘
 ```
 
-1. **Server starts** and loads plugin configuration from `plugins/plugins.yaml`
-2. **Plugin process launches** via configured command (e.g., `node plugin.js`)
-3. **Handshake** occurs where plugin registers capabilities
-4. **Plugin subscribes** to events it wants to receive
-5. **Events flow** from server to plugin in real-time
-6. **Plugin executes actions** by sending messages back to server
+1. **Server starts** and loads plugin configuration from `cmd/plugins/plugins.yaml`.
+2. **Plugin process launches** via the configured command (for example `node plugin.js`).
+3. **Handshake** occurs where the plugin registers its metadata and commands.
+4. **Plugin subscribes** to the events it wants.
+5. **Events flow** from Dragonfly to the plugin in real time.
+6. **Plugin executes actions** by sending protobuf messages back to the host.
 
-## Documentation
+## Building Plugins
 
-- **[Plugin Examples](examples/plugins/README.md)** - Complete guide to example plugins
-- **[Plugin System](plugin/README.md)** - Core plugin system documentation
-- **[Protocol Buffer Definitions](plugin/proto/types/plugin.proto)** - API reference
-- **[Plugin Architecture](docs/plugin-architecture.md)** - Design documentation
+1. Copy an example from `examples/plugins/` or start fresh with `proto/types/plugin.proto`.
+2. Run `make proto` (or `buf generate` with your template) to refresh client stubs.
+3. Add your command + args + socket info to `cmd/plugins/plugins.yaml`.
+4. Implement the handshake: reply to `PluginHello`, register commands, then send `EventSubscribe`.
+5. Handle streamed events and reply with `ActionBatch` or `EventResult` messages. Because plugins speak gRPC, they can run locally, over loopback TCP, or on a remote machine.
 
-
-## Protobuf generation
-to generate our protobuf types, you will need to install [buf](https://buf.build/docs/cli/installation/) and protoc-gen-go:
+## Development Workflow
 
 ```bash
-# Install buf
-# Follow instructions at https://buf.build/docs/cli/installation/
-
-# Install protoc-gen-go
-go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+make proto        # regenerate protobuf artifacts + post-gen scripts
+go test ./...     # run all Go suites
+make run          # launch Dragonfly host with sample config
+npm run dev --prefix examples/plugins/typescript   # TypeScript live dev
+examples/plugins/php/bin/php7/bin/php examples/plugins/php/src/HelloPlugin.php   # PHP sample
 ```
 
-Then run:
-```bash
-make proto
-```
+## Prerequisites
+
+- Go 1.22+ with `GOBIN` on your `PATH`.
+- [buf](https://buf.build/docs/cli/installation/) and `protoc-gen-go` (`go install google.golang.org/protobuf/cmd/protoc-gen-go@latest`).
